@@ -19,11 +19,13 @@
     </parent>
 
     <modules>
-        <module>web</module>
-        <module>common/dao</module>
         <module>common/util</module>
+        <module>common/dal/activity</module>
+        <module>common/dal/user</module>
         <module>core/user</module>
         <module>core/activity</module>
+        <module>biz/impl</module>
+        <module>web</module>
     </modules>
 
     <dependencyManagement>
@@ -37,11 +39,41 @@
             </dependency>
 
             <!-- 子模块 start -->
+            <!--工具类-->
             <dependency>
                 <groupId>us.betahouse</groupId>
-                <artifactId>haete-common</artifactId>
+                <artifactId>util</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+            <!--dal 层-->
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haete-dal-user</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haete-dal-activity</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <!--core 层-->
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-user</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-activity</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <!--biz 层-->
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-service-impl</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <!--web 层-->
             <dependency>
                 <groupId>us.betahouse</groupId>
                 <artifactId>haete-web</artifactId>
