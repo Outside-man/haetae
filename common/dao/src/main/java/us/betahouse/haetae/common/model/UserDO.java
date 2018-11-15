@@ -4,11 +4,6 @@
  */
 package us.betahouse.haetae.common.model;
 
-/**
- * @author dango.yxm
- * @version : UserDO.java 2018/11/15 下午1:06 dango.yxm
- */
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

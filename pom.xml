@@ -20,7 +20,10 @@
 
     <modules>
         <module>web</module>
-        <module>common</module>
+        <module>common/dao</module>
+        <module>common/util</module>
+        <module>core/user</module>
+        <module>core/activity</module>
     </modules>
 
     <dependencyManagement>
@@ -45,6 +48,13 @@
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!-- 子模块 end -->
+
+            <!--二方包 betahouse util-->
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>util</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
