@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>us.betahouse</groupId>
-            <artifactId>haete-common</artifactId>
+            <artifactId>haetae-dal-user</artifactId>
         </dependency>
     </dependencies>
 

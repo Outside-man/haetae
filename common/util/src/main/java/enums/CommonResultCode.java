@@ -17,18 +17,20 @@ public enum CommonResultCode {
     /**
      * 系统异常
      */
-    SYSTEM_ERROR("系统异常"),
+    SYSTEM_ERROR("500","系统异常"),
 
     /**
      * 参数异常
      */
-    ILLEGAL_PARAMETERS("参数异常"),
+    ILLEGAL_PARAMETERS("400", "参数异常"),
 
     /**
      * 调用成功
      */
-    SUCCESS("调用成功")
+    SUCCESS("200", "调用成功")
     ;
+
+    private String errorCode;
 
     private String errorMsg;
 
@@ -41,12 +43,13 @@ public enum CommonResultCode {
         return null;
     }
 
-    CommonResultCode(String errorMsg) {
+    CommonResultCode(String errorCode, String errorMsg) {
+        this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }
 
     public String getErrorCode() {
-        return name();
+        return errorCode;
     }
 
     public String getErrorMsg() {

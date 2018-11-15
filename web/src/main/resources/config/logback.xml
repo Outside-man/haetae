@@ -26,22 +26,6 @@
     </appender>
 
 
-    <!-- ERROR 日志 -->
-    <appender name="COMMON-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/common-error.log</fileNamePattern>
-            <maxHistory>${maxHistory}</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <!-- 系统日志 -->
     <appender name="SYS-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -59,11 +43,26 @@
         </encoder>
     </appender>
 
-    <!--======================================模块日志======================================-->
-    <!-- user 日志 -->
-    <appender name="MODULE-USER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- ERROR 日志 -->
+    <appender name="COMMON-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/haetae-user.log
+            <fileNamePattern>${log_dir}/common-error.log</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- common-dal 日志 -->
+    <appender name="COMMON-DAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/common-dal.log
             </fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
@@ -72,10 +71,11 @@
         </encoder>
     </appender>
 
-    <!-- activity 日志 -->
-    <appender name="MODULE-ACTIVITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--======================================模块日志======================================-->
+    <!-- core-user 日志 -->
+    <appender name="CORE-USER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/haetae-activity.log
+            <fileNamePattern>${log_dir}/core-user.log
             </fileNamePattern>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
@@ -83,6 +83,42 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
+
+    <!-- core-activity 日志 -->
+    <appender name="CORE-ACTIVITY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/core-activity.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- biz-service-impl 日志 -->
+    <appender name="BIZ-SERVICE-IMPL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/biz-service-impl.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--======================================日志配置======================================-->
+    <!--数据库日志-->
+    <logger name="org.hibernate.SQL" additivity="false" >
+        <level value="DEBUG" />
+        <appender-ref ref="COMMON-DAL" />
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="TRACE" >
+        <level value="TRACE" />
+        <appender-ref ref="COMMON-DAL" />
+    </logger>
 
     <!-- root级别   INFO -->
     <root level="INFO">
@@ -93,22 +129,29 @@
         <appender-ref ref="SYS-INFO"/>
     </root>
 
-    <logger name="us.betahouse.haetae.user" level="info">
+    <!--模块日志-->
+    <logger name="us.betahouse.haetae.user" level="INFO">
         <!-- 控制台输出 -->
         <appender-ref ref="STDOUT"/>
         <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
-        <appender-ref ref="MODULE-USER"/>
+        <appender-ref ref="CORE-USER"/>
     </logger>
 
-    <logger name="us.betahouse.haetae.activity" level="info">
+    <logger name="us.betahouse.haetae.activity" level="INFO">
         <!-- 控制台输出 -->
         <appender-ref ref="STDOUT"/>
         <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
-        <appender-ref ref="MODULE-ACTIVITY"/>
+        <appender-ref ref="CORE-ACTIVITY"/>
     </logger>
 
-
+    <logger name="us.betahouse.haetae.serviceimpl" level="INFO">
+        <!-- 控制台输出 -->
+        <appender-ref ref="STDOUT"/>
+        <!-- 文件输出 -->
+        <appender-ref ref="COMMON-ERROR"/>
+        <appender-ref ref="BIZ-SERVICE-IMPL"/>
+    </logger>
 
 </configuration>

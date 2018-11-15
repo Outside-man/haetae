@@ -2,11 +2,11 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.common.repo;
+package us.betahouse.haetae.dal.user.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import us.betahouse.haetae.common.model.UserDO;
+import us.betahouse.haetae.dal.user.model.UserDO;
 
 /**
  * 用户实体仓储服务

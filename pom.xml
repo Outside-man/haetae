@@ -48,12 +48,12 @@
             <!--dal 层-->
             <dependency>
                 <groupId>us.betahouse</groupId>
-                <artifactId>haete-dal-user</artifactId>
+                <artifactId>haetae-dal-user</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>us.betahouse</groupId>
-                <artifactId>haete-dal-activity</artifactId>
+                <artifactId>haetae-dal-activity</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!--core 层-->
@@ -76,7 +76,7 @@
             <!--web 层-->
             <dependency>
                 <groupId>us.betahouse</groupId>
-                <artifactId>haete-web</artifactId>
+                <artifactId>haetae-web</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!-- 子模块 end -->
