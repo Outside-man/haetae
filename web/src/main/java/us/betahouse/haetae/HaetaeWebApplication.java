@@ -1,4 +1,4 @@
-package us.betahouse.haetae.web;
+package us.betahouse.haetae;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

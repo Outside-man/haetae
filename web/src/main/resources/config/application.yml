@@ -1,11 +1,10 @@
 server:
   port: 8000
 spring:
-  application:
-    name: service-user
   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/betahouse?characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3306/haetae?characterEncoding=utf-8
     username: root
     password: root
   jpa:

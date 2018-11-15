@@ -18,61 +18,33 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
-
     <modules>
         <module>web</module>
+        <module>common</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
 
-            <!--启动器starter start-->
+            <!--Druid-->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>2.1.0.RELEASE</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.0.9</version>
             </dependency>
 
+            <!-- 子模块 start -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.1.0.RELEASE</version>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haete-common</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
-
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>2.1.0.RELEASE</version>
-                <scope>test</scope>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haete-web</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
-            <!--启动器starter end-->
-
-            <!--JPA-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>2.1.0.RELEASE</version>
-            </dependency>
-            <!--mysql-->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.46</version>
-                <scope>runtime</scope>
-            </dependency>
-            <!--Redis-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-redis</artifactId>
-                <version>2.1.0.RELEASE</version>
-            </dependency>
-
-
+            <!-- 子模块 end -->
 
         </dependencies>
     </dependencyManagement>
