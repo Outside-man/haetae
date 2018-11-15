@@ -14,12 +14,13 @@ import java.util.Date;
 
 /**
  * 用户信息
+ *
  * @author dango.yxm
  * @version : UserInfoDO.java 2018/11/15 下午2:17 dango.yxm
  */
 @Entity
-@Table(name = "common_user_info")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "common_user_info")
 public class UserInfoDO implements Serializable {
 
     private static final long serialVersionUID = 4332447165010415804L;
@@ -31,36 +32,43 @@ public class UserInfoDO implements Serializable {
     /**
      * 用户信息id
      */
+    @Column(length = 32, updatable = false, unique = true)
     private String userInfoId;
 
     /**
      * 用户id
      */
+    @Column(length = 32)
     private String userId;
 
     /**
      * 学号
      */
+    @Column(length = 32)
     private String stuId;
 
     /**
      * 姓名
      */
+    @Column(length = 32)
     private String realName;
 
     /**
      * 性别
      */
+    @Column(length = 6)
     private String sex;
 
     /**
      * 专业号
      */
+    @Column(length = 32)
     private String majorId;
 
     /**
      * 班级号
      */
+    @Column(length = 32)
     private String classId;
 
     /**
@@ -73,14 +81,14 @@ public class UserInfoDO implements Serializable {
      * 创建时间
      */
     @CreatedDate
-    @Column(name = "gmt_create",nullable = false)
+    @Column(name = "gmt_create", nullable = false)
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
     @LastModifiedDate
-    @Column(name = "gmt_modified",nullable = false)
+    @Column(name = "gmt_modified", nullable = false)
     private Date gmtModified;
 
     /**

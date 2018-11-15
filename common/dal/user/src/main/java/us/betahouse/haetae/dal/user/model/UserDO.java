@@ -19,8 +19,13 @@ import java.util.Date;
  * @version : UserDO.java 2018/10/05 上午10:46 dango.yxm
  */
 @Entity
-@Table(name = "common_user")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "common_user",
+        indexes = {
+        @Index(name = "idx_open_id", columnList = "open_id", unique = false),
+        @Index(name = "uk_user_id", columnList = "user_id", unique = true),
+        @Index(name = "uk_user_name", columnList = "user_name", unique = true)
+})
 public class UserDO implements Serializable {
 
     private static final long serialVersionUID = -3563331475230666631L;
@@ -32,31 +37,31 @@ public class UserDO implements Serializable {
     /**
      * userId 生成 不可修改
      */
-    @Column(name = "user_id", updatable = false, unique = true)
+    @Column(name = "user_id", length = 32, nullable = false, updatable = false)
     private String userId;
 
     /**
      * 用户名
      */
-    @Column(unique = true,nullable = false)
+    @Column(name = "user_name", length = 32, nullable = false)
     private String username;
 
     /**
      * 密码 长度不超过32位
      */
-    @Column(length = 32,nullable = false)
+    @Column(length = 32, nullable = false)
     private String password;
 
     /**
      * 盐
      */
-    @Column(length = 8,nullable = false)
+    @Column(length = 8, nullable = false)
     private String salt;
 
     /**
      * 微信小程序openId
      */
-    @Column(length = 32)
+    @Column(name = "open_id", length = 32)
     private String openId;
 
     /**
@@ -75,14 +80,14 @@ public class UserDO implements Serializable {
      * 创建时间
      */
     @CreatedDate
-    @Column(name = "gmt_create",nullable = false)
+    @Column(name = "gmt_create", nullable = false)
     private Date gmtCreate;
 
     /**
      * 修改时间
      */
     @LastModifiedDate
-    @Column(name = "gmt_modified",nullable = false)
+    @Column(name = "gmt_modified", nullable = false)
     private Date gmtModified;
 
     public static long getSerialVersionUID() {
