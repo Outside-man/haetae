@@ -4,15 +4,19 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
 import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
+import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.model.UserBO;
+
 
 /**
  * 用户服务实现
+ *
  * @author dango.yxm
  * @version : UserRepoServiceImpl.java 2018/11/16 下午7:39 dango.yxm
  */
@@ -22,19 +26,56 @@ public class UserRepoServiceImpl implements UserRepoService {
     @Autowired
     private UserDORepo userDORepo;
 
+    /**
+     * id工厂
+     */
+    @Autowired
+    private BizIdFactory bizIdFactory;
+
     @Override
     public UserBO queryByUserName(String userName) {
         return convert(userDORepo.findByUsername(userName));
     }
 
+    @Override
+    public UserBO createUser(UserBO userBO) {
+        if (StringUtils.isBlank(userBO.getUserId())) {
+            userBO.setUserId(bizIdFactory.getUserId());
+        }
+        return convert(userDORepo.save(convert(userBO)));
+    }
+
+    @Override
+    public UserBO updateUserByUserId(UserBO userBO) {
+        UserDO userDO = userDORepo.findByUserId(userBO.getUserId());
+        UserDO newUserDO = convert(userBO);
+        if (newUserDO.getUsername() != null) {
+            userDO.setUsername(newUserDO.getUsername());
+        }
+        if (newUserDO.getPassword() != null) {
+            userDO.setPassword(newUserDO.getPassword());
+        }
+        if (newUserDO.getSalt() != null) {
+            userDO.setSalt(newUserDO.getSalt());
+        }
+        if (newUserDO.getOpenId() != null) {
+            userDO.setOpenId(newUserDO.getOpenId());
+        }
+        if (newUserDO.getLastLoginIP() != null) {
+            userDO.setLastLoginIP(newUserDO.getLastLoginIP());
+        }
+        return convert(userDORepo.save(userDO));
+    }
+
 
     /**
      * DO2BO
+     *
      * @param userDO
      * @return
      */
-    private UserBO convert(UserDO userDO){
-        if(userDO == null){
+    private UserBO convert(UserDO userDO) {
+        if (userDO == null) {
             return null;
         }
         UserBO userBO = new UserBO();
@@ -49,11 +90,12 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     /**
      * BO2DO
+     *
      * @param userBO
      * @return
      */
-    private UserDO convert(UserBO userBO){
-        if(userBO == null){
+    private UserDO convert(UserBO userBO) {
+        if (userBO == null) {
             return null;
         }
         UserDO userDO = new UserDO();

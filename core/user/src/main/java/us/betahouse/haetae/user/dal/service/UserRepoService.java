@@ -19,4 +19,18 @@ public interface UserRepoService {
      * @return
      */
     UserBO queryByUserName(String userName);
+
+    /**
+     * 创建新用户
+     * @param userBO
+     * @return
+     */
+    UserBO createUser(UserBO userBO);
+
+    /**
+     * 更新用户信息
+     * @param userBO
+     * @return
+     */
+    UserBO updateUserByUserId(UserBO userBO);
 }

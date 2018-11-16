@@ -117,7 +117,7 @@ public class LoggerUtil {
             return StringUtils.EMPTY;
         }
         try {
-            Method mt = throwable.getClass().getDeclaredMethod("getErrorCode");
+            Method mt = throwable.getClass().getDeclaredMethod("getCode");
             if (mt != null) {
                 Object obj = mt.invoke(throwable);
                 if (obj != null) {

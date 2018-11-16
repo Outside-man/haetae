@@ -6,7 +6,8 @@ package us.betahouse.haetae.user.model;
 
 import common.ToString;
 
-import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户角色关联映射
@@ -21,26 +22,22 @@ public class UserRoleRelationBO extends ToString {
     /**
      * 用户角色映射id
      */
-    @Column(name = "user_role_id", length = 32, nullable = false, updatable = false)
     private String userRoleId;
 
     /**
      * 用户id
      */
-    @Column(name = "user_id", length = 32, nullable = false)
     private String userId;
 
     /**
      * 角色id
      */
-    @Column(name = "role_id", length = 32, nullable = false)
     private String roleId;
 
     /**
      * 拓展信息
      */
-    @Column(length = 2000)
-    private String extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public String getUserRoleId() {
         return userRoleId;
@@ -66,11 +63,11 @@ public class UserRoleRelationBO extends ToString {
         this.roleId = roleId;
     }
 
-    public String getExtInfo() {
+    public Map<String, String> getExtInfo() {
         return extInfo;
     }
 
-    public void setExtInfo(String extInfo) {
+    public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
 }

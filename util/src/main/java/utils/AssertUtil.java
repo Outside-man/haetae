@@ -24,7 +24,7 @@ public class AssertUtil {
      */
     public static void assertTrue(Boolean expression, String errorMsg) {
         if (expression == null || !expression) {
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getErrorCode(), errorMsg);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
         }
     }
 
@@ -42,7 +42,7 @@ public class AssertUtil {
      */
     public static void assertNull(Object obj, String errorMsg) {
         if (obj != null) {
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getErrorCode(), errorMsg);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
         }
     }
 
@@ -64,8 +64,31 @@ public class AssertUtil {
      * @param errorMsg
      */
     public static void assertNotNull(Object obj, String errorMsg) {
+        assertNotNull(obj, CommonResultCode.ILLEGAL_PARAMETERS.getErrorMsg(), errorMsg);
+    }
+
+    /**
+     * 断言对象不等于null
+     *
+     * @param obj
+     * @param errorCode
+     * @param errorMsg
+     */
+    public static void assertNotNull(Object obj, String errorCode, String errorMsg) {
         if (obj == null) {
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getErrorCode(), errorMsg);
+            throw new BetahouseException(errorCode, errorMsg);
+        }
+    }
+
+    /**
+     * 断言对象不等于null
+     *
+     * @param obj
+     * @param commonResultCode
+     */
+    public static void assertNotNull(Object obj, CommonResultCode commonResultCode) {
+        if (obj == null) {
+            throw new BetahouseException(commonResultCode);
         }
     }
 
@@ -77,7 +100,7 @@ public class AssertUtil {
      */
     public static void assertStringNotBlank(String str, String errorMsg) {
         if (StringUtils.isBlank(str)) {
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getErrorCode(), errorMsg);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
         }
     }
 
@@ -100,7 +123,7 @@ public class AssertUtil {
      */
     public static void assertStringBlank(String str, String errorMsg) {
         if (StringUtils.isNotBlank(str)) {
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getErrorCode(), errorMsg);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
         }
     }
 

@@ -6,7 +6,8 @@ package us.betahouse.haetae.user.model;
 
 import common.ToString;
 
-import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 角色权限映射关系
@@ -21,26 +22,22 @@ public class RolePermRelationBO extends ToString {
     /**
      * 角色权限映射id
      */
-    @Column(name = "role_perm_id", length = 32, nullable = false, updatable = false)
     private String rolePermId;
 
     /**
      * 角色id
      */
-    @Column(name = "role_id", length = 32, nullable = false)
     private String roleId;
 
     /**
      * 权限id
      */
-    @Column(name = "perm_id", length = 32, nullable = false)
     private String permId;
 
     /**
      * 拓展信息
      */
-    @Column(length = 2000)
-    private String extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public String getRolePermId() {
         return rolePermId;
@@ -66,11 +63,11 @@ public class RolePermRelationBO extends ToString {
         this.permId = permId;
     }
 
-    public String getExtInfo() {
+    public Map<String, String> getExtInfo() {
         return extInfo;
     }
 
-    public void setExtInfo(String extInfo) {
+    public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
 }

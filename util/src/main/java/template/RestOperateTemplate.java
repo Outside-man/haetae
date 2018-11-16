@@ -49,11 +49,11 @@ public class RestOperateTemplate {
             return result;
         } catch (Exception e) {
             LoggerUtil.error(e, logger, "RestOperateTemplate.operate error, methodName={0}, request={1}", methodName, request);
-            result = new Result<>(false, CommonResultCode.SYSTEM_ERROR.getErrorCode(), CommonResultCode.SYSTEM_ERROR.getErrorMsg());
+            result = new Result<>(false, CommonResultCode.SYSTEM_ERROR.getCode(), CommonResultCode.SYSTEM_ERROR.getErrorMsg());
             return result;
         } catch (Throwable t) {
             LoggerUtil.error(t, logger, "RestOperateTemplate.operate throwable, methodName={0}, request={1}", methodName, request);
-            result = new Result<>(false, CommonResultCode.SYSTEM_ERROR.getErrorCode(), CommonResultCode.SYSTEM_ERROR.getErrorMsg());
+            result = new Result<>(false, CommonResultCode.SYSTEM_ERROR.getCode(), CommonResultCode.SYSTEM_ERROR.getErrorMsg());
             return result;
         } finally {
             long end = System.currentTimeMillis();

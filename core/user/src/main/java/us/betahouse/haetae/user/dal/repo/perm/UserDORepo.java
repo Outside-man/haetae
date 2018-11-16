@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
 
+
 /**
  * 用户实体仓储
  *
@@ -19,8 +20,17 @@ public interface UserDORepo extends JpaRepository<UserDO, Long> {
 
     /**
      * 通过用户名获取用户实体
+     *
      * @param userName
      * @return
      */
     UserDO findByUsername(String userName);
+
+    /**
+     * 通过用户id获取
+     *
+     * @param userId
+     * @return
+     */
+    UserDO findByUserId(String userId);
 }

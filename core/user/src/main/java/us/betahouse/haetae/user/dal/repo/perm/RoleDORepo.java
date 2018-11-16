@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.RoleDO;
 
+import java.util.List;
+
 /**
  * 角色仓储
  *
@@ -16,4 +18,6 @@ import us.betahouse.haetae.user.dal.model.perm.RoleDO;
  */
 @Repository
 public interface RoleDORepo extends JpaRepository<RoleDO, String> {
+
+    List<RoleDO> findAllByRoleIdIn (List<String> roleIds);
 }

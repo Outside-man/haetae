@@ -31,7 +31,7 @@ public class BetahouseException extends RuntimeException {
      */
     public BetahouseException(final Throwable cause){
         super(cause);
-        this.errorCode = CommonResultCode.SYSTEM_ERROR.getErrorCode();
+        this.errorCode = CommonResultCode.SYSTEM_ERROR.getCode();
         this.errorMsg = CommonResultCode.SYSTEM_ERROR.getErrorMsg();
     }
 
@@ -41,7 +41,7 @@ public class BetahouseException extends RuntimeException {
     }
 
     public BetahouseException(CommonResultCode commonResultCode) {
-        this.errorCode = commonResultCode.getErrorCode();
+        this.errorCode = commonResultCode.getCode();
         this.errorMsg = commonResultCode.getErrorMsg();
     }
 

@@ -17,39 +17,35 @@ public enum CommonResultCode {
     /**
      * 系统异常
      */
-    SYSTEM_ERROR("500","系统异常"),
+    SYSTEM_ERROR("系统异常"),
 
     /**
      * 参数异常
      */
-    ILLEGAL_PARAMETERS("400", "参数异常"),
+    ILLEGAL_PARAMETERS("参数异常"),
 
     /**
      * 调用成功
      */
-    SUCCESS("200", "调用成功")
-    ;
-
-    private String errorCode;
+    SUCCESS("调用成功");
 
     private String errorMsg;
 
     public CommonResultCode getByCode(String errorCode) {
         for (CommonResultCode commonResultCode : values()) {
-            if (StringUtils.equals(commonResultCode.getErrorCode(), errorCode)) {
+            if (StringUtils.equals(commonResultCode.getCode(), errorCode)) {
                 return commonResultCode;
             }
         }
         return null;
     }
 
-    CommonResultCode(String errorCode, String errorMsg) {
-        this.errorCode = errorCode;
+    CommonResultCode(String errorMsg) {
         this.errorMsg = errorMsg;
     }
 
-    public String getErrorCode() {
-        return errorCode;
+    public String getCode() {
+        return name();
     }
 
     public String getErrorMsg() {

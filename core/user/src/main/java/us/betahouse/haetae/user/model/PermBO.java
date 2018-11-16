@@ -6,6 +6,7 @@ package us.betahouse.haetae.user.model;
 
 import common.ToString;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,7 +37,7 @@ public class PermBO extends ToString {
     /**
      * 拓展信息
      */
-    private Map<String, String> extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public String getPermId() {
         return permId;
