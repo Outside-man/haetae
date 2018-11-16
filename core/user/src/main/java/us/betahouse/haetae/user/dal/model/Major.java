@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.dal.user.model;
+package us.betahouse.haetae.user.dal.model;
 
 /**
  * @author dango.yxm

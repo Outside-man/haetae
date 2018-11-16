@@ -46,7 +46,7 @@
         <!--子模块依赖-->
         <dependency>
             <groupId>us.betahouse</groupId>
-            <artifactId>haetae-dal-user</artifactId>
+            <artifactId>haetae-user</artifactId>
         </dependency>
 
     </dependencies>
