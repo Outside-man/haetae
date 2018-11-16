@@ -5,7 +5,6 @@
 package us.betahouse.haetae.user.dal.service;
 
 import us.betahouse.haetae.user.model.RoleBO;
-import us.betahouse.haetae.user.model.UserBO;
 import us.betahouse.haetae.user.model.UserRoleRelationBO;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public interface RoleRepoService {
      * @param userId
      * @return
      */
-    List<RoleBO> queryByUserId(String userId);
+    List<RoleBO> queryRoleByUserId(String userId);
 
     /**
      * 给用户绑定角色

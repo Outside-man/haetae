@@ -67,7 +67,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     }
 
     @Override
-    public List<RoleBO> queryByUserId(String userId) {
+    public List<RoleBO> queryRoleByUserId(String userId) {
         List<UserRoleRelationDO> userRoleRelations = userRoleRelationDORepo.findAllByUserId(userId);
         List<String> roleIds = StreamUtils.toStream(userRoleRelations)
                 .filter(Objects::nonNull)
