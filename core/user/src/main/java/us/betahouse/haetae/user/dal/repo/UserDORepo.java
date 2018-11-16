@@ -6,7 +6,7 @@ package us.betahouse.haetae.user.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import us.betahouse.haetae.user.dal.model.UserDO;
+import us.betahouse.haetae.user.dal.model.perm.UserDO;
 
 /**
  * 用户实体仓储服务

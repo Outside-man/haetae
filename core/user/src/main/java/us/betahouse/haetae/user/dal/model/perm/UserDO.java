@@ -2,18 +2,16 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.dal.model;
+package us.betahouse.haetae.user.dal.model.perm;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import us.betahouse.haetae.user.dal.model.BaseDO;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户账户
+ * 用户实体
  *
  * @author dango.yxm
  * @version : UserDO.java 2018/10/05 上午10:46 dango.yxm
@@ -22,17 +20,13 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "common_user",
         indexes = {
-        @Index(name = "idx_open_id", columnList = "open_id", unique = false),
-        @Index(name = "uk_user_id", columnList = "user_id", unique = true),
-        @Index(name = "uk_user_name", columnList = "user_name", unique = true)
-})
-public class UserDO implements Serializable {
+                @Index(name = "idx_open_id", columnList = "open_id", unique = false),
+                @Index(name = "uk_user_id", columnList = "user_id", unique = true),
+                @Index(name = "uk_user_name", columnList = "user_name", unique = true)
+        })
+public class UserDO extends BaseDO {
 
     private static final long serialVersionUID = -3563331475230666631L;
-
-    @Id
-    @GeneratedValue
-    private Long id;
 
     /**
      * userId 生成 不可修改
@@ -75,32 +69,6 @@ public class UserDO implements Serializable {
      */
     @Column(name = "last_login_ip", length = 32)
     private String lastLoginIP;
-
-    /**
-     * 创建时间
-     */
-    @CreatedDate
-    @Column(name = "gmt_create", nullable = false)
-    private Date gmtCreate;
-
-    /**
-     * 修改时间
-     */
-    @LastModifiedDate
-    @Column(name = "gmt_modified", nullable = false)
-    private Date gmtModified;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;
@@ -156,22 +124,6 @@ public class UserDO implements Serializable {
 
     public void setLastLoginIP(String lastLoginIP) {
         this.lastLoginIP = lastLoginIP;
-    }
-
-    public Date getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Date gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 }
 
