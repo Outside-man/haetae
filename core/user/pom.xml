@@ -23,6 +23,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>us.betahouse</groupId>
+            <artifactId>util</artifactId>
+        </dependency>
     </dependencies>
 
 

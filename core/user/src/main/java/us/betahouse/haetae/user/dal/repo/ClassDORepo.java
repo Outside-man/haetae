@@ -6,13 +6,14 @@ package us.betahouse.haetae.user.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import us.betahouse.haetae.user.dal.model.perm.UserDO;
+import us.betahouse.haetae.user.dal.model.ClassDO;
 
 /**
- * 用户实体仓储服务
+ * 班级仓储
+ *
  * @author dango.yxm
- * @version : UserRepository.java 2018/11/15 下午1:11 dango.yxm
+ * @version : ClassDORepo.java 2018/11/16 下午7:06 dango.yxm
  */
 @Repository
-public interface UserDORepo extends JpaRepository<UserDO, String> {
+public interface ClassDORepo extends JpaRepository<ClassDO, Long> {
 }
