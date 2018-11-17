@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.model;
 
+import common.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -21,7 +22,7 @@ import java.util.Date;
  * @version : BaseDO.java 2018/11/17 1:30 MessiahJK
  */
 @MappedSuperclass
-public abstract class BaseDO implements Serializable {
+public abstract class BaseDO extends ToString {
 
     private static final long serialVersionUID = 4957516497718780160L;
 
