@@ -38,4 +38,20 @@ public interface BizIdFactory {
      * @return
      */
     String getPermId();
+
+    /**
+     * 生成角色权限关联关系id
+     * @param roleId
+     * @param permId
+     * @return
+     */
+    String getRolePermRelationId(String roleId, String permId);
+
+    /**
+     * 生成用户权限关联关系id
+     * @param userId
+     * @param permId
+     * @return
+     */
+    String getUserPermRelationId(String userId, String permId);
 }

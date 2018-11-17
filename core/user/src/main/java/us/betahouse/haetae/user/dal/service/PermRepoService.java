@@ -27,6 +27,13 @@ public interface PermRepoService {
     PermBO createPerm(PermBO permBO);
 
     /**
+     * 通过权限ids 获取权限
+     * @param permIds
+     * @return
+     */
+    List<PermBO> queryPermsByPermIds(List<String> permIds);
+
+    /**
      * 查询角色下的权限
      *
      * @param roleId

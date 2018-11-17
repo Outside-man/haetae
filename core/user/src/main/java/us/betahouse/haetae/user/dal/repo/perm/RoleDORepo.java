@@ -19,5 +19,19 @@ import java.util.List;
 @Repository
 public interface RoleDORepo extends JpaRepository<RoleDO, String> {
 
-    List<RoleDO> findAllByRoleIdIn (List<String> roleIds);
+    /**
+     * 获取角色实体
+     *
+     * @param roleId
+     * @return
+     */
+    RoleDO findByRoleId(String roleId);
+
+    /**
+     * 批量获取角色实体
+     *
+     * @param roleIds
+     * @return
+     */
+    List<RoleDO> findAllByRoleIdIn(List<String> roleIds);
 }

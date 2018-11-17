@@ -92,7 +92,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
 
         // roleId 有查不到的就属于异常
         if (CollectionUtils.isEmpty(roleDOList) || roleDOList.size() != roleIds.size()) {
-            LoggerUtil.error(LOGGER, "绑定的角色id部分不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
+            LoggerUtil.error(LOGGER, "绑定的角色id不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的角色id不存在");
         }
 
@@ -118,16 +118,16 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         }
 
         // 构建关联关系实体
-        List<UserRoleRelationDO> relationDOList = new ArrayList<>();
+        List<UserRoleRelationDO> relations = new ArrayList<>();
         for (RoleDO roleDO : roleDOList) {
-            UserRoleRelationBO relationBO = new UserRoleRelationBO();
-            relationBO.setRoleId(roleDO.getRoleId());
-            relationBO.setUserId(userId);
+            UserRoleRelationDO relation = new UserRoleRelationDO();
+            relation.setRoleId(roleDO.getRoleId());
+            relation.setUserId(userId);
             // 通过 id 工厂构建关联id
-            relationBO.setUserRoleId(bizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
-            relationDOList.add(convert(relationBO));
+            relation.setUserRoleId(bizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
+            relations.add(relation);
         }
-        return CollectionUtils.toStream(userRoleRelationDORepo.saveAll(relationDOList))
+        return CollectionUtils.toStream(userRoleRelationDORepo.saveAll(relations))
                 .filter(Objects::nonNull)
                 .map(this::convert).collect(Collectors.toList());
     }

@@ -64,9 +64,9 @@ public class BizIdFactoryImpl implements BizIdFactory {
         builder.append(getRandNum(8));
         // 24-28 业务码 4位业务码
         builder.append(IdTypeEnum.USER_ROLE_RELATION_ID.getBizNum());
-        // 28-30 roleId roleId 尾部2位
+        // 28-30 roleId 尾部2位
         builder.append(getLengthString(roleId, 2));
-        // 30-32 userId userId 尾部2位
+        // 30-32 userId 尾部2位
         builder.append(getLengthString(userId, 2));
         return builder.toString();
     }
@@ -83,6 +83,40 @@ public class BizIdFactoryImpl implements BizIdFactory {
         builder.append(IdTypeEnum.PERM_ID.getBizNum());
         // 28-32 业务自定义码
         builder.append(DateUtil.getMonthDay(now));
+        return builder.toString();
+    }
+
+    @Override
+    public String getRolePermRelationId(String roleId, String permId) {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-24 随机数 8位随机数
+        builder.append(getRandNum(8));
+        // 24-28 业务码 4位业务码
+        builder.append(IdTypeEnum.ROLE_PERM_RELATION_ID.getBizNum());
+        // 28-30 roleId 尾部2位
+        builder.append(getLengthString(roleId, 2));
+        // 30-32 permId 尾部2位
+        builder.append(getLengthString(permId, 2));
+        return builder.toString();
+    }
+
+    @Override
+    public String getUserPermRelationId(String userId, String permId) {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-24 随机数 8位随机数
+        builder.append(getRandNum(8));
+        // 24-28 业务码 4位业务码
+        builder.append(IdTypeEnum.USER_PERM_RELATION_ID.getBizNum());
+        // 28-30 userId 尾部2位
+        builder.append(getLengthString(userId, 2));
+        // 30-32 permId 尾部2位
+        builder.append(getLengthString(permId, 2));
         return builder.toString();
     }
 
