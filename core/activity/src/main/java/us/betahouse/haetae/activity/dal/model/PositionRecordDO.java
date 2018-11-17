@@ -16,19 +16,19 @@ import javax.persistence.*;
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "common_record",
+@Table(name = "activity_position_record",
         indexes = {
-                @Index(name = "uk_record_id", columnList = "record_id", unique = true)
+                @Index(name = "uk_position_record_id", columnList = "position_record_id", unique = true)
         })
-public class RecordDO extends BaseDO {
+public class PositionRecordDO extends BaseDO {
 
     private static final long serialVersionUID = -788359937210986705L;
 
     /**
      * 履历id
      */
-    @Column(name = "record_id", length = 32, updatable = false)
-    private String recordId;
+    @Column(name = "position_record_id", length = 32, updatable = false)
+    private String positionRecordId;
 
     /**
      * 学号
@@ -57,12 +57,12 @@ public class RecordDO extends BaseDO {
      */
     private String status;
 
-    public String getRecordId() {
-        return recordId;
+    public String getPositionRecordId() {
+        return positionRecordId;
     }
 
-    public void setRecordId(String recordId) {
-        this.recordId = recordId;
+    public void setPositionRecordId(String positionRecordId) {
+        this.positionRecordId = positionRecordId;
     }
 
     public String getStuId() {

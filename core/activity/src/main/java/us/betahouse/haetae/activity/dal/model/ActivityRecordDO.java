@@ -9,26 +9,26 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 /**
- * 活动章实体
+ * 活动记录实体
  *
  * @author MessiahJK
  * @version : ActivitySealDO.java 2018/11/17 1:45 MessiahJK
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "common_activity_seal",
+@Table(name = "activity_record",
         indexes = {
-                @Index(name = "uk_activity_seal_id", columnList = "activity_seal_id", unique = true)
+                @Index(name = "uk_activity_record_id", columnList = "activity_record_id", unique = true)
         })
-public class ActivitySealDO extends BaseDO {
+public class ActivityRecordDO extends BaseDO {
 
     private static final long serialVersionUID = -8735096497842710304L;
 
     /**
      * 活动记录id
      */
-    @Column(name = "activity_seal_id", length = 32, updatable = false)
-    private String activitySealId;
+    @Column(name = "activity_record_id", length = 32, updatable = false)
+    private String activityRecordId;
 
     /**
      * 活动id
@@ -73,12 +73,12 @@ public class ActivitySealDO extends BaseDO {
      */
     private String grades;
 
-    public String getActivitySealId() {
-        return activitySealId;
+    public String getActivityRecordId() {
+        return activityRecordId;
     }
 
-    public void setActivitySealId(String activitySealId) {
-        this.activitySealId = activitySealId;
+    public void setActivityRecordId(String activityRecordId) {
+        this.activityRecordId = activityRecordId;
     }
 
     public String getActivityId() {

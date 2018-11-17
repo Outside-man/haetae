@@ -16,7 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "common_organization",
+@Table(name = "activity_organization",
         indexes = {
                 @Index(name = "uk_organization_id", columnList = "organization_id", unique = true)
         })
