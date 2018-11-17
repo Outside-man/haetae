@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.RolePermRelationDO;
 
+import java.util.List;
+
 /**
  * 角色权限映射仓储
  *
@@ -16,4 +18,11 @@ import us.betahouse.haetae.user.dal.model.perm.RolePermRelationDO;
  */
 @Repository
 public interface RolePermRelationDORepo extends JpaRepository<RolePermRelationDO, Long> {
+
+    /**
+     * 通过角色获取权限映射
+     * @param roleId
+     * @return
+     */
+    List<RolePermRelationDO> findAllByRoleId(String roleId);
 }

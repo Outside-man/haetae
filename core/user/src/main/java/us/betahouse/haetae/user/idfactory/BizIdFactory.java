@@ -32,4 +32,10 @@ public interface BizIdFactory {
      * @return
      */
     String getRoleUserRelationId(String roleId, String userId);
+
+    /**
+     * 生成权限id
+     * @return
+     */
+    String getPermId();
 }

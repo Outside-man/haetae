@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.PermDO;
 
+import java.util.List;
+
 /**
  * 权限仓储
  *
@@ -16,4 +18,12 @@ import us.betahouse.haetae.user.dal.model.perm.PermDO;
  */
 @Repository
 public interface PermDORepo extends JpaRepository<PermDO, Long> {
+
+    /**
+     * 通过权限id获取权限
+     *
+     * @param perms
+     * @return
+     */
+    List<PermDO> findAllByPermIdIn(List<String> perms);
 }

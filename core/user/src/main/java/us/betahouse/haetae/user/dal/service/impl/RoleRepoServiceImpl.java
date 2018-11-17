@@ -24,12 +24,9 @@ import us.betahouse.haetae.user.model.RoleBO;
 import us.betahouse.haetae.user.model.UserRoleRelationBO;
 import utils.AssertUtil;
 import utils.LoggerUtil;
-import utils.StreamUtils;
+import utils.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -60,23 +57,28 @@ public class RoleRepoServiceImpl implements RoleRepoService {
 
     @Override
     public RoleBO createRole(RoleBO roleBO) {
-        if(StringUtils.isBlank(roleBO.getRoleId())){
+        if (StringUtils.isBlank(roleBO.getRoleId())) {
             roleBO.setRoleId(bizIdFactory.getRoleId());
         }
         return convert(roleDORepo.save(convert(roleBO)));
     }
 
     @Override
-    public List<RoleBO> queryRoleByUserId(String userId) {
+    public List<RoleBO> queryRolesByRoleIds(List<String> roleIds) {
+        List<RoleDO> roleDOList = roleDORepo.findAllByRoleIdIn(roleIds);
+        return CollectionUtils.toStream(roleDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoleBO> queryRolesByUserId(String userId) {
         List<UserRoleRelationDO> userRoleRelations = userRoleRelationDORepo.findAllByUserId(userId);
-        List<String> roleIds = StreamUtils.toStream(userRoleRelations)
+        List<String> roleIds = CollectionUtils.toStream(userRoleRelations)
                 .filter(Objects::nonNull)
                 .map(UserRoleRelationDO::getRoleId)
                 .collect(Collectors.toList());
-        List<RoleDO> roleDOList = roleDORepo.findAllByRoleIdIn(roleIds);
-        return StreamUtils.toStream(roleDOList)
-                .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+        return queryRolesByRoleIds(roleIds);
     }
 
     @Override
@@ -84,21 +86,40 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
         AssertUtil.assertNotNull(userDO, "用户不存在");
+
         // 获取 roleIds 对应的角色信息
         List<RoleDO> roleDOList = roleDORepo.findAllByRoleIdIn(roleIds);
-        // roleId 有错误就属于异常
-        if (roleDOList == null || roleDOList.isEmpty()) {
-            LoggerUtil.error(LOGGER, "绑定的角色id不存在 roleIds={0}", roleIds);
+
+        // roleId 有查不到的就属于异常
+        if (CollectionUtils.isEmpty(roleDOList) || roleDOList.size() != roleIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的角色id部分不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的角色id不存在");
         }
-        if (roleDOList.size() != roleIds.size()) {
-            LoggerUtil.error(LOGGER, "绑定的角色id部分不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的角色id部分不存在");
+
+        // 查询已经绑定的权限
+        List<String> userBoundRoleIds = CollectionUtils.toStream(userRoleRelationDORepo.findAllByUserId(userId))
+                .filter(Objects::nonNull).map(UserRoleRelationDO::getRoleId)
+                .collect(Collectors.toList());
+
+        // 存在已绑定的角色,需要特殊处理 必须要迭代器删除不然会并发修改问题
+        if (!CollectionUtils.isEmpty(userBoundRoleIds)) {
+            // 构建迭代器
+            Iterator<RoleDO> roleIterator = roleDOList.iterator();
+            while (roleIterator.hasNext()) {
+                RoleDO role = roleIterator.next();
+                for (String boundId : userBoundRoleIds) {
+                    LoggerUtil.warn(LOGGER, "重复绑定角色 userId={0}, role={1}", userId, role);
+                    // 是已绑的角色 就从里面溢出
+                    if (StringUtils.equals(boundId, role.getRoleId())) {
+                        roleIterator.remove();
+                    }
+                }
+            }
         }
 
         // 构建关联关系实体
         List<UserRoleRelationDO> relationDOList = new ArrayList<>();
-        for(RoleDO roleDO : roleDOList){
+        for (RoleDO roleDO : roleDOList) {
             UserRoleRelationBO relationBO = new UserRoleRelationBO();
             relationBO.setUserRoleId(roleDO.getRoleId());
             relationBO.setUserId(userId);
@@ -106,7 +127,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             relationBO.setUserRoleId(bizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
             relationDOList.add(convert(relationBO));
         }
-        return StreamUtils.toStream(userRoleRelationDORepo.saveAll(relationDOList))
+        return CollectionUtils.toStream(userRoleRelationDORepo.saveAll(relationDOList))
                 .filter(Objects::nonNull)
                 .map(this::convert).collect(Collectors.toList());
     }

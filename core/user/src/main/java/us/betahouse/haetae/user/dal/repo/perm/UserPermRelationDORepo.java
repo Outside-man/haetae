@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.UserPermRelationDO;
 
+import java.util.List;
+
 /**
  * 用户权限映射仓储
  *
@@ -16,4 +18,12 @@ import us.betahouse.haetae.user.dal.model.perm.UserPermRelationDO;
  */
 @Repository
 public interface UserPermRelationDORepo extends JpaRepository<UserPermRelationDO, Long> {
+
+    /**
+     * 通过用户id获取映射关系
+     *
+     * @param userId
+     * @return
+     */
+    List<UserPermRelationDO> findAllByUserId(String userId);
 }

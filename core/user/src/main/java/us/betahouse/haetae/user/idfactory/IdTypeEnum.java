@@ -18,6 +18,7 @@ public enum IdTypeEnum {
 
     USER_ROLE_RELATION_ID("0003", "用户角色关联id"),
 
+    PERM_ID("0004", "权限id"),
     ;
 
     /**
