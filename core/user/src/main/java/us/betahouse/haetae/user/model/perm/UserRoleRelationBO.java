@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.model.perm;
 
 import common.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +28,13 @@ public class UserRoleRelationBO extends ToString {
     /**
      * 用户id
      */
+    @NotBlank
     private String userId;
 
     /**
      * 角色id
      */
+    @NotBlank
     private String roleId;
 
     /**

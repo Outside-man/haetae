@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.model.perm;
 
 import common.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +28,13 @@ public class RolePermRelationBO extends ToString {
     /**
      * 角色id
      */
+    @NotBlank
     private String roleId;
 
     /**
      * 权限id
      */
+    @NotBlank
     private String permId;
 
     /**

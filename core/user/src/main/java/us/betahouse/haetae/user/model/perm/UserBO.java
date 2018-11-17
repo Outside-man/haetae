@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.model.perm;
 
 import common.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * 用户模型
@@ -24,16 +25,19 @@ public class UserBO extends ToString {
     /**
      * 用户名
      */
+    @NotBlank
     private String userName;
 
     /**
      * 密码
      */
+    @NotBlank
     private String password;
 
     /**
      * 盐
      */
+    @NotBlank
     private String salt;
 
     /**

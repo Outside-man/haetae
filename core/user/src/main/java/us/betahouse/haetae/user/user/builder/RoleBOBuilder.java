@@ -6,6 +6,9 @@ package us.betahouse.haetae.user.user.builder;
 
 import us.betahouse.haetae.user.model.perm.RoleBO;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 角色构建者
  *
@@ -29,7 +32,12 @@ final public class RoleBOBuilder {
      */
     private String roleDesc;
 
-    public RoleBOBuilder getInstance(String roleCode, String roleName) {
+    /**
+     * 拓展信息
+     */
+    private Map<String, String> extInfo;
+
+    public static RoleBOBuilder getInstance(String roleCode, String roleName) {
         return new RoleBOBuilder(roleCode, roleName);
     }
 
@@ -38,6 +46,9 @@ final public class RoleBOBuilder {
         roleBO.setRoleCode(roleCode);
         roleBO.setRoleName(roleName);
         roleBO.setRoleDesc(roleDesc);
+        if (extInfo != null) {
+            roleBO.setExtInfo(extInfo);
+        }
         return roleBO;
     }
 
@@ -53,6 +64,16 @@ final public class RoleBOBuilder {
 
     public RoleBOBuilder withRoleDesc(String roleDesc) {
         this.roleDesc = roleDesc;
+        return this;
+    }
+
+    public RoleBOBuilder withRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+        return this;
+    }
+
+    public RoleBOBuilder withExtInfo(Map<String, String> extInfo) {
+        this.extInfo = extInfo;
         return this;
     }
 }

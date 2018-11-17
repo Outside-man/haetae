@@ -19,7 +19,9 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "common_perm",
         indexes = {
-                @Index(name = "uk_perm_id", columnList = "perm_id", unique = true)
+                @Index(name = "uk_perm_id", columnList = "perm_id", unique = true),
+                @Index(name = "uk_perm_code", columnList = "perm_code", unique = true),
+                @Index(name = "idx_perm_id_perm_type", columnList = "perm_id, perm_type", unique = false)
         })
 public class PermDO extends BaseDO {
 
@@ -46,6 +48,7 @@ public class PermDO extends BaseDO {
     /**
      * 权限名称
      */
+    @Column(name = "perm_name", nullable = false)
     private String permName;
 
     /**

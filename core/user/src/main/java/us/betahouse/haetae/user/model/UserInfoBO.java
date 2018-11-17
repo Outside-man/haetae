@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.model;
 
 import common.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,8 @@ import java.util.Map;
  */
 public class UserInfoBO extends ToString {
 
+    private static final long serialVersionUID = 835342972654081721L;
+
     /**
      * 用户信息id
      */
@@ -23,6 +26,7 @@ public class UserInfoBO extends ToString {
     /**
      * 用户id
      */
+    @NotBlank
     private String userId;
 
     /**

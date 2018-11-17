@@ -19,7 +19,8 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "common_role",
         indexes = {
-                @Index(name = "uk_role_id", columnList = "role_id", unique = true)
+                @Index(name = "uk_role_id", columnList = "role_id", unique = true),
+                @Index(name = "uk_role_code", columnList = "role_code", unique = true)
         })
 public class RoleDO extends BaseDO {
 

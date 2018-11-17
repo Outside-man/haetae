@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.model.perm;
 
 import common.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,16 +28,19 @@ public class PermBO extends ToString {
     /**
      * 权限码
      */
+    @NotBlank
     private String permCode;
 
     /**
      * 权限类型
      */
+    @NotBlank
     private String permType;
 
     /**
      * 权限名称
      */
+    @NotBlank
     private String permName;
 
     /**
