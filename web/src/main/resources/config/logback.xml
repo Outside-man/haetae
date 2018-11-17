@@ -28,11 +28,6 @@
 
     <!-- 系统日志 -->
     <appender name="SYS-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_dir}/sys-info.log
             </fileNamePattern>
@@ -131,24 +126,18 @@
 
     <!--模块日志-->
     <logger name="us.betahouse.haetae.user" level="INFO">
-        <!-- 控制台输出 -->
-        <appender-ref ref="STDOUT"/>
         <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="CORE-USER"/>
     </logger>
 
     <logger name="us.betahouse.haetae.activity" level="INFO">
-        <!-- 控制台输出 -->
-        <appender-ref ref="STDOUT"/>
         <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="CORE-ACTIVITY"/>
     </logger>
 
     <logger name="us.betahouse.haetae.serviceimpl" level="INFO">
-        <!-- 控制台输出 -->
-        <appender-ref ref="STDOUT"/>
         <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="BIZ-SERVICE-IMPL"/>

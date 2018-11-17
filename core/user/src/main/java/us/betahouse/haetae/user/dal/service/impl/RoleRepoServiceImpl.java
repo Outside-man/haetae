@@ -121,7 +121,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         List<UserRoleRelationDO> relationDOList = new ArrayList<>();
         for (RoleDO roleDO : roleDOList) {
             UserRoleRelationBO relationBO = new UserRoleRelationBO();
-            relationBO.setUserRoleId(roleDO.getRoleId());
+            relationBO.setRoleId(roleDO.getRoleId());
             relationBO.setUserId(userId);
             // 通过 id 工厂构建关联id
             relationBO.setUserRoleId(bizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));

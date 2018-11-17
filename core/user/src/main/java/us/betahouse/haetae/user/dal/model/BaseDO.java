@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.model;
 
+import common.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +21,7 @@ import java.util.Date;
  * @version : BaseDO.java 2018/11/16 下午6:29 dango.yxm
  */
 @MappedSuperclass
-public abstract class BaseDO implements Serializable {
+public abstract class BaseDO extends ToString {
 
     private static final long serialVersionUID = 250742606516208548L;
 
