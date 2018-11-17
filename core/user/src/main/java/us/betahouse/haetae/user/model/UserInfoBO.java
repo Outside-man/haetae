@@ -2,85 +2,63 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.dal.model;
+package us.betahouse.haetae.user.model;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import common.ToString;
 
-import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 用户实体
- *
  * @author dango.yxm
- * @version : UserInfoDO.java 2018/11/15 下午2:17 dango.yxm
+ * @version : UserInfoBO.java 2018/11/17 下午8:10 dango.yxm
  */
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "common_user_info",
-        indexes = {
-                @Index(name = "idx_major_id_class_id_user_info_id", columnList = "major_id, class_id, user_info_id", unique = true),
-                @Index(name = "uk_user_info_id_user_id", columnList = "user_info_id, user_id", unique = true),
-                @Index(name = "uk_user_id", columnList = "user_id", unique = true),
-                @Index(name = "uk_user_info_id", columnList = "user_info_id", unique = true),
-                @Index(name = "uk_stu_id", columnList = "stu_id", unique = true)
-        })
-public class UserInfoDO extends BaseDO {
-
-    private static final long serialVersionUID = 4332447165010415804L;
+public class UserInfoBO extends ToString {
 
     /**
      * 用户信息id
      */
-    @Column(name = "user_info_id", length = 32, updatable = false, nullable = false)
     private String userInfoId;
 
     /**
      * 用户id
      */
-    @Column(name = "user_id", length = 32, nullable = false)
     private String userId;
 
     /**
      * 学号
      */
-    @Column(name = "stu_id", length = 32)
     private String stuId;
 
     /**
      * 姓名
      */
-    @Column(length = 32)
     private String realName;
 
     /**
      * 性别
      */
-    @Column(length = 6)
     private String sex;
 
     /**
      * 专业号
      */
-    @Column(name = "major_id", length = 32)
     private String majorId;
 
     /**
      * 班级号
      */
-    @Column(name = "class_id", length = 32)
     private String classId;
 
     /**
      * 入学年份
      */
-    @Column(length = 8)
     private Integer enrollDate;
 
     /**
      * 拓展信息
      */
-    @Column(length = 2000)
-    private String extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public String getUserInfoId() {
         return userInfoId;
@@ -146,11 +124,11 @@ public class UserInfoDO extends BaseDO {
         this.enrollDate = enrollDate;
     }
 
-    public String getExtInfo() {
+    public Map<String, String> getExtInfo() {
         return extInfo;
     }
 
-    public void setExtInfo(String extInfo) {
+    public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
 }

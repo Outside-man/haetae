@@ -54,4 +54,11 @@ public interface BizIdFactory {
      * @return
      */
     String getUserPermRelationId(String userId, String permId);
+
+    /**
+     * 生成用户信息id
+     * @param userId
+     * @return
+     */
+    String getUserInfoId(String userId);
 }

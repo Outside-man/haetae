@@ -6,7 +6,7 @@ package us.betahouse.haetae.user.validate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
-import us.betahouse.haetae.user.model.UserBO;
+import us.betahouse.haetae.user.model.perm.UserBO;
 import utils.AssertUtil;
 import utils.CharsetEncodingUtil;
 import validator.Validator;

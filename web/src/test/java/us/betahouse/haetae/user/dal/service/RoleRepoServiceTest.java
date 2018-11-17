@@ -5,12 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.user.model.RoleBO;
+import us.betahouse.haetae.user.model.perm.RoleBO;
 
-import java.util.Arrays;
 import java.util.Collections;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,7 +34,7 @@ public class RoleRepoServiceTest {
 
     @Test
     public void userBindRoles() {
-        System.out.println(roleRepoService.userBindRoles("123456789", Collections.singletonList("201811171435334621498500021117")));
+        roleRepoService.userBindRoles("123456789", Collections.singletonList("201811171435334621498500021117"));
 
     }
 }

@@ -28,7 +28,7 @@ public class ClassDO extends BaseDO {
     /**
      * 班级id
      */
-    @Column(name = "class_id", length = 32, updatable = false)
+    @Column(name = "class_id", length = 32, updatable = false, nullable = false)
     private String classId;
 
     /**

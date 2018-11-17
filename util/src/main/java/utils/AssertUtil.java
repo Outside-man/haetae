@@ -108,6 +108,19 @@ public class AssertUtil {
      * 断言字符串不为空串
      *
      * @param str
+     * @param errorCode
+     * @param errorMsg
+     */
+    public static void assertStringNotBlank(String str, String errorCode, String errorMsg) {
+        if (StringUtils.isBlank(str)) {
+            throw new BetahouseException(errorCode, errorMsg);
+        }
+    }
+
+    /**
+     * 断言字符串不为空串
+     *
+     * @param str
      */
     public static void assertStringNotBlank(String str) {
         if (StringUtils.isBlank(str)) {
@@ -127,6 +140,7 @@ public class AssertUtil {
         }
     }
 
-    public static void assertEquals(){}
+    public static void assertEquals() {
+    }
 
 }

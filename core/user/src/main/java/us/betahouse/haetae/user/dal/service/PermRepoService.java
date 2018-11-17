@@ -4,9 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.model.PermBO;
-import us.betahouse.haetae.user.model.RolePermRelationBO;
-import us.betahouse.haetae.user.model.UserPermRelationBO;
+import us.betahouse.haetae.user.model.perm.PermBO;
 
 import java.util.List;
 
@@ -54,16 +52,14 @@ public interface PermRepoService {
      *
      * @param roleId
      * @param permIds
-     * @return
      */
-    List<RolePermRelationBO> roleBindPerms(String roleId, List<String> permIds);
+    void roleBindPerms(String roleId, List<String> permIds);
 
     /**
      * 给用户绑定权限
      *
      * @param userId
      * @param permIds
-     * @return
      */
-    List<UserPermRelationBO> userBindPerms(String userId, List<String> permIds);
+    void userBindPerms(String userId, List<String> permIds);
 }

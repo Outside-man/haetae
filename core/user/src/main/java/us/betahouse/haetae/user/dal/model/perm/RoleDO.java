@@ -28,12 +28,13 @@ public class RoleDO extends BaseDO {
     /**
      * 权限id
      */
-    @Column(name = "role_id", length = 32, updatable = false)
+    @Column(name = "role_id", length = 32, updatable = false, nullable = false)
     private String roleId;
 
     /**
      * 权限名称
      */
+    @Column(nullable = false)
     private String roleName;
 
     /**

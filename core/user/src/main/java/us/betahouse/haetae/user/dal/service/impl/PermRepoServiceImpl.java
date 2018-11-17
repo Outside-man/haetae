@@ -16,9 +16,9 @@ import us.betahouse.haetae.user.dal.model.perm.*;
 import us.betahouse.haetae.user.dal.repo.perm.*;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
-import us.betahouse.haetae.user.model.PermBO;
-import us.betahouse.haetae.user.model.RolePermRelationBO;
-import us.betahouse.haetae.user.model.UserPermRelationBO;
+import us.betahouse.haetae.user.model.perm.PermBO;
+import us.betahouse.haetae.user.model.perm.RolePermRelationBO;
+import us.betahouse.haetae.user.model.perm.UserPermRelationBO;
 import utils.AssertUtil;
 import utils.CollectionUtils;
 import utils.LoggerUtil;
@@ -102,7 +102,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
-    public List<RolePermRelationBO> roleBindPerms(String roleId, List<String> permIds) {
+    public void roleBindPerms(String roleId, List<String> permIds) {
         // 获取用户信息
         RoleDO roleDO = roleDORepo.findByRoleId(roleId);
         AssertUtil.assertNotNull(roleDO, "角色不存在");
@@ -148,13 +148,12 @@ public class PermRepoServiceImpl implements PermRepoService {
             relation.setRolePermId(bizIdFactory.getRoleUserRelationId(roleId, permDO.getPermId()));
             relations.add(relation);
         }
-        return CollectionUtils.toStream(rolePermRelationDORepo.saveAll(relations))
-                .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+        // 绑定
+        rolePermRelationDORepo.saveAll(relations);
     }
 
     @Override
-    public List<UserPermRelationBO> userBindPerms(String userId, List<String> permIds) {
+    public void userBindPerms(String userId, List<String> permIds) {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
         AssertUtil.assertNotNull(userDO, "用户不存在");
@@ -200,9 +199,8 @@ public class PermRepoServiceImpl implements PermRepoService {
             relation.setUserPermId(bizIdFactory.getUserPermRelationId(userId, permDO.getPermId()));
             relations.add(relation);
         }
-        return CollectionUtils.toStream(userPermRelationDORepo.saveAll(relations))
-                .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+        // 绑定
+        userPermRelationDORepo.saveAll(relations);
     }
 
     /**
@@ -218,6 +216,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         PermBO permBO = new PermBO();
         permBO.setPermId(permDO.getPermId());
+        permBO.setPermType(permDO.getPermType());
         permBO.setPermName(permDO.getPermName());
         permBO.setPermDesc(permDO.getPermDesc());
         permBO.setExtInfo(JSON.parseObject(permDO.getExtInfo(), Map.class));
@@ -236,6 +235,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         PermDO permDO = new PermDO();
         permDO.setPermId(permBO.getPermId());
+        permDO.setPermType(permBO.getPermType());
         permDO.setPermName(permBO.getPermName());
         permDO.setPermDesc(permBO.getPermDesc());
         permDO.setExtInfo(JSON.toJSONString(permBO.getExtInfo()));

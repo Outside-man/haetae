@@ -4,8 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.model.RoleBO;
-import us.betahouse.haetae.user.model.UserRoleRelationBO;
+import us.betahouse.haetae.user.model.perm.RoleBO;
 
 import java.util.List;
 
@@ -48,5 +47,5 @@ public interface RoleRepoService {
      * @param roleIds
      * @return
      */
-    List<UserRoleRelationBO> userBindRoles(String userId, List<String> roleIds);
+    void userBindRoles(String userId, List<String> roleIds);
 }

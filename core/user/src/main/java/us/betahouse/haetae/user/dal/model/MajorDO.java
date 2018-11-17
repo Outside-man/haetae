@@ -27,7 +27,7 @@ public class MajorDO extends BaseDO {
     /**
      * 专业id
      */
-    @Column(name = "major_id", length = 32, updatable = false)
+    @Column(name = "major_id", length = 32, updatable = false, nullable = false)
     private String majorId;
 
     /**

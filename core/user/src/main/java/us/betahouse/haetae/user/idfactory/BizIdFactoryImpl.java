@@ -30,12 +30,14 @@ public class BizIdFactoryImpl implements BizIdFactory {
         Date now = new Date();
         // 1-16 系统时间 16位
         builder.append(DateUtil.getShortDatesStr(now));
-        // 16-24 随机数 8位随机数
-        builder.append(getRandNum(8));
-        // 24-28 业务码 4位业务码
+        // 16-22 随机数 6位随机数
+        builder.append(getRandNum(6));
+        // 22-26 业务码 4位业务码
         builder.append(IdTypeEnum.USER_ID.getBizNum());
-        // 28-32 业务自定义码
+        // 26-30 业务自定义码
         builder.append(DateUtil.getYear(now));
+        // 30-32 随机 2位
+        builder.append(getRandNum(2));
         return builder.toString();
     }
 
@@ -117,6 +119,23 @@ public class BizIdFactoryImpl implements BizIdFactory {
         builder.append(getLengthString(userId, 2));
         // 30-32 permId 尾部2位
         builder.append(getLengthString(permId, 2));
+        return builder.toString();
+    }
+
+    @Override
+    public String getUserInfoId(String userId) {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-24 随机数 8位随机数
+        builder.append(getRandNum(8));
+        // 24-28 业务码 4位业务码
+        builder.append(IdTypeEnum.USER_INFO_ID.getBizNum());
+        // 28-30 日
+        builder.append(DateUtil.getDay(new Date()));
+        // 30-32 userId 尾部2位
+        builder.append(getLengthString(userId, 2));
         return builder.toString();
     }
 

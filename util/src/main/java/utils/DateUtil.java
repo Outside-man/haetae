@@ -21,6 +21,8 @@ public class DateUtil {
 
     private static final String MONTH_DAY = "MMdd";
 
+    private static final String DAY = "dd";
+
 
     /**
      * 获取短时间字符串
@@ -50,6 +52,16 @@ public class DateUtil {
      */
     public static String getMonthDay(Date date) {
         return format(date, MONTH_DAY);
+    }
+
+    /**
+     * 获取日
+     *
+     * @param date
+     * @return
+     */
+    public static String getDay(Date date) {
+        return format(date, DAY);
     }
 
     /**

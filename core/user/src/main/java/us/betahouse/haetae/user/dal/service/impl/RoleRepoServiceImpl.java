@@ -20,8 +20,8 @@ import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.repo.perm.UserRoleRelationDORepo;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
-import us.betahouse.haetae.user.model.RoleBO;
-import us.betahouse.haetae.user.model.UserRoleRelationBO;
+import us.betahouse.haetae.user.model.perm.RoleBO;
+import us.betahouse.haetae.user.model.perm.UserRoleRelationBO;
 import utils.AssertUtil;
 import utils.LoggerUtil;
 import utils.CollectionUtils;
@@ -82,7 +82,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     }
 
     @Override
-    public List<UserRoleRelationBO> userBindRoles(String userId, List<String> roleIds) {
+    public void userBindRoles(String userId, List<String> roleIds) {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
         AssertUtil.assertNotNull(userDO, "用户不存在");
@@ -127,9 +127,8 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             relation.setUserRoleId(bizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
             relations.add(relation);
         }
-        return CollectionUtils.toStream(userRoleRelationDORepo.saveAll(relations))
-                .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+        // 绑定
+        userRoleRelationDORepo.saveAll(relations);
     }
 
     /**

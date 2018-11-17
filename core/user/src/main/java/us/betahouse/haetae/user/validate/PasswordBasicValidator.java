@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.validate;
 
-import us.betahouse.haetae.user.model.UserBO;
+import us.betahouse.haetae.user.model.perm.UserBO;
 import utils.AssertUtil;
 import validator.Validator;
 

@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.model;
+package us.betahouse.haetae.user.model.perm;
 
 import common.ToString;
 
@@ -25,6 +25,11 @@ public class PermBO extends ToString {
     private String permId;
 
     /**
+     * 权限类型
+     */
+    private String permType;
+
+    /**
      * 权限名称
      */
     private String permName;
@@ -45,6 +50,14 @@ public class PermBO extends ToString {
 
     public void setPermId(String permId) {
         this.permId = permId;
+    }
+
+    public String getPermType() {
+        return permType;
+    }
+
+    public void setPermType(String permType) {
+        this.permType = permType;
     }
 
     public String getPermName() {

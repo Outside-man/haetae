@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.model.UserBO;
+import us.betahouse.haetae.user.model.perm.UserBO;
 
 /**
  * 用户仓储服务

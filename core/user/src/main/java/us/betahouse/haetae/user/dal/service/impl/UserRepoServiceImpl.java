@@ -4,14 +4,19 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
+import enums.CommonResultCode;
+import exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
 import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
-import us.betahouse.haetae.user.model.UserBO;
+import us.betahouse.haetae.user.model.perm.UserBO;
+import utils.LoggerUtil;
 
 
 /**
@@ -22,6 +27,8 @@ import us.betahouse.haetae.user.model.UserBO;
  */
 @Service
 public class UserRepoServiceImpl implements UserRepoService {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(UserRepoServiceImpl.class);
 
     @Autowired
     private UserDORepo userDORepo;
@@ -48,6 +55,10 @@ public class UserRepoServiceImpl implements UserRepoService {
     @Override
     public UserBO updateUserByUserId(UserBO userBO) {
         UserDO userDO = userDORepo.findByUserId(userBO.getUserId());
+        if(userDO == null){
+            LoggerUtil.error(LOGGER, "更新的用户不存在 UserBO={0}", userBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的用户不存在");
+        }
         UserDO newUserDO = convert(userBO);
         if (newUserDO.getUsername() != null) {
             userDO.setUsername(newUserDO.getUsername());

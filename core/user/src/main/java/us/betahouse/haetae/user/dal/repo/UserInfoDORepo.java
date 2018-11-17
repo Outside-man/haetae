@@ -16,4 +16,20 @@ import us.betahouse.haetae.user.dal.model.UserInfoDO;
  */
 @Repository
 public interface UserInfoDORepo extends JpaRepository<UserInfoDO, Long> {
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId
+     * @return
+     */
+    UserInfoDO findByUserId(String userId);
+
+    /**
+     * 通过过学号获取用户信息实体
+     *
+     * @param stuId
+     * @return
+     */
+    UserInfoDO findByStuId(String stuId);
 }
