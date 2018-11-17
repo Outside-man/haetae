@@ -4,10 +4,9 @@
  */
 package us.betahouse.haetae.user.user.helper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.user.dal.service.RoleRepoService;
-import us.betahouse.haetae.user.dal.service.UserRepoService;
+import us.betahouse.haetae.user.user.BaseUser;
+
 
 /**
  * 用户助手类
@@ -16,11 +15,17 @@ import us.betahouse.haetae.user.dal.service.UserRepoService;
  * @version : UserHelper.java 2018/11/17 下午8:34 dango.yxm
  */
 @Component
-public class UserHelper {
+public class UserHelper extends BaseHelper {
 
-    @Autowired
-    private UserRepoService userRepoService;
+    public void fillUserInfo(BaseUser user) {
+        checkBaseUser(user);
+        user.setUserInfo(userInfoRepoService.queryUserInfoByUserId(user.getUserId()));
 
-    @Autowired
-    private RoleRepoService roleRepoService;
+    }
+
+
+    public void fillRole(BaseUser user) {
+        checkBaseUser(user);
+        user.setRoleInfo(roleRepoService.queryRolesByUserId(user.getUserId()));
+    }
 }

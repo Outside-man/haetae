@@ -10,6 +10,7 @@ import us.betahouse.haetae.user.model.perm.PermBO;
 import us.betahouse.haetae.user.model.perm.RoleBO;
 import us.betahouse.haetae.user.model.perm.UserBO;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,9 @@ public class BaseUser extends ToString {
     private static final long serialVersionUID = -5647855589382683224L;
 
     /**
-     * 账户信息
+     * 用户id
      */
-    private UserBO user;
+    private String userId;
 
     /**
      * 用户信息
@@ -44,23 +45,36 @@ public class BaseUser extends ToString {
     private Map<String, PermBO> permission;
 
     /**
-     * 获取用户id
+     * 放入权限
      *
+     * @param perm
+     */
+    public void putPerm(PermBO perm) {
+        if (permission == null) {
+            permission = new HashMap<>();
+        }
+        permission.put(perm.getPermType(), perm);
+    }
+
+    /**
+     * 获取权限
+     *
+     * @param permType
      * @return
      */
-    public String getUserId() {
-        if (user != null) {
-            return user.getUserId();
+    public PermBO fetchPerm(String permType) {
+        if (permission == null) {
+            return null;
         }
-        return null;
+        return permission.get(permType);
     }
 
-    public UserBO getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(UserBO user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public UserInfoBO getUserInfo() {

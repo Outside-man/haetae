@@ -25,12 +25,17 @@ public class RoleBO extends ToString {
     private String roleId;
 
     /**
-     * 权限名称
+     * 角色码
+     */
+    private String roleCode;
+
+    /**
+     * 角色名称
      */
     private String roleName;
 
     /**
-     * 权限描述
+     * 角色描述
      */
     private String roleDesc;
 
@@ -69,5 +74,13 @@ public class RoleBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
     }
 }

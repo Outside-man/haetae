@@ -8,13 +8,23 @@ import us.betahouse.haetae.user.model.perm.UserBO;
 
 /**
  * 用户仓储服务
+ *
  * @author dango.yxm
  * @version : UserRepoService.java 2018/11/16 下午7:39 dango.yxm
  */
 public interface UserRepoService {
 
     /**
+     * 检查用户是否存在
+     *
+     * @param userId
+     * @return
+     */
+    boolean checkUserExistByUserId(String userId);
+
+    /**
      * 通过用户名获取用户
+     *
      * @param userName
      * @return
      */
@@ -22,6 +32,7 @@ public interface UserRepoService {
 
     /**
      * 创建新用户
+     *
      * @param userBO
      * @return
      */
@@ -29,6 +40,7 @@ public interface UserRepoService {
 
     /**
      * 更新用户信息
+     *
      * @param userBO
      * @return
      */

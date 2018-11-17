@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import utils.DateUtil;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Id 工厂实现
@@ -23,6 +24,11 @@ public class BizIdFactoryImpl implements BizIdFactory {
      * 随机数范围
      */
     private static int RANDOM_RANGE = 100000000;
+
+    /**
+     * 随机器
+     */
+    private static Random random = new Random();
 
     @Override
     public String getUserId() {
@@ -149,7 +155,7 @@ public class BizIdFactoryImpl implements BizIdFactory {
         if (length <= 0) {
             throw new IllegalArgumentException("截取长度非法");
         }
-        String numStr = String.valueOf((int) (Math.random() * 100000000));
+        String numStr = String.valueOf(random.nextInt(100000000));
         return getLengthString(numStr, length);
     }
 

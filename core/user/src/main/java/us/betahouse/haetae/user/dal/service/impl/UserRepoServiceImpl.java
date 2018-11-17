@@ -40,6 +40,11 @@ public class UserRepoServiceImpl implements UserRepoService {
     private BizIdFactory bizIdFactory;
 
     @Override
+    public boolean checkUserExistByUserId(String userId) {
+        return userDORepo.existsByUserId(userId);
+    }
+
+    @Override
     public UserBO queryByUserName(String userName) {
         return convert(userDORepo.findByUsername(userName));
     }

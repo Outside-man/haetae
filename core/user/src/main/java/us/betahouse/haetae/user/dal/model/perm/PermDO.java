@@ -32,10 +32,16 @@ public class PermDO extends BaseDO {
     private String permId;
 
     /**
-     * 资源类型
+     * 权限类型
      */
     @Column(name = "perm_type", length = 64, updatable = false, nullable = false)
     private String permType;
+
+    /**
+     * 权限码
+     */
+    @Column(name = "perm_code", updatable = false, nullable = false)
+    private String permCode;
 
     /**
      * 权限名称
@@ -68,6 +74,14 @@ public class PermDO extends BaseDO {
 
     public void setPermType(String permType) {
         this.permType = permType;
+    }
+
+    public String getPermCode() {
+        return permCode;
+    }
+
+    public void setPermCode(String permCode) {
+        this.permCode = permCode;
     }
 
     public String getPermName() {

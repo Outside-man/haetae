@@ -32,13 +32,19 @@ public class RoleDO extends BaseDO {
     private String roleId;
 
     /**
-     * 权限名称
+     * 角色码
+     */
+    @Column(name = "role_code", nullable = false, updatable = false)
+    private String roleCode;
+
+    /**
+     * 角色名称
      */
     @Column(nullable = false)
     private String roleName;
 
     /**
-     * 权限描述
+     * 角色描述
      */
     @Column(length = 400)
     private String roleDesc;
@@ -79,5 +85,13 @@ public class RoleDO extends BaseDO {
 
     public void setExtInfo(String extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
     }
 }

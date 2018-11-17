@@ -4,11 +4,7 @@
  */
 package us.betahouse.haetae.user.user.helper;
 
-import enums.CommonResultCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.user.dal.service.PermRepoService;
-import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.model.perm.PermBO;
 import us.betahouse.haetae.user.model.perm.RoleBO;
 import us.betahouse.haetae.user.user.BaseUser;
@@ -16,7 +12,6 @@ import utils.AssertUtil;
 import utils.CollectionUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 权限助手
@@ -25,25 +20,21 @@ import java.util.Map;
  * @version : PermissionHelper.java 2018/11/17 下午4:19 dango.yxm
  */
 @Component
-public class PermissionHelper {
+public class PermissionHelper extends BaseHelper {
 
-    @Autowired
-    private PermRepoService permRepoService;
-
-    @Autowired
-    private RoleRepoService roleRepoService;
-
-
+    /**
+     * 填充用户的权限
+     *
+     * @param user
+     */
     public void fillUserPermission(BaseUser user) {
-        AssertUtil.assertNotNull(user, CommonResultCode.SYSTEM_ERROR.getErrorMsg(), "用户不能为空");
-        String userId = user.getUserId();
-        AssertUtil.assertStringNotBlank(userId, CommonResultCode.SYSTEM_ERROR.getErrorMsg(), "用户id不能为空");
+        checkBaseUser(user);
         // 组装用户上的权限
-        parsePermission(user.getPermission(), permRepoService.queryPermByUserId(userId));
+        parsePermission(user, permRepoService.queryPermByUserId(user.getUserId()));
         // 用户上有角色 就需要组装角色上的权限
-        if(!CollectionUtils.isEmpty(user.getRoleInfo())){
+        if (!CollectionUtils.isEmpty(user.getRoleInfo())) {
             for (RoleBO role : user.getRoleInfo()) {
-                parsePermission(user.getPermission(), permRepoService.queryPermByRoleId(role.getRoleId()));
+                parsePermission(user, permRepoService.queryPermByRoleId(role.getRoleId()));
             }
         }
     }
@@ -51,15 +42,13 @@ public class PermissionHelper {
     /**
      * 解析组装权限map
      *
-     * @param permission
      * @param permList
      */
-    private void parsePermission(Map<String, PermBO> permission, List<PermBO> permList) {
-        AssertUtil.assertNotNull(permission);
+    private void parsePermission(BaseUser user, List<PermBO> permList) {
         AssertUtil.assertNotNull(permList);
         for (PermBO perm : permList) {
             if (perm != null) {
-                permission.put(perm.getPermType(), perm);
+                user.putPerm(perm);
             }
         }
     }

@@ -180,6 +180,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             return null;
         }
         RoleBO roleBO = new RoleBO();
+        roleBO.setRoleCode(roleDO.getRoleCode());
         roleBO.setRoleName(roleDO.getRoleName());
         roleBO.setRoleId(roleDO.getRoleId());
         roleBO.setRoleDesc(roleDO.getRoleDesc());
@@ -198,6 +199,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             return null;
         }
         RoleDO roleDO = new RoleDO();
+        roleDO.setRoleCode(roleBO.getRoleCode());
         roleDO.setRoleName(roleBO.getRoleName());
         roleDO.setRoleId(roleBO.getRoleId());
         roleDO.setRoleDesc(roleBO.getRoleDesc());

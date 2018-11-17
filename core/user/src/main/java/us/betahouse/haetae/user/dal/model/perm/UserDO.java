@@ -49,7 +49,7 @@ public class UserDO extends BaseDO {
     /**
      * 盐
      */
-    @Column(length = 8, nullable = false)
+    @Column(length = 36, nullable = false)
     private String salt;
 
     /**

@@ -216,6 +216,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         PermBO permBO = new PermBO();
         permBO.setPermId(permDO.getPermId());
+        permBO.setPermCode(permDO.getPermCode());
         permBO.setPermType(permDO.getPermType());
         permBO.setPermName(permDO.getPermName());
         permBO.setPermDesc(permDO.getPermDesc());
@@ -235,6 +236,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         PermDO permDO = new PermDO();
         permDO.setPermId(permBO.getPermId());
+        permDO.setPermCode(permBO.getPermCode());
         permDO.setPermType(permBO.getPermType());
         permDO.setPermName(permBO.getPermName());
         permDO.setPermDesc(permBO.getPermDesc());
