@@ -6,6 +6,7 @@ package us.betahouse.haetae.user.user.builder;
 
 import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,7 +40,7 @@ final public class PermBOBuilder {
     /**
      * 拓展信息
      */
-    private Map<String, String> extInfo;
+    private Map<String, String> extInfo = new HashMap<>();;
 
     public static PermBOBuilder getInstance(String permCode, String permType, String permName) {
         return new PermBOBuilder(permCode, permType, permName);

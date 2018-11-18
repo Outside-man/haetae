@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.user.user.service;
 
-import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.CommonUser;
 
 /**
@@ -58,9 +57,23 @@ public interface UserBasicService {
     /**
      * 修改用户信息
      *
-     * @param userId
-     * @param userInfoBO
-     * @return
+     * @param commonUser
      */
-    CommonUser modifyUserInfo(String userId, UserInfoBO userInfoBO);
+    void modifyUserInfo(CommonUser commonUser);
+
+    /**
+     * 给用户添加角色
+     *
+     * @param commonUser
+     * @param roleId
+     */
+    void addRole(CommonUser commonUser, String roleId);
+
+    /**
+     * 给用户添加权限
+     *
+     * @param commonUser
+     * @param permId
+     */
+    void addPerm(CommonUser commonUser, String permId);
 }

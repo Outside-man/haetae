@@ -17,6 +17,11 @@ import us.betahouse.haetae.user.user.model.CommonUser;
 @Component
 public class UserHelper extends BaseHelper {
 
+    /**
+     * 填充用户信息
+     *
+     * @param user
+     */
     public void fillUserInfo(CommonUser user) {
         checkBaseUser(user);
         user.setUserInfo(userInfoRepoService.queryUserInfoByUserId(user.getUserId()));
@@ -24,8 +29,13 @@ public class UserHelper extends BaseHelper {
     }
 
 
+    /**
+     * 填充角色信息
+     *
+     * @param user
+     */
     public void fillRole(CommonUser user) {
         checkBaseUser(user);
-        user.setRoleInfo(roleRepoService.queryRolesByUserId(user.getUserId()));
+        roleRepoService.queryRolesByUserId(user.getUserId()).forEach(user::putRole);
     }
 }

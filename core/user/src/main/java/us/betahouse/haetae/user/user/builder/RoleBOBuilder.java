@@ -6,6 +6,7 @@ package us.betahouse.haetae.user.user.builder;
 
 import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,7 +35,7 @@ final public class RoleBOBuilder {
     /**
      * 拓展信息
      */
-    private Map<String, String> extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public static RoleBOBuilder getInstance(String roleCode, String roleName) {
         return new RoleBOBuilder(roleCode, roleName);

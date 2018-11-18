@@ -9,6 +9,7 @@ import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,11 @@ public class CommonUser extends ToString {
     /**
      * 角色信息
      */
-    private List<RoleBO> roleInfo;
+    private Map<String, RoleBO> roleInfo = new HashMap<>();
 
     /**
      * 权限信息
+     * key permBO.getPermId()
      */
     private Map<String, PermBO> permission = new HashMap<>();
 
@@ -47,6 +49,31 @@ public class CommonUser extends ToString {
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
+
+    /**
+     * 放入角色
+     *
+     * @param roleBO
+     */
+    public void putRole(RoleBO roleBO) {
+        if (roleInfo == null) {
+            roleInfo = new HashMap<>();
+        }
+        roleInfo.put(roleBO.getRoleId(), roleBO);
+    }
+
+    /**
+     * 获取角色
+     *
+     * @param roleId
+     * @return
+     */
+    public RoleBO fetchRole(String roleId) {
+        if (roleInfo == null) {
+            return null;
+        }
+        return roleInfo.get(roleId);
+    }
 
     /**
      * 放入权限
@@ -57,20 +84,20 @@ public class CommonUser extends ToString {
         if (permission == null) {
             permission = new HashMap<>();
         }
-        permission.put(perm.getPermType(), perm);
+        permission.put(perm.getPermId(), perm);
     }
 
     /**
      * 获取权限
      *
-     * @param permType
+     * @param permId
      * @return
      */
-    public PermBO fetchPerm(String permType) {
+    public PermBO fetchPerm(String permId) {
         if (permission == null) {
             return null;
         }
-        return permission.get(permType);
+        return permission.get(permId);
     }
 
     /**
@@ -123,11 +150,11 @@ public class CommonUser extends ToString {
         this.permission = permission;
     }
 
-    public List<RoleBO> getRoleInfo() {
+    public Map<String, RoleBO> getRoleInfo() {
         return roleInfo;
     }
 
-    public void setRoleInfo(List<RoleBO> roleInfo) {
+    public void setRoleInfo(Map<String, RoleBO> roleInfo) {
         this.roleInfo = roleInfo;
     }
 

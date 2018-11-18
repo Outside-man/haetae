@@ -6,12 +6,13 @@ package us.betahouse.haetae.user.user.helper;
 
 import org.springframework.stereotype.Component;
 import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
-import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.user.model.CommonUser;
+import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
 import utils.AssertUtil;
-import utils.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 权限助手
@@ -31,18 +32,28 @@ public class PermissionHelper extends BaseHelper {
         checkBaseUser(user);
         // 组装用户上的权限
         parsePermission(user, permRepoService.queryPermByUserId(user.getUserId()));
+    }
 
+    /**
+     * 获取角色上的权限
+     *
+     * @param user
+     * @return
+     */
+    public Map<String, PermBO> fetchRolePermission(CommonUser user) {
+        Map<String, PermBO> rolePerms = new HashMap<>();
         // 如果用户模型上为null 就需要check以下
-        if(user.getRoleInfo() == null){
-            user.setRoleInfo(roleRepoService.queryRolesByUserId(user.getUserId()));
+        if (user.getRoleInfo() == null) {
+            roleRepoService.queryRolesByUserId(user.getUserId()).forEach(user::putRole);
         }
 
-        // 用户上有角色 就需要组装角色上的权限
-        if (!CollectionUtils.isEmpty(user.getRoleInfo())) {
-            for (RoleBO role : user.getRoleInfo()) {
-                parsePermission(user, permRepoService.queryPermByRoleId(role.getRoleId()));
+        // 用户上有角色 就需要获取角色上的权限
+        if (!user.getRoleInfo().isEmpty()) {
+            for (RoleBO role : user.getRoleInfo().values()) {
+                permRepoService.queryPermByRoleId(role.getRoleId()).forEach(permBO -> rolePerms.put(permBO.getPermId(), permBO));
             }
         }
+        return rolePerms;
     }
 
     /**

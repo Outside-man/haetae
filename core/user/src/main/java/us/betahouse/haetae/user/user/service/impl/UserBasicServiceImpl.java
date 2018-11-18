@@ -9,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.user.dal.service.PermRepoService;
+import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.user.helper.PermissionHelper;
 import us.betahouse.haetae.user.user.helper.UserHelper;
-import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.user.model.CommonUser;
 import us.betahouse.haetae.user.user.service.UserBasicService;
@@ -22,8 +23,7 @@ import us.betahouse.haetae.user.utils.EncryptUtil;
 import utils.AssertUtil;
 import utils.LoggerUtil;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 用户基础服务实现
@@ -41,6 +41,12 @@ public class UserBasicServiceImpl implements UserBasicService {
 
     @Autowired
     private UserInfoRepoService userInfoRepoService;
+
+    @Autowired
+    private RoleRepoService roleRepoService;
+
+    @Autowired
+    private PermRepoService permRepoService;
 
     @Autowired
     private UserHelper userHelper;
@@ -99,7 +105,49 @@ public class UserBasicServiceImpl implements UserBasicService {
     }
 
     @Override
-    public CommonUser modifyUserInfo(String userId, UserInfoBO userInfoBO) {
-        return null;
+    public void modifyUserInfo(CommonUser commonUser) {
+        String userId = commonUser.getUserId();
+        UserBO userBO = userRepoService.queryByUserId(userId);
+        AssertUtil.assertNotNull(userBO, UserErrorCode.USER_NOT_EXIST);
+        // 如果没有用户信息 就是绑定用户信息
+        if (userInfoRepoService.queryUserInfoByUserId(userId) == null) {
+            userInfoRepoService.bindUserInfo(userId, commonUser.getUserInfo());
+        } else {
+            // 修改用户信息
+            userInfoRepoService.modifyUserInfoByUserId(userId, commonUser.getUserInfo());
+        }
+    }
+
+    @Override
+    public void addRole(CommonUser commonUser, String roleId) {
+        // 没有角色列表就先附上空的
+        if (commonUser.getRoleInfo() == null) {
+            commonUser.setRoleInfo(new HashMap<>());
+        }
+
+        // 如果存在角色就判断是否已经绑定角色
+        boolean userBoundRole = !commonUser.getRoleInfo().isEmpty() && commonUser.fetchRole(roleId) != null;
+        if (userBoundRole) {
+            LoggerUtil.warn(LOGGER, "用户已经添加权限 commonUser={0}, roleId={1}", commonUser, roleId);
+            return;
+        }
+
+        // 绑定角色
+        roleRepoService.userBindRoles(commonUser.getUserId(), Collections.singletonList(roleId));
+    }
+
+    @Override
+    public void addPerm(CommonUser commonUser, String permId) {
+        if (commonUser.getPermission() == null) {
+            commonUser.setPermission(new HashMap<>());
+        }
+
+        // 判断 用户已经绑定权限
+        boolean userBoundPerm = !commonUser.getPermission().isEmpty() && commonUser.fetchPerm(permId) != null;
+        if (userBoundPerm) {
+            LoggerUtil.warn(LOGGER, "用户已经添加权限 commonUser={0}, permId={1}", commonUser, permId);
+            return;
+        }
+        permRepoService.userBindPerms(commonUser.getUserId(), Collections.singletonList(permId));
     }
 }
