@@ -38,7 +38,30 @@ public class ActivityRecordBO extends ToString {
      * 记录者id
      */
     private String scannerUserId;
+    /**
+     * 时长
+     */
+    private Double time;
 
+    /**
+     * 类型
+     */
+    private String type;
+
+    /**
+     * 状态
+     */
+    private String status;
+
+    /**
+     * 学期
+     */
+    private String team;
+
+    /**
+     * 等第
+     */
+    private String grades;
     /**
      * 拓展信息
      */
@@ -82,5 +105,46 @@ public class ActivityRecordBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+
+    public Double getTime() {
+        return time;
+    }
+
+    public void setTime(Double time) {
+        this.time = time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
+    public String getGrades() {
+        return grades;
+    }
+
+    public void setGrades(String grades) {
+        this.grades = grades;
     }
 }

@@ -18,5 +18,26 @@ import java.util.List;
  */
 @Repository
 public interface ActivityDORepo extends JpaRepository<ActivityDO,Long> {
+    /**
+     * 通过活动类型查找活动
+     * @param type
+     * @return
+     */
     List<ActivityDO> findByType(String type);
+
+    /**
+     * 通过活动id获取
+     *
+     * @param activityId
+     * @return
+     */
+    ActivityDO findByActivityId(String activityId);
+
+    /**
+     * 通过活动id 检测活动是否存在
+     *
+     * @param activityId
+     * @return
+     */
+    boolean existsActivityDOByActivityId(String activityId);
 }

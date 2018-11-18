@@ -225,7 +225,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     /**
-     * 权限DO2BO
+     * 权限BO2DO
      *
      * @param permBO
      * @return

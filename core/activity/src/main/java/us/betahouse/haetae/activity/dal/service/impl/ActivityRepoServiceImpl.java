@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
+import enums.CommonResultCode;
+import exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import utils.CollectionUtils;
+import utils.LoggerUtil;
 
 /**
  * @author MessiahJK
@@ -87,10 +90,49 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      */
     @Override
     public ActivityBO updateActivity(ActivityBO activityBO) {
-        if(StringUtils.isBlank(activityBO.getActivityId())){
-            return null;
+        if(StringUtils.isBlank(activityBO.getActivityId())&&!activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())){
+            LoggerUtil.error(LOGGER, "更新的活动不存在 ActivityBO={0}", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(),"更新的活动不存在");
         }
-        return convert(activityDORepo.save(convert(activityBO)));
+        ActivityDO activityDO=activityDORepo.findByActivityId(activityBO.getActivityId());
+        ActivityDO newActivityDO=convert(activityBO);
+        if (newActivityDO.getActivityName() != null) {
+            activityDO.setActivityName(newActivityDO.getActivityName());
+        }
+        if (newActivityDO.getDefaultTime() != null) {
+            activityDO.setDefaultTime(newActivityDO.getDefaultTime());
+        }
+        if (newActivityDO.getDescription() != null) {
+            activityDO.setDescription(newActivityDO.getDescription());
+        }
+        if (newActivityDO.getEnd() != null) {
+            activityDO.setEnd(newActivityDO.getEnd());
+        }
+        if (newActivityDO.getLocation() != null) {
+            activityDO.setLocation(newActivityDO.getLocation());
+        }
+        if (newActivityDO.getOrganizationMessage() != null) {
+            activityDO.setOrganizationMessage(newActivityDO.getOrganizationMessage());
+        }
+        if (newActivityDO.getScore() != null) {
+            activityDO.setScore(newActivityDO.getScore());
+        }
+        if (newActivityDO.getStart()!=null){
+            activityDO.setStart(newActivityDO.getStart());
+        }
+        if (newActivityDO.getState() != null) {
+            activityDO.setState(newActivityDO.getState());
+        }
+        if (newActivityDO.getTeam() != null) {
+            activityDO.setTeam(newActivityDO.getTeam());
+        }
+        if (newActivityDO.getType() != null) {
+            activityDO.setType(newActivityDO.getType());
+        }
+        if (newActivityDO.getUserId() != null) {
+            activityDO.setUserId(newActivityDO.getUserId());
+        }
+        return convert(activityDORepo.save(activityDO));
     }
 
     /**

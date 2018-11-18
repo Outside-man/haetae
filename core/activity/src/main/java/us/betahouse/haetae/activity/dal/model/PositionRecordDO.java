@@ -23,7 +23,6 @@ import javax.persistence.*;
 public class PositionRecordDO extends BaseDO {
 
     private static final long serialVersionUID = -788359937210986705L;
-
     /**
      * 履历id
      */
