@@ -9,9 +9,7 @@ import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
