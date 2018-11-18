@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.user.manager;
 
-import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.user.request.UserCreateRequest;
 import us.betahouse.haetae.user.user.model.CommonUser;
 
@@ -22,7 +21,6 @@ public interface UserManager {
      * @param request
      * @return
      */
-    @Transactional
     CommonUser create(UserCreateRequest request);
 
     /**

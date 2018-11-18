@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
@@ -49,6 +50,7 @@ public class UserManagerImpl implements UserManager {
     private MultiValidator<UserBO> userRegisterValidator;
 
     @Override
+    @Transactional
     public CommonUser create(UserCreateRequest request) {
         UserBO user = request.getUserBO();
         UserInfoBO userInfo = request.getUserInfoBO();
