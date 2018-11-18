@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.user.BaseUser;
+import us.betahouse.haetae.user.user.model.CommonUser;
 import utils.AssertUtil;
 
 /**
@@ -39,9 +39,9 @@ public abstract class BaseHelper {
      *
      * @param user
      */
-    protected void checkBaseUser(BaseUser user) {
-        AssertUtil.assertNotNull(user, CommonResultCode.SYSTEM_ERROR.getErrorMsg(), "用户不能为空");
+    protected void checkBaseUser(CommonUser user) {
+        AssertUtil.assertNotNull(user, CommonResultCode.SYSTEM_ERROR.getMessage(), "用户不能为空");
         String userId = user.getUserId();
-        AssertUtil.assertStringNotBlank(userId, CommonResultCode.SYSTEM_ERROR.getErrorMsg(), "用户id不能为空");
+        AssertUtil.assertStringNotBlank(userId, CommonResultCode.SYSTEM_ERROR.getMessage(), "用户id不能为空");
     }
 }

@@ -5,8 +5,8 @@
 package us.betahouse.haetae.user.user.builder;
 
 import org.apache.commons.lang.StringUtils;
-import us.betahouse.haetae.user.model.perm.UserBO;
-import utils.MD5Util;
+import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.utils.EncryptUtil;
 
 import java.util.UUID;
 
@@ -60,20 +60,9 @@ final public class UserBOBuilder {
         }
 
         userBO.setUserName(username);
-        userBO.setPassword(encrypt(password, userBO.getSalt()));
+        userBO.setPassword(EncryptUtil.encryptPassword(password, userBO.getSalt()));
         userBO.setOpenId(openId);
         return userBO;
-    }
-
-    /**
-     * 加密 md5(md5(pwd)+salt)
-     *
-     * @param password
-     * @param salt
-     * @return
-     */
-    private String encrypt(String password, String salt) {
-        return MD5Util.MD5(MD5Util.MD5(password) + salt);
     }
 
 

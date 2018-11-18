@@ -15,7 +15,7 @@ import us.betahouse.haetae.user.dal.model.perm.UserDO;
 import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
-import us.betahouse.haetae.user.model.perm.UserBO;
+import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 import utils.LoggerUtil;
 
 
@@ -50,6 +50,11 @@ public class UserRepoServiceImpl implements UserRepoService {
     }
 
     @Override
+    public UserBO queryByUserId(String userId) {
+        return convert(userDORepo.findByUserId(userId));
+    }
+
+    @Override
     public UserBO createUser(UserBO userBO) {
         if (StringUtils.isBlank(userBO.getUserId())) {
             userBO.setUserId(bizIdFactory.getUserId());
@@ -80,6 +85,9 @@ public class UserRepoServiceImpl implements UserRepoService {
         if (newUserDO.getLastLoginIP() != null) {
             userDO.setLastLoginIP(newUserDO.getLastLoginIP());
         }
+        if (newUserDO.getLastLoginDate() != null) {
+            userDO.setLastLoginDate(newUserDO.getLastLoginDate());
+        }
         return convert(userDORepo.save(userDO));
     }
 
@@ -101,6 +109,7 @@ public class UserRepoServiceImpl implements UserRepoService {
         userBO.setSalt(userDO.getSalt());
         userBO.setOpenId(userDO.getOpenId());
         userBO.setLastLoginIP(userDO.getLastLoginIP());
+        userBO.setLastLoginDate(userDO.getLastLoginDate());
         return userBO;
     }
 
@@ -121,6 +130,7 @@ public class UserRepoServiceImpl implements UserRepoService {
         userDO.setSalt(userBO.getSalt());
         userDO.setOpenId(userBO.getOpenId());
         userDO.setLastLoginIP(userBO.getLastLoginIP());
+        userDO.setLastLoginDate(userBO.getLastLoginDate());
         return userDO;
     }
 }

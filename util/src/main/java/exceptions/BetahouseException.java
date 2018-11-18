@@ -4,6 +4,7 @@
  */
 package exceptions;
 
+import common.ResultCode;
 import enums.CommonResultCode;
 
 /**
@@ -32,7 +33,7 @@ public class BetahouseException extends RuntimeException {
     public BetahouseException(final Throwable cause){
         super(cause);
         this.errorCode = CommonResultCode.SYSTEM_ERROR.getCode();
-        this.errorMsg = CommonResultCode.SYSTEM_ERROR.getErrorMsg();
+        this.errorMsg = CommonResultCode.SYSTEM_ERROR.getMessage();
     }
 
     public BetahouseException(String errorCode, String errorMsg) {
@@ -40,9 +41,9 @@ public class BetahouseException extends RuntimeException {
         this.errorMsg = errorMsg;
     }
 
-    public BetahouseException(CommonResultCode commonResultCode) {
-        this.errorCode = commonResultCode.getCode();
-        this.errorMsg = commonResultCode.getErrorMsg();
+    public BetahouseException(ResultCode resultCode) {
+        this.errorCode = resultCode.getCode();
+        this.errorMsg = resultCode.getMessage();
     }
 
     public BetahouseException(Throwable cause, String errorCode, String errorMsg) {

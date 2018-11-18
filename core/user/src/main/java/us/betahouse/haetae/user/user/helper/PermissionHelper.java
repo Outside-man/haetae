@@ -5,9 +5,9 @@
 package us.betahouse.haetae.user.user.helper;
 
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.user.model.perm.PermBO;
-import us.betahouse.haetae.user.model.perm.RoleBO;
-import us.betahouse.haetae.user.user.BaseUser;
+import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.user.model.CommonUser;
 import utils.AssertUtil;
 import utils.CollectionUtils;
 
@@ -27,10 +27,16 @@ public class PermissionHelper extends BaseHelper {
      *
      * @param user
      */
-    public void fillUserPermission(BaseUser user) {
+    public void fillUserPermission(CommonUser user) {
         checkBaseUser(user);
         // 组装用户上的权限
         parsePermission(user, permRepoService.queryPermByUserId(user.getUserId()));
+
+        // 如果用户模型上为null 就需要check以下
+        if(user.getRoleInfo() == null){
+            user.setRoleInfo(roleRepoService.queryRolesByUserId(user.getUserId()));
+        }
+
         // 用户上有角色 就需要组装角色上的权限
         if (!CollectionUtils.isEmpty(user.getRoleInfo())) {
             for (RoleBO role : user.getRoleInfo()) {
@@ -44,7 +50,7 @@ public class PermissionHelper extends BaseHelper {
      *
      * @param permList
      */
-    private void parsePermission(BaseUser user, List<PermBO> permList) {
+    private void parsePermission(CommonUser user, List<PermBO> permList) {
         AssertUtil.assertNotNull(permList);
         for (PermBO perm : permList) {
             if (perm != null) {

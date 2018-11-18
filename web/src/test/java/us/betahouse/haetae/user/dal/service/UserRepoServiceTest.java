@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.user.model.perm.UserBO;
+import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 
 
 @RunWith(SpringRunner.class)

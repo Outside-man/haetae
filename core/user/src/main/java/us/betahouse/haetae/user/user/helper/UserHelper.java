@@ -5,7 +5,7 @@
 package us.betahouse.haetae.user.user.helper;
 
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.user.user.BaseUser;
+import us.betahouse.haetae.user.user.model.CommonUser;
 
 
 /**
@@ -17,14 +17,14 @@ import us.betahouse.haetae.user.user.BaseUser;
 @Component
 public class UserHelper extends BaseHelper {
 
-    public void fillUserInfo(BaseUser user) {
+    public void fillUserInfo(CommonUser user) {
         checkBaseUser(user);
         user.setUserInfo(userInfoRepoService.queryUserInfoByUserId(user.getUserId()));
 
     }
 
 
-    public void fillRole(BaseUser user) {
+    public void fillRole(CommonUser user) {
         checkBaseUser(user);
         user.setRoleInfo(roleRepoService.queryRolesByUserId(user.getUserId()));
     }

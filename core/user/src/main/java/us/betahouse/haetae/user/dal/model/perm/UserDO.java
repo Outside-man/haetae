@@ -41,7 +41,8 @@ public class UserDO extends BaseDO {
     private String username;
 
     /**
-     * 密码 长度不超过32位
+     * 密码 长度不超过32
+     * 位
      */
     @Column(length = 32, nullable = false)
     private String password;

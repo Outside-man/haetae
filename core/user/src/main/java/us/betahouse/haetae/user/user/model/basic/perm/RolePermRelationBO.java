@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.model.perm;
+package us.betahouse.haetae.user.user.model.basic.perm;
 
 import common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
@@ -11,25 +11,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 用户权限关联映射
+ * 角色权限映射关系
  *
  * @author dango.yxm
- * @version : UserPermRelationBO.java 2018/11/16 下午7:08 dango.yxm
+ * @version : RolePermRelationBO.java 2018/11/16 下午6:55 dango.yxm
  */
-public class UserPermRelationBO extends ToString {
+public class RolePermRelationBO extends ToString {
 
-    private static final long serialVersionUID = -2813955160454262449L;
+    private static final long serialVersionUID = -1575539821866033837L;
 
     /**
-     * 用户权限映射id
+     * 角色权限映射id
      */
-    private String userPermId;
+    private String rolePermId;
 
     /**
-     * 用户id
+     * 角色id
      */
     @NotBlank
-    private String userId;
+    private String roleId;
 
     /**
      * 权限id
@@ -42,20 +42,20 @@ public class UserPermRelationBO extends ToString {
      */
     private Map<String, String> extInfo = new HashMap<>();
 
-    public String getUserPermId() {
-        return userPermId;
+    public String getRolePermId() {
+        return rolePermId;
     }
 
-    public void setUserPermId(String userPermId) {
-        this.userPermId = userPermId;
+    public void setRolePermId(String rolePermId) {
+        this.rolePermId = rolePermId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     public String getPermId() {

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.model.perm.RoleBO;
+import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
 
 import java.util.List;
 

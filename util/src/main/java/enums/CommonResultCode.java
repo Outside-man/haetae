@@ -4,6 +4,7 @@
  */
 package enums;
 
+import common.ResultCode;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -12,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
  * @author dango.yxm
  * @version : CommonResultCode.java 2018/10/05 下午11:36 dango.yxm
  */
-public enum CommonResultCode {
+public enum CommonResultCode implements ResultCode {
 
     /**
      * 系统异常
@@ -29,26 +30,28 @@ public enum CommonResultCode {
      */
     SUCCESS("调用成功");
 
-    private String errorMsg;
+    private String message;
 
-    public CommonResultCode getByCode(String errorCode) {
+    public CommonResultCode getByCode(String code) {
         for (CommonResultCode commonResultCode : values()) {
-            if (StringUtils.equals(commonResultCode.getCode(), errorCode)) {
+            if (StringUtils.equals(commonResultCode.getCode(), code)) {
                 return commonResultCode;
             }
         }
         return null;
     }
 
-    CommonResultCode(String errorMsg) {
-        this.errorMsg = errorMsg;
+    CommonResultCode(String message) {
+        this.message = message;
     }
 
+    @Override
     public String getCode() {
         return name();
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    @Override
+    public String getMessage() {
+        return message;
     }
 }

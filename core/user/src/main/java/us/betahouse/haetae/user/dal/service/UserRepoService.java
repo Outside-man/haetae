@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.model.perm.UserBO;
+import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 
 /**
  * 用户仓储服务
@@ -29,6 +29,14 @@ public interface UserRepoService {
      * @return
      */
     UserBO queryByUserName(String userName);
+
+    /**
+     * 通过用户id获取用户
+     *
+     * @param userId
+     * @return
+     */
+    UserBO queryByUserId(String userId);
 
     /**
      * 创建新用户

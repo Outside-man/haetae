@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.model.perm;
+package us.betahouse.haetae.user.user.model.basic.perm;
 
 import common.ToString;
 import org.hibernate.validator.constraints.NotBlank;

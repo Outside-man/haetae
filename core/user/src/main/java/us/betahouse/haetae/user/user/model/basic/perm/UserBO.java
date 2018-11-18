@@ -2,10 +2,12 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.model.perm;
+package us.betahouse.haetae.user.user.model.basic.perm;
 
 import common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
+
+import java.util.Date;
 
 /**
  * 用户模型
@@ -46,9 +48,14 @@ public class UserBO extends ToString {
     private String openId;
 
     /**
-     * 用户ip
+     * 上次登陆ip
      */
     private String lastLoginIP;
+
+    /**
+     * 上次登陆时间
+     */
+    private Date lastLoginDate;
 
     public String getUserId() {
         return userId;
@@ -96,5 +103,13 @@ public class UserBO extends ToString {
 
     public void setLastLoginIP(String lastLoginIP) {
         this.lastLoginIP = lastLoginIP;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
 }

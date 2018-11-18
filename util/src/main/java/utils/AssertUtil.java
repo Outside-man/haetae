@@ -4,6 +4,7 @@
  */
 package utils;
 
+import common.ResultCode;
 import enums.CommonResultCode;
 import exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +32,12 @@ public class AssertUtil {
     public static void assertTrue(Boolean expression) {
         if (expression == null || !expression) {
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS);
+        }
+    }
+
+    public static void assertTrue(Boolean expression, ResultCode resultCode) {
+        if (expression == null || !expression) {
+            throw new BetahouseException(resultCode);
         }
     }
 
@@ -64,7 +71,7 @@ public class AssertUtil {
      * @param errorMsg
      */
     public static void assertNotNull(Object obj, String errorMsg) {
-        assertNotNull(obj, CommonResultCode.ILLEGAL_PARAMETERS.getErrorMsg(), errorMsg);
+        assertNotNull(obj, CommonResultCode.ILLEGAL_PARAMETERS.getMessage(), errorMsg);
     }
 
     /**
@@ -84,11 +91,11 @@ public class AssertUtil {
      * 断言对象不等于null
      *
      * @param obj
-     * @param commonResultCode
+     * @param resultCode
      */
-    public static void assertNotNull(Object obj, CommonResultCode commonResultCode) {
+    public static void assertNotNull(Object obj, ResultCode resultCode) {
         if (obj == null) {
-            throw new BetahouseException(commonResultCode);
+            throw new BetahouseException(resultCode);
         }
     }
 
