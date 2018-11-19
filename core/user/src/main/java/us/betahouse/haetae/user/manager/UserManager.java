@@ -7,6 +7,8 @@ package us.betahouse.haetae.user.manager;
 import us.betahouse.haetae.user.request.UserCreateRequest;
 import us.betahouse.haetae.user.user.model.CommonUser;
 
+import java.util.List;
+
 /**
  * 用户管理器
  *
@@ -24,18 +26,18 @@ public interface UserManager {
     CommonUser create(UserCreateRequest request);
 
     /**
-     * 给用户添加角色
+     * 给用户批量添加角色
      *
      * @param userId
-     * @param roleId
+     * @param roleIds
      */
-    void addRole(String userId, String roleId);
+    void batchAddRole(String userId, List<String> roleIds);
 
     /**
-     * 给用户添加权限
+     * 给用户批量添加权限
      *
      * @param userId
-     * @param permId
+     * @param permIds
      */
-    void addPerm(String userId, String permId);
+    void batchAddPerm(String userId, List<String> permIds);
 }

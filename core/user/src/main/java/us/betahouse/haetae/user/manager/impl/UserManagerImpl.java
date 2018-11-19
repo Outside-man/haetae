@@ -21,7 +21,7 @@ import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 import utils.LoggerUtil;
 import validator.MultiValidator;
 
-import java.util.Collections;
+import java.util.List;
 
 /**
  * 用户管理器
@@ -76,12 +76,12 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public void addRole(String userId, String roleId) {
-        roleRepoService.userBindRoles(userId, Collections.singletonList(roleId));
+    public void batchAddRole(String userId, List<String> roleIds) {
+        roleRepoService.userBindRoles(userId, roleIds);
     }
 
     @Override
-    public void addPerm(String userId, String permId) {
-        permRepoService.userBindPerms(userId, Collections.singletonList(permId));
+    public void batchAddPerm(String userId, List<String> permIds) {
+        permRepoService.userBindPerms(userId, permIds);
     }
 }

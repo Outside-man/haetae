@@ -14,9 +14,9 @@ import java.util.Map;
  * 用户请求
  *
  * @author dango.yxm
- * @version : BaseUserRequest.java 2018/11/18 下午10:39 dango.yxm
+ * @version : BaseRequest.java 2018/11/18 下午10:39 dango.yxm
  */
-public abstract class BaseUserRequest extends ToString {
+public abstract class BaseRequest extends ToString {
 
     private static final long serialVersionUID = -7591804651945805773L;
 

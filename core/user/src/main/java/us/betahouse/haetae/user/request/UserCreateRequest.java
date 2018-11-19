@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @author dango.yxm
  * @version : UserCreateRequest.java 2018/11/18 下午10:41 dango.yxm
  */
-public class UserCreateRequest extends BaseUserRequest {
+public class UserCreateRequest extends BaseRequest {
 
     private static final long serialVersionUID = -1457199050759374073L;
 
