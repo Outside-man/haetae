@@ -5,8 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.user.request.UserCreateRequest;
-import us.betahouse.haetae.user.user.builder.UserBOBuilder;
+import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 
 import java.util.UUID;
@@ -37,16 +36,16 @@ public class UserManagerTest {
     public void addPerm() {
     }
 
-    private UserCreateRequest genUserCreateRequest() {
-        UserCreateRequest request = new UserCreateRequest();
+    private UserManageRequest genUserCreateRequest() {
+        UserManageRequest request = new UserManageRequest();
         request.setRequestId(UUID.randomUUID().toString());
-        UserBOBuilder userBOBuilder = UserBOBuilder.getInstance("yxm", "123dango123");
         UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
                 .withEnrollDate(201801)
                 .withRealName("哈哈")
                 .withSex("男")
                 .withStuId("11111");
-        request.setUserBO(userBOBuilder.build());
+        request.setUserName("yxm0110");
+        request.setPassword("yxm123");
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;
     }

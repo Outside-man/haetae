@@ -33,7 +33,7 @@ public @interface Log {
      *
      * @return
      */
-    String identification() default "";
+    String identity() default LogMark.DEFAULT;
 
     /**
      * 日志级别
@@ -41,11 +41,4 @@ public @interface Log {
      * @return
      */
     LogLevel logLevel() default LogLevel.INFO;
-
-    /**
-     * 日志处理方法
-     *
-     * @return
-     */
-    Class<? extends LogHandle> logHandle();
 }

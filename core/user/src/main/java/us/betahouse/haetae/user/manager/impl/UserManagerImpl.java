@@ -14,14 +14,14 @@ import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.manager.UserManager;
-import us.betahouse.haetae.user.request.UserCreateRequest;
-import us.betahouse.haetae.user.user.model.CommonUser;
+import us.betahouse.haetae.user.request.UserManageRequest;
+import us.betahouse.haetae.user.user.builder.UserBOBuilder;
 import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.validator.MultiValidator;
 
-import java.util.List;
 
 /**
  * 用户管理器
@@ -47,41 +47,49 @@ public class UserManagerImpl implements UserManager {
     private UserInfoRepoService userInfoRepoService;
 
     @Autowired
-    private MultiValidator<UserBO> userRegisterValidator;
+    private MultiValidator<UserManageRequest> userRegisterValidator;
 
     @Override
     @Transactional
-    public CommonUser create(UserCreateRequest request) {
-        UserBO user = request.getUserBO();
-        UserInfoBO userInfo = request.getUserInfoBO();
-
+    @Log(LoggerName = "us.betahouse.haetae.user.manager.UserManager")
+    public UserBO create(UserManageRequest request) {
         // 校验用户是否合法
-        userRegisterValidator.validate(user);
+        userRegisterValidator.validate(request);
 
         // 创建用户
-        userRepoService.createUser(user);
+        UserBOBuilder userBOBuilder = UserBOBuilder.getInstance(request.getUserName(), request.getPassword())
+                .withOpenId(request.getOpenId())
+                .withSalt(request.getSalt());
+        UserBO user = userRepoService.createUser(userBOBuilder.build());
 
         // 绑定用户信息
+        UserInfoBO userInfo = request.getUserInfoBO();
         if (userInfo != null) {
-            userInfoRepoService.bindUserInfo(user.getUserId(), userInfo);
+            try {
+                userInfoRepoService.bindUserInfo(user.getUserId(), userInfo);
+            }catch (Throwable t){
+                throw t;
+            }
         } else {
-            LoggerUtil.warn(LOGGER, "创建时没有绑定用户信息 UserCreateRequest={0}", request);
+            LoggerUtil.warn(LOGGER, "创建时没有绑定用户信息 UserManageRequest={0}", request);
         }
 
-        // 构建用户信息返回
-        CommonUser commonUser = new CommonUser();
-        commonUser.setUserId(user.getUserId());
-        commonUser.setUserInfo(userInfo);
-        return commonUser;
+        // 绑定角色
+        roleRepoService.userBindRoles(user.getUserId(), request.getRoleIds());
+
+        // 绑定权限
+        permRepoService.userBindPerms(user.getUserId(), request.getPermIds());
+
+        return user;
     }
 
     @Override
-    public void batchAddRole(String userId, List<String> roleIds) {
-        roleRepoService.userBindRoles(userId, roleIds);
+    public void batchAddRole(UserManageRequest request) {
+        roleRepoService.userBindRoles(request.getUserId(), request.getRoleIds());
     }
 
     @Override
-    public void batchAddPerm(String userId, List<String> permIds) {
-        permRepoService.userBindPerms(userId, permIds);
+    public void batchAddPerm(UserManageRequest request) {
+        permRepoService.userBindPerms(request.getUserId(), request.getPermIds());
     }
 }

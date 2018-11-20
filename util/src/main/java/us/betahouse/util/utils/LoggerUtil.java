@@ -87,7 +87,7 @@ public class LoggerUtil {
         if (throwable instanceof BetahouseException) {
             BetahouseException betahouseException = (BetahouseException) throwable;
             errorCode = betahouseException.getErrorCode();
-            errorMsg = betahouseException.getErrorMsg();
+            errorMsg = betahouseException.getMessage();
         } else {
             errorCode = getErrorCode(throwable);
             errorMsg = errorCode;

@@ -112,7 +112,7 @@ public class PermRepoServiceImpl implements PermRepoService {
 
 
         // permIds 有查不到的就属于异常
-        if (CollectionUtils.isEmpty(permDOList) || permDOList.size() != permIds.size()) {
+        if (permDOList.size() != permIds.size()) {
             LoggerUtil.error(LOGGER, "绑定的权限id不存在 permIds={0}, permDOList={1}", permIds, permDOList);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的权限id不存在");
         }
@@ -163,7 +163,7 @@ public class PermRepoServiceImpl implements PermRepoService {
 
 
         // permIds 有查不到的就属于异常
-        if (CollectionUtils.isEmpty(permDOList) || permDOList.size() != permIds.size()) {
+        if (permDOList.size() != permIds.size()) {
             LoggerUtil.error(LOGGER, "绑定的权限id不存在 permIds={0}, permDOList={1}", permIds, permDOList);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的权限id不存在");
         }

@@ -44,8 +44,8 @@ public class RestOperateTemplate {
             callBack.after();
             return result;
         } catch (BetahouseException be) {
-            LoggerUtil.warn(be, logger, "RestOperateTemplate.operate fail, methodName={0}, request={1}, errorCode={2}, errorMsg={3}", methodName, request, be.getErrorCode(), be.getErrorMsg());
-            result = new Result<>(false, be.getErrorCode(), be.getErrorMsg());
+            LoggerUtil.warn(be, logger, "RestOperateTemplate.operate fail, methodName={0}, request={1}, errorCode={2}, errorMsg={3}", methodName, request, be.getErrorCode(), be.getMessage());
+            result = new Result<>(false, be.getErrorCode(), be.getMessage());
             return result;
         } catch (Exception e) {
             LoggerUtil.error(e, logger, "RestOperateTemplate.operate error, methodName={0}, request={1}", methodName, request);

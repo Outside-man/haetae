@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.validate;
 
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.validator.Validator;
 
@@ -14,7 +14,7 @@ import us.betahouse.util.validator.Validator;
  * @author dango.yxm
  * @version : UserNameBasicValidator.java 2018/10/05 下午11:14 dango.yxm
  */
-public class PasswordStrengthValidator implements Validator<UserBO> {
+public class PasswordStrengthValidator implements Validator<UserManageRequest> {
 
     /**
      * 密码强度最低要求
@@ -23,17 +23,16 @@ public class PasswordStrengthValidator implements Validator<UserBO> {
 
 
     @Override
-    public boolean support(UserBO user) {
+    public boolean support(UserManageRequest request) {
         return true;
     }
 
     @Override
-    public void validate(UserBO user) {
-        AssertUtil.assertNotNull(user, "请求不能为空");
-        AssertUtil.assertStringNotBlank(user.getPassword(), "密码不能为空");
-        AssertUtil.assertTrue(parsePasswordStrength(user.getPassword()) >= PASSWORD_STRENGTH, "密码强度过弱");
+    public void validate(UserManageRequest request) {
+        AssertUtil.assertNotNull(request, "请求不能为空");
+        AssertUtil.assertStringNotBlank(request.getPassword(), "密码不能为空");
+        AssertUtil.assertTrue(parsePasswordStrength(request.getPassword()) >= PASSWORD_STRENGTH, "密码强度过弱");
     }
-
     /**
      * 密码强度等级计算
      *

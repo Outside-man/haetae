@@ -4,12 +4,9 @@
  */
 package us.betahouse.haetae.user.manager;
 
-import us.betahouse.util.log.Log;
-import us.betahouse.haetae.user.log.UserLogDigest;
-import us.betahouse.haetae.user.request.UserCreateRequest;
-import us.betahouse.haetae.user.user.model.CommonUser;
+import us.betahouse.haetae.user.request.UserManageRequest;
+import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 
-import java.util.List;
 
 /**
  * 用户管理器
@@ -25,22 +22,19 @@ public interface UserManager {
      * @param request
      * @return
      */
-    @Log(LoggerName = "us.betahouse.haetae.user.manager.UserManager", logHandle = UserLogDigest.class)
-    CommonUser create(UserCreateRequest request);
+    UserBO create(UserManageRequest request);
 
     /**
      * 给用户批量添加角色
      *
-     * @param userId
-     * @param roleIds
+     * @param request
      */
-    void batchAddRole(String userId, List<String> roleIds);
+    void batchAddRole(UserManageRequest request);
 
     /**
      * 给用户批量添加权限
      *
-     * @param userId
-     * @param permIds
+     * @param request
      */
-    void batchAddPerm(String userId, List<String> permIds);
+    void batchAddPerm(UserManageRequest request);
 }

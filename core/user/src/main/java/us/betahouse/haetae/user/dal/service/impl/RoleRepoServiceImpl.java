@@ -91,7 +91,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         List<RoleDO> roleDOList = roleDORepo.findAllByRoleIdIn(roleIds);
 
         // roleId 有查不到的就属于异常
-        if (CollectionUtils.isEmpty(roleDOList) || roleDOList.size() != roleIds.size()) {
+        if (roleDOList.size() != roleIds.size()) {
             LoggerUtil.error(LOGGER, "绑定的角色id不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的角色id不存在");
         }

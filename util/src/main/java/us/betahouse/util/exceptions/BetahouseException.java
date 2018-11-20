@@ -9,6 +9,7 @@ import us.betahouse.util.enums.CommonResultCode;
 
 /**
  * betahouse 通用业务异常
+ *
  * @author dango.yxm
  * @version : BetahouseException.java 2018/10/05 下午11:32 dango.yxm
  */
@@ -24,32 +25,37 @@ public class BetahouseException extends RuntimeException {
     /**
      * 异常信息
      */
-    private String errorMsg;
+    private String message;
 
     /**
      * 构造器
+     *
      * @param cause
      */
-    public BetahouseException(final Throwable cause){
+    public BetahouseException(final Throwable cause) {
         super(cause);
         this.errorCode = CommonResultCode.SYSTEM_ERROR.getCode();
-        this.errorMsg = CommonResultCode.SYSTEM_ERROR.getMessage();
+        this.message = CommonResultCode.SYSTEM_ERROR.getMessage();
     }
 
-    public BetahouseException(String errorCode, String errorMsg) {
+    public BetahouseException(String errorCode, String message) {
         this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
+        this.message = message;
     }
 
     public BetahouseException(ResultCode resultCode) {
         this.errorCode = resultCode.getCode();
-        this.errorMsg = resultCode.getMessage();
+        this.message = resultCode.getMessage();
     }
 
-    public BetahouseException(Throwable cause, String errorCode, String errorMsg) {
+    public BetahouseException(Throwable cause, String errorCode, String message) {
         super(cause);
         this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
+        this.message = message;
+    }
+
+    public BetahouseException(String message) {
+        super(message);
     }
 
     public String getErrorCode() {
@@ -60,11 +66,17 @@ public class BetahouseException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    /**
+     * 异常获取信息
+     *
+     * @return
+     */
+    @Override
+    public String getMessage() {
+        return message;
     }
 }
