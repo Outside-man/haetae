@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.model.CommonUser;
 import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
-import utils.AssertUtil;
+import us.betahouse.util.utils.AssertUtil;
 
 import java.util.HashMap;
 import java.util.List;

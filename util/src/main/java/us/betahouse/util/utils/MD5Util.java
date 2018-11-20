@@ -1,4 +1,4 @@
-package utils;
+package us.betahouse.util.utils;
 
 import java.security.MessageDigest;
 

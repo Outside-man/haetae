@@ -3,13 +3,12 @@
  * CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service.impl;
-import java.util.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
-import enums.CommonResultCode;
-import exceptions.BetahouseException;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,8 @@ import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.ActivityBO;
-import utils.CollectionUtils;
-import utils.LoggerUtil;
+import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
 /**
  * @author MessiahJK

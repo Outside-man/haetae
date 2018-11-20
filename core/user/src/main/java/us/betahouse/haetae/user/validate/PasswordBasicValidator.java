@@ -5,8 +5,8 @@
 package us.betahouse.haetae.user.validate;
 
 import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
-import utils.AssertUtil;
-import validator.Validator;
+import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.validator.Validator;
 
 /**
  * 密码基础校验器

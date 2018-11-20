@@ -11,7 +11,7 @@
     <bean id="passwordStrengthValidator" class="us.betahouse.haetae.user.validate.PasswordStrengthValidator"/>
 
     <!--用户注册校验器-->
-    <bean id="userRegisterValidator" class="validator.MultiValidator">
+    <bean id="userRegisterValidator" class="us.betahouse.util.validator.MultiValidator">
         <property name="validatorList">
             <list>
                 <ref bean="userNameBasicValidator"/>

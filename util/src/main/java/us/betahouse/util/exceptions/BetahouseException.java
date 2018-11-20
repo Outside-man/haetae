@@ -2,10 +2,10 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package exceptions;
+package us.betahouse.util.exceptions;
 
-import common.ResultCode;
-import enums.CommonResultCode;
+import us.betahouse.util.common.ResultCode;
+import us.betahouse.util.enums.CommonResultCode;
 
 /**
  * betahouse 通用业务异常

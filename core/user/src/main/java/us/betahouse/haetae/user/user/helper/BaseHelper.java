@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.user.helper;
 
-import enums.CommonResultCode;
+import us.betahouse.util.enums.CommonResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.user.model.CommonUser;
-import utils.AssertUtil;
+import us.betahouse.util.utils.AssertUtil;
 
 /**
  * 助手基类

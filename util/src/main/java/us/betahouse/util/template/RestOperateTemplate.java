@@ -2,13 +2,13 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package template;
+package us.betahouse.util.template;
 
-import common.Result;
-import enums.CommonResultCode;
-import exceptions.BetahouseException;
+import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import org.slf4j.Logger;
-import utils.LoggerUtil;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.text.MessageFormat;
 

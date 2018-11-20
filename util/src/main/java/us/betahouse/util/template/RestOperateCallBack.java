@@ -2,9 +2,9 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package template;
+package us.betahouse.util.template;
 
-import common.Result;
+import us.betahouse.util.common.Result;
 
 /**
  * 操作模板

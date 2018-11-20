@@ -18,8 +18,8 @@ import us.betahouse.haetae.user.request.UserCreateRequest;
 import us.betahouse.haetae.user.user.model.CommonUser;
 import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
-import utils.LoggerUtil;
-import validator.MultiValidator;
+import us.betahouse.util.utils.LoggerUtil;
+import us.betahouse.util.validator.MultiValidator;
 
 import java.util.List;
 

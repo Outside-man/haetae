@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package validator;
+package us.betahouse.util.validator;
 
 /**
  * 校验器

@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.user.manager;
 
+import us.betahouse.util.log.Log;
+import us.betahouse.haetae.user.log.UserLogDigest;
 import us.betahouse.haetae.user.request.UserCreateRequest;
 import us.betahouse.haetae.user.user.model.CommonUser;
 
@@ -23,6 +25,7 @@ public interface UserManager {
      * @param request
      * @return
      */
+    @Log(LoggerName = "us.betahouse.haetae.user.manager.UserManager", logHandle = UserLogDigest.class)
     CommonUser create(UserCreateRequest request);
 
     /**

@@ -2,9 +2,9 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package enums;
+package us.betahouse.util.enums;
 
-import common.ResultCode;
+import us.betahouse.util.common.ResultCode;
 import org.apache.commons.lang.StringUtils;
 
 /**

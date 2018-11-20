@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.model;
 
-import common.ToString;
+import us.betahouse.util.common.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 

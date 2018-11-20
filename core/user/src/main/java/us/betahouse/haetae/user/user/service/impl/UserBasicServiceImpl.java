@@ -20,8 +20,8 @@ import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.user.model.CommonUser;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.user.utils.EncryptUtil;
-import utils.AssertUtil;
-import utils.LoggerUtil;
+import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.*;
 

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.user.model;
 
-import common.ToString;
+import us.betahouse.util.common.ToString;
 import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;

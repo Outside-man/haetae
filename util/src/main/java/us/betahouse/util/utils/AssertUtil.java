@@ -2,11 +2,11 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package utils;
+package us.betahouse.util.utils;
 
-import common.ResultCode;
-import enums.CommonResultCode;
-import exceptions.BetahouseException;
+import us.betahouse.util.common.ResultCode;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 
 /**

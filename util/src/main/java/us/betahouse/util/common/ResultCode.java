@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package common;
+package us.betahouse.util.common;
 
 /**
  * 结果码 接口

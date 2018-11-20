@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
-import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
-import utils.CollectionUtils;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.stream.Collectors;
 

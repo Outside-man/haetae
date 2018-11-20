@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.model;
 
-import common.ToString;
+import us.betahouse.util.common.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 import java.util.Date;
 
 /**

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.request;
 
-import common.ToString;
+import us.betahouse.util.common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.HashMap;

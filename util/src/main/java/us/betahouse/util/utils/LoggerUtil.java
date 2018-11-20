@@ -2,9 +2,9 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package utils;
+package us.betahouse.util.utils;
 
-import exceptions.BetahouseException;
+import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 

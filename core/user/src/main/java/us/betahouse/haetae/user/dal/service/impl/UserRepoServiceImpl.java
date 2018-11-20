@@ -4,8 +4,8 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
-import enums.CommonResultCode;
-import exceptions.BetahouseException;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
-import utils.LoggerUtil;
+import us.betahouse.util.utils.LoggerUtil;
 
 
 /**

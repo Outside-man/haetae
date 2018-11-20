@@ -14,7 +14,7 @@ import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.OrganizationBO;
-import utils.CollectionUtils;
+import us.betahouse.util.utils.CollectionUtils;
 
 /**
  * @author MessiahJK

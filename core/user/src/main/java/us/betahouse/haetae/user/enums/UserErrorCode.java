@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.enums;
 
-import common.ResultCode;
+import us.betahouse.util.common.ResultCode;
 
 /**
  * 用户异常码

@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package utils;
+package us.betahouse.util.utils;
 
 import java.util.Collection;
 import java.util.stream.Stream;

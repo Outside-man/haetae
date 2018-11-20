@@ -6,7 +6,7 @@ package us.betahouse.haetae.activity.idfactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import utils.DateUtil;
+import us.betahouse.util.utils.DateUtil;
 
 import java.util.Date;
 

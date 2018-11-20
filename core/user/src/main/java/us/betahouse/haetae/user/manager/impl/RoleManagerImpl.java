@@ -11,7 +11,7 @@ import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.manager.RoleManager;
 import us.betahouse.haetae.user.request.RoleCreateRequest;
 import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
-import utils.CollectionUtils;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;
 

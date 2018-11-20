@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.utils;
 
-import utils.MD5Util;
+import us.betahouse.util.utils.MD5Util;
 
 /**
  * 加密工具类
