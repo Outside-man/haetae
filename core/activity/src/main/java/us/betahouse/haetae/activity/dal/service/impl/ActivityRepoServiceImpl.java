@@ -36,7 +36,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory activityBizFactory;
 
     /**
      * 查询所有活动
@@ -76,7 +76,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     @Override
     public ActivityBO createActivity(ActivityBO activityBO) {
         if(StringUtils.isBlank(activityBO.getActivityId())){
-            activityBO.setActivityId(bizIdFactory.getActivityId());
+            activityBO.setActivityId(activityBizFactory.getActivityId());
         }
         return convert(activityDORepo.save(convert(activityBO)));
     }

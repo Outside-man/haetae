@@ -28,7 +28,7 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory activityBizFactory;
 
 
     /**
@@ -65,7 +65,7 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
     @Override
     public OrganizationBO createOrganization(OrganizationBO organizationBO) {
         if(StringUtils.isBlank(organizationBO.getOrganizationId())){
-            organizationBO.setOrganizationId(bizIdFactory.getOrganizationId());
+            organizationBO.setOrganizationId(activityBizFactory.getOrganizationId());
         }
         return convert(organizationDORepo.save(convert(organizationBO)));
     }

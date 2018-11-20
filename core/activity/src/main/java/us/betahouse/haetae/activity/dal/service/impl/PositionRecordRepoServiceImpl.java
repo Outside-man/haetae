@@ -30,11 +30,11 @@ public class PositionRecordRepoServiceImpl implements PositionRecordRepoService 
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory activityBizFactory;
     @Override
     public PositionRecordBO createPositionRecord(PositionRecordBO positionRecordBO) {
         if(StringUtils.isBlank(positionRecordBO.getPositionRecordId())){
-            positionRecordBO.setPositionRecordId(bizIdFactory.getPositionRecordId());
+            positionRecordBO.setPositionRecordId(activityBizFactory.getPositionRecordId());
         }
         return convert(positionRecordDORepo.save(convert(positionRecordBO)));
     }

@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.activity.idfactory;
 
+import org.springframework.stereotype.Service;
+
 /**
  *
  * 业务id生成工厂
@@ -12,6 +14,7 @@ package us.betahouse.haetae.activity.idfactory;
  * @author MessiahJK
  * @version : BizldFactory.java 2018/11/17 17:26 MessiahJK
  */
+@Service("activityBizFactory")
 public interface BizIdFactory {
 
     /**
