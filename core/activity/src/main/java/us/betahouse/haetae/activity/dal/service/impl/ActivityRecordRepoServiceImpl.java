@@ -32,7 +32,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory activityBizFactory;
 
     /**
      * 新增活动记录
@@ -43,7 +43,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
     @Override
     public ActivityRecordBO createActivityRecord(ActivityRecordBO activityRecordBO) {
         if(StringUtils.isBlank(activityRecordBO.getActivityRecordId())){
-            activityRecordBO.setActivityRecordId(bizIdFactory.getActivityRecordId());
+            activityRecordBO.setActivityRecordId(activityBizFactory.getActivityRecordId());
         }
         return convert(activityRecordDORepo.save(convert(activityRecordBO)));
     }
