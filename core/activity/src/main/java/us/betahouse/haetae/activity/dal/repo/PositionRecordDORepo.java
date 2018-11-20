@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.PositionRecordDO;
 
+import java.util.List;
+
 /**
  * 履历实体存储
  *
@@ -16,5 +18,17 @@ import us.betahouse.haetae.activity.dal.model.PositionRecordDO;
  */
 @Repository
 public interface PositionRecordDORepo extends JpaRepository<PositionRecordDO,Long> {
+    /**
+     * 通过学号查询履历
+     * @param stuId
+     * @return
+     */
+    List<PositionRecordDO> findByStuId(String stuId);
 
+    /**
+     * 通过组织id查询履历
+     * @param organizationId
+     * @return
+     */
+    List<PositionRecordDO> findByOrganizationId(String organizationId);
 }
