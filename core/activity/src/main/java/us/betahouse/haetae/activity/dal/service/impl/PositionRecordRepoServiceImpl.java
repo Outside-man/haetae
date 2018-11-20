@@ -11,7 +11,7 @@ import us.betahouse.haetae.activity.dal.repo.PositionRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.PositionRecordRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.PositionRecordBO;
-import utils.CollectionUtils;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;

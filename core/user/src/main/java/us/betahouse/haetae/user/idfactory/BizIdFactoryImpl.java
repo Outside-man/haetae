@@ -17,7 +17,7 @@ import java.util.Random;
  * @author dango.yxm
  * @version : BizIdFactoryImpl.java 2018/10/06 下午1:28 dango.yxm
  */
-@Service
+@Service("userBizIdFactory")
 public class BizIdFactoryImpl implements BizIdFactory {
 
     /**

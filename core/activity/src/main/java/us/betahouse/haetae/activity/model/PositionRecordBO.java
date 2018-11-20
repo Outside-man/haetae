@@ -4,7 +4,8 @@
  */
 package us.betahouse.haetae.activity.model;
 
-import common.ToString;
+
+import us.betahouse.util.common.ToString;
 
 import java.util.HashMap;
 import java.util.Map;

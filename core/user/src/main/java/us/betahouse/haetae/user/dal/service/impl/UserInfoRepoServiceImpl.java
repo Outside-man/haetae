@@ -43,7 +43,7 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory userBizIdFactory;
 
     @Override
     public void bindUserInfo(String userId, UserInfoBO userInfoBO) {
@@ -58,7 +58,7 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
 
         //填充用户信息id
         if (StringUtils.isBlank(userInfoBO.getUserInfoId())) {
-            userInfoBO.setUserInfoId(bizIdFactory.getUserInfoId(userId));
+            userInfoBO.setUserInfoId(userBizIdFactory.getUserInfoId(userId));
         }
         userInfoDORepo.save(convert(userInfoBO));
     }

@@ -16,7 +16,7 @@ import java.util.Date;
  * @author MessiahJK
  * @version : BizIdFactoryImpl.java 2018/11/17 17:32 MessiahJK
  */
-@Service
+@Service("activityBizIdFactory")
 public class BizIdFactoryImpl implements BizIdFactory {
 
     /**

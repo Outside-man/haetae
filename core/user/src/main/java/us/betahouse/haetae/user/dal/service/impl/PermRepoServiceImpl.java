@@ -56,13 +56,13 @@ public class PermRepoServiceImpl implements PermRepoService {
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory userBizIdFactory;
 
 
     @Override
     public PermBO createPerm(PermBO permBO) {
         if (StringUtils.isBlank(permBO.getPermId())) {
-            permBO.setPermId(bizIdFactory.getPermId());
+            permBO.setPermId(userBizIdFactory.getPermId());
         }
         return convert(permDORepo.save(convert(permBO)));
     }
@@ -145,7 +145,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             relation.setPermId(permDO.getPermId());
             relation.setRoleId(roleId);
             // 通过 id 工厂构建关联id
-            relation.setRolePermId(bizIdFactory.getRoleUserRelationId(roleId, permDO.getPermId()));
+            relation.setRolePermId(userBizIdFactory.getRoleUserRelationId(roleId, permDO.getPermId()));
             relations.add(relation);
         }
         // 绑定
@@ -196,7 +196,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             relation.setPermId(permDO.getPermId());
             relation.setUserId(userId);
             // 通过 id 工厂构建关联id
-            relation.setUserPermId(bizIdFactory.getUserPermRelationId(userId, permDO.getPermId()));
+            relation.setUserPermId(userBizIdFactory.getUserPermRelationId(userId, permDO.getPermId()));
             relations.add(relation);
         }
         // 绑定

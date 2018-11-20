@@ -53,12 +53,12 @@ public class RoleRepoServiceImpl implements RoleRepoService {
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory userBizIdFactory;
 
     @Override
     public RoleBO createRole(RoleBO roleBO) {
         if (StringUtils.isBlank(roleBO.getRoleId())) {
-            roleBO.setRoleId(bizIdFactory.getRoleId());
+            roleBO.setRoleId(userBizIdFactory.getRoleId());
         }
         return convert(roleDORepo.save(convert(roleBO)));
     }
@@ -124,7 +124,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             relation.setRoleId(roleDO.getRoleId());
             relation.setUserId(userId);
             // 通过 id 工厂构建关联id
-            relation.setUserRoleId(bizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
+            relation.setUserRoleId(userBizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
             relations.add(relation);
         }
         // 绑定

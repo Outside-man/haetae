@@ -37,7 +37,7 @@ public class UserRepoServiceImpl implements UserRepoService {
      * id工厂
      */
     @Autowired
-    private BizIdFactory bizIdFactory;
+    private BizIdFactory userBizIdFactory;
 
     @Override
     public boolean checkUserExistByUserId(String userId) {
@@ -57,7 +57,7 @@ public class UserRepoServiceImpl implements UserRepoService {
     @Override
     public UserBO createUser(UserBO userBO) {
         if (StringUtils.isBlank(userBO.getUserId())) {
-            userBO.setUserId(bizIdFactory.getUserId());
+            userBO.setUserId(userBizIdFactory.getUserId());
         }
         return convert(userDORepo.save(convert(userBO)));
     }

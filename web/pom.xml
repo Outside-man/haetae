@@ -47,7 +47,7 @@
         <!--子模块依赖-->
         <dependency>
             <groupId>us.betahouse</groupId>
-            <artifactId>haetae-user</artifactId>
+            <artifactId>haetae-service-impl</artifactId>
         </dependency>
 
     </dependencies>
