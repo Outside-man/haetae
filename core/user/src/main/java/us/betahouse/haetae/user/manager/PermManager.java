@@ -5,7 +5,7 @@
 package us.betahouse.haetae.user.manager;
 
 import us.betahouse.haetae.user.request.PermCreateRequest;
-import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 /**
  * 权限管理器

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.haetae.user.request.PermCreateRequest;
-import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 /**
  * 权限管理器实现

@@ -5,7 +5,7 @@
 package us.betahouse.haetae.user.user.builder;
 
 import org.apache.commons.lang.StringUtils;
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.utils.EncryptUtil;
 
 import java.util.UUID;

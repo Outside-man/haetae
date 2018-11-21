@@ -2,35 +2,23 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.user.model;
+package us.betahouse.haetae.user.model;
 
-import us.betahouse.util.common.ToString;
-import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
-import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 基础用户类型
+ * 基础用户类型(带权限信息)
  *
  * @author dango.yxm
  * @version : CommonUser.java 2018/11/17 下午8:09 dango.yxm
  */
-public class CommonUser extends ToString {
+public class CommonUser extends BasicUser {
 
     private static final long serialVersionUID = -5647855589382683224L;
-
-    /**
-     * 用户id
-     */
-    private String userId;
-
-    /**
-     * 用户信息
-     */
-    private UserInfoBO userInfo;
 
     /**
      * 角色信息
@@ -122,22 +110,6 @@ public class CommonUser extends ToString {
             return null;
         }
         return extInfo.get(key);
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public UserInfoBO getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfoBO userInfo) {
-        this.userInfo = userInfo;
     }
 
     public Map<String, PermBO> getPermission() {

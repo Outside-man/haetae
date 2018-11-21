@@ -14,10 +14,11 @@ import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.enums.UserErrorCode;
+import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.user.helper.PermissionHelper;
 import us.betahouse.haetae.user.user.helper.UserHelper;
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
-import us.betahouse.haetae.user.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.user.utils.EncryptUtil;
 import us.betahouse.util.utils.AssertUtil;
@@ -55,12 +56,12 @@ public class UserBasicServiceImpl implements UserBasicService {
     private PermissionHelper permissionHelper;
 
     @Override
-    public CommonUser login(String username, String password) {
+    public BasicUser login(String username, String password) {
         return login(username, password, null);
     }
 
     @Override
-    public CommonUser login(String username, String password, String loginIP) {
+    public BasicUser login(String username, String password, String loginIP) {
         // 验证账号密码正确
         UserBO userBO = userRepoService.queryByUserName(username);
         AssertUtil.assertNotNull(userBO, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
@@ -74,7 +75,7 @@ public class UserBasicServiceImpl implements UserBasicService {
         userBO.setLastLoginDate(new Date());
         userRepoService.updateUserByUserId(userBO);
 
-        CommonUser user = new CommonUser();
+        BasicUser user = new BasicUser();
 
         // 获取 用户id
         String userId = userBO.getUserId();
@@ -84,10 +85,6 @@ public class UserBasicServiceImpl implements UserBasicService {
         if (user.getUserInfo() == null) {
             LoggerUtil.warn(LOGGER, "用户还未绑定用户信息");
         }
-        // fetch 用户角色
-        userHelper.fillRole(user);
-        // fetch 用户权限
-        permissionHelper.fillUserPermission(user);
         return user;
     }
 
@@ -105,16 +102,16 @@ public class UserBasicServiceImpl implements UserBasicService {
     }
 
     @Override
-    public void modifyUserInfo(CommonUser commonUser) {
-        String userId = commonUser.getUserId();
+    public void modifyUserInfo(BasicUser basicUser) {
+        String userId = basicUser.getUserId();
         UserBO userBO = userRepoService.queryByUserId(userId);
         AssertUtil.assertNotNull(userBO, UserErrorCode.USER_NOT_EXIST);
         // 如果没有用户信息 就是绑定用户信息
         if (userInfoRepoService.queryUserInfoByUserId(userId) == null) {
-            userInfoRepoService.bindUserInfo(userId, commonUser.getUserInfo());
+            userInfoRepoService.bindUserInfo(userId, basicUser.getUserInfo());
         } else {
             // 修改用户信息
-            userInfoRepoService.modifyUserInfoByUserId(userId, commonUser.getUserInfo());
+            userInfoRepoService.modifyUserInfoByUserId(userId, basicUser.getUserInfo());
         }
     }
 

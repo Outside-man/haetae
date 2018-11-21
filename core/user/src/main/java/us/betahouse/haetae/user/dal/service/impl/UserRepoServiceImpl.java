@@ -15,7 +15,7 @@ import us.betahouse.haetae.user.dal.model.perm.UserDO;
 import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.util.utils.LoggerUtil;
 
 
@@ -89,6 +89,11 @@ public class UserRepoServiceImpl implements UserRepoService {
             userDO.setLastLoginDate(newUserDO.getLastLoginDate());
         }
         return convert(userDORepo.save(userDO));
+    }
+
+    @Override
+    public UserBO queryByOpenId(String openId) {
+        return convert(userDORepo.findByOpenId(openId));
     }
 
 

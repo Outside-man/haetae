@@ -4,7 +4,8 @@
  */
 package us.betahouse.haetae.user.user.service;
 
-import us.betahouse.haetae.user.user.model.CommonUser;
+import us.betahouse.haetae.user.model.BasicUser;
+import us.betahouse.haetae.user.model.CommonUser;
 
 /**
  * 用户基础服务
@@ -23,7 +24,7 @@ public interface UserBasicService {
      * @param password
      * @return
      */
-    CommonUser login(String username, String password);
+    BasicUser login(String username, String password);
 
     /**
      * 登陆 带记录ip
@@ -34,7 +35,7 @@ public interface UserBasicService {
      * @param loginIP
      * @return
      */
-    CommonUser login(String username, String password, String loginIP);
+    BasicUser login(String username, String password, String loginIP);
 
     /**
      * 登出
@@ -57,9 +58,9 @@ public interface UserBasicService {
     /**
      * 修改用户信息
      *
-     * @param commonUser
+     * @param basicUser
      */
-    void modifyUserInfo(CommonUser commonUser);
+    void modifyUserInfo(BasicUser basicUser);
 
     /**
      * 给用户添加角色

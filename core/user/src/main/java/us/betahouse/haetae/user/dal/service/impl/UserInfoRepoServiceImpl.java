@@ -16,7 +16,7 @@ import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
 import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
-import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.util.HashMap;

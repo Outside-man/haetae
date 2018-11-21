@@ -5,7 +5,7 @@
 package us.betahouse.haetae.user.manager;
 
 import us.betahouse.haetae.user.request.UserManageRequest;
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 
 /**

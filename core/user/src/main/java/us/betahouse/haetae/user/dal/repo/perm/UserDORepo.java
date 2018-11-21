@@ -41,4 +41,12 @@ public interface UserDORepo extends JpaRepository<UserDO, Long> {
      * @return
      */
     boolean existsByUserId(String userId);
+
+    /**
+     * 通过openId 查询用户信息
+     *
+     * @param openId
+     * @return
+     */
+    UserDO findByOpenId(String openId);
 }

@@ -5,7 +5,8 @@
 package us.betahouse.haetae.user.user.helper;
 
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.user.user.model.CommonUser;
+import us.betahouse.haetae.user.model.BasicUser;
+import us.betahouse.haetae.user.model.CommonUser;
 
 
 /**
@@ -22,7 +23,7 @@ public class UserHelper extends BaseHelper {
      *
      * @param user
      */
-    public void fillUserInfo(CommonUser user) {
+    public void fillUserInfo(BasicUser user) {
         checkBaseUser(user);
         user.setUserInfo(userInfoRepoService.queryUserInfoByUserId(user.getUserId()));
 

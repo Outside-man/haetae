@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.user.model.basic.perm;
+package us.betahouse.haetae.user.model.basic.perm;
 
 import us.betahouse.util.common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
@@ -11,19 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 用户权限关联映射
+ * 用户角色关联映射
  *
  * @author dango.yxm
- * @version : UserPermRelationBO.java 2018/11/16 下午7:08 dango.yxm
+ * @version : UserRoleRelationBO.java 2018/11/16 下午6:47 dango.yxm
  */
-public class UserPermRelationBO extends ToString {
+public class UserRoleRelationBO extends ToString {
 
-    private static final long serialVersionUID = -2813955160454262449L;
+    private static final long serialVersionUID = -3499656559703117150L;
 
     /**
-     * 用户权限映射id
+     * 用户角色映射id
      */
-    private String userPermId;
+    private String userRoleId;
 
     /**
      * 用户id
@@ -32,22 +32,22 @@ public class UserPermRelationBO extends ToString {
     private String userId;
 
     /**
-     * 权限id
+     * 角色id
      */
     @NotBlank
-    private String permId;
+    private String roleId;
 
     /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
 
-    public String getUserPermId() {
-        return userPermId;
+    public String getUserRoleId() {
+        return userRoleId;
     }
 
-    public void setUserPermId(String userPermId) {
-        this.userPermId = userPermId;
+    public void setUserRoleId(String userRoleId) {
+        this.userRoleId = userRoleId;
     }
 
     public String getUserId() {
@@ -58,12 +58,12 @@ public class UserPermRelationBO extends ToString {
         this.userId = userId;
     }
 
-    public String getPermId() {
-        return permId;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setPermId(String permId) {
-        this.permId = permId;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     public Map<String, String> getExtInfo() {

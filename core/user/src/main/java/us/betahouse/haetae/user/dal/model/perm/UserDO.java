@@ -20,7 +20,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "common_user",
         indexes = {
-                @Index(name = "idx_open_id", columnList = "open_id", unique = false),
+                @Index(name = "idx_open_id", columnList = "open_id", unique = true),
                 @Index(name = "uk_user_id", columnList = "user_id", unique = true),
                 @Index(name = "uk_user_name", columnList = "user_name", unique = true)
         })

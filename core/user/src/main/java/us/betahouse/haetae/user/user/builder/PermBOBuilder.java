@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.user.builder;
 
-import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 import java.util.HashMap;
 import java.util.Map;

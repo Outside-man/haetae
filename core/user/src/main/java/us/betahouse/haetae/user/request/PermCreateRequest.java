@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.request;
 
-import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 import javax.validation.constraints.NotNull;
 

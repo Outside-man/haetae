@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.user.user.model.basic.perm;
+package us.betahouse.haetae.user.model.basic.perm;
 
 import us.betahouse.util.common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
@@ -11,25 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 用户角色关联映射
+ * 角色权限映射关系
  *
  * @author dango.yxm
- * @version : UserRoleRelationBO.java 2018/11/16 下午6:47 dango.yxm
+ * @version : RolePermRelationBO.java 2018/11/16 下午6:55 dango.yxm
  */
-public class UserRoleRelationBO extends ToString {
+public class RolePermRelationBO extends ToString {
 
-    private static final long serialVersionUID = -3499656559703117150L;
-
-    /**
-     * 用户角色映射id
-     */
-    private String userRoleId;
+    private static final long serialVersionUID = -1575539821866033837L;
 
     /**
-     * 用户id
+     * 角色权限映射id
      */
-    @NotBlank
-    private String userId;
+    private String rolePermId;
 
     /**
      * 角色id
@@ -38,24 +32,22 @@ public class UserRoleRelationBO extends ToString {
     private String roleId;
 
     /**
+     * 权限id
+     */
+    @NotBlank
+    private String permId;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
 
-    public String getUserRoleId() {
-        return userRoleId;
+    public String getRolePermId() {
+        return rolePermId;
     }
 
-    public void setUserRoleId(String userRoleId) {
-        this.userRoleId = userRoleId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRolePermId(String rolePermId) {
+        this.rolePermId = rolePermId;
     }
 
     public String getRoleId() {
@@ -64,6 +56,14 @@ public class UserRoleRelationBO extends ToString {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    public String getPermId() {
+        return permId;
+    }
+
+    public void setPermId(String permId) {
+        this.permId = permId;
     }
 
     public Map<String, String> getExtInfo() {

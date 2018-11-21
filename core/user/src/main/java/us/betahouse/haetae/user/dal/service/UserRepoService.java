@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 /**
  * 用户仓储服务
@@ -53,4 +53,12 @@ public interface UserRepoService {
      * @return
      */
     UserBO updateUserByUserId(UserBO userBO);
+
+    /**
+     * 通过唯一openId 查询用户信息
+     *
+     * @param openId
+     * @return
+     */
+    UserBO queryByOpenId(String openId);
 }

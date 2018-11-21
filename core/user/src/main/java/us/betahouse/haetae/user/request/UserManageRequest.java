@@ -5,15 +5,13 @@
 package us.betahouse.haetae.user.request;
 
 import org.hibernate.validator.constraints.NotBlank;
-import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用户创建请求
+ * 用户管理请求
  *
  * @author dango.yxm
  * @version : UserManageRequest.java 2018/11/18 下午10:41 dango.yxm
@@ -34,7 +32,7 @@ public class UserManageRequest extends BaseRequest {
     private String userName;
 
     /**
-     * 密码
+     * 明文密码
      */
     @NotBlank
     private String password;

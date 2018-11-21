@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.user.builder;
 
-import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 
 import java.util.HashMap;
 import java.util.Map;

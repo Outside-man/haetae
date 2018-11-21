@@ -5,9 +5,9 @@
 package us.betahouse.haetae.user.user.helper;
 
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.user.user.model.basic.perm.PermBO;
-import us.betahouse.haetae.user.user.model.CommonUser;
-import us.betahouse.haetae.user.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.util.HashMap;

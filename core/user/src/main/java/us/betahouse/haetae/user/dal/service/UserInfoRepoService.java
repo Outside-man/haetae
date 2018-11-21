@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import us.betahouse.haetae.user.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
 /**
  * 用户信息仓储服务
