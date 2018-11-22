@@ -26,12 +26,6 @@ public class PermBO extends ToString {
     private String permId;
 
     /**
-     * 权限码
-     */
-    @NotBlank
-    private String permCode;
-
-    /**
      * 权限类型
      */
     @NotBlank
@@ -91,13 +85,5 @@ public class PermBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
-    }
-
-    public String getPermCode() {
-        return permCode;
-    }
-
-    public void setPermCode(String permCode) {
-        this.permCode = permCode;
     }
 }

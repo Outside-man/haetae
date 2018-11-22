@@ -44,7 +44,7 @@ public class UserManagerTest {
                 .withRealName("哈哈")
                 .withSex("男")
                 .withStuId("11111");
-        request.setUserName("yxm0110");
+        request.setUsername("yxm0110");
         request.setPassword("yxm123");
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;

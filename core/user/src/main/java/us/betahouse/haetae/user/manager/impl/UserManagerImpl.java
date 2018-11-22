@@ -14,6 +14,8 @@ import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.manager.UserManager;
+import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserBOBuilder;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
@@ -21,6 +23,8 @@ import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.validator.MultiValidator;
+
+import java.util.List;
 
 
 /**
@@ -52,12 +56,12 @@ public class UserManagerImpl implements UserManager {
     @Override
     @Transactional
     @Log(LoggerName = "us.betahouse.haetae.user.manager.UserManager")
-    public UserBO create(UserManageRequest request) {
+    public CommonUser create(UserManageRequest request) {
         // 校验用户是否合法
         userRegisterValidator.validate(request);
 
         // 创建用户
-        UserBOBuilder userBOBuilder = UserBOBuilder.getInstance(request.getUserName(), request.getPassword())
+        UserBOBuilder userBOBuilder = UserBOBuilder.getInstance(request.getUsername(), request.getPassword())
                 .withOpenId(request.getOpenId())
                 .withSalt(request.getSalt());
         UserBO user = userRepoService.createUser(userBOBuilder.build());
@@ -65,22 +69,23 @@ public class UserManagerImpl implements UserManager {
         // 绑定用户信息
         UserInfoBO userInfo = request.getUserInfoBO();
         if (userInfo != null) {
-            try {
-                userInfoRepoService.bindUserInfo(user.getUserId(), userInfo);
-            }catch (Throwable t){
-                throw t;
-            }
+            userInfoRepoService.bindUserInfo(user.getUserId(), userInfo);
         } else {
             LoggerUtil.warn(LOGGER, "创建时没有绑定用户信息 UserManageRequest={0}", request);
         }
 
         // 绑定角色
-        roleRepoService.userBindRoles(user.getUserId(), request.getRoleIds());
+        List<RoleBO> userRoles = roleRepoService.userBindRoles(user.getUserId(), request.getRoleIds());
 
         // 绑定权限
         permRepoService.userBindPerms(user.getUserId(), request.getPermIds());
 
-        return user;
+        // 构建结果
+        CommonUser commonUser = new CommonUser();
+        commonUser.setUserId(user.getUserId());
+        commonUser.setUserInfo(userInfo);
+        userRoles.forEach(commonUser::putRole);
+        return commonUser;
     }
 
     @Override

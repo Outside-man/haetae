@@ -5,14 +5,12 @@
 package us.betahouse.haetae.user.user.helper;
 
 import org.springframework.stereotype.Component;
+import us.betahouse.haetae.user.model.AuthorityUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
-import us.betahouse.haetae.user.model.CommonUser;
-import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.util.utils.AssertUtil;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 权限助手
@@ -28,32 +26,18 @@ public class PermissionHelper extends BaseHelper {
      *
      * @param user
      */
-    public void fillUserPermission(CommonUser user) {
+    public void fillUserPermission(AuthorityUser user) {
         checkBaseUser(user);
         // 组装用户上的权限
         parsePermission(user, permRepoService.queryPermByUserId(user.getUserId()));
-    }
 
-    /**
-     * 获取角色上的权限
-     *
-     * @param user
-     * @return
-     */
-    public Map<String, PermBO> fetchRolePermission(CommonUser user) {
-        Map<String, PermBO> rolePerms = new HashMap<>();
-        // 如果用户模型上为null 就需要check以下
-        if (user.getRoleInfo() == null) {
-            roleRepoService.queryRolesByUserId(user.getUserId()).forEach(user::putRole);
-        }
+        // 组装用户角色上的权限
+        roleRepoService.queryRolesByUserId(user.getUserId()).forEach(user::putRole);
+        List<String> roleIds = new ArrayList<>(user.getRoleInfo().keySet());
 
-        // 用户上有角色 就需要获取角色上的权限
-        if (!user.getRoleInfo().isEmpty()) {
-            for (RoleBO role : user.getRoleInfo().values()) {
-                permRepoService.queryPermByRoleId(role.getRoleId()).forEach(permBO -> rolePerms.put(permBO.getPermId(), permBO));
-            }
-        }
-        return rolePerms;
+        List<PermBO> rolePermList = new ArrayList<>(permRepoService.batchQueryPermByRoleId(roleIds));
+        parsePermission(user, rolePermList);
+
     }
 
     /**
@@ -61,7 +45,7 @@ public class PermissionHelper extends BaseHelper {
      *
      * @param permList
      */
-    private void parsePermission(CommonUser user, List<PermBO> permList) {
+    private void parsePermission(AuthorityUser user, List<PermBO> permList) {
         AssertUtil.assertNotNull(permList);
         for (PermBO perm : permList) {
             if (perm != null) {

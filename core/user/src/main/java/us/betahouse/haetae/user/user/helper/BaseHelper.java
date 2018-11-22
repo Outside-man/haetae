@@ -41,7 +41,6 @@ public abstract class BaseHelper {
      */
     protected void checkBaseUser(BasicUser user) {
         AssertUtil.assertNotNull(user, CommonResultCode.SYSTEM_ERROR.getMessage(), "用户不能为空");
-        String userId = user.getUserId();
-        AssertUtil.assertStringNotBlank(userId, CommonResultCode.SYSTEM_ERROR.getMessage(), "用户id不能为空");
+        AssertUtil.assertStringNotBlank(user.getUserId(), CommonResultCode.SYSTEM_ERROR.getMessage(), "用户id不能为空");
     }
 }

@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package utils;
+package us.betahouse.util.utils;
 
 import java.io.*;
 import java.net.*;
@@ -10,29 +10,41 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * http 请求工具
+ *
  * @author MessiahJK
  * @version : HttpUtils.java 2018/11/19 21:02 MessiahJK
  */
 public class HttpUtils {
-    private String charset = "utf-8";
-    private Integer connectTimeout = null;
-    private Integer socketTimeout = null;
-    private String proxyHost = null;
-    private Integer proxyPort = null;
+    /**
+     * 请求的字符集
+     */
+    private final static String charset = "utf-8";
+
+    /**
+     * 超时时长
+     */
+    private final static Integer connectTimeout = 2000;
+
+    /**
+     * socket 超时时长
+     */
+    private final static Integer socketTimeout = null;
 
     /**
      * Do GET request
+     *
      * @param url
      * @return
      * @throws Exception
      * @throws IOException
      */
-    public String doGet(String url) throws Exception {
+    public static String doGet(String url) throws Exception {
 
         URL localURL = new URL(url);
 
         URLConnection connection = openConnection(localURL);
-        HttpURLConnection httpURLConnection = (HttpURLConnection)connection;
+        HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
 
         httpURLConnection.setRequestProperty("Accept-Charset", charset);
         httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -49,7 +61,7 @@ public class HttpUtils {
 
         try {
             inputStream = httpURLConnection.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream,"UTF-8");
+            inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
             reader = new BufferedReader(inputStreamReader);
 
             while ((tempLine = reader.readLine()) != null) {
@@ -77,6 +89,7 @@ public class HttpUtils {
 
     /**
      * Do POST request
+     *
      * @param url
      * @param parameterMap
      * @return
@@ -91,9 +104,9 @@ public class HttpUtils {
             String key = null;
             String value = null;
             while (iterator.hasNext()) {
-                key = (String)iterator.next();
+                key = (String) iterator.next();
                 if (parameterMap.get(key) != null) {
-                    value = (String)parameterMap.get(key);
+                    value = (String) parameterMap.get(key);
                 } else {
                     value = "";
                 }
@@ -105,12 +118,10 @@ public class HttpUtils {
             }
         }
 
-        System.out.println("POST parameter : " + parameterBuffer.toString());
-
         URL localURL = new URL(url);
 
         URLConnection connection = openConnection(localURL);
-        HttpURLConnection httpURLConnection = (HttpURLConnection)connection;
+        HttpURLConnection httpURLConnection = (HttpURLConnection) connection;
 
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setRequestMethod("POST");
@@ -172,19 +183,41 @@ public class HttpUtils {
         return resultBuffer.toString();
     }
 
-    private URLConnection openConnection(URL localURL) throws IOException {
-        URLConnection connection;
-        if (proxyHost != null && proxyPort != null) {
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
-            connection = localURL.openConnection(proxy);
-        } else {
-            connection = localURL.openConnection();
+    /**
+     * 开启代理的连接
+     *
+     * @param localURL
+     * @param proxyHost
+     * @param proxyPort
+     * @return
+     * @throws IOException
+     */
+    private static URLConnection openConnection(URL localURL, String proxyHost, Integer proxyPort) throws IOException {
+        if (proxyHost == null || proxyPort == null) {
+            throw new IllegalArgumentException("代理信息不能为空");
         }
+        URLConnection connection;
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+        connection = localURL.openConnection(proxy);
+        return connection;
+    }
+
+    /**
+     * 开启无代理的连接
+     *
+     * @param localURL
+     * @return
+     * @throws IOException
+     */
+    private static URLConnection openConnection(URL localURL) throws IOException {
+        URLConnection connection;
+        connection = localURL.openConnection();
         return connection;
     }
 
     /**
      * Render request according setting
+     *
      * @param connection
      */
     private void renderRequest(URLConnection connection) {
@@ -197,46 +230,5 @@ public class HttpUtils {
             connection.setReadTimeout(socketTimeout);
         }
 
-    }
-
-
-    public Integer getConnectTimeout() {
-        return connectTimeout;
-    }
-
-    public void setConnectTimeout(Integer connectTimeout) {
-        this.connectTimeout = connectTimeout;
-    }
-
-    public Integer getSocketTimeout() {
-        return socketTimeout;
-    }
-
-    public void setSocketTimeout(Integer socketTimeout) {
-        this.socketTimeout = socketTimeout;
-    }
-
-    public String getProxyHost() {
-        return proxyHost;
-    }
-
-    public void setProxyHost(String proxyHost) {
-        this.proxyHost = proxyHost;
-    }
-
-    public Integer getProxyPort() {
-        return proxyPort;
-    }
-
-    public void setProxyPort(Integer proxyPort) {
-        this.proxyPort = proxyPort;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
     }
 }

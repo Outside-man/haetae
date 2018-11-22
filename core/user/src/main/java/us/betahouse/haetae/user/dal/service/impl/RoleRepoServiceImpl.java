@@ -82,7 +82,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     }
 
     @Override
-    public void userBindRoles(String userId, List<String> roleIds) {
+    public List<RoleBO> userBindRoles(String userId, List<String> roleIds) {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
         AssertUtil.assertNotNull(userDO, "用户不存在");
@@ -95,6 +95,11 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             LoggerUtil.error(LOGGER, "绑定的角色id不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的角色id不存在");
         }
+
+        // 绑定的用户角色
+        List<RoleBO> bindRoles = CollectionUtils.toStream(roleDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert).collect(Collectors.toList());
 
         // 查询已经绑定的权限
         List<String> userBoundRoleIds = CollectionUtils.toStream(userRoleRelationDORepo.findAllByUserId(userId))
@@ -129,6 +134,8 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         }
         // 绑定
         userRoleRelationDORepo.saveAll(relations);
+
+        return bindRoles;
     }
 
     /**

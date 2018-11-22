@@ -89,6 +89,19 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    public List<PermBO> batchQueryPermByRoleId(List<String> roleIds) {
+        // 获取映射关系
+        List<RolePermRelationDO> rolePermRelations = rolePermRelationDORepo.findAllByRoleIdIn(roleIds);
+        // 从映射关系抽出权限id
+        List<String> permIds = CollectionUtils.toStream(rolePermRelations)
+                .filter(Objects::nonNull)
+                .map(RolePermRelationDO::getPermId)
+                .collect(Collectors.toList());
+        // 获取对应权限实体
+        return queryPermsByPermIds(permIds);
+    }
+
+    @Override
     public List<PermBO> queryPermByUserId(String userId) {
         // 获取映射关系
         List<UserPermRelationDO> userPermRelations = userPermRelationDORepo.findAllByUserId(userId);
@@ -216,7 +229,6 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         PermBO permBO = new PermBO();
         permBO.setPermId(permDO.getPermId());
-        permBO.setPermCode(permDO.getPermCode());
         permBO.setPermType(permDO.getPermType());
         permBO.setPermName(permDO.getPermName());
         permBO.setPermDesc(permDO.getPermDesc());
@@ -236,7 +248,6 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         PermDO permDO = new PermDO();
         permDO.setPermId(permBO.getPermId());
-        permDO.setPermCode(permBO.getPermCode());
         permDO.setPermType(permBO.getPermType());
         permDO.setPermName(permBO.getPermName());
         permDO.setPermDesc(permBO.getPermDesc());

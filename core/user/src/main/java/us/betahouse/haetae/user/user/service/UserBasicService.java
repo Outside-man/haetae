@@ -17,29 +17,19 @@ import us.betahouse.haetae.user.model.CommonUser;
 public interface UserBasicService {
 
     /**
-     * 登陆 建议使用带ip的
-     * 构建完整的基础用户信息
-     *
-     * @param username
-     * @param password
-     * @return
-     */
-    BasicUser login(String username, String password);
-
-    /**
      * 登陆 带记录ip
      * 构建完整的基础用户信息
      *
      * @param username
      * @param password
+     * @param openId
      * @param loginIP
      * @return
      */
-    BasicUser login(String username, String password, String loginIP);
+    CommonUser login(String username, String password, String openId, String loginIP);
 
     /**
      * 登出
-     * TODO @dango.yxm 2018年11月18日15:41:17 暂时无用 之后引入token时使用
      *
      * @param userId
      * @return
@@ -61,20 +51,4 @@ public interface UserBasicService {
      * @param basicUser
      */
     void modifyUserInfo(BasicUser basicUser);
-
-    /**
-     * 给用户添加角色
-     *
-     * @param commonUser
-     * @param roleId
-     */
-    void addRole(CommonUser commonUser, String roleId);
-
-    /**
-     * 给用户添加权限
-     *
-     * @param commonUser
-     * @param permId
-     */
-    void addPerm(CommonUser commonUser, String permId);
 }

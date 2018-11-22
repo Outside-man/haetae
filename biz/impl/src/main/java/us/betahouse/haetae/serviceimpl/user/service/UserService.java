@@ -4,9 +4,9 @@
  */
 package us.betahouse.haetae.serviceimpl.user.service;
 
-import us.betahouse.haetae.serviceimpl.common.BaseRequest;
-import us.betahouse.haetae.user.model.BasicUser;
-import us.betahouse.util.common.Result;
+import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
+import us.betahouse.haetae.user.model.CommonUser;
 
 /**
  * 用户服务
@@ -17,13 +17,20 @@ import us.betahouse.util.common.Result;
 public interface UserService {
 
 
-    Result<BasicUser> register(BaseRequest request);
+    /**
+     * 注册用户信息
+     *
+     * @param request
+     * @return
+     */
+    CommonUser register(CommonUserRequest request, OperateContext context);
 
 
     /**
      * 登陆
+     *
      * @param request
      * @return
      */
-    Result<BasicUser> login(BaseRequest request);
+    CommonUser login(CommonUserRequest request, OperateContext context);
 }

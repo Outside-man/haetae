@@ -25,4 +25,11 @@ public interface RolePermRelationDORepo extends JpaRepository<RolePermRelationDO
      * @return
      */
     List<RolePermRelationDO> findAllByRoleId(String roleId);
+
+    /**
+     * 通过角色获取权限映射
+     * @param roleIds
+     * @return
+     */
+    List<RolePermRelationDO> findAllByRoleIdIn(List<String> roleIds);
 }

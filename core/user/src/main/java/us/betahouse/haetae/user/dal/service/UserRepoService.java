@@ -61,4 +61,12 @@ public interface UserRepoService {
      * @return
      */
     UserBO queryByOpenId(String openId);
+
+    /**
+     * 清除openId 信息
+     *
+     * @param userId
+     * @return
+     */
+    UserBO clearOpenId(String userId);
 }

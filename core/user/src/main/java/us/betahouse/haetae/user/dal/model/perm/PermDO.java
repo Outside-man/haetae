@@ -20,7 +20,6 @@ import javax.persistence.*;
 @Table(name = "common_perm",
         indexes = {
                 @Index(name = "uk_perm_id", columnList = "perm_id", unique = true),
-                @Index(name = "uk_perm_code", columnList = "perm_code", unique = true),
                 @Index(name = "idx_perm_id_perm_type", columnList = "perm_id, perm_type", unique = false)
         })
 public class PermDO extends BaseDO {
@@ -38,12 +37,6 @@ public class PermDO extends BaseDO {
      */
     @Column(name = "perm_type", length = 64, updatable = false, nullable = false)
     private String permType;
-
-    /**
-     * 权限码
-     */
-    @Column(name = "perm_code", updatable = false, nullable = false)
-    private String permCode;
 
     /**
      * 权限名称
@@ -77,14 +70,6 @@ public class PermDO extends BaseDO {
 
     public void setPermType(String permType) {
         this.permType = permType;
-    }
-
-    public String getPermCode() {
-        return permCode;
-    }
-
-    public void setPermCode(String permCode) {
-        this.permCode = permCode;
     }
 
     public String getPermName() {

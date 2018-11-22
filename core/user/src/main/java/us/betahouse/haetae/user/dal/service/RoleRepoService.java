@@ -47,5 +47,5 @@ public interface RoleRepoService {
      * @param roleIds
      * @return
      */
-    void userBindRoles(String userId, List<String> roleIds);
+    List<RoleBO> userBindRoles(String userId, List<String> roleIds);
 }

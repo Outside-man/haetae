@@ -4,8 +4,8 @@
  */
 package us.betahouse.haetae.user.manager;
 
+import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.request.UserManageRequest;
-import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 
 /**
@@ -22,7 +22,7 @@ public interface UserManager {
      * @param request
      * @return
      */
-    UserBO create(UserManageRequest request);
+    CommonUser create(UserManageRequest request);
 
     /**
      * 给用户批量添加角色

@@ -18,11 +18,6 @@ import java.util.Map;
 final public class PermBOBuilder {
 
     /**
-     * 权限码
-     */
-    private String permCode;
-
-    /**
      * 权限类型
      */
     private String permType;
@@ -40,15 +35,14 @@ final public class PermBOBuilder {
     /**
      * 拓展信息
      */
-    private Map<String, String> extInfo = new HashMap<>();;
+    private Map<String, String> extInfo = new HashMap<>();
 
-    public static PermBOBuilder getInstance(String permCode, String permType, String permName) {
-        return new PermBOBuilder(permCode, permType, permName);
+    public static PermBOBuilder getInstance(String permType, String permName) {
+        return new PermBOBuilder(permType, permName);
     }
 
     public PermBO build() {
         PermBO permBO = new PermBO();
-        permBO.setPermCode(permCode);
         permBO.setPermType(permType);
         permBO.setPermName(permName);
         permBO.setPermDesc(permDesc);
@@ -58,15 +52,9 @@ final public class PermBOBuilder {
         return permBO;
     }
 
-    private PermBOBuilder(String permCode, String permType, String permName) {
-        this.permCode = permCode;
+    private PermBOBuilder(String permType, String permName) {
         this.permType = permType;
         this.permName = permName;
-    }
-
-    public PermBOBuilder withPermCode(String permCode) {
-        this.permCode = permCode;
-        return this;
     }
 
     public PermBOBuilder withPermType(String permType) {

@@ -40,6 +40,14 @@ public interface PermRepoService {
     List<PermBO> queryPermByRoleId(String roleId);
 
     /**
+     * 批量查询角色下的权限
+     *
+     * @param roleIds
+     * @return
+     */
+    List<PermBO> batchQueryPermByRoleId(List<String> roleIds);
+
+    /**
      * 查询用户下的权限
      *
      * @param userId

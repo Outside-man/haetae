@@ -9,13 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.user.dal.service.PermRepoService;
-import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.model.BasicUser;
-import us.betahouse.haetae.user.user.helper.PermissionHelper;
 import us.betahouse.haetae.user.user.helper.UserHelper;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.model.CommonUser;
@@ -44,38 +41,36 @@ public class UserBasicServiceImpl implements UserBasicService {
     private UserInfoRepoService userInfoRepoService;
 
     @Autowired
-    private RoleRepoService roleRepoService;
-
-    @Autowired
-    private PermRepoService permRepoService;
-
-    @Autowired
     private UserHelper userHelper;
 
-    @Autowired
-    private PermissionHelper permissionHelper;
-
     @Override
-    public BasicUser login(String username, String password) {
-        return login(username, password, null);
-    }
+    public CommonUser login(String username, String password, String openId, String loginIP) {
+        UserBO userBO = null;
 
-    @Override
-    public BasicUser login(String username, String password, String loginIP) {
-        // 验证账号密码正确
-        UserBO userBO = userRepoService.queryByUserName(username);
-        AssertUtil.assertNotNull(userBO, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
-        boolean passwordRight = StringUtils.equals(EncryptUtil.encryptPassword(password, userBO.getSalt()), userBO.getPassword());
-        AssertUtil.assertTrue(passwordRight, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
-        // 更新登陆信息
-        if (StringUtils.isBlank(loginIP)) {
-            LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
+        // 有传入openId 尝试用openId登陆
+        if (StringUtils.isNotBlank(openId)) {
+            userBO = userRepoService.queryByOpenId(openId);
         }
-        userBO.setLastLoginIP(loginIP);
-        userBO.setLastLoginDate(new Date());
-        userRepoService.updateUserByUserId(userBO);
 
-        BasicUser user = new BasicUser();
+        if (userBO == null) {
+            // 验证账号密码正确
+            userBO = userRepoService.queryByUserName(username);
+            AssertUtil.assertNotNull(userBO, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
+            boolean passwordRight = StringUtils.equals(EncryptUtil.encryptPassword(password, userBO.getSalt()), userBO.getPassword());
+            AssertUtil.assertTrue(passwordRight, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
+            // 更新登陆信息
+            if (StringUtils.isBlank(loginIP)) {
+                LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
+            }
+            if (StringUtils.isNotBlank(openId)) {
+                userBO.setOpenId(openId);
+            }
+            userBO.setLastLoginIP(loginIP);
+            userBO.setLastLoginDate(new Date());
+            userRepoService.updateUserByUserId(userBO);
+        }
+
+        CommonUser user = new CommonUser();
 
         // 获取 用户id
         String userId = userBO.getUserId();
@@ -85,11 +80,15 @@ public class UserBasicServiceImpl implements UserBasicService {
         if (user.getUserInfo() == null) {
             LoggerUtil.warn(LOGGER, "用户还未绑定用户信息");
         }
+        // fetch 用户角色
+        userHelper.fillRole(user);
         return user;
     }
 
     @Override
     public void loginOut(String userId) {
+        // 清除用户openid
+        userRepoService.clearOpenId(userId);
     }
 
     @Override
@@ -113,38 +112,5 @@ public class UserBasicServiceImpl implements UserBasicService {
             // 修改用户信息
             userInfoRepoService.modifyUserInfoByUserId(userId, basicUser.getUserInfo());
         }
-    }
-
-    @Override
-    public void addRole(CommonUser commonUser, String roleId) {
-        // 没有角色列表就先附上空的
-        if (commonUser.getRoleInfo() == null) {
-            commonUser.setRoleInfo(new HashMap<>());
-        }
-
-        // 如果存在角色就判断是否已经绑定角色
-        boolean userBoundRole = !commonUser.getRoleInfo().isEmpty() && commonUser.fetchRole(roleId) != null;
-        if (userBoundRole) {
-            LoggerUtil.warn(LOGGER, "用户已经添加权限 commonUser={0}, roleId={1}", commonUser, roleId);
-            return;
-        }
-
-        // 绑定角色
-        roleRepoService.userBindRoles(commonUser.getUserId(), Collections.singletonList(roleId));
-    }
-
-    @Override
-    public void addPerm(CommonUser commonUser, String permId) {
-        if (commonUser.getPermission() == null) {
-            commonUser.setPermission(new HashMap<>());
-        }
-
-        // 判断 用户已经绑定权限
-        boolean userBoundPerm = !commonUser.getPermission().isEmpty() && commonUser.fetchPerm(permId) != null;
-        if (userBoundPerm) {
-            LoggerUtil.warn(LOGGER, "用户已经添加权限 commonUser={0}, permId={1}", commonUser, permId);
-            return;
-        }
-        permRepoService.userBindPerms(commonUser.getUserId(), Collections.singletonList(permId));
     }
 }

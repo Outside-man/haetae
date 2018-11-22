@@ -31,9 +31,9 @@ public class UserNameBasicValidator implements Validator<UserManageRequest> {
     @Override
     public void validate(UserManageRequest request) {
         AssertUtil.assertNotNull(request, "请求不能为空");
-        AssertUtil.assertStringNotBlank(request.getUserName(), "用户名不能为空");
-        AssertUtil.assertTrue(CharsetEncodingUtil.canEncodeGBK(request.getUserName()), "用户名不能包含特殊字符");
-        UserBO userBO = userRepoService.queryByUserName(request.getUserName());
+        AssertUtil.assertStringNotBlank(request.getUsername(), "用户名不能为空");
+        AssertUtil.assertTrue(CharsetEncodingUtil.canEncodeGBK(request.getUsername()), "用户名不能包含特殊字符");
+        UserBO userBO = userRepoService.queryByUserName(request.getUsername());
         AssertUtil.assertNull(userBO, "用户名已经注册");
     }
 }
