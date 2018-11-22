@@ -40,14 +40,14 @@ public class PositionRecordRepoServiceImpl implements PositionRecordRepoService 
     }
 
     /**
-     * 通过学号查询履历记录
+     * 通过用户id查询履历记录
      *
-     * @param stuId
+     * @param userId
      * @return
      */
     @Override
-    public List<PositionRecordBO> queryPositionRecordByStuId(String stuId) {
-        List<PositionRecordDO> positionRecordDOList=positionRecordDORepo.findByStuId(stuId);
+    public List<PositionRecordBO> queryPositionRecordByUserId(String userId) {
+        List<PositionRecordDO> positionRecordDOList=positionRecordDORepo.findByUserId(userId);
         return CollectionUtils.toStream(positionRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -81,7 +81,7 @@ public class PositionRecordRepoServiceImpl implements PositionRecordRepoService 
         }
         PositionRecordDO positionRecordDO=new PositionRecordDO();
         positionRecordDO.setPositionRecordId(positionRecordBO.getPositionRecordId());
-        positionRecordDO.setStuId(positionRecordBO.getStuId());
+        positionRecordDO.setUserId(positionRecordBO.getUserId());
         positionRecordDO.setOrganizationId(positionRecordBO.getOrganizationId());
         positionRecordDO.setPosition(positionRecordBO.getPosition());
         positionRecordDO.setTerm(positionRecordBO.getTerm());
@@ -103,7 +103,7 @@ public class PositionRecordRepoServiceImpl implements PositionRecordRepoService 
         }
         PositionRecordBO positionRecordBO=new PositionRecordBO();
         positionRecordBO.setPositionRecordId(positionRecordDO.getPositionRecordId());
-        positionRecordBO.setStuId(positionRecordDO.getStuId());
+        positionRecordBO.setUserId(positionRecordDO.getUserId());
         positionRecordBO.setOrganizationId(positionRecordDO.getOrganizationId());
         positionRecordBO.setPosition(positionRecordDO.getPosition());
         positionRecordBO.setTerm(positionRecordDO.getTerm());

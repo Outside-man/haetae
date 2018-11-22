@@ -20,10 +20,10 @@ import java.util.List;
 public interface PositionRecordDORepo extends JpaRepository<PositionRecordDO,Long> {
     /**
      * 通过学号查询履历
-     * @param stuId
+     * @param userId
      * @return
      */
-    List<PositionRecordDO> findByStuId(String stuId);
+    List<PositionRecordDO> findByUserId(String userId);
 
     /**
      * 通过组织id查询履历

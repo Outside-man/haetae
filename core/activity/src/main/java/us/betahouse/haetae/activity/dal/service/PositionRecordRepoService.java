@@ -25,10 +25,10 @@ public interface PositionRecordRepoService {
     /**
      * 通过学号查询履历
      *
-     * @param stuId
+     * @param userId
      * @return
      */
-    List<PositionRecordBO> queryPositionRecordByStuId(String stuId);
+    List<PositionRecordBO> queryPositionRecordByUserId(String UserId);
 
     /**
      * 通过

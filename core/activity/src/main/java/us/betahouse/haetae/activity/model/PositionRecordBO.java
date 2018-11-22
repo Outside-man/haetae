@@ -22,9 +22,9 @@ public class PositionRecordBO extends ToString {
     private String positionRecordId;
 
     /**
-     * 学号
+     * 用户id
      */
-    private String stuId;
+    private String userId;
 
     /**
      * 组织名
@@ -59,12 +59,12 @@ public class PositionRecordBO extends ToString {
         this.positionRecordId = positionRecordId;
     }
 
-    public String getStuId() {
-        return stuId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setStuId(String stuId) {
-        this.stuId = stuId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getOrganizationId() {

@@ -2,43 +2,30 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.activity.dal.model;
-
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
+package us.betahouse.haetae.activity.request;
 
 /**
- * 履历实体
+ * 履历管理请求
  *
  * @author MessiahJK
- * @version : RecordDO.java 2018/11/17 1:46 MessiahJK
+ * @version : PositionRecordRequest.java 2018/11/22 16:39 MessiahJK
  */
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "activity_position_record",
-        indexes = {
-                @Index(name = "uk_position_record_id", columnList = "position_record_id", unique = true)
-        })
-public class PositionRecordDO extends BaseDO {
+public class PositionRecordRequest extends BaseRequest {
 
-    private static final long serialVersionUID = -788359937210986705L;
+    private static final long serialVersionUID = 353972037428699435L;
     /**
      * 履历id
      */
-    @Column(name = "position_record_id", length = 32, updatable = false)
     private String positionRecordId;
 
     /**
-     * 学号
+     * 用户id
      */
-    @Column(name = "user_id", length = 32, updatable = false)
     private String userId;
 
     /**
      * 组织名
      */
-    @Column(name = "organization_id", length = 32, updatable = false)
     private String organizationId;
 
     /**
@@ -103,4 +90,5 @@ public class PositionRecordDO extends BaseDO {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }
