@@ -31,7 +31,7 @@ public interface ActivityService {
      * @param context
      * @return
      */
-    List<ActivityBO> findall(OperateContext context);
+    List<ActivityBO> findAll(OperateContext context);
 
     /**
      * 更新活动

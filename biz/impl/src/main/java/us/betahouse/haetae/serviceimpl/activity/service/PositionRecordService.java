@@ -8,6 +8,8 @@ import us.betahouse.haetae.activity.model.PositionRecordBO;
 import us.betahouse.haetae.activity.request.PositionRecordRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
+import java.util.List;
+
 /**
  * @author MessiahJK
  * @version : PositionRecordService.java 2018/11/22 20:17 MessiahJK
@@ -19,7 +21,7 @@ public interface PositionRecordService {
      * @param context
      * @return
      */
-    PositionRecordBO findByUserId(PositionRecordRequest request, OperateContext context);
+    List<PositionRecordBO> findByUserId(PositionRecordRequest request, OperateContext context);
 
     /**
      * 通过组织id 查找组织内成员
@@ -27,7 +29,7 @@ public interface PositionRecordService {
      * @param context
      * @return
      */
-    PositionRecordBO findByOrganizationId(PositionRecordRequest request,OperateContext context);
+    List<PositionRecordBO> findByOrganizationId(PositionRecordRequest request,OperateContext context);
 
 
 }

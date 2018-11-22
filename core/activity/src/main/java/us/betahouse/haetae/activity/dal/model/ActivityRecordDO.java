@@ -51,7 +51,7 @@ public class ActivityRecordDO extends BaseDO {
     /**
      * 时长
      */
-    private Double time;
+    private Integer time;
 
     /**
      * 类型
@@ -105,11 +105,11 @@ public class ActivityRecordDO extends BaseDO {
         this.scannerUserId = scannerUserId;
     }
 
-    public Double getTime() {
+    public Integer getTime() {
         return time;
     }
 
-    public void setTime(Double time) {
+    public void setTime(Integer time) {
         this.time = time;
     }
 

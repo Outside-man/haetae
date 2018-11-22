@@ -57,7 +57,7 @@ public class ActivityDO extends BaseDO{
      * 默认时长
      */
     @Column(name ="default_time" )
-    private Double defaultTime;
+    private Integer defaultTime;
 
     /**
      * 活动开始时间
@@ -136,11 +136,11 @@ public class ActivityDO extends BaseDO{
         this.location = location;
     }
 
-    public Double getDefaultTime() {
+    public Integer getDefaultTime() {
         return defaultTime;
     }
 
-    public void setDefaultTime(Double defaultTime) {
+    public void setDefaultTime(Integer defaultTime) {
         this.defaultTime = defaultTime;
     }
 

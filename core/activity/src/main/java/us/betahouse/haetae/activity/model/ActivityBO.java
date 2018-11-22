@@ -50,7 +50,7 @@ public class ActivityBO extends ToString {
     /**
      * 默认时长
      */
-    private Double defaultTime;
+    private Integer defaultTime;
 
     /**
      * 活动开始时间
@@ -132,11 +132,11 @@ public class ActivityBO extends ToString {
         this.location = location;
     }
 
-    public Double getDefaultTime() {
+    public Integer getDefaultTime() {
         return defaultTime;
     }
 
-    public void setDefaultTime(Double defaultTime) {
+    public void setDefaultTime(Integer defaultTime) {
         this.defaultTime = defaultTime;
     }
 

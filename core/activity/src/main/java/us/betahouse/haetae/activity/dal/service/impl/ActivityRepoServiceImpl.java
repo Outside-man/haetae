@@ -134,6 +134,11 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         return convert(activityDORepo.save(activityDO));
     }
 
+    @Override
+    public ActivityBO queryActivityByActivityId(String ActivityId) {
+        return convert(activityDORepo.findByActivityId(ActivityId));
+    }
+
     /**
      * 活动DO2BO
      *

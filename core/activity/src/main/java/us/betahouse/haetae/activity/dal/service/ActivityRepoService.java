@@ -43,4 +43,11 @@ public interface ActivityRepoService {
      */
     ActivityBO updateActivity(ActivityBO activityBO);
 
+    /**
+     * 通过活动id查询活动
+     *
+     * @param activityId
+     * @return
+     */
+    ActivityBO queryActivityByActivityId(String activityId);
 }
