@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.enums;
 
 import us.betahouse.util.common.ResultCode;
+import us.betahouse.util.enums.CommonResultCode;
 
 /**
  * 用户异常码
@@ -14,21 +15,24 @@ import us.betahouse.util.common.ResultCode;
  */
 public enum UserErrorCode implements ResultCode {
 
-    USERNAME_PASSWORD_NOT_RIGHT("用户名或密码错误"),
+    USERNAME_PASSWORD_NOT_RIGHT(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户名或密码错误"),
 
-    USER_NOT_EXIST("用户不存在"),
+    USER_NOT_EXIST(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不存在"),
 
     ;
 
+    private String code;
+
     private String message;
 
-    UserErrorCode(String message) {
+    UserErrorCode(String code, String message) {
+        this.code = code;
         this.message = message;
     }
 
     @Override
     public String getCode() {
-        return name();
+        return code;
     }
 
     @Override

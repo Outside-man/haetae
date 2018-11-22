@@ -40,7 +40,6 @@ public class UserManageRequest extends BaseRequest {
     /**
      * 盐
      */
-    @NotBlank
     private String salt;
 
     /**

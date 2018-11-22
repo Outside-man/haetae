@@ -32,7 +32,7 @@ public enum CommonResultCode implements ResultCode {
 
     private String message;
 
-    public CommonResultCode getByCode(String code) {
+    public static CommonResultCode getByCode(String code) {
         for (CommonResultCode commonResultCode : values()) {
             if (StringUtils.equals(commonResultCode.getCode(), code)) {
                 return commonResultCode;

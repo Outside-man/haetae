@@ -7,6 +7,10 @@ package us.betahouse.haetae.serviceimpl.user.service;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+
+import java.util.Map;
 
 /**
  * 用户服务
@@ -33,4 +37,31 @@ public interface UserService {
      * @return
      */
     CommonUser login(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 登出
+     *
+     * @param request
+     * @return
+     */
+    void logout(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 获取权限
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    Map<String, PermBO> fetchUserPerms(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 获取角色
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    Map<String, RoleBO> fetchUserRoles(CommonUserRequest request, OperateContext context);
 }
+

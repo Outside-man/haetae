@@ -4,6 +4,7 @@
  */
 package us.betahouse.util.enums;
 
+import org.apache.commons.lang.StringUtils;
 import us.betahouse.util.common.ResultCode;
 
 /**
@@ -32,6 +33,15 @@ public enum RestResultCode implements ResultCode {
 
     private String message;
 
+    public static RestResultCode getByCode(String code) {
+        for (RestResultCode restResultCode : values()) {
+            if (StringUtils.equals(restResultCode.getCode(), code)) {
+                return restResultCode;
+            }
+        }
+        return null;
+    }
+
     RestResultCode(String code, String message) {
         this.code = code;
         this.message = message;
@@ -39,11 +49,11 @@ public enum RestResultCode implements ResultCode {
 
     @Override
     public String getCode() {
-        return null;
+        return this.code;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return this.message;
     }
 }

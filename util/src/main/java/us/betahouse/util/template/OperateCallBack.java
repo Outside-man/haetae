@@ -9,9 +9,9 @@ import us.betahouse.util.common.Result;
 /**
  * 操作模板
  * @author dango.yxm
- * @version : RestOperateCallBack.java 2018/10/06 下午2:19 dango.yxm
+ * @version : OperateCallBack.java 2018/10/06 下午2:19 dango.yxm
  */
-public interface RestOperateCallBack<T> {
+public interface OperateCallBack<T> {
 
     default void before(){};
 

@@ -6,6 +6,10 @@ package us.betahouse.haetae.user.user.service;
 
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+
+import java.util.Map;
 
 /**
  * 用户基础服务
@@ -51,4 +55,20 @@ public interface UserBasicService {
      * @param basicUser
      */
     void modifyUserInfo(BasicUser basicUser);
+
+    /**
+     * 获取用户的权限
+     *
+     * @param userId
+     * @return
+     */
+    Map<String, PermBO> fetchUserPerms(String userId);
+
+    /**
+     * 获取用户的角色
+     *
+     * @param userId
+     * @return
+     */
+    Map<String, RoleBO> fetchUserRoles(String userId);
 }

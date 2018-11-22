@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.request;
 
-import us.betahouse.util.common.ToString;
 
 /**
  * 用户请求
@@ -12,7 +11,7 @@ import us.betahouse.util.common.ToString;
  * @author dango.yxm
  * @version : UserRequest.java 2018/11/21 8:45 PM dango.yxm
  */
-public class UserRequest extends ToString {
+public class UserRequest extends BaseRequest {
 
     private static final long serialVersionUID = 4621666229903071688L;
 
@@ -40,6 +39,11 @@ public class UserRequest extends ToString {
      * 学号
      */
     private String stuId;
+
+    /**
+     * 微信code
+     */
+    private String code;
 
 
     public String getUserId() {
@@ -80,5 +84,13 @@ public class UserRequest extends ToString {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

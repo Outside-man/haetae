@@ -2,21 +2,21 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.util.template;
+package us.betahouse.haetae.template;
 
-import us.betahouse.util.common.Result;
-import us.betahouse.util.enums.CommonResultCode;
-import us.betahouse.util.exceptions.BetahouseException;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
+import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.RestResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.LoggerUtil;
 
-import java.text.MessageFormat;
 
 /**
  * Rest操作模板类
  *
  * @author dango.yxm
- * @version : RestOperateTemplate.java 2018/10/06 下午2:12 dango.yxm
+ * @version : OperateTemplate.java 2018/10/06 下午2:12 dango.yxm
  */
 public class RestOperateTemplate {
 
@@ -45,20 +45,35 @@ public class RestOperateTemplate {
             return result;
         } catch (BetahouseException be) {
             LoggerUtil.warn(be, logger, "RestOperateTemplate.operate fail, methodName={0}, request={1}, errorCode={2}, errorMsg={3}", methodName, request, be.getErrorCode(), be.getMessage());
-            result = new Result<>(false, be.getErrorCode(), be.getMessage());
+            result = new Result<>(false, convertCode(be.getErrorCode()), be.getMessage());
             return result;
         } catch (Exception e) {
             LoggerUtil.error(e, logger, "RestOperateTemplate.operate error, methodName={0}, request={1}", methodName, request);
-            result = new Result<>(false, CommonResultCode.SYSTEM_ERROR.getCode(), CommonResultCode.SYSTEM_ERROR.getMessage());
+            result = new Result<>(false, RestResultCode.SYSTEM_ERROR.getCode(), RestResultCode.SYSTEM_ERROR.getMessage());
             return result;
         } catch (Throwable t) {
             LoggerUtil.error(t, logger, "RestOperateTemplate.operate throwable, methodName={0}, request={1}", methodName, request);
-            result = new Result<>(false, CommonResultCode.SYSTEM_ERROR.getCode(), CommonResultCode.SYSTEM_ERROR.getMessage());
+            result = new Result<>(false, RestResultCode.SYSTEM_ERROR.getCode(), RestResultCode.SYSTEM_ERROR.getMessage());
             return result;
         } finally {
             long end = System.currentTimeMillis();
-            System.out.println(MessageFormat.format("RestOperateTemplate.operate final, methodName={0}, consume={1}ms, request={2}, result={3}", methodName, end - start, request, result));
             LoggerUtil.info(logger, "RestOperateTemplate.operate final, methodName={0}, consume={1}ms, request={2}, result={3}", methodName, end - start, request, result);
         }
+    }
+
+
+    /**
+     * 转换错误码为http请求的
+     *
+     * @param errorCode
+     * @return
+     */
+    private static String convertCode(String errorCode) {
+        for (RestResultCode resultCode : RestResultCode.values()) {
+            if (StringUtils.equals(errorCode, resultCode.name())) {
+                return resultCode.getCode();
+            }
+        }
+        return RestResultCode.SYSTEM_ERROR.getCode();
     }
 }

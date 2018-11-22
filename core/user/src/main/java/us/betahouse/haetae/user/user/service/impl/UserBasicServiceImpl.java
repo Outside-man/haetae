@@ -13,6 +13,8 @@ import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.model.BasicUser;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.user.helper.UserHelper;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.model.CommonUser;
@@ -112,5 +114,15 @@ public class UserBasicServiceImpl implements UserBasicService {
             // 修改用户信息
             userInfoRepoService.modifyUserInfoByUserId(userId, basicUser.getUserInfo());
         }
+    }
+
+    @Override
+    public Map<String, PermBO> fetchUserPerms(String userId) {
+        return userHelper.fetchUserPermissions(userId);
+    }
+
+    @Override
+    public Map<String, RoleBO> fetchUserRoles(String userId) {
+        return userHelper.fetchUserRoles(userId);
     }
 }
