@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import us.betahouse.haetae.log.LoggerName;
 import us.betahouse.haetae.request.UserRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
@@ -21,6 +22,7 @@ import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
+import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +46,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/login")
+    @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<CommonUser> login(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户登录", request, new RestOperateCallBack<CommonUser>() {
             @Override

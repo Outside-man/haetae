@@ -17,12 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 public class IPUtil {
 
     /**
+     * 空字符串
+     */
+    private final static String EMPTY_STRING = "";
+
+    /**
      * 获取请求里面的ip地址
      *
      * @param request
      * @return
      */
     public static String getIpAddr(HttpServletRequest request) {
+        if (request == null) {
+            return EMPTY_STRING;
+        }
         String ip = request.getHeader("X-Forwarded-For");
         if (StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)) {
             //多次反向代理后会有多个ip值，第一个ip才是真实ip

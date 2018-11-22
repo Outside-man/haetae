@@ -20,7 +20,6 @@ import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserBOBuilder;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
-import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.validator.MultiValidator;
 
@@ -55,7 +54,6 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     @Transactional
-    @Log(LoggerName = "us.betahouse.haetae.user.manager.UserManager")
     public CommonUser create(UserManageRequest request) {
         // 校验用户是否合法
         userRegisterValidator.validate(request);

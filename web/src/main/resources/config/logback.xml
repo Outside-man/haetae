@@ -104,6 +104,19 @@
         </encoder>
     </appender>
 
+    <!--======================================摘要日志======================================-->
+    <!-- biz-service-impl 日志 -->
+    <appender name="USER-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/digest/user-digest.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <!--======================================日志配置======================================-->
     <!--数据库日志-->
     <logger name="org.hibernate.SQL" additivity="false" >
@@ -142,6 +155,13 @@
         <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="BIZ-SERVICE-IMPL"/>
+    </logger>
+
+    <!--摘要日志-->
+    <logger name="USER_DIGEST" level="INFO">
+        <!-- 文件输出 -->
+        <appender-ref ref="COMMON-ERROR"/>
+        <appender-ref ref="USER-DIGEST"/>
     </logger>
 
 </configuration>

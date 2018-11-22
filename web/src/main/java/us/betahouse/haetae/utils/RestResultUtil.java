@@ -22,6 +22,19 @@ public class RestResultUtil {
      * @param <T>
      * @return
      */
+    public static <T> Result<T> buildFailResult(T data, String message) {
+        Result<T> result = buildFailResult(message);
+        result.setData(data);
+        return result;
+    }
+
+    /**
+     * 构建失败结果
+     *
+     * @param data
+     * @param <T>
+     * @return
+     */
     public static <T> Result<T> buildFailResult(T data) {
         Result<T> result = buildFailResult();
         result.setData(data);
@@ -42,6 +55,20 @@ public class RestResultUtil {
     }
 
     /**
+     * 构建失败结果
+     *
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> buildFailResult(String message) {
+        Result<T> result = buildResult(RestResultCode.SYSTEM_ERROR, message);
+        result.setSuccess(false);
+        result.setRetry(false);
+        return result;
+    }
+
+    /**
      * 构建成功结果
      *
      * @param data
@@ -49,7 +76,21 @@ public class RestResultUtil {
      * @return
      */
     public static <T> Result<T> buildSuccessResult(T data) {
-        Result<T> result = new Result<>();
+        Result<T> result = buildSuccessResult();
+        result.setData(data);
+        return result;
+    }
+
+    /**
+     * 构建成功结果
+     *
+     * @param data
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> buildSuccessResult(T data, String message) {
+        Result<T> result = buildSuccessResult(message);
         result.setData(data);
         return result;
     }
@@ -68,6 +109,20 @@ public class RestResultUtil {
     }
 
     /**
+     * 构建成功结果
+     *
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> buildSuccessResult(String message) {
+        Result<T> result = buildResult(RestResultCode.SUCCESS, message);
+        result.setSuccess(true);
+        result.setRetry(false);
+        return result;
+    }
+
+    /**
      * 构建结果
      *
      * @param resultCode
@@ -77,7 +132,22 @@ public class RestResultUtil {
     public static <T> Result<T> buildResult(RestResultCode resultCode) {
         Result<T> result = new Result<>();
         result.setErrorCode(resultCode.getCode());
-        result.setErrorCode(resultCode.getMessage());
+        result.setErrorMsg(resultCode.getMessage());
+        return result;
+    }
+
+    /**
+     * 构建结果
+     *
+     * @param resultCode
+     * @param message
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> buildResult(RestResultCode resultCode, String message) {
+        Result<T> result = new Result<>();
+        result.setErrorCode(resultCode.getCode());
+        result.setErrorMsg(message);
         return result;
     }
 }

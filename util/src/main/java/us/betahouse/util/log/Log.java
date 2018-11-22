@@ -26,7 +26,7 @@ public @interface Log {
      *
      * @return
      */
-    String LoggerName();
+    String loggerName();
 
     /**
      * 日志标识
