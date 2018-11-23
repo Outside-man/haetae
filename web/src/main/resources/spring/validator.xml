@@ -24,4 +24,14 @@
         </property>
     </bean>
 
+    <!--密码规则校验器-->
+    <bean id="passwordValidator" class="us.betahouse.util.validator.MultiValidator">
+        <property name="validatorList">
+            <list>
+                <ref bean="passwordBasicValidator"/>
+                <ref bean="passwordStrengthValidator"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

@@ -101,8 +101,8 @@ public class UserRepoServiceImpl implements UserRepoService {
     public UserBO clearOpenId(String userId) {
         UserDO userDO = userDORepo.findByUserId(userId);
         if (userDO == null) {
-            LoggerUtil.error(LOGGER, "更新的用户不存在 userId={0}", userId);
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的用户不存在");
+            LoggerUtil.error(LOGGER, "用户不存在 userId={0}", userId);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不存在");
         }
         userDO.setOpenId(null);
         return EntityConverter.convert(userDORepo.save(userDO));

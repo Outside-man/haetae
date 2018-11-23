@@ -31,7 +31,7 @@ public class UserBO extends ToString {
     private String userName;
 
     /**
-     * 密码
+     * 密文密码
      */
     @NotBlank
     private String password;

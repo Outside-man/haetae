@@ -2,6 +2,12 @@ package us.betahouse.util.utils;
 
 import java.security.MessageDigest;
 
+/**
+ * MD5 加密工具类
+ *
+ * @author dango.yxm
+ * @version : MD5Util.java 2018/11/18 下午2:59 dango.yxm
+ */
 public class MD5Util {
     public static String MD5(String pwd) {
         //用于加密的字符

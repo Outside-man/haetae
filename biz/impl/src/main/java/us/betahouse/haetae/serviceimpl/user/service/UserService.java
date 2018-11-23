@@ -63,5 +63,13 @@ public interface UserService {
      * @return
      */
     Map<String, RoleBO> fetchUserRoles(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 修改账户信息
+     *
+     * @param request
+     * @param context
+     */
+    void modifyUser(CommonUserRequest request, OperateContext context);
 }
 
