@@ -4,7 +4,8 @@
  */
 package us.betahouse.util.utils;
 
-import java.util.Collection;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -41,5 +42,29 @@ public class CollectionUtils {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 不同的两个集合 按一定方法去重
+     *
+     * @param collection
+     * @param remove
+     * @param getR
+     * @param <T>
+     * @param <R>
+     * @return
+     */
+    public static <T, R> void removeDuplicate(Collection<T> collection, Collection<R> remove, Function<T, R> getR) {
+        if (!isEmpty(remove)) {
+            Iterator<T> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                T t = iterator.next();
+                for (R r : remove) {
+                    if (r.equals(getR.apply(t))) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
     }
 }

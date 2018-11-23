@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
 
+import java.util.List;
+
 
 /**
  * 用户实体仓储
@@ -49,4 +51,12 @@ public interface UserDORepo extends JpaRepository<UserDO, Long> {
      * @return
      */
     UserDO findByOpenId(String openId);
+
+    /**
+     * 批量获取用户
+     *
+     * @param userIds
+     * @return
+     */
+    List<UserDO> findAllByUserIdIn(List<String> userIds);
 }

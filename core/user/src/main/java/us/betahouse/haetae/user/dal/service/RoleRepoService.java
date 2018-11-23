@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.dal.service;
 
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 import java.util.List;
 
@@ -48,4 +49,38 @@ public interface RoleRepoService {
      * @return
      */
     List<RoleBO> userBindRoles(String userId, List<String> roleIds);
+
+    /**
+     * 给用户解除绑定角色
+     *
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    void userUnbindRoles(String userId, List<String> roleIds);
+
+    /**
+     * 给用户绑定角色
+     *
+     * @param userIds
+     * @param roleId
+     * @return
+     */
+    List<UserBO> usersBindRole(List<String> userIds, String roleId);
+
+    /**
+     * 给用户解除绑定角色
+     *
+     * @param userIds
+     * @param roleId
+     * @return
+     */
+    void usersUnbindRole(List<String> userIds, String roleId);
+
+    /**
+     * 解除角色和所有用户的绑定
+     *
+     * @param roleId
+     */
+    void detachAllUser(String roleId);
 }

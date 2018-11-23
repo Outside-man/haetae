@@ -4,7 +4,8 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import us.betahouse.haetae.user.dal.convert.EntityConverter;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
@@ -21,7 +22,6 @@ import us.betahouse.haetae.user.dal.repo.perm.UserRoleRelationDORepo;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
-import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.utils.CollectionUtils;
@@ -60,7 +60,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         if (StringUtils.isBlank(roleBO.getRoleId())) {
             roleBO.setRoleId(userBizIdFactory.getRoleId());
         }
-        return convert(roleDORepo.save(convert(roleBO)));
+        return EntityConverter.convert(roleDORepo.save(EntityConverter.convert(roleBO)));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         List<RoleDO> roleDOList = roleDORepo.findAllByRoleIdIn(roleIds);
         return CollectionUtils.toStream(roleDOList)
                 .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+                .map(EntityConverter::convert).collect(Collectors.toList());
     }
 
     @Override
@@ -99,7 +99,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         // 绑定的用户角色
         List<RoleBO> bindRoles = CollectionUtils.toStream(roleDOList)
                 .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+                .map(EntityConverter::convert).collect(Collectors.toList());
 
         // 查询已经绑定的权限
         List<String> userBoundRoleIds = CollectionUtils.toStream(userRoleRelationDORepo.findAllByUserId(userId))
@@ -138,79 +138,93 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         return bindRoles;
     }
 
-    /**
-     * 用户角色关系 DO2BO
-     *
-     * @param relationDO
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private UserRoleRelationBO convert(UserRoleRelationDO relationDO) {
-        if (relationDO == null) {
-            return null;
+    @Override
+    public void userUnbindRoles(String userId, List<String> roleIds) {
+        // 获取用户信息
+        UserDO userDO = userDORepo.findByUserId(userId);
+        AssertUtil.assertNotNull(userDO, "用户不存在");
+
+        // 获取 roleIds 对应的角色信息
+        List<RoleDO> roleDOList = roleDORepo.findAllByRoleIdIn(roleIds);
+
+        // roleId 有查不到的就属于异常
+        if (roleDOList.size() != roleIds.size()) {
+            LoggerUtil.error(LOGGER, "解绑的角色id不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
         }
-        UserRoleRelationBO relationBO = new UserRoleRelationBO();
-        relationBO.setUserRoleId(relationDO.getUserRoleId());
-        relationBO.setRoleId(relationDO.getRoleId());
-        relationBO.setUserId(relationDO.getUserId());
-        relationBO.setExtInfo(JSON.parseObject(relationDO.getExtInfo(), Map.class));
-        return relationBO;
+
+        userRoleRelationDORepo.deleteAllByUserIdAndRoleIdIn(userId, roleIds);
     }
 
-    /**
-     * 用户角色关系 BO2DO
-     *
-     * @param relationBO
-     * @return
-     */
-    private UserRoleRelationDO convert(UserRoleRelationBO relationBO) {
-        if (relationBO == null) {
-            return null;
+    @Override
+    public List<UserBO> usersBindRole(List<String> userIds, String roleId) {
+        RoleDO roleDO = roleDORepo.findByRoleId(roleId);
+        AssertUtil.assertNotNull(roleDO, "角色不存在");
+
+        List<UserDO> userDOList = userDORepo.findAllByUserIdIn(userIds);
+        if (userDOList.size() != userIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的用户id不存在 userIds={0}, userList={1}", userIds, userDOList);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "需要绑定的用户不存在");
         }
-        UserRoleRelationDO relationDO = new UserRoleRelationDO();
-        relationDO.setUserRoleId(relationBO.getUserRoleId());
-        relationDO.setRoleId(relationBO.getRoleId());
-        relationDO.setUserId(relationBO.getUserId());
-        relationDO.setExtInfo(JSON.toJSONString(relationBO.getExtInfo()));
-        return relationDO;
+
+        // 绑定的用户角色
+        List<UserBO> bindUsers = CollectionUtils.toStream(userDOList)
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert).collect(Collectors.toList());
+
+        // 查询已经绑定的权限
+        List<String> boundUserIds = CollectionUtils.toStream(userRoleRelationDORepo.findAllByRoleId(roleId))
+                .filter(Objects::nonNull).map(UserRoleRelationDO::getUserId)
+                .collect(Collectors.toList());
+
+        // 存在已绑定的角色,需要特殊处理 必须要迭代器删除不然会并发修改问题
+        if (!CollectionUtils.isEmpty(boundUserIds)) {
+            // 构建迭代器
+            Iterator<UserDO> userIterator = userDOList.iterator();
+            while (userIterator.hasNext()) {
+                UserDO user = userIterator.next();
+                for (String boundId : boundUserIds) {
+                    LoggerUtil.warn(LOGGER, "重复绑定角色 roleId={0}, user={1}", roleId, user);
+                    // 是已绑的角色 就从里面移除
+                    if (StringUtils.equals(boundId, user.getUserId())) {
+                        userIterator.remove();
+                    }
+                }
+            }
+        }
+
+        // 构建关联关系实体
+        List<UserRoleRelationDO> relations = new ArrayList<>();
+        for (UserDO userDO : userDOList) {
+            UserRoleRelationDO relation = new UserRoleRelationDO();
+            relation.setRoleId(roleId);
+            relation.setUserId(userDO.getUserId());
+            // 通过 id 工厂构建关联id
+            relation.setUserRoleId(userBizIdFactory.getRoleUserRelationId(roleId, userDO.getUserId()));
+            relations.add(relation);
+        }
+        // 绑定
+        userRoleRelationDORepo.saveAll(relations);
+
+        return bindUsers;
     }
 
-    /**
-     * 角色DO2BO
-     *
-     * @param roleDO
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private RoleBO convert(RoleDO roleDO) {
-        if (roleDO == null) {
-            return null;
+    @Override
+    public void usersUnbindRole(List<String> userIds, String roleId) {
+        RoleDO roleDO = roleDORepo.findByRoleId(roleId);
+        AssertUtil.assertNotNull(roleDO, "角色不存在");
+
+        List<UserDO> userDOList = userDORepo.findAllByUserIdIn(userIds);
+        if (userDOList.size() != userIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的用户id不存在 userIds={0}, userList={1}", userIds, userDOList);
         }
-        RoleBO roleBO = new RoleBO();
-        roleBO.setRoleCode(roleDO.getRoleCode());
-        roleBO.setRoleName(roleDO.getRoleName());
-        roleBO.setRoleId(roleDO.getRoleId());
-        roleBO.setRoleDesc(roleDO.getRoleDesc());
-        roleBO.setExtInfo(JSON.parseObject(roleDO.getExtInfo(), Map.class));
-        return roleBO;
+        // 解绑
+        userRoleRelationDORepo.deleteAllByRoleIdAndUserIdIn(roleId, userIds);
     }
 
-    /**
-     * 角色BO2DO
-     *
-     * @param roleBO
-     * @return
-     */
-    private RoleDO convert(RoleBO roleBO) {
-        if (roleBO == null) {
-            return null;
-        }
-        RoleDO roleDO = new RoleDO();
-        roleDO.setRoleCode(roleBO.getRoleCode());
-        roleDO.setRoleName(roleBO.getRoleName());
-        roleDO.setRoleId(roleBO.getRoleId());
-        roleDO.setRoleDesc(roleBO.getRoleDesc());
-        roleDO.setExtInfo(JSON.toJSONString(roleBO.getExtInfo()));
-        return roleDO;
+    @Override
+    public void detachAllUser(String roleId) {
+        RoleDO roleDO = roleDORepo.findByRoleId(roleId);
+        AssertUtil.assertNotNull(roleDO, "角色不存在");
+        userRoleRelationDORepo.deleteAllByRoleId(roleId);
     }
 }

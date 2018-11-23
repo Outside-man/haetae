@@ -21,6 +21,7 @@ public interface RolePermRelationDORepo extends JpaRepository<RolePermRelationDO
 
     /**
      * 通过角色获取权限映射
+     *
      * @param roleId
      * @return
      */
@@ -28,8 +29,24 @@ public interface RolePermRelationDORepo extends JpaRepository<RolePermRelationDO
 
     /**
      * 通过角色获取权限映射
+     *
      * @param roleIds
      * @return
      */
     List<RolePermRelationDO> findAllByRoleIdIn(List<String> roleIds);
+
+    /**
+     * 批量解除角色上的权限
+     *
+     * @param role
+     * @param permIds
+     */
+    void deleteAllByRoleIdAndPermIdIn(String role, List<String> permIds);
+
+    /**
+     * 解除权限的全部角色上的绑定
+     *
+     * @param permId
+     */
+    void deleteAllByPermId(String permId);
 }

@@ -87,12 +87,22 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public void batchAddRole(UserManageRequest request) {
+    public void batchBindRole(UserManageRequest request) {
         roleRepoService.userBindRoles(request.getUserId(), request.getRoleIds());
     }
 
     @Override
-    public void batchAddPerm(UserManageRequest request) {
+    public void batchUnbindRole(UserManageRequest request) {
+        roleRepoService.userUnbindRoles(request.getUserId(), request.getRoleIds());
+    }
+
+    @Override
+    public void batchBindPerm(UserManageRequest request) {
         permRepoService.userBindPerms(request.getUserId(), request.getPermIds());
+    }
+
+    @Override
+    public void batchUnbindPerm(UserManageRequest request) {
+        permRepoService.userUnbindPerms(request.getUserId(), request.getPermIds());
     }
 }

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.manager;
 
-import us.betahouse.haetae.user.request.RoleCreateRequest;
+import us.betahouse.haetae.user.request.RoleManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 
 import java.util.List;
@@ -24,14 +24,33 @@ public interface RoleManager {
      * @param request
      * @return
      */
-    RoleBO createRole(RoleCreateRequest request);
-
+    RoleBO createRole(RoleManageRequest request);
 
     /**
      * 给角色批量绑定权限
      *
-     * @param roleId
-     * @param perms
+     * @param request
      */
-    void batchBindPerm(String roleId, List<String> perms);
+    void batchRoleBindPerms(RoleManageRequest request);
+
+    /**
+     * 给角色解除权限
+     *
+     * @param request
+     */
+    void batchRoleUnbindPerms(RoleManageRequest request);
+
+    /**
+     * 批量用户绑定角色
+     *
+     * @param request
+     */
+    void batchUsersBindRole(RoleManageRequest request);
+
+    /**
+     * 批量用户解绑角色
+     *
+     * @param request
+     */
+    void batchUsersUnbindRole(RoleManageRequest request);
 }

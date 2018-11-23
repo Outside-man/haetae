@@ -26,4 +26,11 @@ public interface PermDORepo extends JpaRepository<PermDO, Long> {
      * @return
      */
     List<PermDO> findAllByPermIdIn(List<String> perms);
+
+    /**
+     * 查询权限
+     * @param permId
+     * @return
+     */
+    PermDO findByPermId(String permId);
 }

@@ -26,4 +26,36 @@ public interface UserPermRelationDORepo extends JpaRepository<UserPermRelationDO
      * @return
      */
     List<UserPermRelationDO> findAllByUserId(String userId);
+
+    /**
+     * 解除用户权限关联
+     *
+     * @param userId
+     * @param permIds
+     */
+    void deleteAllByUserIdAndPermIdIn(String userId, List<String> permIds);
+
+    /**
+     * 解除和所有用户绑定
+     *
+     * @param permId
+     */
+    void deleteAllByPermId(String permId);
+
+    /**
+     * 获取所有权限绑定
+     *
+     * @param permId
+     * @return
+     */
+    List<UserPermRelationDO> findAllByPermId(String permId);
+
+    /**
+     * 批量权限解除用户id
+     *
+     * @param permId
+     * @param userIds
+     */
+    void deleteAllByPermIdAndUserIdIn(String permId, List<String> userIds);
+
 }

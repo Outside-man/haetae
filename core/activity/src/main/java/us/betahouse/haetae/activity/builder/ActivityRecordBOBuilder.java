@@ -36,7 +36,7 @@ public final class ActivityRecordBOBuilder {
     /**
      * 时长
      */
-    private Double time;
+    private Integer time;
 
     /**
      * 类型
@@ -90,7 +90,7 @@ public final class ActivityRecordBOBuilder {
         return this;
     }
 
-    public ActivityRecordBOBuilder withTime(Double time) {
+    public ActivityRecordBOBuilder withTime(Integer time) {
         this.time = time;
         return this;
     }

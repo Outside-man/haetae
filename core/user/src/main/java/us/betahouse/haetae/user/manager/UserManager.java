@@ -29,12 +29,26 @@ public interface UserManager {
      *
      * @param request
      */
-    void batchAddRole(UserManageRequest request);
+    void batchBindRole(UserManageRequest request);
+
+    /**
+     * 给用户批量删除角色
+     *
+     * @param request
+     */
+    void batchUnbindRole(UserManageRequest request);
 
     /**
      * 给用户批量添加权限
      *
      * @param request
      */
-    void batchAddPerm(UserManageRequest request);
+    void batchBindPerm(UserManageRequest request);
+
+    /**
+     * 给用户批量删除权限
+     *
+     * @param request
+     */
+    void batchUnbindPerm(UserManageRequest request);
 }

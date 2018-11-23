@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
+import us.betahouse.haetae.user.dal.convert.EntityConverter;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
@@ -46,12 +47,12 @@ public class UserRepoServiceImpl implements UserRepoService {
 
     @Override
     public UserBO queryByUserName(String userName) {
-        return convert(userDORepo.findByUsername(userName));
+        return EntityConverter.convert(userDORepo.findByUsername(userName));
     }
 
     @Override
     public UserBO queryByUserId(String userId) {
-        return convert(userDORepo.findByUserId(userId));
+        return EntityConverter.convert(userDORepo.findByUserId(userId));
     }
 
     @Override
@@ -59,7 +60,7 @@ public class UserRepoServiceImpl implements UserRepoService {
         if (StringUtils.isBlank(userBO.getUserId())) {
             userBO.setUserId(userBizIdFactory.getUserId());
         }
-        return convert(userDORepo.save(convert(userBO)));
+        return EntityConverter.convert(userDORepo.save(EntityConverter.convert(userBO)));
     }
 
     @Override
@@ -69,7 +70,7 @@ public class UserRepoServiceImpl implements UserRepoService {
             LoggerUtil.error(LOGGER, "更新的用户不存在 UserBO={0}", userBO);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的用户不存在");
         }
-        UserDO newUserDO = convert(userBO);
+        UserDO newUserDO = EntityConverter.convert(userBO);
         if (newUserDO.getUsername() != null) {
             userDO.setUsername(newUserDO.getUsername());
         }
@@ -88,12 +89,12 @@ public class UserRepoServiceImpl implements UserRepoService {
         if (newUserDO.getLastLoginDate() != null) {
             userDO.setLastLoginDate(newUserDO.getLastLoginDate());
         }
-        return convert(userDORepo.save(userDO));
+        return EntityConverter.convert(userDORepo.save(userDO));
     }
 
     @Override
     public UserBO queryByOpenId(String openId) {
-        return convert(userDORepo.findByOpenId(openId));
+        return EntityConverter.convert(userDORepo.findByOpenId(openId));
     }
 
     @Override
@@ -104,49 +105,6 @@ public class UserRepoServiceImpl implements UserRepoService {
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的用户不存在");
         }
         userDO.setOpenId(null);
-        return convert(userDORepo.save(userDO));
-    }
-
-
-    /**
-     * DO2BO
-     *
-     * @param userDO
-     * @return
-     */
-    private UserBO convert(UserDO userDO) {
-        if (userDO == null) {
-            return null;
-        }
-        UserBO userBO = new UserBO();
-        userBO.setUserId(userDO.getUserId());
-        userBO.setUserName(userDO.getUsername());
-        userBO.setPassword(userDO.getPassword());
-        userBO.setSalt(userDO.getSalt());
-        userBO.setOpenId(userDO.getOpenId());
-        userBO.setLastLoginIP(userDO.getLastLoginIP());
-        userBO.setLastLoginDate(userDO.getLastLoginDate());
-        return userBO;
-    }
-
-    /**
-     * BO2DO
-     *
-     * @param userBO
-     * @return
-     */
-    private UserDO convert(UserBO userBO) {
-        if (userBO == null) {
-            return null;
-        }
-        UserDO userDO = new UserDO();
-        userDO.setUserId(userBO.getUserId());
-        userDO.setUsername(userBO.getUserName());
-        userDO.setPassword(userBO.getPassword());
-        userDO.setSalt(userBO.getSalt());
-        userDO.setOpenId(userBO.getOpenId());
-        userDO.setLastLoginIP(userBO.getLastLoginIP());
-        userDO.setLastLoginDate(userBO.getLastLoginDate());
-        return userDO;
+        return EntityConverter.convert(userDORepo.save(userDO));
     }
 }

@@ -2,7 +2,9 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.serviceimpl.user;
+package us.betahouse.haetae.serviceimpl.user.enums;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 角色类型
@@ -18,20 +20,31 @@ public enum RoleType {
     STUDENT("STUDENT", "普通学生"),
 
     /**
-     * 管理员 拥有所有权限
-     */
-    MANAGER("MANAGER", "管理员"),
-
-    /**
      * 活动管理者 管理活动
      */
-    ACTIVITY_MANAGER("ACTIVITY_MANAGER", "活动管理者"),
+    ACTIVITY_MANAGER("ACTIVITY_MANAGER", "活动管理员"),
 
+    /**
+     * 活动扫码员 拥有扫码员入口
+     */
+    ACTIVITY_SCANNER("ACTIVITY_SCANNER", "活动扫码员"),
 
     ;
     private String code;
 
     private String name;
+
+    public static RoleType getByCode(String code) {
+        if (StringUtils.isBlank(code)) {
+            return null;
+        }
+        for (RoleType roleType : values()) {
+            if (StringUtils.equals(roleType.getCode(), code)) {
+                return roleType;
+            }
+        }
+        return null;
+    }
 
     RoleType(String code, String name) {
         this.code = code;

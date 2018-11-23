@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.user.manager;
 
-import us.betahouse.haetae.user.request.PermCreateRequest;
+import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 /**
@@ -22,5 +22,22 @@ public interface PermManager {
      * @param request
      * @return
      */
-    PermBO createPerm(PermCreateRequest request);
+    PermBO createPerm(PermManageRequest request);
+
+
+    /**
+     * 批量用户绑定权限
+     *
+     * @param request
+     */
+    void batchUsersBindPerms(PermManageRequest request);
+
+    /**
+     * 批量用户解绑权限
+     *
+     * @param request
+     */
+    void batchUsersUnbindPerms(PermManageRequest request);
+
+
 }

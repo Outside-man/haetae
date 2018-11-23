@@ -55,12 +55,12 @@ public class UserManageRequest extends BaseRequest {
     /**
      * 绑定的角色ids
      */
-    List<String> roleIds = new ArrayList<>();
+    private List<String> roleIds = new ArrayList<>();
 
     /**
      * 绑定的权限ids
      */
-    List<String> permIds = new ArrayList<>();
+    private List<String> permIds = new ArrayList<>();
 
     public String getUserId() {
         return userId;

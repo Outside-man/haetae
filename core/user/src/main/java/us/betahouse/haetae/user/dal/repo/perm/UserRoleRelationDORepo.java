@@ -26,4 +26,36 @@ public interface UserRoleRelationDORepo extends JpaRepository<UserRoleRelationDO
      * @return
      */
     List<UserRoleRelationDO> findAllByUserId(String userId);
+
+
+    /**
+     * 解绑用户下的角色
+     *
+     * @param userId
+     * @param roleIds
+     */
+    void deleteAllByUserIdAndRoleIdIn(String userId, List<String> roleIds);
+
+    /**
+     * 查询角色下的所有用户
+     *
+     * @param roleId
+     * @return
+     */
+    List<UserRoleRelationDO> findAllByRoleId(String roleId);
+
+    /**
+     * 批量解绑用户
+     *
+     * @param roleId
+     * @param userIds
+     */
+    void deleteAllByRoleIdAndUserIdIn(String roleId, List<String> userIds);
+
+    /**
+     * 删除所有用户和权限的关联
+     *
+     * @param roleId
+     */
+    void deleteAllByRoleId(String roleId);
 }

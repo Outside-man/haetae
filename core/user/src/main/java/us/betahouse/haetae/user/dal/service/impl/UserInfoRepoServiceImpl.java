@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.user.dal.convert.EntityConverter;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
 import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
@@ -20,7 +21,6 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户信息仓储服务实现
@@ -60,17 +60,17 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
         if (StringUtils.isBlank(userInfoBO.getUserInfoId())) {
             userInfoBO.setUserInfoId(userBizIdFactory.getUserInfoId(userId));
         }
-        userInfoDORepo.save(convert(userInfoBO));
+        userInfoDORepo.save(EntityConverter.convert(userInfoBO));
     }
 
     @Override
     public UserInfoBO queryUserInfoByUserId(String userId) {
-        return convert(userInfoDORepo.findByUserId(userId));
+        return EntityConverter.convert(userInfoDORepo.findByUserId(userId));
     }
 
     @Override
     public UserInfoBO queryUserInfoByStuId(String stuId) {
-        return convert(userInfoDORepo.findByStuId(stuId));
+        return EntityConverter.convert(userInfoDORepo.findByStuId(stuId));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
         UserInfoDO userInfoDO = userInfoDORepo.findByUserId(userId);
         AssertUtil.assertNotNull(userInfoDO, "修改的用户信息不存在");
 
-        UserInfoDO newUserInfoDO = convert(userInfoBO);
+        UserInfoDO newUserInfoDO = EntityConverter.convert(userInfoBO);
         if (newUserInfoDO.getClassId() != null) {
             userInfoDO.setClassId(newUserInfoDO.getClassId());
         }
@@ -105,53 +105,6 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
             // 只有当拓展信息不为空时才会更新
             userInfoDO.setExtInfo(newUserInfoDO.getExtInfo());
         }
-        return convert(userInfoDORepo.save(userInfoDO));
-    }
-
-    /**
-     * 用户信息 DO2BO
-     *
-     * @param userInfoDO
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private UserInfoBO convert(UserInfoDO userInfoDO) {
-        if (userInfoDO == null) {
-            return null;
-        }
-        UserInfoBO userInfoBO = new UserInfoBO();
-        userInfoBO.setUserInfoId(userInfoDO.getUserInfoId());
-        userInfoBO.setUserId(userInfoDO.getUserId());
-        userInfoBO.setStuId(userInfoDO.getStuId());
-        userInfoBO.setRealName(userInfoDO.getRealName());
-        userInfoBO.setSex(userInfoDO.getSex());
-        userInfoBO.setMajorId(userInfoDO.getMajorId());
-        userInfoBO.setClassId(userInfoDO.getClassId());
-        userInfoBO.setEnrollDate(userInfoDO.getEnrollDate());
-        userInfoBO.setExtInfo(JSON.parseObject(userInfoDO.getExtInfo(), Map.class));
-        return userInfoBO;
-    }
-
-    /**
-     * 用户信息 BO2DO
-     *
-     * @param userInfoBO
-     * @return
-     */
-    private UserInfoDO convert(UserInfoBO userInfoBO) {
-        if (userInfoBO == null) {
-            return null;
-        }
-        UserInfoDO userInfoDO = new UserInfoDO();
-        userInfoDO.setUserInfoId(userInfoBO.getUserInfoId());
-        userInfoDO.setUserId(userInfoBO.getUserId());
-        userInfoDO.setStuId(userInfoBO.getStuId());
-        userInfoDO.setRealName(userInfoBO.getRealName());
-        userInfoDO.setSex(userInfoBO.getSex());
-        userInfoDO.setMajorId(userInfoBO.getMajorId());
-        userInfoDO.setClassId(userInfoBO.getClassId());
-        userInfoDO.setEnrollDate(userInfoBO.getEnrollDate());
-        userInfoDO.setExtInfo(JSON.toJSONString(userInfoBO.getExtInfo()));
-        return userInfoDO;
+        return EntityConverter.convert(userInfoDORepo.save(userInfoDO));
     }
 }

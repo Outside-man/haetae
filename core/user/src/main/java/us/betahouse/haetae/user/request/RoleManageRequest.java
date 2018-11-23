@@ -14,9 +14,9 @@ import java.util.List;
  * 角色创建请求
  *
  * @author dango.yxm
- * @version : RoleCreateRequest.java 2018/11/19 下午3:47 dango.yxm
+ * @version : RoleManageRequest.java 2018/11/19 下午3:47 dango.yxm
  */
-public class RoleCreateRequest extends BaseRequest {
+public class RoleManageRequest extends BaseRequest {
 
     private static final long serialVersionUID = 2672268693238403447L;
 
@@ -28,7 +28,13 @@ public class RoleCreateRequest extends BaseRequest {
 
 
     /**
-     * 绑定的全新啊权限ids
+     * 绑定的用户
+     */
+    private List<String> userIds = new ArrayList<>();
+
+
+    /**
+     * 绑定的权限ids
      */
     private List<String> permIds = new ArrayList<>();
 
@@ -46,5 +52,13 @@ public class RoleCreateRequest extends BaseRequest {
 
     public void setPermIds(List<String> permIds) {
         this.permIds = permIds;
+    }
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 }

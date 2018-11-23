@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.dal.service;
 
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public interface PermRepoService {
 
     /**
      * 通过权限ids 获取权限
+     *
      * @param permIds
      * @return
      */
@@ -61,7 +63,15 @@ public interface PermRepoService {
      * @param roleId
      * @param permIds
      */
-    void roleBindPerms(String roleId, List<String> permIds);
+    List<PermBO> roleBindPerms(String roleId, List<String> permIds);
+
+    /**
+     * 给角色绑定权限
+     *
+     * @param roleId
+     * @param permIds
+     */
+    void roleUnbindPerms(String roleId, List<String> permIds);
 
     /**
      * 给用户绑定权限
@@ -69,5 +79,46 @@ public interface PermRepoService {
      * @param userId
      * @param permIds
      */
-    void userBindPerms(String userId, List<String> permIds);
+    List<PermBO> userBindPerms(String userId, List<String> permIds);
+
+    /**
+     * 给用户绑定权限
+     *
+     * @param userId
+     * @param permIds
+     */
+    void userUnbindPerms(String userId, List<String> permIds);
+
+    /**
+     * 批量给用户绑定权限
+     *
+     * @param userIds
+     * @param permId
+     * @return
+     */
+    List<UserBO> usersBindPerm(List<String> userIds, String permId);
+
+    /**
+     * 批量给用户解除绑定权限
+     *
+     * @param userIds
+     * @param permId
+     * @return
+     */
+    void usersUnbindPerm(List<String> userIds, String permId);
+
+    /**
+     * 和所有角色解绑
+     *
+     * @param permId
+     */
+    void detachAllRoles(String permId);
+
+    /**
+     * 和所有用户解绑
+     *
+     * @param permId
+     */
+    void detachAllUsers(String permId);
+
 }

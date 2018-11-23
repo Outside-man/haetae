@@ -4,7 +4,8 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import us.betahouse.haetae.user.dal.convert.EntityConverter;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
@@ -17,8 +18,6 @@ import us.betahouse.haetae.user.dal.repo.perm.*;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
-import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
-import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
@@ -64,7 +63,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         if (StringUtils.isBlank(permBO.getPermId())) {
             permBO.setPermId(userBizIdFactory.getPermId());
         }
-        return convert(permDORepo.save(convert(permBO)));
+        return EntityConverter.convert(permDORepo.save(EntityConverter.convert(permBO)));
     }
 
     @Override
@@ -72,7 +71,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         List<PermDO> permDOList = permDORepo.findAllByPermIdIn(permIds);
         return CollectionUtils.toStream(permDOList)
                 .filter(Objects::nonNull)
-                .map(this::convert).collect(Collectors.toList());
+                .map(EntityConverter::convert).collect(Collectors.toList());
     }
 
     @Override
@@ -115,7 +114,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
-    public void roleBindPerms(String roleId, List<String> permIds) {
+    public List<PermBO> roleBindPerms(String roleId, List<String> permIds) {
         // 获取用户信息
         RoleDO roleDO = roleDORepo.findByRoleId(roleId);
         AssertUtil.assertNotNull(roleDO, "角色不存在");
@@ -123,6 +122,10 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 获取 permIds 对应的权限信息
         List<PermDO> permDOList = permDORepo.findAllByPermIdIn(permIds);
 
+        // 绑定的权限
+        List<PermBO> bindPerms = CollectionUtils.toStream(permDOList)
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert).collect(Collectors.toList());
 
         // permIds 有查不到的就属于异常
         if (permDOList.size() != permIds.size()) {
@@ -163,10 +166,29 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         // 绑定
         rolePermRelationDORepo.saveAll(relations);
+
+        return bindPerms;
     }
 
     @Override
-    public void userBindPerms(String userId, List<String> permIds) {
+    public void roleUnbindPerms(String roleId, List<String> permIds) {
+        // 获取用户信息
+        RoleDO roleDO = roleDORepo.findByRoleId(roleId);
+        AssertUtil.assertNotNull(roleDO, "角色不存在");
+
+        // 获取 permIds 对应的权限信息
+        List<PermDO> permDOList = permDORepo.findAllByPermIdIn(permIds);
+
+
+        // permIds 有查不到的就属于异常
+        if (permDOList.size() != permIds.size()) {
+            LoggerUtil.warn(LOGGER, "解绑的权限id不存在 permIds={0}, permDOList={1}", permIds, permDOList);
+        }
+        rolePermRelationDORepo.deleteAllByRoleIdAndPermIdIn(roleId, permIds);
+    }
+
+    @Override
+    public List<PermBO> userBindPerms(String userId, List<String> permIds) {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
         AssertUtil.assertNotNull(userDO, "用户不存在");
@@ -174,6 +196,10 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 获取 permIds 对应的权限信息
         List<PermDO> permDOList = permDORepo.findAllByPermIdIn(permIds);
 
+        // 绑定的权限
+        List<PermBO> bindPerms = CollectionUtils.toStream(permDOList)
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert).collect(Collectors.toList());
 
         // permIds 有查不到的就属于异常
         if (permDOList.size() != permIds.size()) {
@@ -214,118 +240,98 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         // 绑定
         userPermRelationDORepo.saveAll(relations);
+
+        return bindPerms;
     }
 
-    /**
-     * 权限DO2BO
-     *
-     * @param permDO
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private PermBO convert(PermDO permDO) {
-        if (permDO == null) {
-            return null;
+    @Override
+    public void userUnbindPerms(String userId, List<String> permIds) {
+        // 获取用户信息
+        UserDO userDO = userDORepo.findByUserId(userId);
+        AssertUtil.assertNotNull(userDO, "用户不存在");
+
+        // 获取 permIds 对应的权限信息
+        List<PermDO> permDOList = permDORepo.findAllByPermIdIn(permIds);
+
+        // permIds 有查不到的就属于异常
+        if (permDOList.size() != permIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的权限id不存在 permIds={0}, permDOList={1}", permIds, permDOList);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的权限id不存在");
         }
-        PermBO permBO = new PermBO();
-        permBO.setPermId(permDO.getPermId());
-        permBO.setPermType(permDO.getPermType());
-        permBO.setPermName(permDO.getPermName());
-        permBO.setPermDesc(permDO.getPermDesc());
-        permBO.setExtInfo(JSON.parseObject(permDO.getExtInfo(), Map.class));
-        return permBO;
+
+        userPermRelationDORepo.deleteAllByUserIdAndPermIdIn(userId, permIds);
+
     }
 
-    /**
-     * 权限BO2DO
-     *
-     * @param permBO
-     * @return
-     */
-    private PermDO convert(PermBO permBO) {
-        if (permBO == null) {
-            return null;
+    @Override
+    public List<UserBO> usersBindPerm(List<String> userIds, String permId) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermId(permId);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+
+
+        List<UserDO> userDOList = userDORepo.findAllByUserIdIn(userIds);
+        if (userDOList.size() != userIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的用户id不存在 userIds={0}, userList={1}", userIds, userDOList);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "需要绑定的用户不存在");
         }
-        PermDO permDO = new PermDO();
-        permDO.setPermId(permBO.getPermId());
-        permDO.setPermType(permBO.getPermType());
-        permDO.setPermName(permBO.getPermName());
-        permDO.setPermDesc(permBO.getPermDesc());
-        permDO.setExtInfo(JSON.toJSONString(permBO.getExtInfo()));
-        return permDO;
+
+        // 绑定的用户角色
+        List<UserBO> bindUsers = CollectionUtils.toStream(userDOList)
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert).collect(Collectors.toList());
+
+        // 查询已经绑定的权限
+        List<String> boundUserIds = CollectionUtils.toStream(userPermRelationDORepo.findAllByPermId(permId))
+                .filter(Objects::nonNull).map(UserPermRelationDO::getUserId)
+                .collect(Collectors.toList());
+
+        // 存在已绑定的角色,需要特殊处理 必须要迭代器删除不然会并发修改问题
+        CollectionUtils.removeDuplicate(userDOList, boundUserIds, UserDO::getUserId);
+
+        // 构建关联关系实体
+        List<UserPermRelationDO> relations = new ArrayList<>();
+        for (UserDO userDO : userDOList) {
+            UserPermRelationDO relation = new UserPermRelationDO();
+            relation.setPermId(permId);
+            relation.setUserId(userDO.getUserId());
+            // 通过 id 工厂构建关联id
+            relation.setUserPermId(userBizIdFactory.getUserPermRelationId(permId, userDO.getUserId()));
+            relations.add(relation);
+        }
+        // 绑定
+        userPermRelationDORepo.saveAll(relations);
+
+        return bindUsers;
     }
 
-    /**
-     * 用户权限关系DO2BO
-     *
-     * @param relationDO
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private UserPermRelationBO convert(UserPermRelationDO relationDO) {
-        if (relationDO == null) {
-            return null;
+    @Override
+    public void usersUnbindPerm(List<String> userIds, String permId) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermId(permId);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+
+
+        List<UserDO> userDOList = userDORepo.findAllByUserIdIn(userIds);
+        if (userDOList.size() != userIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的用户id不存在 userIds={0}, userList={1}", userIds, userDOList);
         }
-        UserPermRelationBO relationBO = new UserPermRelationBO();
-        relationBO.setUserPermId(relationDO.getUserPermId());
-        relationBO.setUserId(relationDO.getUserId());
-        relationBO.setPermId(relationDO.getPermId());
-        relationBO.setExtInfo(JSON.parseObject(relationDO.getExtInfo(), Map.class));
-        return relationBO;
+        userPermRelationDORepo.deleteAllByPermIdAndUserIdIn(permId, userIds);
     }
 
-    /**
-     * 用户权限关系BO2DO
-     *
-     * @param relationBO
-     * @return
-     */
-    private UserPermRelationDO convert(UserPermRelationBO relationBO) {
-        if (relationBO == null) {
-            return null;
-        }
-        UserPermRelationDO relationDO = new UserPermRelationDO();
-        relationDO.setUserPermId(relationBO.getUserPermId());
-        relationDO.setUserId(relationBO.getUserId());
-        relationDO.setPermId(relationBO.getPermId());
-        relationDO.setExtInfo(JSON.toJSONString(relationBO.getExtInfo()));
-        return relationDO;
+    @Override
+    public void detachAllRoles(String permId) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermId(permId);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+        rolePermRelationDORepo.deleteAllByPermId(permId);
     }
 
-    /**
-     * 角色权限关系DO2BO
-     *
-     * @param relationDO
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private RolePermRelationBO convert(RolePermRelationDO relationDO) {
-        if (relationDO == null) {
-            return null;
-        }
-        RolePermRelationBO relationBO = new RolePermRelationBO();
-        relationBO.setRolePermId(relationDO.getRolePermId());
-        relationBO.setRoleId(relationDO.getRoleId());
-        relationBO.setPermId(relationDO.getPermId());
-        relationBO.setExtInfo(JSON.parseObject(relationDO.getExtInfo(), Map.class));
-        return relationBO;
-    }
-
-    /**
-     * 角色权限关系BO2DO
-     *
-     * @param relationBO
-     * @return
-     */
-    private RolePermRelationDO convert(RolePermRelationBO relationBO) {
-        if (relationBO == null) {
-            return null;
-        }
-        RolePermRelationDO relationDO = new RolePermRelationDO();
-        relationDO.setRolePermId(relationBO.getRolePermId());
-        relationDO.setRoleId(relationBO.getRoleId());
-        relationDO.setPermId(relationBO.getPermId());
-        relationDO.setExtInfo(JSON.toJSONString(relationBO.getExtInfo()));
-        return relationDO;
+    @Override
+    public void detachAllUsers(String permId) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermId(permId);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+        userPermRelationDORepo.deleteAllByPermId(permId);
     }
 }
