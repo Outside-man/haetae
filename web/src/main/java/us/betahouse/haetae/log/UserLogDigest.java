@@ -11,7 +11,6 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.betahouse.haetae.request.UserRequest;
-import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.CommonResultCode;
@@ -23,8 +22,6 @@ import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -48,7 +45,7 @@ public class UserLogDigest {
 
 
     @Around("targetLog() && @annotation(log)")
-    public void loggerParse(ProceedingJoinPoint proceedingJoinPoint, Log log) throws Throwable {
+    public Object loggerParse(ProceedingJoinPoint proceedingJoinPoint, Log log) throws Throwable {
         // 获取logger
         final Logger logger = LoggerFactory.getLogger(log.loggerName());
 
@@ -69,6 +66,7 @@ public class UserLogDigest {
         long end = System.currentTimeMillis();
         resultMessage = MessageFormat.format(DIGEST_TEMPLATE, log.identity(), ip, methodName, parseResult(result), String.valueOf(end - start) + "ms", result.getErrorMsg(), params);
         log(logger, log.logLevel(), resultMessage);
+        return result;
     }
 
     /**
