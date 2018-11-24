@@ -12,20 +12,47 @@ package us.betahouse.haetae.activity.status.activitystatus;
  */
 public interface ActivityState {
     /**
-     * 通过
+     * 通过活动
      *
      * @param activityStateManager
      * @return
      */
      boolean pass(ActivityStateManager activityStateManager);
 
+    /**
+     * 提交活动
+     *
+     * @param activityStateManager
+     * @return
+     */
      boolean publish(ActivityStateManager activityStateManager);
 
+    /**
+     * 结束活动
+     * @param activityStateManager
+     * @return
+     */
      boolean finish(ActivityStateManager activityStateManager);
 
+    /**
+     * 重新拉起活动
+     *
+     * @param activityStateManager
+     * @return
+     */
      boolean republish(ActivityStateManager activityStateManager);
 
+    /**
+     * 取消活动
+     *
+     * @param activityStateManager
+     * @return
+     */
      boolean remove(ActivityStateManager activityStateManager);
 
+    /**
+     * 获取活动状态
+     * @return
+     */
      ActivityStateEnum getActivityState();
 }

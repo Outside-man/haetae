@@ -11,15 +11,30 @@ package us.betahouse.haetae.activity.status.activitystatus;
  * @version : ActivityStateEnum.java 2018/11/23 0:58 MessiahJK
  */
 public enum ActivityStateEnum {
-    APPROVED("2001", "通过"),
+    /**
+     * 通过
+     */
+    APPROVED("2001", "Approved"),
 
-    PUBLISHED("2002", "发布"),
+    /**
+     * 发布
+     */
+    PUBLISHED("2002", "Canceled"),
 
-    FINISHED("2003", "结束"),
+    /**
+     * 结束
+     */
+    FINISHED("2003", "Finished"),
 
-    CANCELED("2004", "取消"),
+    /**
+     * 取消
+     */
+    CANCELED("2004", "Published"),
 
-    RESTORE("2005","重启")
+    /**
+     * 重启
+     */
+    RESTORE("2005","Restore")
     ;
     /**
      * 状态id

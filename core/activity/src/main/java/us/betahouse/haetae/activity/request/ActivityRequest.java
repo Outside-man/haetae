@@ -78,6 +78,11 @@ public class ActivityRequest extends BaseRequest {
      */
     private String state;
 
+
+    /**
+     * 动作
+     */
+    private String motion;
     /**
      * 活动学期
      */
@@ -185,5 +190,14 @@ public class ActivityRequest extends BaseRequest {
 
     public void setTeam(String team) {
         this.team = team;
+    }
+
+
+    public String getMotion() {
+        return motion;
+    }
+
+    public void setMotion(String motion) {
+        this.motion = motion;
     }
 }

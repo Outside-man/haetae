@@ -42,4 +42,12 @@ public interface ActivityService {
      */
     ActivityBO update(ActivityRequest request,OperateContext operateContext);
 
+    /**
+     * 改变活动状态
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO changeStatus(ActivityRequest request,OperateContext operateContext);
 }

@@ -34,4 +34,10 @@ public class ActivityServiceImpl implements ActivityService {
     public ActivityBO update(ActivityRequest request, OperateContext operateContext) {
         return activityManager.update(request);
     }
+
+    @Override
+    public ActivityBO changeStatus(ActivityRequest request, OperateContext operateContext) {
+
+        return activityManager.changeStatus(request.getActivityId(), request.getMotion());
+    }
 }

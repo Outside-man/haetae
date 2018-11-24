@@ -38,4 +38,13 @@ public interface ActivityManager {
      * @return
      */
     ActivityBO update(ActivityRequest request);
+
+    /**
+     * 改变活动状态
+     *
+     * @param activityId
+     * @param motion
+     * @return
+     */
+    ActivityBO changeStatus(String activityId,String motion);
 }

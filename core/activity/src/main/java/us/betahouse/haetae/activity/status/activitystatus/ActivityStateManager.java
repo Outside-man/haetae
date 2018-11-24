@@ -28,6 +28,7 @@ public class ActivityStateManager {
     public boolean pass(){
         return activityState.pass(this);
     }
+
     public boolean publish(){
         return activityState.pass(this);
     }
