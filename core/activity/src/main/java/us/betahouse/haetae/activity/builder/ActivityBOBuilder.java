@@ -92,7 +92,7 @@ public final class ActivityBOBuilder {
     private ActivityBOBuilder() {
     }
 
-    public static ActivityBOBuilder anActivityBO() {
+    public static ActivityBOBuilder getInstance() {
         return new ActivityBOBuilder();
     }
 

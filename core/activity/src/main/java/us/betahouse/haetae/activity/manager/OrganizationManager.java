@@ -9,6 +9,8 @@ import us.betahouse.haetae.activity.model.OrganizationBO;
 import java.util.List;
 
 /**
+ * 组织管理器
+ *
  * @author MessiahJK
  * @version : OrganizationManager.java 2018/11/22 23:43 MessiahJK
  */

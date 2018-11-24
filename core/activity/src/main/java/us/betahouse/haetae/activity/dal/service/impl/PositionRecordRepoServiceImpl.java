@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class PositionRecordRepoServiceImpl implements PositionRecordRepoService {
 
     @Autowired
-    PositionRecordDORepo positionRecordDORepo;
+    private PositionRecordDORepo positionRecordDORepo;
     /**
      * id工厂
      */

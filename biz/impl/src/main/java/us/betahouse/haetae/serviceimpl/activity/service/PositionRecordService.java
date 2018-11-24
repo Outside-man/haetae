@@ -4,8 +4,10 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
+import us.betahouse.haetae.activity.manager.PositionRecordManager;
 import us.betahouse.haetae.activity.model.PositionRecordBO;
 import us.betahouse.haetae.activity.request.PositionRecordRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.PositionRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public interface PositionRecordService {
      * @param context
      * @return
      */
-    List<PositionRecordBO> findByUserId(PositionRecordRequest request, OperateContext context);
+    List<PositionRecordBO> findByUserId(PositionRecordManagerRequest request, OperateContext context);
 
     /**
      * 通过组织id 查找组织内成员
@@ -29,7 +31,7 @@ public interface PositionRecordService {
      * @param context
      * @return
      */
-    List<PositionRecordBO> findByOrganizationId(PositionRecordRequest request,OperateContext context);
+    List<PositionRecordBO> findByOrganizationId(PositionRecordManagerRequest request,OperateContext context);
 
 
 }
