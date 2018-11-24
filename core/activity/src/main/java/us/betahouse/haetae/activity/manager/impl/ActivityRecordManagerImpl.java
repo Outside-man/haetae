@@ -12,6 +12,10 @@ import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
+import us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum;
+import us.betahouse.haetae.activity.utils.ActivityUtil;
+import us.betahouse.util.exceptions.BetahouseException;
+import us.betahouse.util.utils.AssertUtil;
 
 import java.util.List;
 
@@ -35,6 +39,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
      */
     @Override
     public ActivityRecordBO create(ActivityRecordRequest request) {
+        ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
         ActivityRecordBO activityRecordBO=new ActivityRecordBO();
         activityRecordBO.setActivityId(request.getActivityId());
         activityRecordBO.setUserId(request.getUserId());
@@ -46,8 +51,8 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
         activityRecordBO.setStatus(request.getStatus());
         activityRecordBO.setTeam(request.getTeam());
         activityRecordBO.setGrades(request.getGrades());
-        if(activityRecordBO.getTime()==0) {
-            ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        ActivityUtil.isValided(activityBO);
+         if(activityRecordBO.getTime()==0) {
             activityRecordBO.setTime(activityBO.getDefaultTime());
         }
         return activityRecordRepoService.createActivityRecord(activityRecordBO);
