@@ -19,6 +19,8 @@ public enum UserErrorCode implements ResultCode {
 
     USER_NOT_EXIST(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不存在"),
 
+    USER_NOT_LOGIN(CommonResultCode.UNAUTHORIZED.getCode(), "用户未登陆"),
+
     ;
 
     private String code;

@@ -20,7 +20,9 @@ public enum RestResultCode implements ResultCode {
 
     ILLEGAL_PARAMETERS("400", "参数异常"),
 
-    UNAUTHORIZED("401", "无权限"),
+    UNAUTHORIZED("401", "未登录"),
+
+    FORBIDDEN("403", "无权访问"),
 
     NOT_FOUND("404", "请求内容不存在"),
 

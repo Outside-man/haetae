@@ -167,6 +167,7 @@ final public class EntityConverter {
         userBO.setOpenId(userDO.getOpenId());
         userBO.setLastLoginIP(userDO.getLastLoginIP());
         userBO.setLastLoginDate(userDO.getLastLoginDate());
+        userBO.setSessionId(userDO.getSessionId());
         return userBO;
     }
 
@@ -188,6 +189,7 @@ final public class EntityConverter {
         userDO.setOpenId(userBO.getOpenId());
         userDO.setLastLoginIP(userBO.getLastLoginIP());
         userDO.setLastLoginDate(userBO.getLastLoginDate());
+        userDO.setSessionId(userBO.getSessionId());
         return userDO;
     }
 }

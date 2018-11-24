@@ -22,7 +22,8 @@ import java.util.Date;
         indexes = {
                 @Index(name = "idx_open_id", columnList = "open_id", unique = true),
                 @Index(name = "uk_user_id", columnList = "user_id", unique = true),
-                @Index(name = "uk_user_name", columnList = "user_name", unique = true)
+                @Index(name = "uk_user_name", columnList = "user_name", unique = true),
+                @Index(name = "uk_session_id", columnList = "session_id", unique = true)
         })
 public class UserDO extends BaseDO {
 
@@ -58,6 +59,12 @@ public class UserDO extends BaseDO {
      */
     @Column(name = "open_id", length = 32)
     private String openId;
+
+    /**
+     * 维持登陆态 sessionId
+     */
+    @Column(name = "session_id", length = 32)
+    private String sessionId;
 
     /**
      * 上次登录时间
@@ -125,6 +132,14 @@ public class UserDO extends BaseDO {
 
     public void setLastLoginIP(String lastLoginIP) {
         this.lastLoginIP = lastLoginIP;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }
 

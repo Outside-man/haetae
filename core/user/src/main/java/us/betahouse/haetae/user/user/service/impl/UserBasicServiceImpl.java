@@ -25,6 +25,7 @@ import us.betahouse.haetae.user.utils.EncryptUtil;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
+import us.betahouse.util.utils.MD5Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,33 +55,28 @@ public class UserBasicServiceImpl implements UserBasicService {
 
     @Override
     public CommonUser login(String username, String password, String openId, String loginIP) {
-        UserBO userBO = null;
+        UserBO userBO = userRepoService.queryByUserName(username);
+        AssertUtil.assertNotNull(userBO, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
+        boolean passwordRight = StringUtils.equals(EncryptUtil.encryptPassword(password, userBO.getSalt()), userBO.getPassword());
+        AssertUtil.assertTrue(passwordRight, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
 
-        // 有传入openId 尝试用openId登陆
+        // 更新登陆信息
+        if (StringUtils.isBlank(loginIP)) {
+            LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
+        }
         if (StringUtils.isNotBlank(openId)) {
-            userBO = userRepoService.queryByOpenId(openId);
+            userBO.setOpenId(openId);
         }
-
-        if (userBO == null) {
-            // 验证账号密码正确
-            userBO = userRepoService.queryByUserName(username);
-            AssertUtil.assertNotNull(userBO, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
-            boolean passwordRight = StringUtils.equals(EncryptUtil.encryptPassword(password, userBO.getSalt()), userBO.getPassword());
-            AssertUtil.assertTrue(passwordRight, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
-            // 更新登陆信息
-            if (StringUtils.isBlank(loginIP)) {
-                LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
-            }
-            if (StringUtils.isNotBlank(openId)) {
-                userBO.setOpenId(openId);
-            }
-            userBO.setLastLoginIP(loginIP);
-            userBO.setLastLoginDate(new Date());
-            userRepoService.updateUserByUserId(userBO);
-        }
+        String token = EncryptUtil.getToken(openId);
+        userBO.setLastLoginIP(loginIP);
+        userBO.setLastLoginDate(new Date());
+        // 覆盖会话信息
+        userBO.setSessionId(EncryptUtil.parseToken(token));
+        userRepoService.updateUserByUserId(userBO);
 
         CommonUser user = new CommonUser();
-
+        // 存储登陆凭证
+        user.setTokenId(token);
         // 获取 用户id
         String userId = userBO.getUserId();
         user.setUserId(userId);
@@ -95,9 +91,25 @@ public class UserBasicServiceImpl implements UserBasicService {
     }
 
     @Override
+    public UserBO checkLogin(String token, String loginIP) {
+        String sessionId = EncryptUtil.parseToken(token);
+        UserBO userBO = userRepoService.queryBySessionId(sessionId);
+        AssertUtil.assertNotNull(userBO, UserErrorCode.USER_NOT_LOGIN);
+
+        // 更新登陆信息
+        if (StringUtils.isBlank(loginIP)) {
+            LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
+        }
+        userBO.setLastLoginIP(loginIP);
+        userBO.setLastLoginDate(new Date());
+        userRepoService.updateUserByUserId(userBO);
+        return userBO;
+    }
+
+    @Override
     public void loginOut(String userId) {
-        // 清除用户openid
-        userRepoService.clearOpenId(userId);
+        // 清除用户openid and sessionId
+        userRepoService.clearOpenIdAndSessionId(userId);
     }
 
     @Override

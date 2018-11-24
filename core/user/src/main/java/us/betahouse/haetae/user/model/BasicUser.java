@@ -23,6 +23,11 @@ public class BasicUser extends ToString {
     private String userId;
 
     /**
+     * 登陆凭证
+     */
+    private String tokenId;
+
+    /**
      * 用户信息
      */
     private UserInfoBO userInfo;
@@ -41,5 +46,13 @@ public class BasicUser extends ToString {
 
     public void setUserInfo(UserInfoBO userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 }

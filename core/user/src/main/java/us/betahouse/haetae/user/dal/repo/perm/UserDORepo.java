@@ -59,4 +59,13 @@ public interface UserDORepo extends JpaRepository<UserDO, Long> {
      * @return
      */
     List<UserDO> findAllByUserIdIn(List<String> userIds);
+
+    /**
+     * 会话获取用户
+     *
+     * @param sessionId
+     * @return
+     */
+    UserDO findBySessionId(String sessionId);
+
 }

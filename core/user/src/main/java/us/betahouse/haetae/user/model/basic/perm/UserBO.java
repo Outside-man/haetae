@@ -57,6 +57,11 @@ public class UserBO extends ToString {
      */
     private Date lastLoginDate;
 
+    /**
+     * 会话id
+     */
+    private String sessionId;
+
     public String getUserId() {
         return userId;
     }
@@ -111,5 +116,13 @@ public class UserBO extends ToString {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

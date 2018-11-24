@@ -148,6 +148,12 @@ public class RestResultUtil {
         Result<T> result = new Result<>();
         result.setErrorCode(resultCode.getCode());
         result.setErrorMsg(message);
+        result.setRetry(false);
+        if (resultCode != RestResultCode.SUCCESS) {
+            result.setSuccess(true);
+        }else{
+            result.setSuccess(false);
+        }
         return result;
     }
 }

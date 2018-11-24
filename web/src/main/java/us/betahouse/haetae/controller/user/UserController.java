@@ -16,6 +16,7 @@ import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.session.CheckLogin;
 import us.betahouse.haetae.template.RestOperateCallBack;
 import us.betahouse.haetae.template.RestOperateTemplate;
 import us.betahouse.haetae.user.model.CommonUser;
@@ -46,7 +47,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/login")
+    /**
+     * 登陆
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PutMapping(value = "/openId")
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<CommonUser> login(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户登录", request, new RestOperateCallBack<CommonUser>() {
@@ -55,6 +62,7 @@ public class UserController {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUsername(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户名不能为空");
                 AssertUtil.assertStringNotBlank(request.getPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "密码不能为空");
+                AssertUtil.assertStringNotBlank(request.getCode(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "微信code不能为空");
             }
 
             @Override
@@ -70,6 +78,7 @@ public class UserController {
         });
     }
 
+    @CheckLogin
     @DeleteMapping(value = "/openId")
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<CommonUser> logout(UserRequest request, HttpServletRequest httpServletRequest) {
@@ -77,14 +86,14 @@ public class UserController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getCode(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "code不能为空");
+                AssertUtil.assertStringNotBlank(request.getToken(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "token不能为空");
             }
 
             @Override
             public Result<CommonUser> execute() {
                 CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
-                        .withCode(request.getCode());
+                        .withUserId(request.getUserId());
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 userService.logout(builder.build(), context);
@@ -93,6 +102,13 @@ public class UserController {
         });
     }
 
+    /**
+     * 修改密码
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
     @PutMapping(value = "/pwd")
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<CommonUser> fetchRoleInfo(UserRequest request, HttpServletRequest httpServletRequest) {
@@ -100,7 +116,7 @@ public class UserController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getCode(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "code不能为空");
+                AssertUtil.assertStringNotBlank(request.getToken(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "token不能为空");
                 AssertUtil.assertStringNotBlank(request.getPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "原密码不能为空");
                 AssertUtil.assertStringNotBlank(request.getNewPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "新密码不能为空");
                 boolean oldNewNotEqual = !StringUtils.equals(request.getPassword(), request.getNewPassword());
@@ -112,7 +128,7 @@ public class UserController {
                 CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
                         .withPassword(request.getNewPassword())
-                        .withCode(request.getCode());
+                        .withUserId(request.getUserId());
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 

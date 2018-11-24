@@ -98,13 +98,19 @@ public class UserRepoServiceImpl implements UserRepoService {
     }
 
     @Override
-    public UserBO clearOpenId(String userId) {
+    public UserBO clearOpenIdAndSessionId(String userId) {
         UserDO userDO = userDORepo.findByUserId(userId);
         if (userDO == null) {
             LoggerUtil.error(LOGGER, "用户不存在 userId={0}", userId);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不存在");
         }
         userDO.setOpenId(null);
+        userDO.setSessionId(null);
         return EntityConverter.convert(userDORepo.save(userDO));
+    }
+
+    @Override
+    public UserBO queryBySessionId(String sessionId) {
+        return EntityConverter.convert(userDORepo.findBySessionId(sessionId));
     }
 }

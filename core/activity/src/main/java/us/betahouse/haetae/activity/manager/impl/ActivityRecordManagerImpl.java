@@ -56,12 +56,13 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
         ActivityRecordBOBuilder builder = ActivityRecordBOBuilder.getInstance()
                 .withActivityId(request.getActivityId())
                 .withScannerUserId(request.getScannerUserId())
-                .withExtInfo(request.getExtInfo())
                 .withTime(time)
                 .withType(request.getType())
                 .withStatus(request.getStatus())
                 .withStatus(request.getTerm())
-                .withGrades(request.getGrades());
+                .withGrades(request.getGrades())
+                .withExtInfo(request.getExtInfo())
+                ;
 
         // 绑上用户id
         builder.withUserId(request.getUserId());

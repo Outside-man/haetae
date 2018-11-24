@@ -24,4 +24,23 @@ public class EncryptUtil {
     public static String encryptPassword(String password, String salt) {
         return MD5Util.MD5(MD5Util.MD5(password) + salt);
     }
+
+    /**
+     * 解析token 返回sessionId
+     *
+     * @param tokenId
+     * @return
+     */
+    public static String parseToken(String tokenId) {
+        return MD5Util.MD5(tokenId);
+    }
+
+    /**
+     * 获取token
+     * @param bizStr
+     * @return
+     */
+    public static String getToken(String bizStr){
+        return MD5Util.MD5(bizStr);
+    }
 }

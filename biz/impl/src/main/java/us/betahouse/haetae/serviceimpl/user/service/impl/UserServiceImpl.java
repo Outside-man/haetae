@@ -76,10 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(CommonUserRequest request, OperateContext context) {
-        String openId = WeChatLoginUtil.fetchOpenId(request.getCode(), APP_ID, SECRET);
-        UserBO userBO = userRepoService.queryByOpenId(openId);
-        AssertUtil.assertNotNull(userBO, "用户不存在");
-        userBasicService.loginOut(userBO.getUserId());
+        userBasicService.loginOut(request.getUserId());
     }
 
     @Override
@@ -95,8 +92,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUser(CommonUserRequest request, OperateContext context) {
 
-        String openId = WeChatLoginUtil.fetchOpenId(request.getCode(), APP_ID, SECRET);
-        UserBO userBO = userRepoService.queryByOpenId(openId);
+        UserBO userBO = userRepoService.queryByUserId(request.getUserId());
         AssertUtil.assertNotNull(userBO, "用户不存在");
 
         String encodePwd = EncryptUtil.encryptPassword(request.getPassword(), userBO.getSalt());

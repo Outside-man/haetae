@@ -9,6 +9,7 @@ import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,14 @@ public interface UserBasicService {
      * @return
      */
     CommonUser login(String username, String password, String openId, String loginIP);
+
+    /**
+     * 检测登陆 带ip
+     * @param token
+     * @param loginIP
+     * @return
+     */
+    UserBO checkLogin(String token, String loginIP);
 
     /**
      * 登出

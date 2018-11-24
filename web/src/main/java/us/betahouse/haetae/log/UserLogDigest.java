@@ -10,6 +10,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import us.betahouse.haetae.request.UserRequest;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.util.common.Result;
@@ -30,6 +31,7 @@ import java.text.MessageFormat;
  * @author dango.yxm
  * @version : UserLogDigest.java 2018/11/19 下午5:02 dango.yxm
  */
+@Order(-1)
 @Aspect
 @Component
 public class UserLogDigest {

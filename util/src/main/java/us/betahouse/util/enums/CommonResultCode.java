@@ -26,9 +26,14 @@ public enum CommonResultCode implements ResultCode {
     ILLEGAL_PARAMETERS("参数异常"),
 
     /**
-     * 无权访问
+     * 无权访问(未登录)
      */
-    UNAUTHORIZED("无权访问"),
+    UNAUTHORIZED("未登录无权访问"),
+
+    /**
+     * 无权访问(无权限)
+     */
+    FORBIDDEN("无权访问"),
 
     /**
      * 调用成功

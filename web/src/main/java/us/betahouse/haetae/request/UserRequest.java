@@ -11,7 +11,7 @@ package us.betahouse.haetae.request;
  * @author dango.yxm
  * @version : UserRequest.java 2018/11/21 8:45 PM dango.yxm
  */
-public class UserRequest extends BaseRequest {
+public class UserRequest extends RestRequest {
 
     private static final long serialVersionUID = 4621666229903071688L;
 
@@ -44,15 +44,6 @@ public class UserRequest extends BaseRequest {
      * 微信code
      */
     private String code;
-
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getUsername() {
         return username;

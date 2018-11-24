@@ -22,11 +22,24 @@ public class CommonUserRequest extends UserManageRequest {
      */
     private String code;
 
+    /**
+     * 登陆凭证
+     */
+    private String tokenId;
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 }

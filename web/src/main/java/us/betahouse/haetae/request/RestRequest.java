@@ -11,12 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 用户请求
- *
+ * rest请求
  * @author dango.yxm
- * @version : BaseRequest.java 2018/11/18 下午10:39 dango.yxm
+ * @version : RestRequest.java 2018/11/25 12:22 AM dango.yxm
  */
-public abstract class BaseRequest extends ToString {
+public abstract class RestRequest extends ToString {
 
     private static final long serialVersionUID = -7591804651945805773L;
 
@@ -25,6 +24,16 @@ public abstract class BaseRequest extends ToString {
      */
     @NotBlank
     private String requestId;
+
+    /**
+     * 用户id
+     */
+    private String userId;
+
+    /**
+     * 登陆凭证
+     */
+    private String token;
 
     /**
      * 拓展信息
@@ -71,5 +80,21 @@ public abstract class BaseRequest extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
