@@ -147,7 +147,16 @@ public class AssertUtil {
         }
     }
 
-    public static void assertEquals() {
+    /**
+     * 断言相等
+     * @param o1
+     * @param o2
+     * @param errorMsg
+     */
+    public static void assertEquals(Object o1 , Object o2, String errorMsg) {
+        if (!o1.equals(o2)) {
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
+        }
     }
 
 }
