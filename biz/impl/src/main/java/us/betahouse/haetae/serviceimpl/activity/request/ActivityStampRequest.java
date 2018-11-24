@@ -19,6 +19,6 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     @Override
     public String getVerifyUserId() {
-        return getUserId();
+        return getScannerUserId();
     }
 }
