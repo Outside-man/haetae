@@ -134,15 +134,15 @@ public class UserBasicServiceImpl implements UserBasicService {
     }
 
     @Override
-    public boolean verifyPermission(String userId, String permId) {
+    public boolean verifyPermissionByPermId(String userId, List<String> permIds) {
         // 判断用户上是否存在权限
-        if (permRepoService.fetchUserPermRelationByPermId(userId, permId) != null) {
+        if (permRepoService.verifyUserPermRelationByPermId(userId, permIds)) {
             return true;
         }
         // 判断用户的角色上是否存在权限
         List<String> roleIds = new ArrayList<>(userHelper.fetchUserRoles(userId).keySet());
         for (String roleId : roleIds) {
-            if (permRepoService.fetchRolePermRelationByPermId(roleId, permId) != null) {
+            if (permRepoService.verifyRolePermRelationByPermId(roleId, permIds)) {
                 return true;
             }
         }
@@ -150,15 +150,17 @@ public class UserBasicServiceImpl implements UserBasicService {
     }
 
     @Override
-    public boolean verifyPermission(String userId, PermType permType) {
+    public boolean verifyPermissionByPermType(String userId, List<String> permTypes) {
+
+
         // 判断用户上是否存在权限
-        if (permRepoService.fetchUserPermRelationByPermType(userId, permType.getCode()) != null) {
+        if (permRepoService.verifyUserPermRelationByPermType(userId, permTypes)) {
             return true;
         }
         // 判断用户的角色上是否存在权限
         List<String> roleIds = new ArrayList<>(userHelper.fetchUserRoles(userId).keySet());
         for (String roleId : roleIds) {
-            if (permRepoService.fetchRolePermRelationByPermType(roleId, permType.getCode()) != null) {
+            if (permRepoService.verifyRolePermRelationByPermType(roleId, permTypes)) {
                 return true;
             }
         }

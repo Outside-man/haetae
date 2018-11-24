@@ -336,40 +336,67 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
-    public PermBO fetchUserPermRelationByPermId(String userId, String permId) {
+    public boolean verifyUserPermRelationByPermId(String userId, List<String> permIds) {
         // 获取权限信息
-        PermDO permDO = permDORepo.findByPermId(permId);
-        AssertUtil.assertNotNull(permDO, "权限不存在");
+        List<PermDO> perms = permDORepo.findAllByPermIdIn(permIds);
+        boolean permsExist = perms.size() == permIds.size();
+        AssertUtil.assertTrue(permsExist, "权限不存在");
 
-        return userPermRelationDORepo.findByUserIdAndPermId(userId, permId) == null ? null : EntityConverter.convert(permDO);
+        // 逐一鉴权
+        for (String permId : permIds) {
+            if (userPermRelationDORepo.findByUserIdAndPermId(userId, permId) == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
-    public PermBO fetchUserPermRelationByPermType(String userId, String permType) {
+    public boolean verifyUserPermRelationByPermType(String userId, List<String> permTypes) {
         // 获取权限信息
-        PermDO permDO = permDORepo.findByPermType(permType);
-        AssertUtil.assertNotNull(permDO, "权限不存在");
+        List<PermDO> perms = permDORepo.findAllByPermTypeIn(permTypes);
+        boolean permsExist = perms.size() == permTypes.size();
+        AssertUtil.assertTrue(permsExist, "权限不存在");
 
-        return userPermRelationDORepo.findByUserIdAndPermId(userId, permDO.getPermId()) == null ? null : EntityConverter.convert(permDO);
+        // 逐一鉴权
+        for (PermDO perm : perms) {
+            if (userPermRelationDORepo.findByUserIdAndPermId(userId, perm.getPermId()) == null) {
+                return false;
+            }
+        }
+        return true;
 
     }
 
     @Override
-    public PermBO fetchRolePermRelationByPermId(String userId, String permId) {
+    public boolean verifyRolePermRelationByPermId(String roleId, List<String> permIds) {
         // 获取权限信息
-        PermDO permDO = permDORepo.findByPermId(permId);
-        AssertUtil.assertNotNull(permDO, "权限不存在");
+        List<PermDO> perms = permDORepo.findAllByPermIdIn(permIds);
+        boolean permsExist = perms.size() == permIds.size();
+        AssertUtil.assertTrue(permsExist, "权限不存在");
 
-
-        return rolePermRelationDORepo.findByRoleIdAndPermId(userId, permId) == null ? null : EntityConverter.convert(permDO);
+        // 逐一鉴权
+        for (String permId : permIds) {
+            if (rolePermRelationDORepo.findByRoleIdAndPermId(roleId, permId) == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
-    public PermBO fetchRolePermRelationByPermType(String userId, String permType) {
+    public boolean verifyRolePermRelationByPermType(String roleId, List<String> permTypes) {
         // 获取权限信息
-        PermDO permDO = permDORepo.findByPermType(permType);
-        AssertUtil.assertNotNull(permDO, "权限不存在");
+        List<PermDO> perms = permDORepo.findAllByPermTypeIn(permTypes);
+        boolean permsExist = perms.size() == permTypes.size();
+        AssertUtil.assertTrue(permsExist, "权限不存在");
 
-        return rolePermRelationDORepo.findByRoleIdAndPermId(userId, permDO.getPermId()) == null ? null : EntityConverter.convert(permDO);
+        // 逐一鉴权
+        for (PermDO perm : perms) {
+            if (rolePermRelationDORepo.findByRoleIdAndPermId(roleId, perm.getPermId()) == null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

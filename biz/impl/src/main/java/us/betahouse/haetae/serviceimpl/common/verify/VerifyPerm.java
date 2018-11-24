@@ -20,5 +20,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface VerifyPerm {
 
-    String value();
+    String[] permType();
 }

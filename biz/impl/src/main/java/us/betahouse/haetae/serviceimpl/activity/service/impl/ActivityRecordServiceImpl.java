@@ -28,7 +28,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     ActivityRecordManager activityRecordManager;
 
     @Override
-    @VerifyPerm(ActivityPermType.ACTIVITY_STAMPER)
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_STAMPER)
     public ActivityRecordBO create(ActivityStampRequest request, OperateContext context) {
         return activityRecordManager.create(request);
     }

@@ -126,35 +126,35 @@ public interface PermRepoService {
      * 获取用户对应权限
      *
      * @param userId
-     * @param permId
+     * @param permIds
      * @return
      */
-    PermBO fetchUserPermRelationByPermId(String userId, String permId);
+    boolean verifyUserPermRelationByPermId(String userId, List<String> permIds);
 
     /**
      * 获取用户对应权限
      *
      * @param userId
-     * @param permType
+     * @param permTypes
      * @return
      */
-    PermBO fetchUserPermRelationByPermType(String userId, String permType);
+    boolean verifyUserPermRelationByPermType(String userId, List<String> permTypes);
 
     /**
      * 获取角色对应权限
      *
-     * @param userId
-     * @param permId
+     * @param roleId
+     * @param permIds
      * @return
      */
-    PermBO fetchRolePermRelationByPermId(String userId, String permId);
+    boolean verifyRolePermRelationByPermId(String roleId, List<String> permIds);
 
     /**
      * 获取角色对应权限
      *
-     * @param userId
-     * @param permType
+     * @param roleId
+     * @param permTypes
      * @return
      */
-    PermBO fetchRolePermRelationByPermType(String userId, String permType);
+    boolean verifyRolePermRelationByPermType(String roleId, List<String> permTypes);
 }

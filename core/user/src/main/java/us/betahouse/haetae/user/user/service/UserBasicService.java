@@ -10,6 +10,7 @@ import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,18 +79,18 @@ public interface UserBasicService {
      * 用户鉴权
      *
      * @param userId
-     * @param permId
+     * @param permIds
      * @return
      */
-    boolean verifyPermission(String userId, String permId);
+    boolean verifyPermissionByPermId(String userId, List<String> permIds);
 
 
     /**
      * 用户鉴权
      *
      * @param userId
-     * @param permType
+     * @param permTypes
      * @return
      */
-    boolean verifyPermission(String userId, PermType permType);
+    boolean verifyPermissionByPermType(String userId, List<String> permTypes);
 }

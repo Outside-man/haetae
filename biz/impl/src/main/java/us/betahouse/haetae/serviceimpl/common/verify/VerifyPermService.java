@@ -18,6 +18,8 @@ import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.LoggerUtil;
 
+import java.util.Arrays;
+
 /**
  * 鉴权切面服务
  *
@@ -55,9 +57,9 @@ public class VerifyPermService {
         }
         AssertUtil.assertNotNull(request, CommonResultCode.SYSTEM_ERROR.getCode(), "鉴权失败, 没有鉴权对象");
 
-        boolean verifyPerm = userBasicService.verifyPermission(request.getUserId(), verify.value());
+        boolean verifyPerm = userBasicService.verifyPermissionByPermType(request.getUserId(), Arrays.asList(verify.permType()));
         if (!verifyPerm) {
-            LoggerUtil.warn(LOGGER, "用户无权操作 userId={0}, permType={1}", request.getUserId(), verify.value());
+            LoggerUtil.warn(LOGGER, "用户无权操作 userId={0}, permType={1}", request.getUserId(), verify.permType());
             throw new BetahouseException(CommonResultCode.UNAUTHORIZED);
         }
     }
