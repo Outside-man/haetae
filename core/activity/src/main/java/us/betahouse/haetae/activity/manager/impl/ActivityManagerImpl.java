@@ -3,10 +3,9 @@
  * CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.manager.impl;
-import java.util.Date;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
@@ -21,9 +20,10 @@ import java.util.List;
  * @author MessiahJK
  * @version : ActivityManagerImpl.java 2018/11/22 23:54 MessiahJK
  */
+@Service
 public class ActivityManagerImpl implements ActivityManager {
     @Autowired
-    ActivityRepoService activityRepoService;
+    private ActivityRepoService activityRepoService;
 
     /**
      * 创建活动
@@ -33,12 +33,12 @@ public class ActivityManagerImpl implements ActivityManager {
      */
     @Override
     public ActivityBO create(ActivityRequest request) {
-        ActivityBO activityBO=new ActivityBO();
+        ActivityBO activityBO = new ActivityBO();
         activityBO.setActivityName(request.getActivityName());
         activityBO.setType(request.getType());
         activityBO.setOrganizationMessage(request.getOrganizationMessage());
         activityBO.setLocation(request.getLocation());
-        request.setDefaultTime(request.getDefaultTime()*10);
+        request.setDefaultTime(request.getDefaultTime() * 10);
         activityBO.setDefaultTime(request.getDefaultTime().intValue());
         activityBO.setStart(request.getStart());
         activityBO.setEnd(request.getEnd());
@@ -69,13 +69,13 @@ public class ActivityManagerImpl implements ActivityManager {
      */
     @Override
     public ActivityBO update(ActivityRequest request) {
-        ActivityBO activityBO=new ActivityBO();
+        ActivityBO activityBO = new ActivityBO();
         activityBO.setActivityId(request.getActivityId());
         activityBO.setActivityName(request.getActivityName());
         activityBO.setType(request.getType());
         activityBO.setOrganizationMessage(request.getOrganizationMessage());
         activityBO.setLocation(request.getLocation());
-        request.setDefaultTime(request.getDefaultTime()*10);
+        request.setDefaultTime(request.getDefaultTime() * 10);
         activityBO.setDefaultTime(request.getDefaultTime().intValue());
         activityBO.setStart(request.getStart());
         activityBO.setEnd(request.getEnd());
@@ -96,56 +96,56 @@ public class ActivityManagerImpl implements ActivityManager {
      * @return
      */
     @Override
-    public ActivityBO changeStatus(String activityId,String motion) {
-        ActivityBO activityBO=activityRepoService.queryActivityByActivityId(activityId);
-        String status=activityBO.getState();
+    public ActivityBO changeStatus(String activityId, String motion) {
+        ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityId);
+        String status = activityBO.getState();
         Boolean pd;
         ActivityState activityState = null;
-        switch (status){
+        switch (status) {
             case "Approved":
-                activityState=new ApprovedState();
+                activityState = new ApprovedState();
                 break;
             case "Canceled":
-                activityState=new CanceledState();
+                activityState = new CanceledState();
                 break;
             case "Finished":
-                activityState=new FinishedState();
+                activityState = new FinishedState();
                 break;
             case "Published":
-                activityState=new PublishedState();
+                activityState = new PublishedState();
                 break;
             case "Restore":
-                activityState=new RestoreState();
+                activityState = new RestoreState();
                 break;
-                default:
-                    return null;
+            default:
+                return null;
         }
-        ActivityStateManager activityStateManager=new ActivityStateManager(activityState);
-        switch (motion){
+        ActivityStateManager activityStateManager = new ActivityStateManager(activityState);
+        switch (motion) {
             case "pass":
-                pd=activityStateManager.pass();
+                pd = activityStateManager.pass();
                 break;
             case "publish":
-                pd=activityStateManager.publish();
+                pd = activityStateManager.publish();
                 break;
             case "finish":
-                pd=activityStateManager.finish();
+                pd = activityStateManager.finish();
                 break;
             case "republish":
-                pd=activityStateManager.republish();
+                pd = activityStateManager.republish();
                 break;
             case "remove":
-                pd=activityStateManager.remove();
+                pd = activityStateManager.remove();
                 break;
-                default:
-                    return null;
+            default:
+                return null;
         }
-        if(pd){
+        if (pd) {
 
             activityBO.setState(activityStateManager.getActivityState().getActivityState().getDesc());
             activityRepoService.updateActivity(activityBO);
             return activityBO;
-        }else{
+        } else {
             return null;
         }
     }

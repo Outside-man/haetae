@@ -11,9 +11,9 @@ import us.betahouse.haetae.user.enums.RoleCode;
  * 活动角色类型
  *
  * @author dango.yxm
- * @version : ActivityRoleCode.java 2018/11/24 7:21 PM dango.yxm
+ * @version : ActivityRoleCodeEnum.java 2018/11/24 7:21 PM dango.yxm
  */
-public enum ActivityRoleCode implements RoleCode {
+public enum ActivityRoleCodeEnum implements RoleCode {
 
     /**
      * 活动管理者 管理活动
@@ -27,11 +27,11 @@ public enum ActivityRoleCode implements RoleCode {
 
     ;
 
-    public static ActivityRoleCode getByCode(String code) {
+    public static ActivityRoleCodeEnum getByCode(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
         }
-        for (ActivityRoleCode roleCode : values()) {
+        for (ActivityRoleCodeEnum roleCode : values()) {
             if (StringUtils.equals(roleCode.getCode(), code)) {
                 return roleCode;
             }
@@ -44,7 +44,7 @@ public enum ActivityRoleCode implements RoleCode {
     private String desc;
 
 
-    ActivityRoleCode(String code, String desc) {
+    ActivityRoleCodeEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

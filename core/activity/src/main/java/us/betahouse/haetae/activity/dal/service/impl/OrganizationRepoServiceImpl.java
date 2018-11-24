@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.model.OrganizationDO;
 import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
@@ -20,6 +21,7 @@ import us.betahouse.util.utils.CollectionUtils;
  * @author MessiahJK
  * @version : OrganizationRepoServiceImpl.java 2018/11/18 16:40 MessiahJK
  */
+@Service
 public class OrganizationRepoServiceImpl implements OrganizationRepoService {
     @Autowired
     private OrganizationDORepo organizationDORepo;

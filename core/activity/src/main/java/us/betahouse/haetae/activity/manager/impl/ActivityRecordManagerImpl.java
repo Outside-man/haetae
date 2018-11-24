@@ -3,10 +3,9 @@
  * CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.manager.impl;
-import java.util.Date;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
@@ -20,13 +19,14 @@ import java.util.List;
  * @author MessiahJK
  * @version : ActivityRecordManagerImpl.java 2018/11/23 0:09 MessiahJK
  */
+@Service
 public class ActivityRecordManagerImpl implements ActivityRecordManager {
 
     @Autowired
-    ActivityRecordRepoService activityRecordRepoService;
+    private ActivityRecordRepoService activityRecordRepoService;
 
     @Autowired
-    ActivityRepoService activityRepoService;
+    private ActivityRepoService activityRepoService;
     /**
      * 创建活动记录
      *

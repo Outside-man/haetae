@@ -334,4 +334,42 @@ public class PermRepoServiceImpl implements PermRepoService {
         AssertUtil.assertNotNull(permDO, "权限不存在");
         userPermRelationDORepo.deleteAllByPermId(permId);
     }
+
+    @Override
+    public PermBO fetchUserPermRelationByPermId(String userId, String permId) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermId(permId);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+
+        return userPermRelationDORepo.findByUserIdAndPermId(userId, permId) == null ? null : EntityConverter.convert(permDO);
+    }
+
+    @Override
+    public PermBO fetchUserPermRelationByPermType(String userId, String permType) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermType(permType);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+
+        return userPermRelationDORepo.findByUserIdAndPermId(userId, permDO.getPermId()) == null ? null : EntityConverter.convert(permDO);
+
+    }
+
+    @Override
+    public PermBO fetchRolePermRelationByPermId(String userId, String permId) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermId(permId);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+
+
+        return rolePermRelationDORepo.findByRoleIdAndPermId(userId, permId) == null ? null : EntityConverter.convert(permDO);
+    }
+
+    @Override
+    public PermBO fetchRolePermRelationByPermType(String userId, String permType) {
+        // 获取权限信息
+        PermDO permDO = permDORepo.findByPermType(permType);
+        AssertUtil.assertNotNull(permDO, "权限不存在");
+
+        return rolePermRelationDORepo.findByRoleIdAndPermId(userId, permDO.getPermId()) == null ? null : EntityConverter.convert(permDO);
+    }
 }

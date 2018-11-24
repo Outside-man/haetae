@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.user.user.service;
 
+import us.betahouse.haetae.user.enums.PermType;
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -71,4 +72,24 @@ public interface UserBasicService {
      * @return
      */
     Map<String, RoleBO> fetchUserRoles(String userId);
+
+
+    /**
+     * 用户鉴权
+     *
+     * @param userId
+     * @param permId
+     * @return
+     */
+    boolean verifyPermission(String userId, String permId);
+
+
+    /**
+     * 用户鉴权
+     *
+     * @param userId
+     * @param permType
+     * @return
+     */
+    boolean verifyPermission(String userId, PermType permType);
 }

@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
+import us.betahouse.haetae.user.enums.PermType;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -21,9 +23,11 @@ import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.user.utils.EncryptUtil;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户基础服务实现
@@ -41,6 +45,9 @@ public class UserBasicServiceImpl implements UserBasicService {
 
     @Autowired
     private UserInfoRepoService userInfoRepoService;
+
+    @Autowired
+    private PermRepoService permRepoService;
 
     @Autowired
     private UserHelper userHelper;
@@ -124,5 +131,37 @@ public class UserBasicServiceImpl implements UserBasicService {
     @Override
     public Map<String, RoleBO> fetchUserRoles(String userId) {
         return userHelper.fetchUserRoles(userId);
+    }
+
+    @Override
+    public boolean verifyPermission(String userId, String permId) {
+        // 判断用户上是否存在权限
+        if (permRepoService.fetchUserPermRelationByPermId(userId, permId) != null) {
+            return true;
+        }
+        // 判断用户的角色上是否存在权限
+        List<String> roleIds = new ArrayList<>(userHelper.fetchUserRoles(userId).keySet());
+        for (String roleId : roleIds) {
+            if (permRepoService.fetchRolePermRelationByPermId(roleId, permId) != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean verifyPermission(String userId, PermType permType) {
+        // 判断用户上是否存在权限
+        if (permRepoService.fetchUserPermRelationByPermType(userId, permType.getCode()) != null) {
+            return true;
+        }
+        // 判断用户的角色上是否存在权限
+        List<String> roleIds = new ArrayList<>(userHelper.fetchUserRoles(userId).keySet());
+        for (String roleId : roleIds) {
+            if (permRepoService.fetchRolePermRelationByPermType(roleId, permType.getCode()) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 }

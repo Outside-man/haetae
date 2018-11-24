@@ -62,7 +62,7 @@ public class UserHelper {
     }
 
     /**
-     * 填充用户的权限
+     * 用户的权限
      *
      * @param userId
      */
@@ -87,7 +87,7 @@ public class UserHelper {
     }
 
     /**
-     * 填充用户的角色
+     * 用户的角色
      *
      * @param userId
      */

@@ -121,4 +121,40 @@ public interface PermRepoService {
      */
     void detachAllUsers(String permId);
 
+
+    /**
+     * 获取用户对应权限
+     *
+     * @param userId
+     * @param permId
+     * @return
+     */
+    PermBO fetchUserPermRelationByPermId(String userId, String permId);
+
+    /**
+     * 获取用户对应权限
+     *
+     * @param userId
+     * @param permType
+     * @return
+     */
+    PermBO fetchUserPermRelationByPermType(String userId, String permType);
+
+    /**
+     * 获取角色对应权限
+     *
+     * @param userId
+     * @param permId
+     * @return
+     */
+    PermBO fetchRolePermRelationByPermId(String userId, String permId);
+
+    /**
+     * 获取角色对应权限
+     *
+     * @param userId
+     * @param permType
+     * @return
+     */
+    PermBO fetchRolePermRelationByPermType(String userId, String permType);
 }
