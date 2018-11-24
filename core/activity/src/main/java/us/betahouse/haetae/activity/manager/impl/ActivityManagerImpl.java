@@ -12,6 +12,7 @@ import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.activity.status.activitystatus.*;
+import us.betahouse.haetae.activity.utils.ActivityUtil;
 
 import java.util.List;
 
@@ -141,12 +142,22 @@ public class ActivityManagerImpl implements ActivityManager {
                     return null;
         }
         if(pd){
-
             activityBO.setState(activityStateManager.getActivityState().getActivityState().getDesc());
             activityRepoService.updateActivity(activityBO);
             return activityBO;
         }else{
             return null;
+        }
+    }
+
+    @Override
+    public void chickAll() {
+        List<ActivityBO> activityBOList=activityRepoService.queryAllActivity();
+        for(ActivityBO activityBO:activityBOList){
+            if(ActivityUtil.isFinish(activityBO)){
+                activityBO.setState(ActivityStateEnum.FINISHED.getDesc());
+                activityRepoService.updateActivity(activityBO);
+            }
         }
     }
 }

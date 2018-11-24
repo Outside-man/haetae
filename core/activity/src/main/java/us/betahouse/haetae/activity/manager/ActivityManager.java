@@ -47,4 +47,11 @@ public interface ActivityManager {
      * @return
      */
     ActivityBO changeStatus(String activityId,String motion);
+
+    /**
+     * 检查所有活动状态
+     *
+     * @return
+     */
+    void chickAll();
 }
