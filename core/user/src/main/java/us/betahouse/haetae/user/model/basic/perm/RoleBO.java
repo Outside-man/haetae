@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.user.model.basic.perm;
 
+import us.betahouse.haetae.user.enums.RoleCode;
 import us.betahouse.util.common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,6 +28,7 @@ public class RoleBO extends ToString {
 
     /**
      * 角色码
+     * @see RoleCode
      */
     @NotBlank
     private String roleCode;
