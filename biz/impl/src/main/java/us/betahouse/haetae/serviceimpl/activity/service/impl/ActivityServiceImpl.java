@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
+import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 
 import java.util.List;
 
@@ -20,8 +23,11 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
     @Autowired
     ActivityManager activityManager;
+
+
     @Override
-    public ActivityBO create(ActivityRequest request, OperateContext context) {
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         return activityManager.create(request);
     }
 
@@ -31,13 +37,13 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public ActivityBO update(ActivityRequest request, OperateContext operateContext) {
+    public ActivityBO update(ActivityManagerRequest request, OperateContext operateContext) {
         return activityManager.update(request);
     }
 
     @Override
-    public ActivityBO changeStatus(ActivityRequest request, OperateContext operateContext) {
-
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_PUBLISH)
+    public ActivityBO changeStatus(ActivityManagerRequest request, OperateContext operateContext) {
         return activityManager.changeStatus(request.getActivityId(), request.getMotion());
     }
 }

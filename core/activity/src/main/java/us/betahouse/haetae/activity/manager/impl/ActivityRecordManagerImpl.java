@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.activity.manager.impl;
 
-import com.sun.xml.internal.xsom.impl.Ref;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.builder.ActivityRecordBOBuilder;

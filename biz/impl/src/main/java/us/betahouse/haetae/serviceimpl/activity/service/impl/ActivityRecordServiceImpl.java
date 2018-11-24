@@ -44,6 +44,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_STAMPER)
     public Long countByActivityId(ActivityStampRequest request, OperateContext context) {
         return activityRecordManager.countByActivityId(request.getActivityId());
     }

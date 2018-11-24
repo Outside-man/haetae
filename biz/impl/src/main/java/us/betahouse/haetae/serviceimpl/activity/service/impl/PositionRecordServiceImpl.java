@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.manager.PositionRecordManager;
 import us.betahouse.haetae.activity.model.PositionRecordBO;
 import us.betahouse.haetae.activity.request.PositionRecordRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.PositionRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.PositionRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -22,12 +23,12 @@ public class PositionRecordServiceImpl implements PositionRecordService {
     PositionRecordManager positionRecordManager;
 
     @Override
-    public List<PositionRecordBO> findByUserId(PositionRecordRequest request, OperateContext context) {
+    public List<PositionRecordBO> findByUserId(PositionRecordManagerRequest request, OperateContext context) {
         return positionRecordManager.findByUserId(request.getUserId());
     }
 
     @Override
-    public List<PositionRecordBO> findByOrganizationId(PositionRecordRequest request, OperateContext context) {
+    public List<PositionRecordBO> findByOrganizationId(PositionRecordManagerRequest request, OperateContext context) {
         return positionRecordManager.findByOrganizationId(request.getOrganizationId());
     }
 }

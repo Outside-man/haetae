@@ -10,6 +10,8 @@ import us.betahouse.haetae.activity.request.PositionRecordRequest;
 import java.util.List;
 
 /**
+ * 履历管理器
+ *
  * @author MessiahJK
  * @version : PositionRecordManager.java 2018/11/22 23:43 MessiahJK
  */

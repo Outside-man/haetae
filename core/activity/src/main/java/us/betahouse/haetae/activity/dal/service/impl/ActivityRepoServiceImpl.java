@@ -192,6 +192,6 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setState(activityBO.getState());
         activityDO.setTeam(activityBO.getTeam());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
-        return null;
+        return activityDO;
     }
 }
