@@ -97,64 +97,64 @@ public class ActivityManagerImpl implements ActivityManager {
      * @return
      */
     @Override
-    public ActivityBO changeStatus(String activityId,String motion) {
-        ActivityBO activityBO=activityRepoService.queryActivityByActivityId(activityId);
-        String status=activityBO.getState();
+    public ActivityBO changeStatus(String activityId, String motion) {
+        ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityId);
+        String status = activityBO.getState();
         Boolean pd;
         ActivityState activityState = null;
-        switch (status){
+        switch (status) {
             case "Approved":
-                activityState=new ApprovedState();
+                activityState = new ApprovedState();
                 break;
             case "Canceled":
-                activityState=new CanceledState();
+                activityState = new CanceledState();
                 break;
             case "Finished":
-                activityState=new FinishedState();
+                activityState = new FinishedState();
                 break;
             case "Published":
-                activityState=new PublishedState();
+                activityState = new PublishedState();
                 break;
             case "Restore":
-                activityState=new RestoreState();
+                activityState = new RestoreState();
                 break;
-                default:
-                    return null;
+            default:
+                return null;
         }
-        ActivityStateManager activityStateManager=new ActivityStateManager(activityState);
-        switch (motion){
+        ActivityStateManager activityStateManager = new ActivityStateManager(activityState);
+        switch (motion) {
             case "pass":
-                pd=activityStateManager.pass();
+                pd = activityStateManager.pass();
                 break;
             case "publish":
-                pd=activityStateManager.publish();
+                pd = activityStateManager.publish();
                 break;
             case "finish":
-                pd=activityStateManager.finish();
+                pd = activityStateManager.finish();
                 break;
             case "republish":
-                pd=activityStateManager.republish();
+                pd = activityStateManager.republish();
                 break;
             case "remove":
-                pd=activityStateManager.remove();
+                pd = activityStateManager.remove();
                 break;
-                default:
-                    return null;
+            default:
+                return null;
         }
-        if(pd){
+        if (pd) {
             activityBO.setState(activityStateManager.getActivityState().getActivityState().getDesc());
             activityRepoService.updateActivity(activityBO);
             return activityBO;
-        }else{
+        } else {
             return null;
         }
     }
 
     @Override
     public void chickAll() {
-        List<ActivityBO> activityBOList=activityRepoService.queryAllActivity();
-        for(ActivityBO activityBO:activityBOList){
-            if(ActivityUtil.isFinish(activityBO)){
+        List<ActivityBO> activityBOList = activityRepoService.queryAllActivity();
+        for (ActivityBO activityBO : activityBOList) {
+            if (ActivityUtil.isFinish(activityBO)) {
                 activityBO.setState(ActivityStateEnum.FINISHED.getDesc());
                 activityRepoService.updateActivity(activityBO);
             }
