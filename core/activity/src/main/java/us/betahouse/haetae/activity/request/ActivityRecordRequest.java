@@ -10,7 +10,7 @@ package us.betahouse.haetae.activity.request;
  * @author MessiahJK
  * @version : ActivityRecordRequest.java 2018/11/22 16:15 MessiahJK
  */
-public class ActivityRecordRequest extends BaseRequest{
+public class ActivityRecordRequest extends BaseRequest {
     private static final long serialVersionUID = -4601584661582242868L;
     /**
      * 活动记录id
@@ -49,7 +49,7 @@ public class ActivityRecordRequest extends BaseRequest{
     /**
      * 学期
      */
-    private String team;
+    private String term;
 
     /**
      * 等第
@@ -112,12 +112,12 @@ public class ActivityRecordRequest extends BaseRequest{
         this.status = status;
     }
 
-    public String getTeam() {
-        return team;
+    public String getTerm() {
+        return term;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTerm(String term) {
+        this.term = term;
     }
 
     public String getGrades() {

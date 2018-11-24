@@ -25,11 +25,11 @@ import java.util.List;
 public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Autowired
-    ActivityRecordManager activityRecordManager;
+    private ActivityRecordManager activityRecordManager;
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_STAMPER)
-    public ActivityRecordBO create(ActivityStampRequest request, OperateContext context) {
+    public ActivityRecordBO stamp(ActivityStampRequest request, OperateContext context) {
         return activityRecordManager.create(request);
     }
 

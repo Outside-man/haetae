@@ -3,6 +3,7 @@
  * CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service.impl;
+
 import java.util.*;
 
 import com.alibaba.fastjson.JSON;
@@ -42,7 +43,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
      */
     @Override
     public ActivityRecordBO createActivityRecord(ActivityRecordBO activityRecordBO) {
-        if(StringUtils.isBlank(activityRecordBO.getActivityRecordId())){
+        if (StringUtils.isBlank(activityRecordBO.getActivityRecordId())) {
             activityRecordBO.setActivityRecordId(activityBizFactory.getActivityRecordId());
         }
         return convert(activityRecordDORepo.save(convert(activityRecordBO)));
@@ -56,7 +57,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
      */
     @Override
     public List<ActivityRecordBO> queryActivityRecordByUserId(String userId) {
-        List<ActivityRecordDO> activityRecordDOList=activityRecordDORepo.findByUserId(userId);
+        List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.findByUserId(userId);
         return CollectionUtils.toStream(activityRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -72,7 +73,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
      */
     @Override
     public List<ActivityRecordBO> queryActivityRecordByUserIdAndType(String userId, String type) {
-        List<ActivityRecordDO> activityRecordDOList=activityRecordDORepo.findByUserIdAndType(userId, type);
+        List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.findByUserIdAndType(userId, type);
         return CollectionUtils.toStream(activityRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -91,6 +92,22 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         return activityRecordDORepo.countAllByActivityIdEquals(activityId);
     }
 
+    @Override
+    public List<ActivityRecordBO> batchCreateActivityRecord(List<ActivityRecordBO> activityRecordBOs) {
+        // 批量给记录生成id
+        activityRecordBOs.forEach(activityRecordBO -> {
+            if (StringUtils.isBlank(activityRecordBO.getActivityRecordId())) {
+                activityRecordBO.setActivityRecordId(activityBizFactory.getActivityRecordId());
+            }
+        });
+
+        List<ActivityRecordDO> activityRecordDOS = CollectionUtils.toStream(activityRecordBOs)
+                .filter(Objects::nonNull).map(this::convert).collect(Collectors.toList());
+        activityRecordDORepo.saveAll(activityRecordDOS);
+
+        return activityRecordBOs;
+    }
+
     /**
      * 活动记录DO2BO
      *
@@ -98,28 +115,29 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
      * @return
      */
     @SuppressWarnings("unchecked")
-    private ActivityRecordBO convert(ActivityRecordDO activityRecordDO){
-        if(activityRecordDO==null){
+    private ActivityRecordBO convert(ActivityRecordDO activityRecordDO) {
+        if (activityRecordDO == null) {
             return null;
         }
-        ActivityRecordBO activityRecordBO=new ActivityRecordBO();
+        ActivityRecordBO activityRecordBO = new ActivityRecordBO();
         activityRecordBO.setActivityRecordId(activityRecordDO.getActivityRecordId());
         activityRecordBO.setActivityId(activityRecordDO.getActivityId());
         activityRecordBO.setUserId(activityRecordDO.getUserId());
         activityRecordBO.setScannerUserId(activityRecordDO.getScannerUserId());
-        activityRecordBO.setExtInfo(JSON.parseObject(activityRecordDO.getExtInfo(),Map.class));
+        activityRecordBO.setExtInfo(JSON.parseObject(activityRecordDO.getExtInfo(), Map.class));
         activityRecordBO.setTime(activityRecordDO.getTime());
         activityRecordBO.setType(activityRecordDO.getType());
         activityRecordBO.setStatus(activityRecordDO.getStatus());
-        activityRecordBO.setTeam(activityRecordDO.getTeam());
+        activityRecordBO.setTerm(activityRecordDO.getTerm());
         activityRecordBO.setGrades(activityRecordDO.getGrades());
         return activityRecordBO;
     }
-    private ActivityRecordDO convert(ActivityRecordBO activityRecordBO){
-        if(activityRecordBO==null){
+
+    private ActivityRecordDO convert(ActivityRecordBO activityRecordBO) {
+        if (activityRecordBO == null) {
             return null;
         }
-        ActivityRecordDO activityRecordDO=new ActivityRecordDO();
+        ActivityRecordDO activityRecordDO = new ActivityRecordDO();
         activityRecordDO.setActivityRecordId(activityRecordBO.getActivityRecordId());
         activityRecordDO.setActivityId(activityRecordBO.getActivityId());
         activityRecordDO.setUserId(activityRecordBO.getUserId());
@@ -127,7 +145,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         activityRecordDO.setTime(activityRecordBO.getTime());
         activityRecordDO.setType(activityRecordBO.getType());
         activityRecordDO.setStatus(activityRecordBO.getStatus());
-        activityRecordDO.setTeam(activityRecordBO.getTeam());
+        activityRecordDO.setTerm(activityRecordBO.getTerm());
         activityRecordDO.setGrades(activityRecordBO.getGrades());
         activityRecordDO.setExtInfo(JSON.toJSONString(activityRecordBO.getExtInfo()));
         return activityRecordDO;

@@ -53,7 +53,7 @@ public final class ActivityRecordRequestBuilder {
     /**
      * 学期
      */
-    private String team;
+    private String term;
     /**
      * 等第
      */
@@ -111,8 +111,8 @@ public final class ActivityRecordRequestBuilder {
         return this;
     }
 
-    public ActivityRecordRequestBuilder withTeam(String team) {
-        this.team = team;
+    public ActivityRecordRequestBuilder withTerm(String term) {
+        this.term = term;
         return this;
     }
 
@@ -132,7 +132,7 @@ public final class ActivityRecordRequestBuilder {
         activityRecordRequest.setTime(time);
         activityRecordRequest.setType(type);
         activityRecordRequest.setStatus(status);
-        activityRecordRequest.setTeam(team);
+        activityRecordRequest.setTerm(term);
         activityRecordRequest.setGrades(grades);
         return activityRecordRequest;
     }

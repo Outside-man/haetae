@@ -56,7 +56,7 @@ public class ActivityRecordBO extends ToString {
     /**
      * 学期
      */
-    private String team;
+    private String term;
 
     /**
      * 等第
@@ -132,12 +132,12 @@ public class ActivityRecordBO extends ToString {
         this.status = status;
     }
 
-    public String getTeam() {
-        return team;
+    public String getTerm() {
+        return term;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTerm(String term) {
+        this.term = term;
     }
 
     public String getGrades() {

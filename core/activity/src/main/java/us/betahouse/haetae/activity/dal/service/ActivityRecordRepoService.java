@@ -26,7 +26,7 @@ public interface ActivityRecordRepoService {
      *
      * @param userId
      * @return
-     * */
+     */
     List<ActivityRecordBO> queryActivityRecordByUserId(String userId);
 
     /**
@@ -36,7 +36,7 @@ public interface ActivityRecordRepoService {
      * @param type
      * @return
      */
-    List<ActivityRecordBO> queryActivityRecordByUserIdAndType(String userId,String type);
+    List<ActivityRecordBO> queryActivityRecordByUserIdAndType(String userId, String type);
 
     /**
      * 通过活动id统计活动记录数
@@ -45,4 +45,12 @@ public interface ActivityRecordRepoService {
      * @return
      */
     Long countActivityRecordByActivityId(String activityId);
+
+    /**
+     * 批量创建活动记录
+     *
+     * @param activityRecordBOs
+     * @return
+     */
+    List<ActivityRecordBO> batchCreateActivityRecord(List<ActivityRecordBO> activityRecordBOs);
 }

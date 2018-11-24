@@ -10,14 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 活动记录构建者
+ *
  * @author MessiahJK
  * @version : ActivityRecordBOBuilder.java 2018/11/22 21:35 MessiahJK
  */
 public final class ActivityRecordBOBuilder {
-    /**
-     * 活动记录id
-     */
-    private String activityRecordId;
 
     /**
      * 活动id
@@ -51,7 +49,7 @@ public final class ActivityRecordBOBuilder {
     /**
      * 学期
      */
-    private String team;
+    private String term;
 
     /**
      * 等第
@@ -66,13 +64,8 @@ public final class ActivityRecordBOBuilder {
     private ActivityRecordBOBuilder() {
     }
 
-    public static ActivityRecordBOBuilder anActivityRecordBO() {
+    public static ActivityRecordBOBuilder getInstance() {
         return new ActivityRecordBOBuilder();
-    }
-
-    public ActivityRecordBOBuilder withActivityRecordId(String activityRecordId) {
-        this.activityRecordId = activityRecordId;
-        return this;
     }
 
     public ActivityRecordBOBuilder withActivityId(String activityId) {
@@ -105,8 +98,8 @@ public final class ActivityRecordBOBuilder {
         return this;
     }
 
-    public ActivityRecordBOBuilder withTeam(String team) {
-        this.team = team;
+    public ActivityRecordBOBuilder withTerm(String term) {
+        this.term = term;
         return this;
     }
 
@@ -122,14 +115,13 @@ public final class ActivityRecordBOBuilder {
 
     public ActivityRecordBO build() {
         ActivityRecordBO activityRecordBO = new ActivityRecordBO();
-        activityRecordBO.setActivityRecordId(activityRecordId);
         activityRecordBO.setActivityId(activityId);
         activityRecordBO.setUserId(userId);
         activityRecordBO.setScannerUserId(scannerUserId);
         activityRecordBO.setTime(time);
         activityRecordBO.setType(type);
         activityRecordBO.setStatus(status);
-        activityRecordBO.setTeam(team);
+        activityRecordBO.setTerm(term);
         activityRecordBO.setGrades(grades);
         activityRecordBO.setExtInfo(extInfo);
         return activityRecordBO;

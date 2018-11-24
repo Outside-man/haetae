@@ -33,19 +33,19 @@ public class ActivityRecordDO extends BaseDO {
     /**
      * 活动id
      */
-    @Column(name = "activity_id",length = 32,nullable = false)
+    @Column(name = "activity_id", length = 32, nullable = false)
     private String activityId;
 
     /**
      * 用户id
      */
-    @Column(name = "user_id",length = 32,nullable = false)
+    @Column(name = "user_id", length = 32, nullable = false)
     private String userId;
 
     /**
      * 记录者id
      */
-    @Column(name="scanner_user_id",length = 32,nullable = false)
+    @Column(name = "scanner_user_id", length = 32, nullable = false)
     private String scannerUserId;
 
     /**
@@ -66,7 +66,7 @@ public class ActivityRecordDO extends BaseDO {
     /**
      * 学期
      */
-    private String team;
+    private String term;
 
     /**
      * 等第
@@ -129,12 +129,12 @@ public class ActivityRecordDO extends BaseDO {
         this.status = status;
     }
 
-    public String getTeam() {
-        return team;
+    public String getTerm() {
+        return term;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTerm(String term) {
+        this.term = term;
     }
 
     public String getGrades() {

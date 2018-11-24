@@ -18,14 +18,15 @@ import java.util.List;
  * @version : ActivityRecordService.java 2018/11/22 20:31 MessiahJK
  */
 public interface ActivityRecordService {
+
     /**
-     * 创建活动记录
+     * 盖章
      *
      * @param request
      * @param context
      * @return
      */
-    ActivityRecordBO create(ActivityStampRequest request, OperateContext context);
+    ActivityRecordBO stamp(ActivityStampRequest request, OperateContext context);
 
     /**
      * 通过用户id查询活动记录
@@ -34,7 +35,7 @@ public interface ActivityRecordService {
      * @param context
      * @return
      */
-    List<ActivityRecordBO> findByUserId(ActivityStampRequest request,OperateContext context);
+    List<ActivityRecordBO> findByUserId(ActivityStampRequest request, OperateContext context);
 
     /**
      * 通过用户id和类型查找活动记录
@@ -43,7 +44,7 @@ public interface ActivityRecordService {
      * @param context
      * @return
      */
-    List<ActivityRecordBO> findByUserIdAndType(ActivityStampRequest request,OperateContext context);
+    List<ActivityRecordBO> findByUserIdAndType(ActivityStampRequest request, OperateContext context);
 
     /**
      * 通过活动id统计活动记录条数
@@ -52,5 +53,5 @@ public interface ActivityRecordService {
      * @param context
      * @return
      */
-    Long countByActivityId(ActivityStampRequest request,OperateContext context);
+    Long countByActivityId(ActivityStampRequest request, OperateContext context);
 }
