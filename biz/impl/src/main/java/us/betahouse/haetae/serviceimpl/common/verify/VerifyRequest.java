@@ -12,5 +12,5 @@ package us.betahouse.haetae.serviceimpl.common.verify;
  */
 public interface VerifyRequest {
 
-    String getUserId();
+    String getVerifyUserId();
 }

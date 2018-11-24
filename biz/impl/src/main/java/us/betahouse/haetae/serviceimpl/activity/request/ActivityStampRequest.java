@@ -16,4 +16,9 @@ import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 public class ActivityStampRequest extends ActivityRecordRequest implements VerifyRequest {
 
     private static final long serialVersionUID = -8487946642055713409L;
+
+    @Override
+    public String getVerifyUserId() {
+        return getUserId();
+    }
 }
