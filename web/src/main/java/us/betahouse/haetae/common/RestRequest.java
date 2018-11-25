@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.request;
+package us.betahouse.haetae.common;
 
 import org.hibernate.validator.constraints.NotBlank;
 import us.betahouse.util.common.ToString;

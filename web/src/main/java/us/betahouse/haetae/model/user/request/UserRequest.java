@@ -2,8 +2,10 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.request;
+package us.betahouse.haetae.model.user.request;
 
+
+import us.betahouse.haetae.common.RestRequest;
 
 /**
  * 用户请求

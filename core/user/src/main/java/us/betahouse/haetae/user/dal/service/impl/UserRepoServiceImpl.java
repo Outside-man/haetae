@@ -89,6 +89,9 @@ public class UserRepoServiceImpl implements UserRepoService {
         if (newUserDO.getLastLoginDate() != null) {
             userDO.setLastLoginDate(newUserDO.getLastLoginDate());
         }
+        if (newUserDO.getSessionId() != null) {
+            userDO.setSessionId(newUserDO.getSessionId());
+        }
         return EntityConverter.convert(userDORepo.save(userDO));
     }
 

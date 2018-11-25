@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.session;
+package us.betahouse.haetae.common.session;
 
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,7 +12,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.request.RestRequest;
+import us.betahouse.haetae.common.RestRequest;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.utils.IPUtil;
@@ -37,7 +37,7 @@ public class SessionService {
     @Autowired
     private UserBasicService userBasicService;
 
-    @Pointcut("execution(* us.betahouse.haetae.controller..*(..)) && @annotation(us.betahouse.haetae.session.CheckLogin)")
+    @Pointcut("execution(* us.betahouse.haetae.controller..*(..)) && @annotation(us.betahouse.haetae.common.session.CheckLogin)")
     public void checkLogin() {
     }
 

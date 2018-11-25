@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.log;
+package us.betahouse.haetae.common.log;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
-import us.betahouse.haetae.request.UserRequest;
+import us.betahouse.haetae.model.user.request.UserRequest;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.CommonResultCode;

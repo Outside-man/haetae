@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
-import us.betahouse.haetae.user.enums.PermType;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -23,12 +22,9 @@ import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.user.utils.EncryptUtil;
 import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
-import us.betahouse.util.utils.MD5Util;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 用户基础服务实现
@@ -61,13 +57,17 @@ public class UserBasicServiceImpl implements UserBasicService {
         AssertUtil.assertTrue(passwordRight, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
 
         // 更新登陆信息
+        String token = null;
         if (StringUtils.isBlank(loginIP)) {
             LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
         }
         if (StringUtils.isNotBlank(openId)) {
             userBO.setOpenId(openId);
+            token = EncryptUtil.getToken(openId);
+        } else {
+            // 无openId登陆
+            token = UUID.randomUUID().toString();
         }
-        String token = EncryptUtil.getToken(openId);
         userBO.setLastLoginIP(loginIP);
         userBO.setLastLoginDate(new Date());
         // 覆盖会话信息
@@ -94,7 +94,10 @@ public class UserBasicServiceImpl implements UserBasicService {
     public UserBO checkLogin(String token, String loginIP) {
         String sessionId = EncryptUtil.parseToken(token);
         UserBO userBO = userRepoService.queryBySessionId(sessionId);
-        AssertUtil.assertNotNull(userBO, UserErrorCode.USER_NOT_LOGIN);
+        if (userBO == null) {
+            LoggerUtil.info(LOGGER, "用户登陆失效, token={0}, sessionId={1}, IP={2}", token, sessionId, loginIP);
+            return null;
+        }
 
         // 更新登陆信息
         if (StringUtils.isBlank(loginIP)) {

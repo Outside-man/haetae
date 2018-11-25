@@ -37,9 +37,9 @@ public class OpenIdBasicValidator implements Validator<UserManageRequest> {
     @Override
     public void validate(UserManageRequest request) {
         AssertUtil.assertNotNull(request, "请求不能为空");
-        AssertUtil.assertStringNotBlank(request.getOpenId(), "用户名不能为空");
+        AssertUtil.assertStringNotBlank(request.getOpenId(), "openId不能为空");
         UserBO userBO = userRepoService.queryByUserName(request.getOpenId());
-        if(userBO!=null){
+        if (userBO != null) {
             LoggerUtil.warn(LOGGER, "用户已经绑定openId, userBO={0}", userBO);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "openId已经绑定用户");
         }

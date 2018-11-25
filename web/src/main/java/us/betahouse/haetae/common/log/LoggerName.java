@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.log;
+package us.betahouse.haetae.common.log;
 
 /**
  * 日志名称

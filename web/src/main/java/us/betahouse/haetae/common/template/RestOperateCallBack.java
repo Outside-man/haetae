@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.template;
+package us.betahouse.haetae.common.template;
 
 import us.betahouse.util.common.Result;
 

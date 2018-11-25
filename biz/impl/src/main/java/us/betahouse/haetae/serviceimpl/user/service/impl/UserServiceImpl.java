@@ -95,18 +95,16 @@ public class UserServiceImpl implements UserService {
         UserBO userBO = userRepoService.queryByUserId(request.getUserId());
         AssertUtil.assertNotNull(userBO, "用户不存在");
 
-        String encodePwd = EncryptUtil.encryptPassword(request.getPassword(), userBO.getSalt());
-
-        // 传入了密码 && 不和原密码相同 就认为是要修改密码
-        if (request.getPassword() != null && !StringUtils.equals(EncryptUtil.encryptPassword(request.getPassword(), userBO.getSalt()), userBO.getPassword())) {
-
-            // 如果传入了老密码 就认为需要比较老密码
-            if(StringUtils.isNotBlank(request.fetchExtInfo(UserRequestExtInfoKey.USER_OLD_PASSWORD))){
-                // 传入的老密码加密
-                String oldEncodePwd = EncryptUtil.encryptPassword(request.fetchExtInfo(UserRequestExtInfoKey.USER_OLD_PASSWORD), userBO.getSalt());
+        // 传入了新密码 就认为是要修改密码
+        if (StringUtils.isNotBlank(request.fetchExtInfo(UserRequestExtInfoKey.USER_NEW_PASSWORD))) {
+            // 传入了老密码就认为是要 校验老密码
+            if (StringUtils.isNotBlank(request.getPassword())) {
+                String oldEncodePwd = EncryptUtil.encryptPassword(request.getPassword(), userBO.getSalt());
                 AssertUtil.assertTrue(StringUtils.equals(userBO.getPassword(), oldEncodePwd), "旧密码错误");
             }
 
+            // 将新密码组装入管理请求
+            request.setPassword(request.fetchExtInfo(UserRequestExtInfoKey.USER_NEW_PASSWORD));
             // 校验新密码是否满足 密码规则
             passwordValidator.validate(request);
 

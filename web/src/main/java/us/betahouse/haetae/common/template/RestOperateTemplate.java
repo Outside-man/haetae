@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.template;
+package us.betahouse.haetae.common.template;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

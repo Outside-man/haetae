@@ -9,17 +9,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import us.betahouse.haetae.log.LoggerName;
-import us.betahouse.haetae.request.UserRequest;
+import us.betahouse.haetae.common.log.LoggerName;
+import us.betahouse.haetae.converter.UserVOConverter;
+import us.betahouse.haetae.model.user.request.UserRequest;
+import us.betahouse.haetae.model.user.vo.UserVO;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
-import us.betahouse.haetae.session.CheckLogin;
-import us.betahouse.haetae.template.RestOperateCallBack;
-import us.betahouse.haetae.template.RestOperateTemplate;
-import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.common.session.CheckLogin;
+import us.betahouse.haetae.common.template.RestOperateCallBack;
+import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -49,14 +50,15 @@ public class UserController {
 
     /**
      * 登陆
+     *
      * @param request
      * @param httpServletRequest
      * @return
      */
-    @PutMapping(value = "/openId")
+    @PostMapping(value = "/openId")
     @Log(loggerName = LoggerName.USER_DIGEST)
-    public Result<CommonUser> login(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户登录", request, new RestOperateCallBack<CommonUser>() {
+    public Result<UserVO> wxLogin(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户微信登录", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -66,14 +68,47 @@ public class UserController {
             }
 
             @Override
-            public Result<CommonUser> execute() {
+            public Result<UserVO> execute() {
                 CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
                         .withUsername(request.getUsername()).withPassword(request.getPassword())
                         .withCode(request.getCode());
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return RestResultUtil.buildSuccessResult(userService.login(builder.build(), new OperateContext()), "登陆成功");
+                UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
+                return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
+            }
+        });
+    }
+
+    /**
+     * 登陆
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PostMapping(value = "/token")
+    @Log(loggerName = LoggerName.USER_DIGEST)
+    public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户正常登录", request, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUsername(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户名不能为空");
+                AssertUtil.assertStringNotBlank(request.getPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "密码不能为空");
+            }
+
+            @Override
+            public Result<UserVO> execute() {
+                CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
+                        .withRequestId(request.getRequestId())
+                        .withUsername(request.getUsername()).withPassword(request.getPassword());
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
+                return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
     }
@@ -81,8 +116,8 @@ public class UserController {
     @CheckLogin
     @DeleteMapping(value = "/openId")
     @Log(loggerName = LoggerName.USER_DIGEST)
-    public Result<CommonUser> logout(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户登出", request, new RestOperateCallBack<CommonUser>() {
+    public Result<UserVO> logout(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户登出", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -90,7 +125,7 @@ public class UserController {
             }
 
             @Override
-            public Result<CommonUser> execute() {
+            public Result<UserVO> execute() {
                 CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
                         .withUserId(request.getUserId());
@@ -104,6 +139,7 @@ public class UserController {
 
     /**
      * 修改密码
+     *
      * @param request
      * @param httpServletRequest
      * @return
@@ -111,8 +147,8 @@ public class UserController {
     @CheckLogin
     @PutMapping(value = "/pwd")
     @Log(loggerName = LoggerName.USER_DIGEST)
-    public Result<CommonUser> fetchRoleInfo(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "修改密码", request, new RestOperateCallBack<CommonUser>() {
+    public Result<UserVO> modifyPassword(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "修改密码", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -124,16 +160,16 @@ public class UserController {
             }
 
             @Override
-            public Result<CommonUser> execute() {
+            public Result<UserVO> execute() {
                 CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
-                        .withPassword(request.getNewPassword())
+                        .withPassword(request.getPassword())
                         .withUserId(request.getUserId());
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 CommonUserRequest commonUserRequest = builder.build();
-                commonUserRequest.putExtInfo(UserRequestExtInfoKey.USER_OLD_PASSWORD, request.getPassword());
+                commonUserRequest.putExtInfo(UserRequestExtInfoKey.USER_NEW_PASSWORD, request.getNewPassword());
 
                 userService.modifyUser(commonUserRequest, context);
                 return RestResultUtil.buildSuccessResult("密码修改成功");

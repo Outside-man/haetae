@@ -19,7 +19,6 @@
                 <ref bean="userNameBasicValidator"/>
                 <ref bean="passwordBasicValidator"/>
                 <ref bean="passwordStrengthValidator"/>
-                <ref bean="openIdBasicValidator"/>
             </list>
         </property>
     </bean>

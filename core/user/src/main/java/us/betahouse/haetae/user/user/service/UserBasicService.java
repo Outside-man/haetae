@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.user.user.service;
 
-import us.betahouse.haetae.user.enums.PermType;
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -37,6 +36,7 @@ public interface UserBasicService {
 
     /**
      * 检测登陆 带ip
+     *
      * @param token
      * @param loginIP
      * @return

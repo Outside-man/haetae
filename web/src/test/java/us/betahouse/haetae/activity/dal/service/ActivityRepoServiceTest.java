@@ -28,7 +28,7 @@ public class ActivityRepoServiceTest {
 
     @Test
     public void createActivity() {
-        ActivityBO activityBO = ActivityBOBuilder.anActivityBO()
+        ActivityBO activityBO = ActivityBOBuilder.getInstance()
                 .withActivityName("校园活动")
                 .withType("xyhd")
                 .withDefaultTime(12)
