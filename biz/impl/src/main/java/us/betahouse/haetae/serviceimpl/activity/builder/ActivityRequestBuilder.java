@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.activity.builder;
 
 import us.betahouse.haetae.activity.request.ActivityRequest;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public final class ActivityRequestBuilder {
     /**
      * 状态
      */
-    private String state;
+    private String state = ActivityStampStatusEnum.ENABLE.getCode();
     /**
      * 学期
      */

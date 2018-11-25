@@ -44,7 +44,7 @@ public class TermUtil {
      *
      * @return
      */
-    public String getNowTerm() {
+    public static String getNowTerm() {
         return getTerm(new Date());
     }
 
@@ -55,7 +55,7 @@ public class TermUtil {
      * @param date
      * @return
      */
-    public String getTerm(Date date) {
+    public static String getTerm(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 

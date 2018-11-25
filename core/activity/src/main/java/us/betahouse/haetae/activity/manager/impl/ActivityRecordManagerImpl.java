@@ -58,9 +58,9 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
                 .withScannerUserId(request.getScannerUserId())
                 .withTime(time)
                 .withType(request.getType())
+                .withType(activityBO.getType())
                 .withStatus(request.getStatus())
-                .withStatus(request.getTerm())
-                .withGrades(request.getGrades())
+                .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo())
                 ;
 
@@ -123,9 +123,9 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
                 .withScannerUserId(request.getScannerUserId())
                 .withExtInfo(request.getExtInfo())
                 .withTime(time)
-                .withType(request.getType())
+                .withType(activityBO.getType())
                 .withStatus(request.getStatus())
-                .withStatus(request.getTerm())
+                .withTerm(request.getTerm())
                 .withGrades(request.getGrades());
 
 

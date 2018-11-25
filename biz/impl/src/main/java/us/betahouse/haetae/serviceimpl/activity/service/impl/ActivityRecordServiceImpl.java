@@ -14,10 +14,12 @@ import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
@@ -44,8 +46,14 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Autowired
     private ActivityRepoService activityRepoService;
 
+    @Autowired
+    private UserBasicService userBasicService;
+
     @Override
     public ActivityStamp stamp(ActivityStampRequest request, OperateContext context) {
+        // 校验盖章权限
+        verifyStampPerm(request);
+
         ActivityRecordBO record = activityRecordManager.create(request);
         ActivityBO activity = activityRepoService.queryActivityByActivityId(record.getActivityId());
         return ActivityStampBuilder.getInstance().withActivityRecordBO(record).withActivityBO(activity).build();
@@ -53,11 +61,14 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     public List<ActivityStamp> batchStamp(ActivityStampRequest request, OperateContext context) {
+        // 校验盖章权限
+        verifyStampPerm(request);
+
         List<ActivityRecordBO> activityRecords = activityRecordManager.batchCreate(request, request.getUserIds());
         ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
         List<ActivityStamp> activityStamps = new ArrayList<>();
         ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance().withActivityBO(activity);
-        for(ActivityRecordBO record : activityRecords){
+        for (ActivityRecordBO record : activityRecords) {
             activityStamps.add(stampBuilder.withActivityRecordBO(record).build());
         }
         return activityStamps;
@@ -105,5 +116,18 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Override
     public Long countByActivityId(ActivityStampRequest request, OperateContext context) {
         return activityRecordManager.countByActivityId(request.getActivityId());
+    }
+
+    /**
+     * 校验盖章权限
+     *
+     * @param request
+     * @return
+     */
+    private boolean verifyStampPerm(ActivityStampRequest request) {
+        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+        AssertUtil.assertStringNotBlank(stampPermId, "活动没有盖章权限");
+        return userBasicService.verifyPermissionByPermId(request.getScannerUserId(), Collections.singletonList(stampPermId));
     }
 }
