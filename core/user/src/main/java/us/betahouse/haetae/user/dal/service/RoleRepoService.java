@@ -51,6 +51,15 @@ public interface RoleRepoService {
     List<RoleBO> userBindRoles(String userId, List<String> roleIds);
 
     /**
+     * 给用户绑定角色
+     *
+     * @param userId
+     * @param roleCode
+     * @return
+     */
+    RoleBO userBindRolesByCode(String userId, String roleCode);
+
+    /**
      * 给用户解除绑定角色
      *
      * @param userId

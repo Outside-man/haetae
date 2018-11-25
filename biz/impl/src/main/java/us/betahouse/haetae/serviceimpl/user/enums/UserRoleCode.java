@@ -16,11 +16,6 @@ import us.betahouse.haetae.user.enums.RoleCode;
 public enum UserRoleCode implements RoleCode {
 
     /**
-     * 学生角色
-     */
-    STUDENT("STUDENT", "STUDENT"),
-
-    /**
      * 活动管理者 管理活动
      */
     ACTIVITY_MANAGER("ACTIVITY_MANAGER", "活动管理员"),
@@ -30,6 +25,10 @@ public enum UserRoleCode implements RoleCode {
      */
     ACTIVITY_STAMPER("ACTIVITY_STAMPER", "活动盖章员"),
 
+    /**
+     * 非学生用户
+     */
+    NOT_STUDENT("NOT_STUDENT", "非学生用户"),
 
     ;
 

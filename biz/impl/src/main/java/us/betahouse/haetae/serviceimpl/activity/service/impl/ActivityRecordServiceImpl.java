@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
@@ -21,8 +22,8 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
-import us.betahouse.haetae.user.manager.PermManager;
-import us.betahouse.haetae.user.request.PermManageRequest;
+import us.betahouse.haetae.user.manager.UserManager;
+import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
@@ -54,7 +55,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     private UserBasicService userBasicService;
 
     @Autowired
-    private PermManager permManager;
+    private UserManager userManager;
 
     @Override
     public ActivityStamp stamp(ActivityStampRequest request, OperateContext context) {
@@ -127,15 +128,20 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    @Transactional
     public void bindStamper(ActivityStampRequest request, OperateContext context) {
         ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
         String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
         AssertUtil.assertStringNotBlank(stampPermId, "活动没有盖章权限");
 
-        PermManageRequest permManageRequest = new PermManageRequest();
-        permManageRequest.setUserId(Collections.singletonList(request.getScannerUserId()));
-        permManageRequest.setPermId(stampPermId);
-        permManager.batchUsersBindPerms(permManageRequest);
+        UserManageRequest userManageRequest = new UserManageRequest();
+        userManageRequest.setUserId(request.getScannerUserId());
+        userManageRequest.setRoleIds(Collections.singletonList(request.getScannerUserId()));
+        userManageRequest.setPermIds(Collections.singletonList(stampPermId));
+        // 绑定 权限
+        userManager.batchBindPerm(userManageRequest);
+        // 绑定 角色
+        userManager.batchBindRole(userManageRequest);
     }
 
     /**

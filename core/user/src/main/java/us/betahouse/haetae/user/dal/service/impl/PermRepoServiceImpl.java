@@ -5,7 +5,10 @@
 package us.betahouse.haetae.user.dal.service.impl;
 
 import us.betahouse.haetae.user.dal.convert.EntityConverter;
+import us.betahouse.haetae.user.dal.convert.RelationConverter;
+import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
@@ -145,7 +148,6 @@ public class PermRepoServiceImpl implements PermRepoService {
             while (permIterator.hasNext()) {
                 PermDO perm = permIterator.next();
                 for (String boundId : roleBoundPermIds) {
-                    LoggerUtil.warn(LOGGER, "角色重复绑定权限 roleId={0}, perm={1}", roleId, perm);
                     // 是已绑的权限 就从里面移除
                     if (StringUtils.equals(boundId, perm.getPermId())) {
                         permIterator.remove();
@@ -157,12 +159,12 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 构建关联关系实体
         List<RolePermRelationDO> relations = new ArrayList<>();
         for (PermDO permDO : permDOList) {
-            RolePermRelationDO relation = new RolePermRelationDO();
+            RolePermRelationBO relation = new RolePermRelationBO();
             relation.setPermId(permDO.getPermId());
             relation.setRoleId(roleId);
             // 通过 id 工厂构建关联id
             relation.setRolePermId(userBizIdFactory.getRoleUserRelationId(roleId, permDO.getPermId()));
-            relations.add(relation);
+            relations.add(RelationConverter.convert(relation));
         }
         // 绑定
         rolePermRelationDORepo.saveAll(relations);
@@ -231,12 +233,12 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 构建关联关系实体
         List<UserPermRelationDO> relations = new ArrayList<>();
         for (PermDO permDO : permDOList) {
-            UserPermRelationDO relation = new UserPermRelationDO();
+            UserPermRelationBO relation = new UserPermRelationBO();
             relation.setPermId(permDO.getPermId());
             relation.setUserId(userId);
             // 通过 id 工厂构建关联id
             relation.setUserPermId(userBizIdFactory.getUserPermRelationId(userId, permDO.getPermId()));
-            relations.add(relation);
+            relations.add(RelationConverter.convert(relation));
         }
         // 绑定
         userPermRelationDORepo.saveAll(relations);
@@ -292,12 +294,12 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 构建关联关系实体
         List<UserPermRelationDO> relations = new ArrayList<>();
         for (UserDO userDO : userDOList) {
-            UserPermRelationDO relation = new UserPermRelationDO();
+            UserPermRelationBO relation = new UserPermRelationBO();
             relation.setPermId(permId);
             relation.setUserId(userDO.getUserId());
             // 通过 id 工厂构建关联id
             relation.setUserPermId(userBizIdFactory.getUserPermRelationId(permId, userDO.getUserId()));
-            relations.add(relation);
+            relations.add(RelationConverter.convert(relation));
         }
         // 绑定
         userPermRelationDORepo.saveAll(relations);

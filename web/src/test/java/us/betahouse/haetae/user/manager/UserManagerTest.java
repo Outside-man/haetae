@@ -8,6 +8,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 
@@ -29,11 +31,23 @@ public class UserManagerTest {
     }
 
     @Test
-    public void addRole() {
+    public void batchBindRole() {
+        UserManageRequest request = new UserManageRequest();
+        request.setUserId("201811251917084430680001201864");
+        request.setRoleIds(Collections.singletonList("201811251934333309365400021125"));
+        userManager.batchBindRole(request);
     }
 
     @Test
-    public void addPerm() {
+    public void batchUnbindRole() {
+    }
+
+    @Test
+    public void batchBindPerm() {
+    }
+
+    @Test
+    public void batchUnbindPerm() {
     }
 
     private UserManageRequest genUserCreateRequest() {
@@ -49,4 +63,5 @@ public class UserManagerTest {
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;
     }
+
 }

@@ -5,7 +5,9 @@
 package us.betahouse.haetae.user.dal.service.impl;
 
 import us.betahouse.haetae.user.dal.convert.EntityConverter;
+import us.betahouse.haetae.user.dal.convert.RelationConverter;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
@@ -125,17 +127,25 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         // 构建关联关系实体
         List<UserRoleRelationDO> relations = new ArrayList<>();
         for (RoleDO roleDO : roleDOList) {
-            UserRoleRelationDO relation = new UserRoleRelationDO();
+            UserRoleRelationBO relation = new UserRoleRelationBO();
             relation.setRoleId(roleDO.getRoleId());
             relation.setUserId(userId);
             // 通过 id 工厂构建关联id
             relation.setUserRoleId(userBizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
-            relations.add(relation);
+            relations.add(RelationConverter.convert(relation));
         }
         // 绑定
         userRoleRelationDORepo.saveAll(relations);
 
         return bindRoles;
+    }
+
+    @Override
+    public RoleBO userBindRolesByCode(String userId, String roleCode) {
+        RoleDO roleDO = roleDORepo.findByRoleCode(roleCode);
+        AssertUtil.assertNotNull(roleCode, "角色不存在");
+        userBindRoles(userId, Collections.singletonList(roleDO.getRoleId()));
+        return EntityConverter.convert(roleDO);
     }
 
     @Override
@@ -195,12 +205,12 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         // 构建关联关系实体
         List<UserRoleRelationDO> relations = new ArrayList<>();
         for (UserDO userDO : userDOList) {
-            UserRoleRelationDO relation = new UserRoleRelationDO();
+            UserRoleRelationBO relation = new UserRoleRelationBO();
             relation.setRoleId(roleId);
             relation.setUserId(userDO.getUserId());
             // 通过 id 工厂构建关联id
             relation.setUserRoleId(userBizIdFactory.getRoleUserRelationId(roleId, userDO.getUserId()));
-            relations.add(relation);
+            relations.add(RelationConverter.convert(relation));
         }
         // 绑定
         userRoleRelationDORepo.saveAll(relations);
