@@ -10,6 +10,7 @@ package us.betahouse.haetae.activity.request;
  * @version : OrganizationRequest.java 2018/11/22 16:35 MessiahJK
  */
 public class OrganizationRequest extends BaseRequest {
+    private static final long serialVersionUID = -2585031363161055737L;
     /**
      * 组织id
      */
