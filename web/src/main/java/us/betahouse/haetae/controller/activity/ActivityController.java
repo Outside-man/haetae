@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.controller.user;
+package us.betahouse.haetae.controller.activity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
