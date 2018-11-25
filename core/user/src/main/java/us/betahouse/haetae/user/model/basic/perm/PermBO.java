@@ -47,6 +47,33 @@ public class PermBO extends ToString {
      */
     private Map<String, String> extInfo = new HashMap<>();
 
+    /**
+     * 放入拓展信息
+     *
+     * @param key
+     * @param value
+     */
+    public void putExtInfo(String key, String value) {
+        if (extInfo == null) {
+            extInfo = new HashMap<>();
+        }
+        extInfo.put(key, value);
+    }
+
+    /**
+     * 取出拓展信息
+     *
+     * @param key
+     * @return
+     */
+    public String fetchExtInfo(String key) {
+        if (extInfo == null) {
+            return null;
+        }
+        return extInfo.get(key);
+    }
+
+
     public String getPermId() {
         return permId;
     }

@@ -14,6 +14,7 @@ import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.activity.status.activitystatus.*;
 import us.betahouse.haetae.activity.utils.ActivityUtil;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,14 +40,20 @@ public class ActivityManagerImpl implements ActivityManager {
         if (request.getDefaultTime() != null) {
             time = (int) Math.round(request.getDefaultTime() * 10);
         }
+        if(request.getStart()==null){
+            request.setStart(0L);
+        }
+        if(request.getEnd()==null){
+            request.setEnd(0L);
+        }
         ActivityBOBuilder builder=ActivityBOBuilder.getInstance()
                 .withActivityName(request.getActivityName())
                 .withType(request.getType())
                 .withOrganizationMessage(request.getOrganizationMessage())
                 .withLocation(request.getLocation())
                 .withDefaultTime(time)
-                .withStart(request.getStart())
-                .withEnd(request.getEnd())
+                .withStart(new Date(request.getStart()))
+                .withEnd(new Date(request.getEnd()))
                 .withScore(request.getScore())
                 .withDescription(request.getDescription())
                 .withUserId(request.getUserId())
@@ -86,8 +93,8 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withOrganizationMessage(request.getOrganizationMessage())
                 .withLocation(request.getLocation())
                 .withDefaultTime(time)
-                .withStart(request.getStart())
-                .withEnd(request.getEnd())
+                .withStart(new Date(request.getStart()))
+                .withEnd(new Date(request.getEnd()))
                 .withScore(request.getScore())
                 .withDescription(request.getDescription())
                 .withUserId(request.getUserId())

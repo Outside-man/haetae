@@ -51,11 +51,11 @@ public final class ActivityRequestBuilder {
     /**
      * 开始时间
      */
-    private Date start;
+    private Long start;
     /**
      * 结束时间
      */
-    private Date end;
+    private Long end;
     /**
      * 分数
      */
@@ -124,12 +124,12 @@ public final class ActivityRequestBuilder {
         return this;
     }
 
-    public ActivityRequestBuilder withStart(Date start) {
+    public ActivityRequestBuilder withStart(Long start) {
         this.start = start;
         return this;
     }
 
-    public ActivityRequestBuilder withEnd(Date end) {
+    public ActivityRequestBuilder withEnd(Long end) {
         this.end = end;
         return this;
     }

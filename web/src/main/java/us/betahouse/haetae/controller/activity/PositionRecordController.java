@@ -15,7 +15,9 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.model.activity.request.PositionRecordRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.PositionRecordManagerRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.builder.PositionRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.PositionRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
@@ -57,7 +59,7 @@ public class PositionRecordController {
     @CheckLogin
     @Log(loggerName = LoggerName.POSITION_RECORD)
     @GetMapping(value = "/userId")
-    public Result<List<PositionRecordBO>> getByUserId(PositionRecordManagerRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<PositionRecordBO>> getByUserId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "获取个人履历", request, new RestOperateCallBack<List<PositionRecordBO>>() {
             @Override
             public void before() {
@@ -69,7 +71,12 @@ public class PositionRecordController {
             public Result<List<PositionRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<PositionRecordBO> positionRecordBOList=positionRecordService.findByUserId(request, context);
+                PositionRecordManagerRequest positionRecordManagerRequest=PositionRecordManagerRequestBuilder.getInstance()
+                        .withPositionRecordId(request.getPositionRecordId())
+                        .withUserId(request.getUserId())
+                        .build();
+
+                List<PositionRecordBO> positionRecordBOList=positionRecordService.findByUserId(positionRecordManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(positionRecordBOList,"获取个人履历成功");
             }
         });
@@ -85,7 +92,7 @@ public class PositionRecordController {
     @CheckLogin
     @Log(loggerName = LoggerName.POSITION_RECORD)
     @GetMapping(value = "/organizationId")
-    public Result<List<PositionRecordBO>> getByOrganizationId(PositionRecordManagerRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<PositionRecordBO>> getByOrganizationId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "获取组织人员列表", request, new RestOperateCallBack<List<PositionRecordBO>>() {
             @Override
             public void before() {
@@ -97,7 +104,11 @@ public class PositionRecordController {
             public Result<List<PositionRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<PositionRecordBO> positionRecordBOList=positionRecordService.findByOrganizationId(request, context);
+                PositionRecordManagerRequest positionRecordManagerRequest=PositionRecordManagerRequestBuilder.getInstance()
+                        .withPositionRecordId(request.getPositionRecordId())
+                        .withOrganizationId(request.getOrganizationId())
+                        .build();
+                List<PositionRecordBO> positionRecordBOList=positionRecordService.findByOrganizationId(positionRecordManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(positionRecordBOList,"获取组织人员列表成功");
             }
         });

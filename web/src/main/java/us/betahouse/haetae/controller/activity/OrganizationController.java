@@ -15,6 +15,7 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.model.activity.request.OrganizationRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.OrganizationManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -48,7 +49,7 @@ public class OrganizationController {
     @CheckLogin
     @GetMapping("/all")
     @Log(loggerName = LoggerName.ORGANIZATION_DIGEST)
-    public Result<List<OrganizationBO>> getAllOrganization(OrganizationManagerRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<OrganizationBO>> getAllOrganization(OrganizationRestRequest request, HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "获取组织列表", request, new RestOperateCallBack<List<OrganizationBO>>() {
             @Override
             public void before() {

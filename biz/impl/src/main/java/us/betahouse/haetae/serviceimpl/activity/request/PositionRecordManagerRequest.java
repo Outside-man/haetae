@@ -16,15 +16,5 @@ public class PositionRecordManagerRequest extends PositionRecordRequest implemen
     public String getVerifyUserId() {
         return getUserId();
     }
-    private String userId;
 
-    @Override
-    public String getUserId() {
-        return userId;
-    }
-
-    @Override
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

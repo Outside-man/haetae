@@ -2,24 +2,22 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.activity.request;
+package us.betahouse.haetae.model.activity.request;
 
-import java.util.Date;
+import us.betahouse.haetae.common.RestRequest;
 
 /**
- * 活动管理请求
- *
  * @author MessiahJK
- * @version : ActivityRequest.java 2018/11/22 16:11 MessiahJK
+ * @version : ActivityRestRequest.java 2018/11/25 21:39 MessiahJK
  */
-public class ActivityRequest extends BaseRequest {
+public class ActivityRestRequest extends RestRequest {
 
-    private static final long serialVersionUID = 4996563906904688691L;
+    private static final long serialVersionUID = 8305664398451878372L;
+
     /**
      * 活动id
      */
     private String activityId;
-
     /**
      * 活动名
      */
@@ -78,11 +76,11 @@ public class ActivityRequest extends BaseRequest {
      */
     private String state;
 
-
     /**
      * 动作
      */
     private String motion;
+
     /**
      * 活动学期
      */
@@ -168,10 +166,12 @@ public class ActivityRequest extends BaseRequest {
         this.description = description;
     }
 
+    @Override
     public String getUserId() {
         return userId;
     }
 
+    @Override
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -184,19 +184,19 @@ public class ActivityRequest extends BaseRequest {
         this.state = state;
     }
 
-    public String getTerm() {
-        return term;
-    }
-
-    public void setTerm(String term) {
-        this.term = term;
-    }
-
     public String getMotion() {
         return motion;
     }
 
     public void setMotion(String motion) {
         this.motion = motion;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
     }
 }

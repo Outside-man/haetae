@@ -45,12 +45,11 @@ public class ActivityServiceImpl implements ActivityService {
         List<String> userList=new ArrayList<>();
         userList.add(request.getUserId());
         permManageRequest.setUserId(userList);
+        ActivityBO activityBO=activityManager.create(request);
+        permManageRequest.getPermBO().putExtInfo(PermExInfokey.ACTIVITY_ID, activityBO.getActivityId());
         permBO=permManager.createPerm(permManageRequest);
         request.putExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM, permBO.getPermId());
-        ActivityBO activityBO= activityManager.create(request);
-        permManageRequest.putExtInfo(PermExInfokey.ACTIVITY_ID, activityBO.getActivityId());
-        permManageRequest.setPermBO(permBO);
-        permManager.createPerm(permManageRequest);
+        activityBO= activityManager.update(request);
         return activityBO;
     }
 
