@@ -69,8 +69,17 @@ public class RestOperateTemplate {
      * @return
      */
     private static String convertCode(String errorCode) {
+
+        // 处理系统错误码转换
         for (RestResultCode resultCode : RestResultCode.values()) {
             if (StringUtils.equals(errorCode, resultCode.name())) {
+                return resultCode.getCode();
+            }
+        }
+
+        // 处理rest错误码转换
+        for (RestResultCode resultCode : RestResultCode.values()) {
+            if (StringUtils.equals(errorCode, resultCode.getCode())) {
                 return resultCode.getCode();
             }
         }
