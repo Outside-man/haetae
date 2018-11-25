@@ -28,7 +28,7 @@ final public class UserVOConverter {
             return null;
         }
         UserVO userVO = new UserVO();
-        userVO.setTokenId(commonUser.getTokenId());
+        userVO.setToken(commonUser.getToken());
         userVO.setUserId(commonUser.getUserId());
         userVO.setUserInfo(commonUser.getUserInfo());
         userVO.setRoleInfo(new ArrayList<>(commonUser.getRoleInfo().keySet()));

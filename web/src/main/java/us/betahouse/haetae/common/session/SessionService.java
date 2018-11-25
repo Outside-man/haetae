@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import us.betahouse.haetae.common.RestAop;
 import us.betahouse.haetae.common.RestRequest;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
@@ -32,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 @Order(1)
 @Aspect
 @Component
-public class SessionService {
+public class SessionService extends RestAop {
 
     /**
      * token 请求头
@@ -53,17 +54,8 @@ public class SessionService {
      */
     @Around("checkLogin()")
     public Object verify(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object[] objs = proceedingJoinPoint.getArgs();
-        RestRequest request = null;
-        HttpServletRequest httpServletRequest = null;
-        for (Object o : objs) {
-            if (o instanceof RestRequest) {
-                request = (RestRequest) o;
-            }
-            if (o instanceof HttpServletRequest) {
-                httpServletRequest = (HttpServletRequest) o;
-            }
-        }
+        RestRequest request = parseRestRequest(proceedingJoinPoint);
+        HttpServletRequest httpServletRequest = parseHttpServletRequest(proceedingJoinPoint);
         AssertUtil.assertNotNull(request, CommonResultCode.SYSTEM_ERROR.getCode(), "登陆检测失败, 没有登陆请求");
         AssertUtil.assertNotNull(httpServletRequest, CommonResultCode.SYSTEM_ERROR.getCode(), "登陆检测失败, 没有登陆凭证");
 

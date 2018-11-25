@@ -76,7 +76,7 @@ public class UserBasicServiceImpl implements UserBasicService {
 
         CommonUser user = getUserId(userBO.getUserId());
         // 存储登陆凭证
-        user.setTokenId(token);
+        user.setToken(token);
         return user;
     }
 

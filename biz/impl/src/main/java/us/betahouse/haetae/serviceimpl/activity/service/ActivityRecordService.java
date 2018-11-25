@@ -53,4 +53,13 @@ public interface ActivityRecordService {
      * @return
      */
     Long countByActivityId(ActivityStampRequest request, OperateContext context);
+
+
+    /**
+     * 添加盖章员
+     *
+     * @param request
+     * @param context
+     */
+    void bindStamper(ActivityStampRequest request, OperateContext context);
 }

@@ -7,7 +7,6 @@ package us.betahouse.haetae.controller.activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,6 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.controller.user.UserController;
 import us.betahouse.haetae.model.user.request.StamperRequest;
-import us.betahouse.haetae.model.user.request.UserActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
@@ -85,6 +83,39 @@ public class ActivityStampController {
                         .withStatus(ActivityStampStatusEnum.ENABLE.getCode());
                 List<ActivityStamp> stamps = activityRecordService.batchStamp(builder.build(), context);
                 return RestResultUtil.buildSuccessResult(stamps, "获取活动章成功");
+            }
+        });
+    }
+
+    /**
+     * 校园活动盖章 添加盖章员
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PostMapping(value = "/stamper")
+    @CheckLogin
+    @Log(loggerName = LoggerName.USER_DIGEST)
+    public Result<List<ActivityStamp>> stamperAdd(StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "添加盖章员", request, new RestOperateCallBack<List<ActivityStamp>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getScannerUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "盖章员id不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+
+            @Override
+            public Result<List<ActivityStamp>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
+                        .withRequestId(request.getRequestId())
+                        .withScannerUserId(request.getScannerUserId())
+                        .withUserId(request.getUserId());
+                activityRecordService.bindStamper(builder.build(), context);
+                return RestResultUtil.buildSuccessResult("分配盖章员成功");
             }
         });
     }

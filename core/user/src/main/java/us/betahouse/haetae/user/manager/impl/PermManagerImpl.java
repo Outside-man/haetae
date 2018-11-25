@@ -33,8 +33,8 @@ public class PermManagerImpl implements PermManager {
     public void batchUsersBindPerms(PermManageRequest request) {
         AssertUtil.assertNotNull(request);
         AssertUtil.assertNotNull(request.getPermBO());
-        AssertUtil.assertNotNull(request.getRoleIds());
         AssertUtil.assertStringNotBlank(request.getPermBO().getPermId());
+        AssertUtil.assertNotNull(request.getUserId());
         permRepoService.usersBindPerm(request.getUserId(), request.getPermBO().getPermId());
     }
 
@@ -42,7 +42,7 @@ public class PermManagerImpl implements PermManager {
     public void batchUsersUnbindPerms(PermManageRequest request) {
         AssertUtil.assertNotNull(request);
         AssertUtil.assertNotNull(request.getPermBO());
-        AssertUtil.assertNotNull(request.getRoleIds());
+        AssertUtil.assertNotNull(request.getUserId());
         AssertUtil.assertStringNotBlank(request.getPermBO().getPermId());
         permRepoService.usersUnbindPerm(request.getUserId(), request.getPermBO().getPermId());
     }

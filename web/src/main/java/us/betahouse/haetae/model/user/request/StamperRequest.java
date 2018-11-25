@@ -28,6 +28,11 @@ public class StamperRequest extends RestRequest {
      */
     private String activityId;
 
+    /**
+     * 盖章员id 赋权时使用
+     */
+    private String scannerUserId;
+
     public List<String> getParticipants() {
         return participants;
     }
@@ -42,5 +47,13 @@ public class StamperRequest extends RestRequest {
 
     public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public String getScannerUserId() {
+        return scannerUserId;
+    }
+
+    public void setScannerUserId(String scannerUserId) {
+        this.scannerUserId = scannerUserId;
     }
 }

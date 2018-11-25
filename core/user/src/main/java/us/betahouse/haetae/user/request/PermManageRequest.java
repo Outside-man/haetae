@@ -60,4 +60,18 @@ public class PermManageRequest extends BaseRequest {
     public void setRoleIds(List<String> roleIds) {
         this.roleIds = roleIds;
     }
+
+    public String getPermId() {
+        if (permBO != null) {
+            return permBO.getPermId();
+        }
+        return null;
+    }
+
+    public void setPermId(String permId) {
+        if (permBO == null) {
+            permBO = new PermBO();
+        }
+        permBO.setPermId(permId);
+    }
 }

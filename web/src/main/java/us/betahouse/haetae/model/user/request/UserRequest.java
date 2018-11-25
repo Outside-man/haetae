@@ -18,11 +18,6 @@ public class UserRequest extends RestRequest {
     private static final long serialVersionUID = 4621666229903071688L;
 
     /**
-     * 用户id
-     */
-    private String userId;
-
-    /**
      * 用户名称
      */
     private String username;

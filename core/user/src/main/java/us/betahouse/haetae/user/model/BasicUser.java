@@ -25,7 +25,7 @@ public class BasicUser extends ToString {
     /**
      * 登陆凭证
      */
-    private String tokenId;
+    private String token;
 
     /**
      * 用户信息
@@ -48,11 +48,11 @@ public class BasicUser extends ToString {
         this.userInfo = userInfo;
     }
 
-    public String getTokenId() {
-        return tokenId;
+    public String getToken() {
+        return token;
     }
 
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
