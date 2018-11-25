@@ -74,11 +74,16 @@ public class UserBasicServiceImpl implements UserBasicService {
         userBO.setSessionId(EncryptUtil.parseToken(token));
         userRepoService.updateUserByUserId(userBO);
 
-        CommonUser user = new CommonUser();
+        CommonUser user = getUserId(userBO.getUserId());
         // 存储登陆凭证
         user.setTokenId(token);
+        return user;
+    }
+
+    @Override
+    public CommonUser getUserId(String userId) {
+        CommonUser user = new CommonUser();
         // 获取 用户id
-        String userId = userBO.getUserId();
         user.setUserId(userId);
         // fetch 用户信息
         userHelper.fillUserInfo(user);

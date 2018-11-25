@@ -75,6 +75,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public CommonUser fetchUser(CommonUserRequest request, OperateContext context) {
+        return userBasicService.getUserId(request.getUserId());
+    }
+
+    @Override
     public void logout(CommonUserRequest request, OperateContext context) {
         userBasicService.loginOut(request.getUserId());
     }

@@ -39,6 +39,14 @@ public interface UserService {
     CommonUser login(CommonUserRequest request, OperateContext context);
 
     /**
+     * 登陆 by token
+     *
+     * @param request
+     * @return
+     */
+    CommonUser fetchUser(CommonUserRequest request, OperateContext context);
+
+    /**
      * 登出
      *
      * @param request

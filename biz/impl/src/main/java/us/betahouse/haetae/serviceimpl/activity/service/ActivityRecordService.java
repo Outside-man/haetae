@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -26,25 +25,7 @@ public interface ActivityRecordService {
      * @param context
      * @return
      */
-    ActivityRecordBO stamp(ActivityStampRequest request, OperateContext context);
-
-    /**
-     * 通过用户id查询活动记录
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    List<ActivityRecordBO> findByUserId(ActivityStampRequest request, OperateContext context);
-
-    /**
-     * 通过活动id统计活动记录条数
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    Long countByActivityId(ActivityStampRequest request, OperateContext context);
+    ActivityStamp stamp(ActivityStampRequest request, OperateContext context);
 
     /**
      * 批量盖章
@@ -53,7 +34,7 @@ public interface ActivityRecordService {
      * @param context
      * @return
      */
-    List<ActivityRecordBO> batchStamp(ActivityStampRequest request, OperateContext context);
+    List<ActivityStamp> batchStamp(ActivityStampRequest request, OperateContext context);
 
     /**
      * 获取用户活动章
@@ -63,4 +44,13 @@ public interface ActivityRecordService {
      * @return
      */
     List<ActivityStamp> getUserStamps(ActivityStampRequest request, OperateContext context);
+
+    /**
+     * 通过活动id统计活动记录条数
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    Long countByActivityId(ActivityStampRequest request, OperateContext context);
 }

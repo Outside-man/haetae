@@ -113,6 +113,36 @@ public class UserController {
         });
     }
 
+    /**
+     * 登陆
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PutMapping(value = "/token")
+    @CheckLogin
+    @Log(loggerName = LoggerName.USER_DIGEST)
+    public Result<UserVO> checkLogin(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户登录维持", request, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+            }
+
+            @Override
+            public Result<UserVO> execute() {
+                CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
+                        .withRequestId(request.getRequestId())
+                        .withUserId(request.getUserId());
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                UserVO userVO = UserVOConverter.convert(userService.fetchUser(builder.build(), context));
+                return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
+            }
+        });
+    }
+
     @DeleteMapping(value = "/openId")
     @CheckLogin
     @Log(loggerName = LoggerName.USER_DIGEST)

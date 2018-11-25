@@ -22,11 +22,6 @@ public class UserActivityStampRequest extends RestRequest {
     private String term;
 
     /**
-     * 活动id
-     */
-    private String activityId;
-
-    /**
      * 活动类型
      */
     private String activityType;
@@ -37,14 +32,6 @@ public class UserActivityStampRequest extends RestRequest {
 
     public void setTerm(String term) {
         this.term = term;
-    }
-
-    public String getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(String activityId) {
-        this.activityId = activityId;
     }
 
     public String getActivityType() {

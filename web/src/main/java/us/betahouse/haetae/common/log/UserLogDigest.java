@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.common.log;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -54,7 +53,6 @@ public class UserLogDigest {
         // 获取入参
         UserRequest request = parseRequest(proceedingJoinPoint.getArgs());
         AssertUtil.assertNotNull(request, CommonResultCode.SYSTEM_ERROR.getCode(), "日志切面不适用该方法");
-        String params = JSON.toJSONString(request);
 
         // 获取ip
         String ip = parseIP(proceedingJoinPoint.getArgs());
@@ -66,7 +64,7 @@ public class UserLogDigest {
         long start = System.currentTimeMillis();
         Result result = (Result) proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis();
-        resultMessage = MessageFormat.format(DIGEST_TEMPLATE, log.identity(), ip, methodName, parseResult(result), String.valueOf(end - start) + "ms", result.getErrorMsg(), params);
+        resultMessage = MessageFormat.format(DIGEST_TEMPLATE, log.identity(), ip, methodName, parseResult(result), String.valueOf(end - start) + "ms", result.getErrorMsg(), LogMark.DEFAULT);
         log(logger, log.logLevel(), resultMessage);
         return result;
     }

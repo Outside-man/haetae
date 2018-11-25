@@ -34,6 +34,15 @@ public interface UserBasicService {
      */
     CommonUser login(String username, String password, String openId, String loginIP);
 
+
+    /**
+     * 获取用户通用模型
+     *
+     * @param userId
+     * @return
+     */
+    CommonUser getUserId(String userId);
+
     /**
      * 检测登陆 带ip
      *
