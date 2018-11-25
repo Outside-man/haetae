@@ -8,13 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
+import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
+import us.betahouse.haetae.user.manager.PermManager;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.request.PermManageRequest;
+import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author MessiahJK
@@ -24,12 +32,25 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
     @Autowired
     ActivityManager activityManager;
-
+    @Autowired
+    PermManager permManager;
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
-        return activityManager.create(request);
+        PermBO permBO=PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName()+"盖章权限").build();
+        PermManageRequest permManageRequest=new PermManageRequest();
+        permManageRequest.setPermBO(permBO);
+        List<String> userList=new ArrayList<>();
+        userList.add(request.getUserId());
+        permManageRequest.setUserId(userList);
+        permBO=permManager.createPerm(permManageRequest);
+        request.putExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM, permBO.getPermId());
+        ActivityBO activityBO= activityManager.create(request);
+        permManageRequest.putExtInfo(PermExInfokey.ACTIVITY_ID, activityBO.getActivityId());
+        permManageRequest.setPermBO(permBO);
+        permManager.createPerm(permManageRequest);
+        return activityBO;
     }
 
     @Override
