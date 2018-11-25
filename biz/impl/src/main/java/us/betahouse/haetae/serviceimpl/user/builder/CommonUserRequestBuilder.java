@@ -77,6 +77,8 @@ final public class CommonUserRequestBuilder {
      */
     private Map<String, String> extInfo = new HashMap<>();
 
+    private String token;
+
     public static CommonUserRequestBuilder getInstance() {
         return new CommonUserRequestBuilder();
     }
@@ -94,6 +96,7 @@ final public class CommonUserRequestBuilder {
         request.setRoleIds(roleIds);
         request.setPermIds(permIds);
         request.setExtInfo(extInfo);
+        request.setToken(token);
         return request;
     }
 
@@ -152,6 +155,11 @@ final public class CommonUserRequestBuilder {
 
     public CommonUserRequestBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+        return this;
+    }
+
+    public CommonUserRequestBuilder withToken(String token) {
+        this.token = token;
         return this;
     }
 }

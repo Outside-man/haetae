@@ -25,7 +25,7 @@ public class CommonUserRequest extends UserManageRequest {
     /**
      * 登陆凭证
      */
-    private String tokenId;
+    private String token;
 
     public String getCode() {
         return code;
@@ -35,11 +35,11 @@ public class CommonUserRequest extends UserManageRequest {
         this.code = code;
     }
 
-    public String getTokenId() {
-        return tokenId;
+    public String getToken() {
+        return token;
     }
 
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
