@@ -122,8 +122,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getState() != null) {
             activityDO.setState(newActivityDO.getState());
         }
-        if (newActivityDO.getTeam() != null) {
-            activityDO.setTeam(newActivityDO.getTeam());
+        if (newActivityDO.getTerm() != null) {
+            activityDO.setTerm(newActivityDO.getTerm());
         }
         if (newActivityDO.getType() != null) {
             activityDO.setType(newActivityDO.getType());
@@ -163,7 +163,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setDescription(activityDO.getDescription());
         activityBO.setUserId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
-        activityBO.setTeam(activityDO.getTeam());
+        activityBO.setTerm(activityDO.getTerm());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(),Map.class));
         return activityBO;
     }
@@ -190,7 +190,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setDescription(activityBO.getDescription());
         activityDO.setUserId(activityBO.getUserId());
         activityDO.setState(activityBO.getState());
-        activityDO.setTeam(activityBO.getTeam());
+        activityDO.setTerm(activityBO.getTerm());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }

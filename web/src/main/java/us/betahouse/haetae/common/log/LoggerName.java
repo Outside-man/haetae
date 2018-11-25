@@ -16,4 +16,6 @@ public class LoggerName {
      * 用户摘要日志
      */
     public final static String USER_DIGEST = "USER_DIGEST";
+
+    public final static String ACTIVITY_DIGEST="ACTIVITY_DIGEST";
 }

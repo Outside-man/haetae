@@ -7,7 +7,6 @@ package us.betahouse.haetae.serviceimpl.activity.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
-import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -45,5 +44,35 @@ public class ActivityServiceImpl implements ActivityService {
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_PUBLISH)
     public ActivityBO changeStatus(ActivityManagerRequest request, OperateContext operateContext) {
         return activityManager.changeStatus(request.getActivityId(), request.getMotion());
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    public ActivityBO pass(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.changeStatus(request.getActivityId(), "pass");
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_PUBLISH)
+    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.changeStatus(request.getActivityId(), "publish");
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_FINISH)
+    public ActivityBO finish(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.changeStatus(request.getActivityId(), "finish");
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_RESTART)
+    public ActivityBO republish(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.changeStatus(request.getActivityId(), "republish");
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_FINISH)
+    public ActivityBO remove(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.changeStatus(request.getActivityId(), "remove");
     }
 }

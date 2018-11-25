@@ -74,7 +74,7 @@ public final class ActivityRequestBuilder {
     /**
      * 学期
      */
-    private String team;
+    private String term;
 
     private ActivityRequestBuilder() {
     }
@@ -154,7 +154,7 @@ public final class ActivityRequestBuilder {
     }
 
     public ActivityRequestBuilder withTeam(String team) {
-        this.team = team;
+        this.term = team;
         return this;
     }
 
@@ -174,7 +174,7 @@ public final class ActivityRequestBuilder {
         activityRequest.setDescription(description);
         activityRequest.setUserId(userId);
         activityRequest.setState(state);
-        activityRequest.setTeam(team);
+        activityRequest.setTerm(term);
         return activityRequest;
     }
 }

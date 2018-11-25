@@ -7,6 +7,8 @@ package us.betahouse.haetae.serviceimpl.activity.request;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 
+import java.util.List;
+
 /**
  * 活动盖章请求
  *
@@ -17,8 +19,19 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     private static final long serialVersionUID = -8487946642055713409L;
 
+    private List<String> userIds;
+
+
     @Override
     public String getVerifyUserId() {
         return getScannerUserId();
+    }
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 }

@@ -53,6 +53,11 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
+    public List<ActivityRecordBO> batchStamp(ActivityStampRequest request, OperateContext context) {
+        return activityRecordManager.batchCreate(request, request.getUserIds());
+    }
+
+    @Override
     public List<ActivityStamp> getUserStamps(ActivityStampRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
         AssertUtil.assertStringNotBlank(request.getType(), "活动类型不能为空");

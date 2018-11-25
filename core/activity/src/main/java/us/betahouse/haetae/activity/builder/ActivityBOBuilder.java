@@ -81,7 +81,7 @@ public final class ActivityBOBuilder {
     /**
      * 活动学期
      */
-    private String team;
+    private String term;
 
     /**
      * 拓展信息
@@ -156,8 +156,8 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withTeam(String team) {
-        this.team = team;
+    public ActivityBOBuilder withTerm(String term) {
+        this.term = term;
         return this;
     }
 
@@ -180,7 +180,7 @@ public final class ActivityBOBuilder {
         activityBO.setDescription(description);
         activityBO.setUserId(userId);
         activityBO.setState(state);
-        activityBO.setTeam(team);
+        activityBO.setTerm(term);
         activityBO.setExtInfo(extInfo);
         return activityBO;
     }

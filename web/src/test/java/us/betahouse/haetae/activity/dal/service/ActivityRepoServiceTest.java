@@ -39,7 +39,7 @@ public class ActivityRepoServiceTest {
                 .withOrganizationMessage("o")
                 .withScore(12L)
                 .withUserId("17905219")
-                .withTeam("2018A")
+                .withTerm("2018A")
                 .build();
         System.out.println(activityRepoService.createActivity(activityBO));
     }
