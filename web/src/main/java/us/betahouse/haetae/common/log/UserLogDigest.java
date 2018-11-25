@@ -40,7 +40,7 @@ public class UserLogDigest {
      */
     private final static String DIGEST_TEMPLATE = "[{0}] ip=[{1}], action=[{2}], result=[{3}], time=[{4}], errorMessage=[{5}], params={6}";
 
-    @Pointcut("execution(* us.betahouse.haetae.controller..*(..)) && @annotation(us.betahouse.util.log.Log)")
+    @Pointcut("execution(* us.betahouse.haetae.controller.user.UserController.*(..)) && @annotation(us.betahouse.util.log.Log)")
     public void targetLog() {
     }
 

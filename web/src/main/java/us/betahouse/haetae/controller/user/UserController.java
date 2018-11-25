@@ -120,7 +120,7 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
-    @PutMapping(value = "/token")
+    @GetMapping
     @CheckLogin
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> checkLogin(UserRequest request, HttpServletRequest httpServletRequest) {
