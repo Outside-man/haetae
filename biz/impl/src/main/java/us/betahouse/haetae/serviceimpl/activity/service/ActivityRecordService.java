@@ -54,4 +54,13 @@ public interface ActivityRecordService {
      * @return
      */
     Long countByActivityId(ActivityStampRequest request, OperateContext context);
+
+    /**
+     * 批量盖章
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<ActivityRecordBO> batchStamp(ActivityStampRequest request, OperateContext context);
 }

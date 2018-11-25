@@ -51,7 +51,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withDescription(request.getDescription())
                 .withUserId(request.getUserId())
                 .withState(request.getState())
-                .withTeam(request.getTeam())
+                .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo());
 
         return activityRepoService.createActivity(builder.build());
@@ -92,7 +92,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withDescription(request.getDescription())
                 .withUserId(request.getUserId())
                 .withState(request.getState())
-                .withTeam(request.getTeam())
+                .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo());
         return activityRepoService.createActivity(builder.build());
     }

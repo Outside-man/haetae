@@ -86,7 +86,7 @@ public class ActivityRequest extends BaseRequest {
     /**
      * 活动学期
      */
-    private String team;
+    private String term;
 
     public String getActivityId() {
         return activityId;
@@ -184,14 +184,13 @@ public class ActivityRequest extends BaseRequest {
         this.state = state;
     }
 
-    public String getTeam() {
-        return team;
+    public String getTerm() {
+        return term;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTerm(String term) {
+        this.term = term;
     }
-
 
     public String getMotion() {
         return motion;

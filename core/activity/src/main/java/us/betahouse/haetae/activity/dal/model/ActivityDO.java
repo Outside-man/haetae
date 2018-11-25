@@ -93,7 +93,7 @@ public class ActivityDO extends BaseDO{
     /**
      * 活动学期
      */
-    private String team;
+    private String term;
 
 
     public String getActivityId() {
@@ -192,11 +192,11 @@ public class ActivityDO extends BaseDO{
         this.state = state;
     }
 
-    public String getTeam() {
-        return team;
+    public String getTerm() {
+        return term;
     }
 
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTerm(String term) {
+        this.term = term;
     }
 }

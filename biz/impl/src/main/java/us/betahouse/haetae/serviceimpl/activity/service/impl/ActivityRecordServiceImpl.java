@@ -48,4 +48,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     public Long countByActivityId(ActivityStampRequest request, OperateContext context) {
         return activityRecordManager.countByActivityId(request.getActivityId());
     }
+
+    @Override
+    public List<ActivityRecordBO> batchStamp(ActivityStampRequest request, OperateContext context) {
+        return activityRecordManager.batchCreate(request, request.getUserIds());
+    }
 }

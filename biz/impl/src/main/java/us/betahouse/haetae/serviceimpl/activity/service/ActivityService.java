@@ -52,4 +52,49 @@ public interface ActivityService {
      * @return
      */
     ActivityBO changeStatus(ActivityManagerRequest request,OperateContext operateContext);
+
+    /**
+     * 活动通过
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO pass(ActivityManagerRequest request,OperateContext operateContext);
+
+    /**
+     * 活动发布
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO publish(ActivityManagerRequest request,OperateContext operateContext);
+
+    /**
+     * 活动结束
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO finish(ActivityManagerRequest request,OperateContext operateContext);
+
+    /**
+     * 活动重新拉起
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO republish(ActivityManagerRequest request,OperateContext operateContext);
+
+    /**
+     * 活动取消
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO remove(ActivityManagerRequest request,OperateContext operateContext);
 }
