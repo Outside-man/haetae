@@ -37,16 +37,6 @@ public interface ActivityRecordService {
      */
     List<ActivityRecordBO> findByUserId(ActivityStampRequest request, OperateContext context);
 
-
-    /**
-     * 通过用户id和类型查找活动记录
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    List<ActivityRecordBO> findByUserIdAndType(ActivityStampRequest request, OperateContext context);
-
     /**
      * 通过活动id统计活动记录条数
      *

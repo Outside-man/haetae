@@ -64,6 +64,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
         ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance();
         List<ActivityRecordBO> activityRecords = new ArrayList<>();
+        // 判断是否请求中带有学期过滤
         if (StringUtils.isBlank(request.getTerm())) {
             activityRecords.addAll(activityRecordManager.findByUserIdAndType(request.getUserId(), request.getType()));
         } else {
