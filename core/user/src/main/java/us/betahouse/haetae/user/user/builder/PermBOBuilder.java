@@ -41,6 +41,10 @@ final public class PermBOBuilder {
         return new PermBOBuilder(permType, permName);
     }
 
+    public static PermBOBuilder getInstance() {
+        return new PermBOBuilder();
+    }
+
     public PermBO build() {
         PermBO permBO = new PermBO();
         permBO.setPermType(permType);
@@ -55,6 +59,9 @@ final public class PermBOBuilder {
     private PermBOBuilder(String permType, String permName) {
         this.permType = permType;
         this.permName = permName;
+    }
+
+    private PermBOBuilder() {
     }
 
     public PermBOBuilder withPermType(String permType) {

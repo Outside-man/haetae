@@ -227,4 +227,16 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         AssertUtil.assertNotNull(roleDO, "角色不存在");
         userRoleRelationDORepo.deleteAllByRoleId(roleId);
     }
+
+    @Override
+    public RoleBO initRole(RoleBO roleBO) {
+        RoleDO roleDO = roleDORepo.findByRoleCode(roleBO.getRoleCode());
+        if (roleDO == null) {
+            if (StringUtils.isBlank(roleBO.getRoleId())) {
+                roleBO.setRoleId(userBizIdFactory.getRoleId());
+            }
+            roleDO = roleDORepo.save(EntityConverter.convert(roleBO));
+        }
+        return EntityConverter.convert(roleDO);
+    }
 }

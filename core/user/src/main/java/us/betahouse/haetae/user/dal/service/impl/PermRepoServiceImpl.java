@@ -399,4 +399,16 @@ public class PermRepoServiceImpl implements PermRepoService {
         }
         return true;
     }
+
+    @Override
+    public PermBO initPerm(PermBO permBO) {
+        PermDO permDO = permDORepo.findByPermType(permBO.getPermType());
+        if(permDO == null) {
+            if (StringUtils.isBlank(permBO.getPermId())) {
+                permBO.setPermId(userBizIdFactory.getPermId());
+            }
+            permDO = permDORepo.save(EntityConverter.convert(permBO));
+        }
+        return EntityConverter.convert(permDO);
+    }
 }

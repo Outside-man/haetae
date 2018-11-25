@@ -83,4 +83,12 @@ public interface RoleRepoService {
      * @param roleId
      */
     void detachAllUser(String roleId);
+
+    /**
+     * 初始化角色
+     *
+     * @param roleBO
+     * @return
+     */
+    RoleBO initRole(RoleBO roleBO);
 }

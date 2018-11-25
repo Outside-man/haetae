@@ -16,23 +16,25 @@ import us.betahouse.haetae.user.enums.PermType;
  */
 public enum ActivityPermTypeEnum implements PermType {
 
-    ACTIVITY_CREATE(ActivityPermType.ACTIVITY_CREATE, "活动创建"),
+    ACTIVITY_CREATE(ActivityPermType.ACTIVITY_CREATE, "活动创建", true),
 
-    ACTIVITY_PUBLISH(ActivityPermType.ACTIVITY_PUBLISH, "活动发布"),
+    ACTIVITY_PUBLISH(ActivityPermType.ACTIVITY_PUBLISH, "活动发布", true),
 
-    ACTIVITY_FINISH(ActivityPermType.ACTIVITY_FINISH, "活动结束"),
+    ACTIVITY_FINISH(ActivityPermType.ACTIVITY_FINISH, "活动结束", true),
 
-    ACTIVITY_RESTART(ActivityPermType.ACTIVITY_RESTART, "活动重启"),
+    ACTIVITY_RESTART(ActivityPermType.ACTIVITY_RESTART, "活动重启", true),
 
-    STAMPER_MANAGE(ActivityPermType.STAMPER_MANAGE, "盖章员管理"),
+    STAMPER_MANAGE(ActivityPermType.STAMPER_MANAGE, "盖章员管理", true),
 
-    ACTIVITY_STAMPER(ActivityPermType.ACTIVITY_STAMPER, "活动盖章"),
+    ACTIVITY_STAMPER(ActivityPermType.ACTIVITY_STAMPER, "活动盖章", false),
 
     ;
 
     private String code;
 
     private String desc;
+
+    private boolean init;
 
     public static ActivityPermTypeEnum getByCode(String code) {
         if (StringUtils.isBlank(code)) {
@@ -46,9 +48,10 @@ public enum ActivityPermTypeEnum implements PermType {
         return null;
     }
 
-    ActivityPermTypeEnum(String code, String name) {
+    ActivityPermTypeEnum(String code, String desc, boolean init) {
         this.code = code;
-        this.desc = name;
+        this.desc = desc;
+        this.init = init;
     }
 
     @Override
@@ -59,5 +62,10 @@ public enum ActivityPermTypeEnum implements PermType {
     @Override
     public String getDesc() {
         return desc;
+    }
+
+    @Override
+    public boolean isInit() {
+        return init;
     }
 }

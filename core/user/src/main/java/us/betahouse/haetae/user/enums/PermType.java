@@ -14,13 +14,22 @@ public interface PermType {
 
     /**
      * 获取权限类型
+     *
      * @return
      */
     String getCode();
 
     /**
      * 获取权限描述
+     *
      * @return
      */
     String getDesc();
+
+    /**
+     * 是否需要初始化
+     *
+     * @return
+     */
+    boolean isInit();
 }

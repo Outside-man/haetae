@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
@@ -22,7 +23,6 @@ import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author MessiahJK
@@ -37,6 +37,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    @Transactional
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         PermBO permBO=PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName()+"盖章权限").build();
         PermManageRequest permManageRequest=new PermManageRequest();

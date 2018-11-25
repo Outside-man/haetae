@@ -34,4 +34,12 @@ public interface RoleDORepo extends JpaRepository<RoleDO, String> {
      * @return
      */
     List<RoleDO> findAllByRoleIdIn(List<String> roleIds);
+
+    /**
+     * 通过角色号获取角色
+     *
+     * @param roleCode
+     * @return
+     */
+    RoleDO findByRoleCode(String roleCode);
 }

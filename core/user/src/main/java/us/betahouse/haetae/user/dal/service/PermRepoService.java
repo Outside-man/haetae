@@ -157,4 +157,12 @@ public interface PermRepoService {
      * @return
      */
     boolean verifyRolePermRelationByPermType(String roleId, List<String> permTypes);
+
+    /**
+     * 创建权限
+     *
+     * @param permBO
+     * @return
+     */
+    PermBO initPerm(PermBO permBO);
 }

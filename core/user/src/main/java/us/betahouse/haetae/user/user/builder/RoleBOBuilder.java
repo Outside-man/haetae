@@ -41,6 +41,10 @@ final public class RoleBOBuilder {
         return new RoleBOBuilder(roleCode, roleName);
     }
 
+    public static RoleBOBuilder getInstance() {
+        return new RoleBOBuilder();
+    }
+
     public RoleBO build() {
         RoleBO roleBO = new RoleBO();
         roleBO.setRoleCode(roleCode);
@@ -50,6 +54,9 @@ final public class RoleBOBuilder {
             roleBO.setExtInfo(extInfo);
         }
         return roleBO;
+    }
+
+    private RoleBOBuilder() {
     }
 
     private RoleBOBuilder(String roleCode, String roleName) {
