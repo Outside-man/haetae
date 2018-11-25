@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     /**
-     * 日志实体
+     * 日志
      */
     private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -113,15 +113,15 @@ public class UserController {
         });
     }
 
-    @CheckLogin
     @DeleteMapping(value = "/openId")
+    @CheckLogin
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> logout(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户登出", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getToken(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "token不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
             }
 
             @Override
@@ -144,15 +144,15 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
-    @CheckLogin
     @PutMapping(value = "/pwd")
+    @CheckLogin
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> modifyPassword(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "修改密码", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getToken(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "token不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "原密码不能为空");
                 AssertUtil.assertStringNotBlank(request.getNewPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "新密码不能为空");
                 boolean oldNewNotEqual = !StringUtils.equals(request.getPassword(), request.getNewPassword());

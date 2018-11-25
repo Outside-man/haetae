@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.activity.service;
 
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -37,14 +38,6 @@ public interface ActivityRecordService {
      */
     List<ActivityRecordBO> findByUserId(ActivityStampRequest request, OperateContext context);
 
-    /**
-     * 通过用户id和类型查找活动记录
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    List<ActivityRecordBO> findByUserIdAndType(ActivityStampRequest request, OperateContext context);
 
     /**
      * 通过活动id统计活动记录条数
@@ -54,4 +47,14 @@ public interface ActivityRecordService {
      * @return
      */
     Long countByActivityId(ActivityStampRequest request, OperateContext context);
+
+
+    /**
+     * 获取用户活动章
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<ActivityStamp> getUserStamps(ActivityStampRequest request, OperateContext context);
 }

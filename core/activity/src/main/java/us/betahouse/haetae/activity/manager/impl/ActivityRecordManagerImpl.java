@@ -16,6 +16,7 @@ import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.haetae.activity.utils.ActivityUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -137,5 +138,8 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
         return activityRecordRepoService.batchCreateActivityRecord(activityRecordList);
     }
 
-
+    @Override
+    public List<ActivityRecordBO> fetchUserActivityRecord(String userId, String activityType, String term) {
+        return activityRecordRepoService.queryUserTermActivityRecord(userId, Collections.singletonList(activityType), Collections.singletonList(term));
+    }
 }

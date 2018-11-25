@@ -58,4 +58,13 @@ public interface ActivityRecordManager {
      * @return
      */
     List<ActivityRecordBO> batchCreate(ActivityRecordRequest request, List<String> userIds);
+
+
+    /**
+     * 通过用户id查询活动记录
+     *
+     * @param userId
+     * @return
+     */
+    List<ActivityRecordBO> fetchUserActivityRecord(String userId, String activityType, String term);
 }

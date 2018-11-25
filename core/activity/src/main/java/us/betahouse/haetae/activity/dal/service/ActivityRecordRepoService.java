@@ -53,4 +53,14 @@ public interface ActivityRecordRepoService {
      * @return
      */
     List<ActivityRecordBO> batchCreateActivityRecord(List<ActivityRecordBO> activityRecordBOs);
+
+
+    /**
+     * 查询用户活动记录
+     * @param userId
+     * @param activityTypes
+     * @param terms
+     * @return
+     */
+    List<ActivityRecordBO> queryUserTermActivityRecord(String userId, List<String> activityTypes, List<String> terms);
 }

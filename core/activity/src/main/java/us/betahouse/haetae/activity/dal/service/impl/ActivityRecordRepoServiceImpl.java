@@ -108,6 +108,15 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         return activityRecordBOs;
     }
 
+    @Override
+    public List<ActivityRecordBO> queryUserTermActivityRecord(String userId, List<String> activityTypes, List<String> terms) {
+        List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.findAllByUserIdAndTypeInAndTermIn(userId, activityTypes, terms);
+        return CollectionUtils.toStream(activityRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 活动记录DO2BO
      *
