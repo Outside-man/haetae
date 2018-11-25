@@ -5,8 +5,6 @@
 package us.betahouse.haetae.serviceimpl.common.utils;
 
 
-import us.betahouse.util.utils.DateUtil;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,14 +27,14 @@ public class TermUtil {
     private final static String SECOND_TERM = "02";
 
     /**
-     * 第一学期开始月份 3月
+     * 第一学期开始月份 9月
      */
-    private final static int FIRST_TERM_START = Calendar.MARCH;
+    private final static int FIRST_TERM_START = Calendar.SEPTEMBER;
 
     /**
-     * 第二学期开始月份 7月
+     * 第一学期结束月份 次年 3月
      */
-    private final static int FIRST_TERM_END = Calendar.JULY;
+    private final static int FIRST_TERM_END = Calendar.MARCH;
 
 
     /**
@@ -61,12 +59,18 @@ public class TermUtil {
 
         // 需要月份补充
         int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
 
-        String term = FIRST_TERM;
-        if (month > FIRST_TERM_START && month < FIRST_TERM_END) {
-            return DateUtil.getYear(date) + FIRST_TERM;
+        // 月份小于第二学年的第一学期开始 就认为还在上学年 需要减1
+        if (month < FIRST_TERM_START) {
+            year = year - 1;
         }
 
-        return DateUtil.getYear(date) + SECOND_TERM;
+        // 第一学期定义 9月01 - 次年 2月28
+        if (month >= FIRST_TERM_START || month < FIRST_TERM_END) {
+            return year + FIRST_TERM;
+        }
+
+        return year + SECOND_TERM;
     }
 }

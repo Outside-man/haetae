@@ -4,6 +4,7 @@
  */
 package us.betahouse.util.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,6 +33,10 @@ public class DateUtil {
      */
     public static String getShortDatesStr(Date date) {
         return format(date, SHORT_TIME);
+    }
+
+    public static Date getDateByShortDatesSt(String str) {
+        return parse(str, SHORT_TIME);
     }
 
     /**
@@ -74,5 +79,14 @@ public class DateUtil {
     public static String format(Date date, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);
+    }
+
+    public static Date parse(String dateStr, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        try {
+            return dateFormat.parse(dateStr);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("日期转换失败");
+        }
     }
 }
