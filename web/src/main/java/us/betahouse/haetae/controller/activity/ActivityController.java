@@ -22,6 +22,7 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -65,7 +66,6 @@ public class ActivityController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
-                AssertUtil.assertStringNotBlank(request.getTerm(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动学期不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
             }
 
@@ -73,6 +73,10 @@ public class ActivityController {
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                String term=request.getTerm();
+                if(term==null||term.length()<=1){
+                    term=TermUtil.getNowTerm();
+                }
                 ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
                         .withActivityName(request.getActivityName())
                         .withType(request.getType())
@@ -85,7 +89,7 @@ public class ActivityController {
                         .withDescription(request.getDescription())
                         .withUserId(request.getUserId())
                         .withState(request.getState())
-                        .withTerm(request.getTerm())
+                        .withTerm(term)
                         .build();
                 ActivityBO activityBO=activityService.create(activityManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(activityBO,"成功创建活动");
