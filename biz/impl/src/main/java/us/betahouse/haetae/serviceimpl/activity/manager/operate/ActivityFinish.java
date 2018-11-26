@@ -17,7 +17,7 @@ import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
  * @author dango.yxm
  * @version : ActivityPublish.java 2018/11/26 2:28 PM dango.yxm
  */
-public class ActivityFinish extends BaseActivityOperate {
+public class ActivityFinish extends CommonActivityOperate {
 
     @Override
     protected boolean canOperate(ActivityBO activityBO) {
@@ -33,8 +33,17 @@ public class ActivityFinish extends BaseActivityOperate {
     }
 
     @Override
+    protected boolean skipOperate(ActivityBO activityBO) {
+        if (StringUtils.equals(activityBO.getState(), ActivityStateEnum.FINISHED.getCode())) {
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_FINISH)
-    protected ActivityBO doOperate(ActivityOperationRequest request) {
+    public ActivityBO doOperate(ActivityOperationRequest request) {
         ActivityBO activityBO = request.getActivity();
         activityBO.setState(ActivityStateEnum.FINISHED.getCode());
         return activityRepoService.updateActivity(activityBO);

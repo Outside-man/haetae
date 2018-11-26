@@ -17,7 +17,7 @@ import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
  * @author dango.yxm
  * @version : ActivityPublish.java 2018/11/26 2:28 PM dango.yxm
  */
-public class ActivityRestart extends BaseActivityOperate {
+public class ActivityRestart extends CommonActivityOperate {
 
     @Override
     protected boolean canOperate(ActivityBO activityBO) {
@@ -28,8 +28,17 @@ public class ActivityRestart extends BaseActivityOperate {
     }
 
     @Override
+    protected boolean skipOperate(ActivityBO activityBO) {
+        if (StringUtils.equals(activityBO.getState(), ActivityStateEnum.RESTARTED.getCode())) {
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_RESTART)
-    protected ActivityBO doOperate(ActivityOperationRequest request) {
+    public ActivityBO doOperate(ActivityOperationRequest request) {
         ActivityBO activityBO = request.getActivity();
         activityBO.setState(ActivityStateEnum.RESTARTED.getCode());
         return activityRepoService.updateActivity(activityBO);

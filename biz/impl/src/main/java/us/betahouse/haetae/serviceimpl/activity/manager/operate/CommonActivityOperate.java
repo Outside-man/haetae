@@ -17,7 +17,7 @@ import java.text.MessageFormat;
  * @author dango.yxm
  * @version : ActivityOperate.java 2018/11/26 2:27 PM dango.yxm
  */
-public abstract class BaseActivityOperate implements ActivityOperate {
+public abstract class CommonActivityOperate implements ActivityOperate {
 
 
     @Autowired
@@ -32,10 +32,17 @@ public abstract class BaseActivityOperate implements ActivityOperate {
     public ActivityBO operate(String activityId, String userId) {
         ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityId);
         AssertUtil.assertNotNull(activityBO, "活动不存在");
+
+        // 是否需要跳过处理
+        if (skipOperate(activityBO)) {
+            return activityBO;
+        }
+
         AssertUtil.assertTrue(canOperate(activityBO), MessageFormat.format("该活动目前不能{0}", getOperate()));
 
         ActivityOperationRequest request = new ActivityOperationRequest();
         request.setActivity(activityBO);
+        request.setUserId(userId);
 
         return doOperate(request);
     }
@@ -48,5 +55,11 @@ public abstract class BaseActivityOperate implements ActivityOperate {
      */
     protected abstract boolean canOperate(ActivityBO activityBO);
 
-    protected abstract ActivityBO doOperate(ActivityOperationRequest request);
+    /**
+     * 是否需要跳过处理
+     *
+     * @param activityBO
+     * @return
+     */
+    protected abstract boolean skipOperate(ActivityBO activityBO);
 }

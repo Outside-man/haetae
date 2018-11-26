@@ -35,7 +35,7 @@ public class VerifyPermService {
     @Autowired
     private UserBasicService userBasicService;
 
-    @Pointcut("execution(* us.betahouse.haetae.serviceimpl..*(..)) && @annotation(us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm)")
+    @Pointcut("within(us.betahouse.haetae.serviceimpl..*) && @annotation(us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm)")
     public void targetVerify() {
     }
 

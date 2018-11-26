@@ -17,7 +17,15 @@ public interface ActivityOperate {
     /**
      * 活动操作
      *
+     * @param request
+     * @return
+     */
+    ActivityBO doOperate(ActivityOperationRequest request);
+
+    /**
+     * 活动操作
      * @param activityId
+     * @param userId
      * @return
      */
     ActivityBO operate(String activityId, String userId);
