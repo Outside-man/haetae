@@ -21,7 +21,6 @@ public final class ActivityManagerRequestBuilder {
     private String organizationMessage;
     private Map<String, String> extInfo = new HashMap<>();
     private String location;
-    private Double defaultTime;
     private Long start;
     private Long end;
     private Long score;
@@ -70,11 +69,6 @@ public final class ActivityManagerRequestBuilder {
 
     public ActivityManagerRequestBuilder withLocation(String location) {
         this.location = location;
-        return this;
-    }
-
-    public ActivityManagerRequestBuilder withDefaultTime(Double defaultTime) {
-        this.defaultTime = defaultTime;
         return this;
     }
 
@@ -127,7 +121,6 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setOrganizationMessage(organizationMessage);
         activityManagerRequest.setExtInfo(extInfo);
         activityManagerRequest.setLocation(location);
-        activityManagerRequest.setDefaultTime(defaultTime);
         activityManagerRequest.setStart(start);
         activityManagerRequest.setEnd(end);
         activityManagerRequest.setScore(score);

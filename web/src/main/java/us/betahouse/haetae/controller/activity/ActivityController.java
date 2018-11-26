@@ -90,8 +90,6 @@ public class ActivityController {
                         .withDescription(request.getDescription())
                         // 地点
                         .withLocation(request.getLocation())
-                        // 默认时长
-                        .withDefaultTime(request.getDefaultTime())
                         // 分数
                         .withScore(request.getScore())
                         .build();

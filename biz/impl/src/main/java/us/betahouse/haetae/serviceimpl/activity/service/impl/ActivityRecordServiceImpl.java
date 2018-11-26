@@ -102,9 +102,12 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityId);
             if (activityBO == null) {
                 LoggerUtil.error(LOGGER, "活动不存在, activityId={0}", activityId);
-                throw new BetahouseException(CommonResultCode.SYSTEM_ERROR.getCode(), "活动不存在");
+                ActivityBO activity = new ActivityBO();
+                activity.setActivityName("异常活动, 请尽快联系管理员");
+                activityMap.put(activityId, activity);
+            }else{
+                activityMap.put(activityId, activityBO);
             }
-            activityMap.put(activityId, activityBO);
         }
 
         // 组装活动章
