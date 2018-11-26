@@ -49,9 +49,6 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
         if (request.getTime() != null) {
             time = (int) Math.round(request.getTime() * 10);
         }
-        if (time == 0 && activityBO.getDefaultTime() != null) {
-            time = activityBO.getDefaultTime();
-        }
 
         ActivityRecordBOBuilder builder = ActivityRecordBOBuilder.getInstance()
                 .withActivityId(request.getActivityId())
@@ -112,9 +109,6 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
         int time = 0;
         if (request.getTime() != null) {
             time = (int) Math.round(request.getTime() * 10);
-        }
-        if (time == 0 && activityBO.getDefaultTime() != null) {
-            time = activityBO.getDefaultTime();
         }
 
         ActivityRecordBOBuilder builder = ActivityRecordBOBuilder.getInstance()

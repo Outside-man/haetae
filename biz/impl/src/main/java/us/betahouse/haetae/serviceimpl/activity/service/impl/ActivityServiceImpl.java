@@ -115,6 +115,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Transactional
     public void bindStamper(ActivityManagerRequest request, OperateContext context) {
         ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        AssertUtil.assertNotNull(activity, "活动不存在");
         String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
         AssertUtil.assertStringNotBlank(stampPermId, "活动没有盖章权限");
 

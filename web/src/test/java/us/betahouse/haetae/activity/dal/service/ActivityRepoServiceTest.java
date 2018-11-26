@@ -31,7 +31,6 @@ public class ActivityRepoServiceTest {
         ActivityBO activityBO = ActivityBOBuilder.getInstance()
                 .withActivityName("校园活动")
                 .withType("xyhd")
-                .withDefaultTime(12)
                 .withDescription("test")
                 .withLocation("格致楼")
                 .withEnd(new Date())

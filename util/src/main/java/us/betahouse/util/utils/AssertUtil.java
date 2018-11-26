@@ -77,7 +77,7 @@ public class AssertUtil {
      * @param errorMsg
      */
     public static void assertNotNull(Object obj, String errorMsg) {
-        assertNotNull(obj, CommonResultCode.ILLEGAL_PARAMETERS.getMessage(), errorMsg);
+        assertNotNull(obj, CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
     }
 
     /**

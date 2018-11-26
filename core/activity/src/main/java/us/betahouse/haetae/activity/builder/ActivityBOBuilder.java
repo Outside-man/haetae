@@ -44,11 +44,6 @@ public final class ActivityBOBuilder {
     private String location;
 
     /**
-     * 默认时长
-     */
-    private Integer defaultTime;
-
-    /**
      * 活动开始时间
      */
     private Date start;
@@ -121,11 +116,6 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withDefaultTime(Integer defaultTime) {
-        this.defaultTime = defaultTime;
-        return this;
-    }
-
     public ActivityBOBuilder withStart(Date start) {
         this.start = start;
         return this;
@@ -173,7 +163,6 @@ public final class ActivityBOBuilder {
         activityBO.setType(type);
         activityBO.setOrganizationMessage(organizationMessage);
         activityBO.setLocation(location);
-        activityBO.setDefaultTime(defaultTime);
         activityBO.setStart(start);
         activityBO.setEnd(end);
         activityBO.setScore(score);

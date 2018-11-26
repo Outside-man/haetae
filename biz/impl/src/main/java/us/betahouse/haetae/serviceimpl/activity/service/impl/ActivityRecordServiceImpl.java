@@ -15,12 +15,15 @@ import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
+import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
@@ -55,24 +58,26 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     private UserInfoRepoService userInfoRepoService;
 
     @Override
-    public List<ActivityStamp> batchStamp(ActivityStampRequest request, OperateContext context) {
+    public List<String> batchStamp(ActivityStampRequest request, OperateContext context) {
         // 校验盖章权限
         AssertUtil.assertTrue(verifyStampPerm(request), CommonResultCode.FORBIDDEN, "没有该活动的盖章权限");
 
+        // 没有盖章成功的学号
+        List<String> notStampStuIds = new ArrayList<>();
+
+        // 盖章的userIds
         List<String> userIds = new ArrayList<>();
-        for(String stuId : request.getStuIds()){
+        for (String stuId : request.getStuIds()) {
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
-            AssertUtil.assertNotNull(userInfoBO, "非学生用户不能获取活动章");
-            userIds.add(userInfoBO.getUserId());
+            if (userInfoBO == null) {
+                notStampStuIds.add(stuId);
+            } else {
+                userIds.add(userInfoBO.getUserId());
+            }
         }
-        List<ActivityRecordBO> activityRecords = activityRecordManager.batchCreate(request, userIds);
-        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
-        List<ActivityStamp> activityStamps = new ArrayList<>();
-        ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance().withActivityBO(activity);
-        for (ActivityRecordBO record : activityRecords) {
-            activityStamps.add(stampBuilder.withActivityRecordBO(record).build());
-        }
-        return activityStamps;
+        // 批量盖章
+        activityRecordManager.batchCreate(request, userIds);
+        return notStampStuIds;
     }
 
     @Override
@@ -117,6 +122,26 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Override
     public Long countByActivityId(ActivityStampRequest request, OperateContext context) {
         return activityRecordManager.countByActivityId(request.getActivityId());
+    }
+
+    @Override
+    public List<ActivityBO> fetchStampMission(ActivityStampRequest request, OperateContext context) {
+        AssertUtil.assertStringNotBlank(request.getScannerUserId(), "用户id不能为空");
+        Map<String, PermBO> permMap = userBasicService.fetchUserPerms(request.getScannerUserId());
+        List<PermBO> stampPerms = CollectionUtils.toStream(permMap.values())
+                .filter(permBO -> StringUtils.equals(permBO.getPermType(), ActivityPermTypeEnum.ACTIVITY_STAMPER.getCode()))
+                .collect(Collectors.toList());
+
+        List<String> activityIds = new ArrayList<>();
+        for (PermBO permBO : stampPerms) {
+            String activityId = permBO.fetchExtInfo(PermExInfokey.ACTIVITY_ID);
+            if (StringUtils.isNotBlank(activityId)) {
+                activityIds.add(activityId);
+            }
+        }
+        List<ActivityBO> activityMisson = new ArrayList<>();
+
+        return activityRepoService.queryActivityByActivityIds(activityIds);
     }
 
     /**

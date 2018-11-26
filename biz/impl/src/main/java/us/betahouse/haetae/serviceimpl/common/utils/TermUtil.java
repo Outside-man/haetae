@@ -19,12 +19,12 @@ public class TermUtil {
     /**
      * 第一学期
      */
-    private final static String FIRST_TERM = "01";
+    private final static String FIRST_TERM = "A";
 
     /**
      * 第二学期
      */
-    private final static String SECOND_TERM = "02";
+    private final static String SECOND_TERM = "B";
 
     /**
      * 第一学期开始月份 9月

@@ -3,6 +3,7 @@
  * CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service.impl;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      */
     @Override
     public List<ActivityBO> queryAllActivity() {
-        List<ActivityDO> activityDOList=activityDORepo.findAll();
+        List<ActivityDO> activityDOList = activityDORepo.findAll();
         return CollectionUtils.toStream(activityDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -54,7 +55,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
 
     @Override
     public List<ActivityBO> queryActivitiesByState(String state) {
-        List<ActivityDO> activityDOList=activityDORepo.findAllByState(state);
+        List<ActivityDO> activityDOList = activityDORepo.findAllByState(state);
         return CollectionUtils.toStream(activityDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -69,7 +70,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      */
     @Override
     public List<ActivityBO> queryActivityByType(String type) {
-        List<ActivityDO> activityDOList=activityDORepo.findAllByType(type);
+        List<ActivityDO> activityDOList = activityDORepo.findAllByType(type);
         return CollectionUtils.toStream(activityDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -84,7 +85,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      */
     @Override
     public ActivityBO createActivity(ActivityBO activityBO) {
-        if(StringUtils.isBlank(activityBO.getActivityId())){
+        if (StringUtils.isBlank(activityBO.getActivityId())) {
             activityBO.setActivityId(activityBizFactory.getActivityId());
         }
         return convert(activityDORepo.save(convert(activityBO)));
@@ -98,17 +99,14 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      */
     @Override
     public ActivityBO updateActivity(ActivityBO activityBO) {
-        if(StringUtils.isBlank(activityBO.getActivityId())&&!activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())){
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
             LoggerUtil.error(LOGGER, "更新的活动不存在 ActivityBO={0}", activityBO);
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(),"更新的活动不存在");
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的活动不存在");
         }
-        ActivityDO activityDO=activityDORepo.findByActivityId(activityBO.getActivityId());
-        ActivityDO newActivityDO=convert(activityBO);
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        ActivityDO newActivityDO = convert(activityBO);
         if (newActivityDO.getActivityName() != null) {
             activityDO.setActivityName(newActivityDO.getActivityName());
-        }
-        if (newActivityDO.getDefaultTime() != null) {
-            activityDO.setDefaultTime(newActivityDO.getDefaultTime());
         }
         if (newActivityDO.getDescription() != null) {
             activityDO.setDescription(newActivityDO.getDescription());
@@ -125,7 +123,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getScore() != null) {
             activityDO.setScore(newActivityDO.getScore());
         }
-        if (newActivityDO.getStart()!=null){
+        if (newActivityDO.getStart() != null) {
             activityDO.setStart(newActivityDO.getStart());
         }
         if (newActivityDO.getState() != null) {
@@ -151,6 +149,15 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         return convert(activityDORepo.findByActivityId(ActivityId));
     }
 
+    @Override
+    public List<ActivityBO> queryActivityByActivityIds(List<String> activityIds) {
+        List<ActivityDO> activityDOList = activityDORepo.findAllByActivityIdIn(activityIds);
+        return CollectionUtils.toStream(activityDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 活动DO2BO
      *
@@ -158,17 +165,16 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private ActivityBO convert(ActivityDO activityDO){
-        if(activityDO==null){
+    private ActivityBO convert(ActivityDO activityDO) {
+        if (activityDO == null) {
             return null;
         }
-        ActivityBO activityBO=new ActivityBO();
+        ActivityBO activityBO = new ActivityBO();
         activityBO.setActivityId(activityDO.getActivityId());
         activityBO.setActivityName(activityDO.getActivityName());
         activityBO.setType(activityDO.getType());
         activityBO.setOrganizationMessage(activityDO.getOrganizationMessage());
         activityBO.setLocation(activityDO.getLocation());
-        activityBO.setDefaultTime(activityDO.getDefaultTime());
         activityBO.setStart(activityDO.getStart());
         activityBO.setEnd(activityDO.getEnd());
         activityBO.setScore(activityDO.getScore());
@@ -176,26 +182,26 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
-        activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(),Map.class));
+        activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
 
     /**
      * 活动BO2DO
+     *
      * @param activityBO
      * @return
      */
-    private ActivityDO convert(ActivityBO activityBO){
-        if(activityBO==null){
+    private ActivityDO convert(ActivityBO activityBO) {
+        if (activityBO == null) {
             return null;
         }
-        ActivityDO activityDO=new ActivityDO();
+        ActivityDO activityDO = new ActivityDO();
         activityDO.setActivityId(activityBO.getActivityId());
         activityDO.setActivityName(activityBO.getActivityName());
         activityDO.setType(activityBO.getType());
         activityDO.setOrganizationMessage(activityBO.getOrganizationMessage());
         activityDO.setLocation(activityBO.getLocation());
-        activityDO.setDefaultTime(activityBO.getDefaultTime());
         activityDO.setStart(activityBO.getStart());
         activityDO.setEnd(activityBO.getEnd());
         activityDO.setScore(activityBO.getScore());

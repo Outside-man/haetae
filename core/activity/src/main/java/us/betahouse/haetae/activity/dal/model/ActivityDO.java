@@ -54,12 +54,6 @@ public class ActivityDO extends BaseDO{
     private String location;
 
     /**
-     * 默认时长
-     */
-    @Column(name ="default_time" )
-    private Integer defaultTime;
-
-    /**
      * 活动开始时间
      */
     private Date start;
@@ -134,14 +128,6 @@ public class ActivityDO extends BaseDO{
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Integer getDefaultTime() {
-        return defaultTime;
-    }
-
-    public void setDefaultTime(Integer defaultTime) {
-        this.defaultTime = defaultTime;
     }
 
     public Date getStart() {

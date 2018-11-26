@@ -42,18 +42,17 @@ public class ActivityManagerImpl implements ActivityManager {
         if (request.getDefaultTime() != null) {
             time = (int) Math.round(request.getDefaultTime() * 10);
         }
-        if(request.getStart()==null){
+        if (request.getStart() == null) {
             request.setStart(0L);
         }
-        if(request.getEnd()==null){
+        if (request.getEnd() == null) {
             request.setEnd(0L);
         }
-        ActivityBOBuilder builder=ActivityBOBuilder.getInstance()
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
                 .withActivityName(request.getActivityName())
                 .withType(request.getType())
                 .withOrganizationMessage(request.getOrganizationMessage())
                 .withLocation(request.getLocation())
-                .withDefaultTime(time)
                 .withStart(new Date(request.getStart()))
                 .withEnd(new Date(request.getEnd()))
                 .withScore(request.getScore())
@@ -94,13 +93,12 @@ public class ActivityManagerImpl implements ActivityManager {
         if (request.getDefaultTime() != null) {
             time = (int) Math.round(request.getDefaultTime() * 10);
         }
-        ActivityBOBuilder builder=ActivityBOBuilder.getInstance()
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
                 .withActivityId(request.getActivityId())
                 .withActivityName(request.getActivityName())
                 .withType(request.getType())
                 .withOrganizationMessage(request.getOrganizationMessage())
                 .withLocation(request.getLocation())
-                .withDefaultTime(time)
                 .withStart(new Date(request.getStart()))
                 .withEnd(new Date(request.getEnd()))
                 .withScore(request.getScore())

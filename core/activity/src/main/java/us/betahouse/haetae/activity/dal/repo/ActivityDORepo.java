@@ -17,9 +17,10 @@ import java.util.List;
  * @version : ActivityDORepo.java 2018/11/17 15:39 MessiahJK
  */
 @Repository
-public interface ActivityDORepo extends JpaRepository<ActivityDO,Long> {
+public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
     /**
      * 通过活动类型查找活动
+     *
      * @param type
      * @return
      */
@@ -43,8 +44,18 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO,Long> {
 
     /**
      * 通过活动状态查找活动
+     *
      * @param state
      * @return
      */
     List<ActivityDO> findAllByState(String state);
+
+
+    /**
+     * 通过活动ids查找活动
+     *
+     * @param activityIds
+     * @return
+     */
+    List<ActivityDO> findAllByActivityIdIn(List<String> activityIds);
 }

@@ -52,11 +52,6 @@ public class ActivityBO extends ToString {
     private String location;
 
     /**
-     * 默认时长
-     */
-    private Integer defaultTime;
-
-    /**
      * 活动开始时间
      */
     private Date start;
@@ -168,14 +163,6 @@ public class ActivityBO extends ToString {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Integer getDefaultTime() {
-        return defaultTime;
-    }
-
-    public void setDefaultTime(Integer defaultTime) {
-        this.defaultTime = defaultTime;
     }
 
     public Date getStart() {
