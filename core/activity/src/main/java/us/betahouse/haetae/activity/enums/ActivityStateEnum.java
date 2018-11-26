@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.activity.status.activitystatus;
+package us.betahouse.haetae.activity.enums;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -37,7 +37,7 @@ public enum ActivityStateEnum {
     /**
      * 重启
      */
-    RESTORE("RESTORE", "重启");
+    RESTARTED("RESTARTED", "重启");
 
     /**
      * 状态id

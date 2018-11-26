@@ -4,7 +4,9 @@
  */
 package us.betahouse.haetae.model.activity.request;
 
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.common.RestRequest;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 
 /**
  * @author MessiahJK
@@ -73,14 +75,17 @@ public class ActivityRestRequest extends RestRequest {
 
     /**
      * 活动状态
-     * @see us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum
+     *
+     * @see ActivityStateEnum
      */
     private String state;
 
     /**
-     * 动作
+     * 操作
+     *
+     * @see ActivityOperationEnum
      */
-    private String motion;
+    private String operation;
 
     /**
      * 活动学期
@@ -185,12 +190,12 @@ public class ActivityRestRequest extends RestRequest {
         this.state = state;
     }
 
-    public String getMotion() {
-        return motion;
+    public String getOperation() {
+        return operation;
     }
 
-    public void setMotion(String motion) {
-        this.motion = motion;
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     public String getTerm() {

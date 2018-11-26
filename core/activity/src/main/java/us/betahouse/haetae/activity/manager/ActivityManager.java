@@ -6,7 +6,7 @@ package us.betahouse.haetae.activity.manager;
 
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
-import us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 
 import java.util.List;
 
@@ -46,15 +46,6 @@ public interface ActivityManager {
      * @return
      */
     ActivityBO update(ActivityRequest request);
-
-    /**
-     * 改变活动状态
-     *
-     * @param activityId
-     * @param motion
-     * @return
-     */
-    ActivityBO changeStatus(String activityId,String motion);
 
     /**
      * 检查所有活动状态

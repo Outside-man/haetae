@@ -4,7 +4,11 @@
  */
 package us.betahouse.haetae.activity.model;
 
+import org.apache.commons.lang.StringUtils;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.util.common.ToString;
+import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.DateUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -79,6 +83,8 @@ public class ActivityBO extends ToString {
 
     /**
      * 活动状态
+     *
+     * @see ActivityStateEnum
      */
     private String state;
 
@@ -105,6 +111,24 @@ public class ActivityBO extends ToString {
         }
         extInfo.put(key, value);
     }
+
+    /**
+     * 判断是否在进行中
+     *
+     * @return
+     */
+    public boolean isRunning() {
+        // 活动重启
+        if (StringUtils.equals(state, ActivityStateEnum.RESTARTED.getCode())) {
+            return true;
+        }
+        //
+        if (StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end)) {
+            return true;
+        }
+        return false;
+    }
+
 
     public String getActivityId() {
         return activityId;

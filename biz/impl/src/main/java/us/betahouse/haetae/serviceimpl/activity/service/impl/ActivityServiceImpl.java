@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
-import us.betahouse.haetae.activity.status.activitystatus.ActivityState;
-import us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
+import us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -62,6 +62,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private RoleRepoService roleRepoService;
 
+    @Autowired
+    private ActivityOperateManager activityOperateManager;
+
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional
@@ -88,9 +91,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context) {
-        if(StringUtils.isBlank(request.getState())){
+        if (StringUtils.isBlank(request.getState())) {
             return activityManager.findAll();
-        }else{
+        } else {
             ActivityStateEnum state = ActivityStateEnum.getByCode(request.getState());
             AssertUtil.assertNotNull(state, "活动状态不存在");
             return activityManager.findByState(state);
@@ -103,39 +106,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_PUBLISH)
-    public ActivityBO changeStatus(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.changeStatus(request.getActivityId(), request.getMotion());
-    }
-
-    @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
-    public ActivityBO pass(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.changeStatus(request.getActivityId(), "pass");
-    }
-
-    @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_PUBLISH)
-    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.changeStatus(request.getActivityId(), "publish");
-    }
-
-    @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_FINISH)
-    public ActivityBO finish(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.changeStatus(request.getActivityId(), "finish");
-    }
-
-    @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_RESTART)
-    public ActivityBO republish(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.changeStatus(request.getActivityId(), "republish");
-    }
-
-    @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_FINISH)
-    public ActivityBO remove(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.changeStatus(request.getActivityId(), "remove");
+    public ActivityBO operate(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityOperateManager.operate(request, operateContext);
     }
 
     @Override

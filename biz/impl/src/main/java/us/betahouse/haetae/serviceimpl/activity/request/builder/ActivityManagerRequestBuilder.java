@@ -28,7 +28,7 @@ public final class ActivityManagerRequestBuilder {
     private String description;
     private String userId;
     private String state;
-    private String motion;
+    private String operation;
     private String term;
 
     private ActivityManagerRequestBuilder() {
@@ -108,8 +108,8 @@ public final class ActivityManagerRequestBuilder {
         return this;
     }
 
-    public ActivityManagerRequestBuilder withMotion(String motion) {
-        this.motion = motion;
+    public ActivityManagerRequestBuilder withOperation(String operation) {
+        this.operation = operation;
         return this;
     }
 
@@ -134,7 +134,7 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setDescription(description);
         activityManagerRequest.setUserId(userId);
         activityManagerRequest.setState(state);
-        activityManagerRequest.setMotion(motion);
+        activityManagerRequest.setOperation(operation);
         activityManagerRequest.setTerm(term);
         return activityManagerRequest;
     }

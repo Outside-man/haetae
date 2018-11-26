@@ -81,6 +81,13 @@ public class DateUtil {
         return dateFormat.format(date);
     }
 
+    /**
+     * 字符串转换成日期
+     *
+     * @param dateStr
+     * @param format
+     * @return
+     */
     public static Date parse(String dateStr, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         try {
@@ -88,5 +95,32 @@ public class DateUtil {
         } catch (ParseException e) {
             throw new IllegalArgumentException("日期转换失败");
         }
+    }
+
+    /**
+     * 判断当前是否在时间段内
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    public static boolean nowIsBetween(Date start, Date end) {
+        return isBetween(new Date(), start, end);
+    }
+
+
+    /**
+     * 判断日期是不是在时间段内
+     *
+     * @param date
+     * @param start
+     * @param end
+     * @return
+     */
+    public static boolean isBetween(Date date, Date start, Date end) {
+        if (date.before(start) || date.after(end)) {
+            return false;
+        }
+        return true;
     }
 }

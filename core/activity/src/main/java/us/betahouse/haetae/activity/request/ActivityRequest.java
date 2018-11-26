@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.activity.request;
 
-import java.util.Date;
 
 /**
  * 活动管理请求
@@ -82,7 +81,7 @@ public class ActivityRequest extends BaseRequest {
     /**
      * 动作
      */
-    private String motion;
+    private String operation;
     /**
      * 活动学期
      */
@@ -192,11 +191,11 @@ public class ActivityRequest extends BaseRequest {
         this.term = term;
     }
 
-    public String getMotion() {
-        return motion;
+    public String getOperation() {
+        return operation;
     }
 
-    public void setMotion(String motion) {
-        this.motion = motion;
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }
