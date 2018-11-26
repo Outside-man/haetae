@@ -52,6 +52,15 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ActivityBO> queryActivitiesByState(String state) {
+        List<ActivityDO> activityDOList=activityDORepo.findAllByState(state);
+        return CollectionUtils.toStream(activityDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 通过类型查询活动
      *
@@ -60,7 +69,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
      */
     @Override
     public List<ActivityBO> queryActivityByType(String type) {
-        List<ActivityDO> activityDOList=activityDORepo.findByType(type);
+        List<ActivityDO> activityDOList=activityDORepo.findAllByType(type);
         return CollectionUtils.toStream(activityDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -164,7 +173,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setEnd(activityDO.getEnd());
         activityBO.setScore(activityDO.getScore());
         activityBO.setDescription(activityDO.getDescription());
-        activityBO.setUserId(activityDO.getUserId());
+        activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(),Map.class));
@@ -191,7 +200,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setEnd(activityBO.getEnd());
         activityDO.setScore(activityBO.getScore());
         activityDO.setDescription(activityBO.getDescription());
-        activityDO.setUserId(activityBO.getUserId());
+        activityDO.setUserId(activityBO.getCreatorId());
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));

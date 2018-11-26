@@ -26,12 +26,12 @@ public interface ActivityService {
     ActivityBO create(ActivityManagerRequest request, OperateContext context);
 
     /**
-     * 查找所有活动
-     *
+     * 查找活动
+     * @param request
      * @param context
      * @return
      */
-    List<ActivityBO> findAll(OperateContext context);
+    List<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context);
 
     /**
      * 更新活动

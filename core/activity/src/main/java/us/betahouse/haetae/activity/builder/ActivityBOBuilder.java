@@ -71,7 +71,7 @@ public final class ActivityBOBuilder {
     /**
      * 活动创建者
      */
-    private String userId;
+    private String creatorId;
 
     /**
      * 活动状态
@@ -146,8 +146,8 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withUserId(String userId) {
-        this.userId = userId;
+    public ActivityBOBuilder withCreatorId(String creatorId) {
+        this.creatorId = creatorId;
         return this;
     }
 
@@ -178,7 +178,7 @@ public final class ActivityBOBuilder {
         activityBO.setEnd(end);
         activityBO.setScore(score);
         activityBO.setDescription(description);
-        activityBO.setUserId(userId);
+        activityBO.setCreatorId(creatorId);
         activityBO.setState(state);
         activityBO.setTerm(term);
         activityBO.setExtInfo(extInfo);

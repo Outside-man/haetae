@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.controller.activity;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +124,15 @@ public class ActivityController {
             public Result<List<ActivityBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<ActivityBO> activityBOList = activityService.findAll(context);
+
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+
+                // 填充状态选择条件
+                if (StringUtils.isNotBlank(request.getState())) {
+                    builder.withState(request.getState());
+                }
+
+                List<ActivityBO> activityBOList = activityService.findAll(builder.build(), context);
                 return RestResultUtil.buildSuccessResult(activityBOList, "获取活动列表成功");
             }
         });

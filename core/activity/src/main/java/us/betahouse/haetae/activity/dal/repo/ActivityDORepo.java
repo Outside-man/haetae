@@ -23,7 +23,7 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO,Long> {
      * @param type
      * @return
      */
-    List<ActivityDO> findByType(String type);
+    List<ActivityDO> findAllByType(String type);
 
     /**
      * 通过活动id获取
@@ -40,4 +40,11 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO,Long> {
      * @return
      */
     boolean existsActivityDOByActivityId(String activityId);
+
+    /**
+     * 通过活动状态查找活动
+     * @param state
+     * @return
+     */
+    List<ActivityDO> findAllByState(String state);
 }

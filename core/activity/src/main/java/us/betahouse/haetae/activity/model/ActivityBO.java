@@ -75,7 +75,7 @@ public class ActivityBO extends ToString {
     /**
      * 活动创建者
      */
-    private String userId;
+    private String creatorId;
 
     /**
      * 活动状态
@@ -186,12 +186,12 @@ public class ActivityBO extends ToString {
         this.description = description;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getCreatorId() {
+        return creatorId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getState() {

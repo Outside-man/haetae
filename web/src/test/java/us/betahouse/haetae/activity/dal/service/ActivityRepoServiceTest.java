@@ -38,7 +38,7 @@ public class ActivityRepoServiceTest {
                 .withStart(new Date())
                 .withOrganizationMessage("o")
                 .withScore(12L)
-                .withUserId("17905219")
+                .withCreatorId("17905219")
                 .withTerm("2018A")
                 .build();
         System.out.println(activityRepoService.createActivity(activityBO));

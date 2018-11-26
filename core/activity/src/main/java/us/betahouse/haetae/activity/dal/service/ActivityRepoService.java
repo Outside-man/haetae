@@ -17,12 +17,21 @@ import java.util.List;
 public interface ActivityRepoService {
     /**
      * 查询所有活动
+     *
      * @return
      */
     List<ActivityBO> queryAllActivity();
 
     /**
+     * 通过状态查询活动
+     *
+     * @return
+     */
+    List<ActivityBO> queryActivitiesByState(String state);
+
+    /**
      * 通过类型查询活动
+     *
      * @return
      */
     List<ActivityBO> queryActivityByType(String type);

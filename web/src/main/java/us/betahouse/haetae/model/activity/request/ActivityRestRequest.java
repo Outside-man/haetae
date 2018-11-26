@@ -73,6 +73,7 @@ public class ActivityRestRequest extends RestRequest {
 
     /**
      * 活动状态
+     * @see us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum
      */
     private String state;
 

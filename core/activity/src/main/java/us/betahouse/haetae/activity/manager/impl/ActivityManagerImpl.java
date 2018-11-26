@@ -13,6 +13,8 @@ import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.activity.status.activitystatus.*;
 import us.betahouse.haetae.activity.utils.ActivityUtil;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.utils.AssertUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -56,7 +58,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withEnd(new Date(request.getEnd()))
                 .withScore(request.getScore())
                 .withDescription(request.getDescription())
-                .withUserId(request.getUserId())
+                .withCreatorId(request.getUserId())
                 .withState(ActivityStateEnum.APPROVED.getCode())
                 .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo());
@@ -72,6 +74,12 @@ public class ActivityManagerImpl implements ActivityManager {
     @Override
     public List<ActivityBO> findAll() {
         return activityRepoService.queryAllActivity();
+    }
+
+    @Override
+    public List<ActivityBO> findByState(ActivityStateEnum state) {
+        AssertUtil.assertNotNull(state, CommonResultCode.SYSTEM_ERROR);
+        return activityRepoService.queryActivitiesByState(state.getCode());
     }
 
     /**
@@ -97,7 +105,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withEnd(new Date(request.getEnd()))
                 .withScore(request.getScore())
                 .withDescription(request.getDescription())
-                .withUserId(request.getUserId())
+                .withCreatorId(request.getUserId())
                 .withState(request.getState())
                 .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo());

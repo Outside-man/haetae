@@ -6,6 +6,7 @@ package us.betahouse.haetae.activity.manager;
 
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
+import us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum;
 
 import java.util.List;
 
@@ -30,6 +31,13 @@ public interface ActivityManager {
      * @return
      */
     List<ActivityBO> findAll();
+
+    /**
+     * 查找所有活动 ByState
+     *
+     * @return
+     */
+    List<ActivityBO> findByState(ActivityStateEnum state);
 
     /**
      * 更新活动

@@ -4,12 +4,15 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.status.activitystatus.ActivityState;
+import us.betahouse.haetae.activity.status.activitystatus.ActivityStateEnum;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
@@ -84,8 +87,14 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityBO> findAll(OperateContext context) {
-        return activityManager.findAll();
+    public List<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context) {
+        if(StringUtils.isBlank(request.getState())){
+            return activityManager.findAll();
+        }else{
+            ActivityStateEnum state = ActivityStateEnum.getByCode(request.getState());
+            AssertUtil.assertNotNull(state, "活动状态不存在");
+            return activityManager.findByState(state);
+        }
     }
 
     @Override
