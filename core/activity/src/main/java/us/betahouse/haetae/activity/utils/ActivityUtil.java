@@ -21,10 +21,10 @@ public class ActivityUtil {
      * @param activityBO
      * @return
      */
-    public static void isValided(ActivityBO activityBO){
-        Date now=new Date();
-        boolean isActive=(activityBO.getState().equals(ActivityStateEnum.PUBLISHED.getDesc())&&now.after(activityBO.getStart())&&now.before(activityBO.getEnd())) ||activityBO.getState().equals(ActivityStateEnum.RESTORE.getDesc());
-        AssertUtil.assertTrue(isActive);
+    public static void isRunning(ActivityBO activityBO) {
+        Date now = new Date();
+        boolean isActive = (activityBO.getState().equals(ActivityStateEnum.PUBLISHED.getDesc()) && now.after(activityBO.getStart()) && now.before(activityBO.getEnd())) || activityBO.getState().equals(ActivityStateEnum.RESTORE.getDesc());
+        AssertUtil.assertTrue(isActive, "该活动不是一个进行中的活动");
     }
 
     /**

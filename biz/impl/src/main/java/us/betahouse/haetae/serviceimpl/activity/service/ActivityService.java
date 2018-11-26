@@ -4,9 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
-import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
-import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -42,7 +40,7 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO update(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO update(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 改变活动状态
@@ -51,7 +49,7 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO changeStatus(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO changeStatus(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 活动通过
@@ -60,7 +58,7 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO pass(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO pass(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 活动发布
@@ -69,7 +67,7 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO publish(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 活动结束
@@ -78,7 +76,7 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO finish(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO finish(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 活动重新拉起
@@ -87,7 +85,7 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO republish(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO republish(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 活动取消
@@ -96,5 +94,13 @@ public interface ActivityService {
      * @param operateContext
      * @return
      */
-    ActivityBO remove(ActivityManagerRequest request,OperateContext operateContext);
+    ActivityBO remove(ActivityManagerRequest request, OperateContext operateContext);
+
+    /**
+     * 活动添加盖章员
+     *
+     * @param request
+     * @param context
+     */
+    void bindStamper(ActivityManagerRequest request, OperateContext context);
 }

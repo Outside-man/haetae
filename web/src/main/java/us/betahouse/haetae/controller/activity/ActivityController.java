@@ -7,10 +7,7 @@ package us.betahouse.haetae.controller.activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -22,6 +19,7 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -39,6 +37,7 @@ import java.util.List;
  * @version : ActivityController.java 2018/11/25 13:16 MessiahJK
  */
 @RestController
+@RequestMapping(value = "/activity")
 public class ActivityController {
     /**
      * 日志实体
@@ -57,38 +56,46 @@ public class ActivityController {
      */
 
     @CheckLogin
-    @PostMapping(value = "/activity")
-    @Log(loggerName=LoggerName.ACTIVITY_DIGEST)
-    public Result<ActivityBO> add(ActivityRestRequest request, HttpServletRequest httpServletRequest){
-        return RestOperateTemplate.operate(LOGGER, "增添活动", request, new RestOperateCallBack<ActivityBO>() {
+    @PostMapping
+    @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
+    public Result<ActivityBO> add(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "新增活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
-                AssertUtil.assertStringNotBlank(request.getTerm(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动学期不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动类型不能为空");
+                AssertUtil.assertNotNull(request.getActivityStartTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
+                AssertUtil.assertNotNull(request.getActivityEndTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动结束时间不能为空");
+                AssertUtil.assertNotNull(request.getOrganizationMessage(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "举办单位不能为空");
             }
 
             @Override
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
-                        .withActivityName(request.getActivityName())
-                        .withType(request.getType())
-                        .withOrganizationMessage(request.getOrganizationMessage())
-                        .withLocation(request.getLocation())
-                        .withDefaultTime(request.getDefaultTime())
-                        .withStart(request.getStart())
-                        .withEnd(request.getEnd())
-                        .withScore(request.getScore())
-                        .withDescription(request.getDescription())
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
                         .withUserId(request.getUserId())
-                        .withState(request.getState())
-                        .withTerm(request.getTerm())
+                        .withActivityName(request.getActivityName())
+                        .withType(request.getActivityType())
+                        .withOrganizationMessage(request.getOrganizationMessage())
+                        .withStart(request.getActivityStartTime())
+                        .withEnd(request.getActivityEndTime())
+                        .withTerm(request.getTerm() == null ? TermUtil.getNowTerm() : request.getTerm())
+
+                        // 以下是可选参数
+                        // 描述
+                        .withDescription(request.getDescription())
+                        // 地点
+                        .withLocation(request.getLocation())
+                        // 默认时长
+                        .withDefaultTime(request.getDefaultTime())
+                        // 分数
+                        .withScore(request.getScore())
                         .build();
-                ActivityBO activityBO=activityService.create(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO,"成功创建活动");
+                ActivityBO activityBO = activityService.create(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, "创建活动成功");
             }
         });
     }
@@ -101,13 +108,14 @@ public class ActivityController {
      * @return
      */
     @CheckLogin
-    @GetMapping(value="/activity/all")
+    @GetMapping
     @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
-    public Result<List<ActivityBO>> getActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<ActivityBO>> getActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取活动列表", request, new RestOperateCallBack<List<ActivityBO>>() {
 
             @Override
             public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
             }
 
@@ -115,8 +123,8 @@ public class ActivityController {
             public Result<List<ActivityBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<ActivityBO> activityBOList=activityService.findAll(context);
-                return RestResultUtil.buildSuccessResult(activityBOList,"获取活动列表成功");
+                List<ActivityBO> activityBOList = activityService.findAll(context);
+                return RestResultUtil.buildSuccessResult(activityBOList, "获取活动列表成功");
             }
         });
     }
@@ -131,7 +139,7 @@ public class ActivityController {
     @CheckLogin
     @PutMapping(value = "activity/pass")
     @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
-    public Result<ActivityBO> pass(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+    public Result<ActivityBO> pass(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "通过活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
             public void before() {
@@ -144,12 +152,12 @@ public class ActivityController {
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
                         .withActivityId(request.getActivityId())
                         .withUserId(request.getUserId())
                         .build();
-                ActivityBO activityBO=activityService.pass(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO,"活动成功通过");
+                ActivityBO activityBO = activityService.pass(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, "活动成功通过");
             }
         });
     }
@@ -164,7 +172,7 @@ public class ActivityController {
     @CheckLogin
     @PutMapping(value = "activity/publish")
     @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
-    public Result<ActivityBO> publish(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+    public Result<ActivityBO> publish(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "发布活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
             public void before() {
@@ -177,15 +185,16 @@ public class ActivityController {
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
                         .withActivityId(request.getActivityId())
                         .withUserId(request.getUserId())
                         .build();
-                ActivityBO activityBO=activityService.publish(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO,"活动成功发布");
+                ActivityBO activityBO = activityService.publish(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, "活动成功发布");
             }
         });
     }
+
     /**
      * 结束活动
      *
@@ -196,7 +205,7 @@ public class ActivityController {
     @CheckLogin
     @PutMapping(value = "activity/finish")
     @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
-    public Result<ActivityBO> finish(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+    public Result<ActivityBO> finish(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "结束活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
             public void before() {
@@ -209,12 +218,12 @@ public class ActivityController {
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
                         .withActivityId(request.getActivityId())
                         .withUserId(request.getUserId())
                         .build();
-                ActivityBO activityBO=activityService.finish(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO,"活动成功结束");
+                ActivityBO activityBO = activityService.finish(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, "活动成功结束");
             }
         });
     }
@@ -229,7 +238,7 @@ public class ActivityController {
     @CheckLogin
     @PutMapping(value = "activity/republish")
     @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
-    public Result<ActivityBO> republish(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+    public Result<ActivityBO> republish(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "拉起活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
             public void before() {
@@ -242,12 +251,12 @@ public class ActivityController {
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
                         .withActivityId(request.getActivityId())
                         .withUserId(request.getUserId())
                         .build();
-                ActivityBO activityBO=activityService.republish(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO,"活动成功拉起");
+                ActivityBO activityBO = activityService.republish(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, "活动成功拉起");
             }
         });
     }
@@ -262,7 +271,7 @@ public class ActivityController {
     @CheckLogin
     @PutMapping(value = "activity/remove")
     @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
-    public Result<ActivityBO> remove(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+    public Result<ActivityBO> remove(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "取消活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
             public void before() {
@@ -270,16 +279,17 @@ public class ActivityController {
                 AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
             }
+
             @Override
             public Result<ActivityBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest=ActivityManagerRequestBuilder.getInstance()
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
                         .withActivityId(request.getActivityId())
                         .withUserId(request.getUserId())
                         .build();
-                ActivityBO activityBO=activityService.remove(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO,"活动成功取消");
+                ActivityBO activityBO = activityService.remove(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, "活动成功取消");
             }
         });
     }

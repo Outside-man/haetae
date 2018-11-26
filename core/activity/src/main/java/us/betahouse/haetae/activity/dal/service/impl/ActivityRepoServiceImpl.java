@@ -131,6 +131,9 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getUserId() != null) {
             activityDO.setUserId(newActivityDO.getUserId());
         }
+        if (newActivityDO.getExtInfo() != null) {
+            activityDO.setExtInfo(newActivityDO.getExtInfo());
+        }
         return convert(activityDORepo.save(activityDO));
     }
 

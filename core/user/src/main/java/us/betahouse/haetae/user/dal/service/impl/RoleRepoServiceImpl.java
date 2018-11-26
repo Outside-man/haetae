@@ -6,6 +6,7 @@ package us.betahouse.haetae.user.dal.service.impl;
 
 import us.betahouse.haetae.user.dal.convert.EntityConverter;
 import us.betahouse.haetae.user.dal.convert.RelationConverter;
+import us.betahouse.haetae.user.enums.RoleCode;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
 import us.betahouse.util.enums.CommonResultCode;
@@ -141,8 +142,8 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     }
 
     @Override
-    public RoleBO userBindRolesByCode(String userId, String roleCode) {
-        RoleDO roleDO = roleDORepo.findByRoleCode(roleCode);
+    public RoleBO userBindRolesByCode(String userId, RoleCode roleCode) {
+        RoleDO roleDO = roleDORepo.findByRoleCode(roleCode.getCode());
         AssertUtil.assertNotNull(roleCode, "角色不存在");
         userBindRoles(userId, Collections.singletonList(roleDO.getRoleId()));
         return EntityConverter.convert(roleDO);

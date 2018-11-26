@@ -14,12 +14,15 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
-import us.betahouse.haetae.controller.user.UserController;
 import us.betahouse.haetae.model.user.request.StamperRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
+import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.utils.IPUtil;
@@ -45,10 +48,13 @@ public class ActivityStampController {
     @Autowired
     private ActivityRecordService activityRecordService;
 
+    @Autowired
+    private ActivityService activityService;
+
     /**
      * 日志
      */
-    private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(ActivityStampController.class);
 
     /**
      * 校园活动盖章
@@ -102,7 +108,7 @@ public class ActivityStampController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getScannerUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "盖章员id不能为空");
+                AssertUtil.assertStringNotBlank(request.getStamperStuId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "盖章员学号不能为空");
                 AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
             }
 
@@ -110,11 +116,14 @@ public class ActivityStampController {
             public Result<List<ActivityStamp>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
-                        .withScannerUserId(request.getScannerUserId())
-                        .withUserId(request.getUserId());
-                activityRecordService.bindStamper(builder.build(), context);
+                        .withUserId(request.getUserId())
+                        .withActivityId(request.getActivityId());
+                ActivityManagerRequest activityManagerRequest = builder.build();
+                activityManagerRequest.putStamperStuId(request.getStamperStuId());
+
+                activityService.bindStamper(activityManagerRequest, context);
                 return RestResultUtil.buildSuccessResult("分配盖章员成功");
             }
         });

@@ -29,9 +29,9 @@ public class StamperRequest extends RestRequest {
     private String activityId;
 
     /**
-     * 盖章员id 赋权时使用
+     * 盖章员stuId 赋权时使用
      */
-    private String scannerUserId;
+    private String stampStuId;
 
     public List<String> getParticipants() {
         return participants;
@@ -49,11 +49,11 @@ public class StamperRequest extends RestRequest {
         this.activityId = activityId;
     }
 
-    public String getScannerUserId() {
-        return scannerUserId;
+    public String getStamperStuId() {
+        return stampStuId;
     }
 
-    public void setScannerUserId(String scannerUserId) {
-        this.scannerUserId = scannerUserId;
+    public void setStamperStuId(String stampStuId) {
+        this.stampStuId = stampStuId;
     }
 }

@@ -28,7 +28,7 @@ public class ActivityRestRequest extends RestRequest {
      * 活动类型
      */
 
-    private String type;
+    private String activityType;
 
     /**
      * 单位信息
@@ -49,12 +49,12 @@ public class ActivityRestRequest extends RestRequest {
     /**
      * 活动开始时间
      */
-    private Long start;
+    private Long activityStartTime;
 
     /**
      * 活动结束时间
      */
-    private Long end;
+    private Long activityEndTime;
 
     /**
      * 活动分数
@@ -102,12 +102,12 @@ public class ActivityRestRequest extends RestRequest {
         this.activityName = activityName;
     }
 
-    public String getType() {
-        return type;
+    public String getActivityType() {
+        return activityType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
     public String getOrganizationMessage() {
@@ -134,20 +134,20 @@ public class ActivityRestRequest extends RestRequest {
         this.defaultTime = defaultTime;
     }
 
-    public Long getStart() {
-        return start;
+    public Long getActivityStartTime() {
+        return activityStartTime;
     }
 
-    public void setStart(Long start) {
-        this.start = start;
+    public void setActivityStartTime(Long activityStartTime) {
+        this.activityStartTime = activityStartTime;
     }
 
-    public Long getEnd() {
-        return end;
+    public Long getActivityEndTime() {
+        return activityEndTime;
     }
 
-    public void setEnd(Long end) {
-        this.end = end;
+    public void setActivityEndTime(Long activityEndTime) {
+        this.activityEndTime = activityEndTime;
     }
 
     public Long getScore() {

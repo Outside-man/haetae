@@ -126,24 +126,6 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         return activityRecordManager.countByActivityId(request.getActivityId());
     }
 
-    @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
-    @Transactional
-    public void bindStamper(ActivityStampRequest request, OperateContext context) {
-        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
-        String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
-        AssertUtil.assertStringNotBlank(stampPermId, "活动没有盖章权限");
-
-        UserManageRequest userManageRequest = new UserManageRequest();
-        userManageRequest.setUserId(request.getScannerUserId());
-        userManageRequest.setRoleIds(Collections.singletonList(request.getScannerUserId()));
-        userManageRequest.setPermIds(Collections.singletonList(stampPermId));
-        // 绑定 权限
-        userManager.batchBindPerm(userManageRequest);
-        // 绑定 角色
-        userManager.batchBindRole(userManageRequest);
-    }
-
     /**
      * 校验盖章权限
      *

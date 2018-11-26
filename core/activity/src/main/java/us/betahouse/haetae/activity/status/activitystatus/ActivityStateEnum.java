@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.activity.status.activitystatus;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * 活动状态枚举类
  *
@@ -11,48 +13,61 @@ package us.betahouse.haetae.activity.status.activitystatus;
  * @version : ActivityStateEnum.java 2018/11/23 0:58 MessiahJK
  */
 public enum ActivityStateEnum {
+
     /**
      * 通过
      */
-    APPROVED("2001", "Approved"),
+    APPROVED("APPROVED", "待发布"),
 
     /**
      * 发布
      */
-    PUBLISHED("2002", "Canceled"),
+    PUBLISHED("PUBLISHED", "发布"),
 
     /**
      * 结束
      */
-    FINISHED("2003", "Finished"),
+    FINISHED("FINISHED", "结束"),
 
     /**
      * 取消
      */
-    CANCELED("2004", "Published"),
+    CANCELED("CANCELED", "取消"),
 
     /**
      * 重启
      */
-    RESTORE("2005","Restore")
-    ;
+    RESTORE("RESTORE", "重启");
+
     /**
      * 状态id
      */
-    private final String ActivityState;
+    private final String code;
 
     /**
      * 描述
      */
     private final String desc;
 
-    ActivityStateEnum(String ActivityState, String desc) {
-        this.ActivityState = ActivityState;
+    public static ActivityStateEnum getByCode(String code) {
+        if (StringUtils.isBlank(code)) {
+            return null;
+        }
+        for (ActivityStateEnum activityStateEnum : values()) {
+            if (StringUtils.equals(activityStateEnum.getCode(), code)) {
+                return activityStateEnum;
+            }
+        }
+        return null;
+    }
+
+    ActivityStateEnum(String code, String desc) {
+        this.code = code;
         this.desc = desc;
     }
 
-    public String getActivityState() {
-        return ActivityState;
+    public String getCode() {
+        return code;
     }
 
     public String getDesc() {

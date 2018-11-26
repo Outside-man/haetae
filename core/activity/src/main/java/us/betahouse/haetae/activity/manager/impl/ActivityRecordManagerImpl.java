@@ -42,7 +42,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     public ActivityRecordBO create(ActivityRecordRequest request) {
         ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
         // 校验活动是否有效
-        ActivityUtil.isValided(activityBO);
+        ActivityUtil.isRunning(activityBO);
 
         // 活动记录时长处理
         int time = 0;
@@ -107,7 +107,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     public List<ActivityRecordBO> batchCreate(ActivityRecordRequest request, List<String> userIds) {
         ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
         // 校验活动是否有效
-        ActivityUtil.isValided(activityBO);
+        ActivityUtil.isRunning(activityBO);
 
         // 活动记录时长处理
         int time = 0;

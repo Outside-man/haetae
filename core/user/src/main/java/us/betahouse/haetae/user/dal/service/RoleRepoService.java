@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
+import us.betahouse.haetae.user.enums.RoleCode;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
@@ -57,7 +58,7 @@ public interface RoleRepoService {
      * @param roleCode
      * @return
      */
-    RoleBO userBindRolesByCode(String userId, String roleCode);
+    RoleBO userBindRolesByCode(String userId, RoleCode roleCode);
 
     /**
      * 给用户解除绑定角色
