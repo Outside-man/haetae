@@ -11,6 +11,9 @@ import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 活动取消
  *
@@ -33,6 +36,11 @@ public class ActivityCancel extends CommonActivityOperate {
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected List<String> fetchVerifyPerms() {
+        return Collections.singletonList(ActivityPermType.ACTIVITY_CREATE);
     }
 
     @Override
