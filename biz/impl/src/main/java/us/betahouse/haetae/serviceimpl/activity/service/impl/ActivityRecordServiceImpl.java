@@ -9,21 +9,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
-import us.betahouse.haetae.user.manager.UserManager;
-import us.betahouse.haetae.user.request.UserManageRequest;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
@@ -55,24 +52,20 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     private UserBasicService userBasicService;
 
     @Autowired
-    private UserManager userManager;
-
-    @Override
-    public ActivityStamp stamp(ActivityStampRequest request, OperateContext context) {
-        // 校验盖章权限
-        verifyStampPerm(request);
-
-        ActivityRecordBO record = activityRecordManager.create(request);
-        ActivityBO activity = activityRepoService.queryActivityByActivityId(record.getActivityId());
-        return ActivityStampBuilder.getInstance().withActivityRecordBO(record).withActivityBO(activity).build();
-    }
+    private UserInfoRepoService userInfoRepoService;
 
     @Override
     public List<ActivityStamp> batchStamp(ActivityStampRequest request, OperateContext context) {
         // 校验盖章权限
-        verifyStampPerm(request);
+        AssertUtil.assertTrue(verifyStampPerm(request), CommonResultCode.FORBIDDEN, "没有该活动的盖章权限");
 
-        List<ActivityRecordBO> activityRecords = activityRecordManager.batchCreate(request, request.getUserIds());
+        List<String> userIds = new ArrayList<>();
+        for(String stuId : request.getStuIds()){
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
+            AssertUtil.assertNotNull(userInfoBO, "非学生用户不能获取活动章");
+            userIds.add(userInfoBO.getUserId());
+        }
+        List<ActivityRecordBO> activityRecords = activityRecordManager.batchCreate(request, userIds);
         ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
         List<ActivityStamp> activityStamps = new ArrayList<>();
         ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance().withActivityBO(activity);

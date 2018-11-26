@@ -19,7 +19,6 @@ import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampRequestBuil
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
-import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -84,7 +83,7 @@ public class ActivityStampController {
                         .withRequestId(request.getRequestId())
                         .withActivityId(request.getActivityId())
                         .withScannerUserId(request.getUserId())
-                        .withUserIds(request.getParticipants())
+                        .withStuIds(request.getParticipants())
                         .withTerm(TermUtil.getNowTerm())
                         .withStatus(ActivityStampStatusEnum.ENABLE.getCode());
                 List<ActivityStamp> stamps = activityRecordService.batchStamp(builder.build(), context);

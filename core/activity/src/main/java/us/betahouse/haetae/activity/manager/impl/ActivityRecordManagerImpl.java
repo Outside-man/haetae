@@ -61,8 +61,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
                 .withType(activityBO.getType())
                 .withStatus(request.getStatus())
                 .withTerm(request.getTerm())
-                .withExtInfo(request.getExtInfo())
-                ;
+                .withExtInfo(request.getExtInfo());
 
         // 绑上用户id
         builder.withUserId(request.getUserId());
@@ -132,7 +131,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
         List<ActivityRecordBO> activityRecordList = new ArrayList<>();
         for (String userId : userIds) {
             // 绑上用户id
-            builder.withUserId(request.getUserId());
+            builder.withUserId(userId);
             activityRecordList.add(builder.build());
         }
         return activityRecordRepoService.batchCreateActivityRecord(activityRecordList);

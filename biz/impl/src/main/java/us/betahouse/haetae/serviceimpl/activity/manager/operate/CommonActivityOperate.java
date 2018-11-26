@@ -84,6 +84,7 @@ public abstract class CommonActivityOperate implements ActivityOperate {
 
     /**
      * 获取需要鉴权的内容
+     * TODO dango.yxm 2018年11月26日16:35:11 权限切面不生效，先挫一点解决
      *
      * @return
      */

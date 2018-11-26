@@ -19,7 +19,7 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     private static final long serialVersionUID = -8487946642055713409L;
 
-    private List<String> userIds;
+    private List<String> stuIds;
 
 
     @Override
@@ -27,11 +27,11 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
         return getScannerUserId();
     }
 
-    public List<String> getUserIds() {
-        return userIds;
+    public List<String> getStuIds() {
+        return stuIds;
     }
 
-    public void setUserIds(List<String> userIds) {
-        this.userIds = userIds;
+    public void setStuIds(List<String> stuIds) {
+        this.stuIds = stuIds;
     }
 }

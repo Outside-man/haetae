@@ -19,15 +19,6 @@ import java.util.List;
 public interface ActivityRecordService {
 
     /**
-     * 盖章
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    ActivityStamp stamp(ActivityStampRequest request, OperateContext context);
-
-    /**
      * 批量盖章
      *
      * @param request

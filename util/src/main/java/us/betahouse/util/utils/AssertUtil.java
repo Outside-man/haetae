@@ -41,6 +41,12 @@ public class AssertUtil {
         }
     }
 
+    public static void assertTrue(Boolean expression, ResultCode resultCode, String errorMsg) {
+        if (expression == null || !expression) {
+            throw new BetahouseException(resultCode.getCode(), errorMsg);
+        }
+    }
+
     /**
      * 断言对象等于null
      *

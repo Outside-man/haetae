@@ -63,7 +63,7 @@ public final class ActivityStampRequestBuilder {
     /**
      * 批量盖章
      */
-    private List<String> userIds;
+    private List<String> stuIds;
 
 
     private ActivityStampRequestBuilder() {
@@ -86,7 +86,7 @@ public final class ActivityStampRequestBuilder {
         activityRecordRequest.setStatus(status);
         activityRecordRequest.setTerm(term);
         activityRecordRequest.setGrades(grades);
-        activityRecordRequest.setUserIds(userIds);
+        activityRecordRequest.setStuIds(stuIds);
         return activityRecordRequest;
     }
 
@@ -145,8 +145,8 @@ public final class ActivityStampRequestBuilder {
         return this;
     }
 
-    public ActivityStampRequestBuilder withUserIds(List<String> userIds) {
-        this.userIds = userIds;
+    public ActivityStampRequestBuilder withStuIds(List<String> stuIds) {
+        this.stuIds = stuIds;
         return this;
     }
 }
