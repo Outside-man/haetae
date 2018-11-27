@@ -17,6 +17,7 @@ import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
@@ -150,9 +151,8 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 activityIds.add(activityId);
             }
         }
-        List<ActivityBO> activityMisson = new ArrayList<>();
-
-        return activityRepoService.queryActivityByActivityIds(activityIds);
+        List<ActivityBO> activityMission = activityRepoService.queryActivityByActivityIds(activityIds);
+        return CollectionUtils.toStream(activityMission).filter(ActivityBO::canStamp).collect(Collectors.toList());
     }
 
     /**

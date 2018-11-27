@@ -35,7 +35,7 @@ public class SchoolActivityStampService implements StampService {
     @Override
     public void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO) {
         // 校验活动是否有效
-        AssertUtil.assertTrue(activityBO.isRunning(), "活动不在进行中");
+        AssertUtil.assertTrue(activityBO.canStamp(), "活动不在进行中");
 
         // 获取参加过的活动记录
         List<ActivityRecordBO> joinedActivityRecords = activityRecordRepoService.parseJoinUserIds(request.getActivityId(), userIds);

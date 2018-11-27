@@ -6,6 +6,7 @@ package us.betahouse.haetae.activity.model;
 
 import org.apache.commons.lang.StringUtils;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.util.common.ToString;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.DateUtil;
@@ -108,20 +109,31 @@ public class ActivityBO extends ToString {
     }
 
     /**
-     * 判断是否在进行中
+     * 判断是否能盖章
      *
      * @return
      */
-    public boolean isRunning() {
-        // 活动重启
+    public boolean canStamp() {
+        // 活动重启 直接认为可以盖章
         if (StringUtils.equals(state, ActivityStateEnum.RESTARTED.getCode())) {
             return true;
         }
-        //
-        if (StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end)) {
-            return true;
+        ActivityTypeEnum activityTypeEnum = ActivityTypeEnum.getByCode(type);
+        if(activityTypeEnum == null){
+            return false;
         }
-        return false;
+        switch (activityTypeEnum){
+            case VOLUNTEER_WORK:
+                return true;
+            case PRACTICE_ACTIVITY:
+                return true;
+            case VOLUNTEER_ACTIVITY:
+                return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
+            case SCHOOL_ACTIVITY:
+                return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
+            default:
+                return false;
+        }
     }
 
 

@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.serviceimpl.activity.enums;
+package us.betahouse.haetae.activity.enums;
 
 import org.apache.commons.lang.StringUtils;
 
