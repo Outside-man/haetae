@@ -39,6 +39,7 @@ final public class ActivityStampBuilder {
         activityStamp.setTerm(activityRecordBO.getTerm());
         activityStamp.setGrades(activityRecordBO.getGrades());
         activityStamp.setExtInfo(activityRecordBO.getExtInfo());
+        activityStamp.setCreateTime(activityRecordBO.getCreateTime());
         // 活动信息补充
         activityStamp.setActivityName(activityBO.getActivityName());
         activityStamp.setStartTime(activityBO.getStart());

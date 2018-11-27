@@ -148,6 +148,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         activityRecordBO.setStatus(activityRecordDO.getStatus());
         activityRecordBO.setTerm(activityRecordDO.getTerm());
         activityRecordBO.setGrades(activityRecordDO.getGrades());
+        activityRecordBO.setCreateTime(activityRecordDO.getGmtCreate());
         return activityRecordBO;
     }
 

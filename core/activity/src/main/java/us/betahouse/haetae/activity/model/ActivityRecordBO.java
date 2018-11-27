@@ -6,6 +6,7 @@ package us.betahouse.haetae.activity.model;
 
 import us.betahouse.util.common.ToString;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,11 @@ public class ActivityRecordBO extends ToString {
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
 
     public String fetchExtInfo(String key){
@@ -161,5 +167,13 @@ public class ActivityRecordBO extends ToString {
 
     public void setGrades(String grades) {
         this.grades = grades;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

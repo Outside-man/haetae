@@ -8,8 +8,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -54,7 +54,7 @@ public class UserManagerTest {
         UserManageRequest request = new UserManageRequest();
         request.setRequestId(UUID.randomUUID().toString());
         UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
-                .withEnrollDate(201801)
+                .withEnrollDate(new Date())
                 .withRealName("哈哈")
                 .withSex("男")
                 .withStuId("11111");
