@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.dal.model;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 用户实体
@@ -71,10 +72,10 @@ public class UserInfoDO extends BaseDO {
     private String classId;
 
     /**
-     * 入学年份
+     * 入学时间
      */
     @Column(length = 8)
-    private Integer enrollDate;
+    private Date enrollDate;
 
     /**
      * 拓展信息
@@ -138,11 +139,11 @@ public class UserInfoDO extends BaseDO {
         this.classId = classId;
     }
 
-    public Integer getEnrollDate() {
+    public Date getEnrollDate() {
         return enrollDate;
     }
 
-    public void setEnrollDate(Integer enrollDate) {
+    public void setEnrollDate(Date enrollDate) {
         this.enrollDate = enrollDate;
     }
 

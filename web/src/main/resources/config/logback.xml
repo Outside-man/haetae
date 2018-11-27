@@ -121,7 +121,7 @@
 
     <!-- 活动摘要 日志 -->
     <appender name="ACTIVITY-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log_dir}/digest/user-digest.log</File>
+        <File>${log_dir}/digest/activity-digest.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_dir}/digest/activity-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>
@@ -133,7 +133,7 @@
 
     <!-- 章摘要 日志 -->
     <appender name="STAMP-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log_dir}/digest/user-digest.log</File>
+        <File>${log_dir}/digest/stamp-digest.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_dir}/digest/stamp-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>

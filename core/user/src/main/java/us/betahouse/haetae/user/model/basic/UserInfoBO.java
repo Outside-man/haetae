@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.model.basic;
 import us.betahouse.util.common.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +58,7 @@ public class UserInfoBO extends ToString {
     /**
      * 入学年份
      */
-    private Integer enrollDate;
+    private Date enrollDate;
 
     /**
      * 拓展信息
@@ -120,11 +121,11 @@ public class UserInfoBO extends ToString {
         this.classId = classId;
     }
 
-    public Integer getEnrollDate() {
+    public Date getEnrollDate() {
         return enrollDate;
     }
 
-    public void setEnrollDate(Integer enrollDate) {
+    public void setEnrollDate(Date enrollDate) {
         this.enrollDate = enrollDate;
     }
 

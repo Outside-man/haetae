@@ -6,6 +6,7 @@ package us.betahouse.haetae.user.user.builder;
 
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ final public class UserInfoBOBuilder {
     /**
      * 入学年份
      */
-    private Integer enrollDate;
+    private Date enrollDate;
 
     /**
      * 拓展信息
@@ -102,7 +103,7 @@ final public class UserInfoBOBuilder {
         return this;
     }
 
-    public UserInfoBOBuilder withEnrollDate(Integer enrollDate) {
+    public UserInfoBOBuilder withEnrollDate(Date enrollDate) {
         this.enrollDate = enrollDate;
         return this;
     }
