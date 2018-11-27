@@ -13,5 +13,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   banner:
     location: config/banner.txt
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
 logging:
   config: classpath:config/logback.xml

@@ -84,7 +84,6 @@ public class ActivityController {
                         .withStart(request.getActivityStartTime())
                         .withEnd(request.getActivityEndTime())
                         .withTerm(request.getTerm() == null ? TermUtil.getNowTerm() : request.getTerm())
-
                         // 以下是可选参数
                         // 描述
                         .withDescription(request.getDescription())
