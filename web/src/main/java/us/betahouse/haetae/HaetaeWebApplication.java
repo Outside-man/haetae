@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 @EnableJpaAuditing
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
-@ImportResource(locations = {"classpath:spring/validator.xml", "classpath:spring/activity/activity-operate.xml"})
+@ImportResource(locations = {"classpath:spring/user.xml", "classpath:spring/biz-service.xml"})
 @SpringBootApplication
 public class HaetaeWebApplication {
 

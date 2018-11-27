@@ -4,8 +4,11 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
+
+import java.util.List;
 
 
 /**
@@ -17,29 +20,20 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 public interface StampService {
 
     /**
-     * 查询章记录
+     * 解析章记录
      *
-     * @param userId
-     * @param term
+     * @param activityStamps
      * @return
      */
-    StampRecord getStampRecord(String userId, String term);
-
-    /**
-     * 查询章记录
-     *
-     * @param userId
-     * @return
-     */
-    default StampRecord getStampRecord(String userId) {
-        return getStampRecord(userId, null);
+    default StampRecord parseStampRecord(List<ActivityStamp> activityStamps){
+        return new StampRecord(activityStamps);
     }
 
     /**
      * 批量盖章
      *
      * @param request
-     * @return
+     * @param userIds
      */
-    void batchStamp(ActivityStampRequest request);
+    void batchStamp(ActivityStampRequest request, List<String> userIds);
 }

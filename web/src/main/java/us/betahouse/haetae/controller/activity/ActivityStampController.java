@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.controller.activity;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.user.request.StamperRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
+import us.betahouse.haetae.serviceimpl.activity.enums.GradesEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
@@ -77,6 +79,13 @@ public class ActivityStampController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "盖章员id不能为空");
                 AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
                 AssertUtil.assertNotNull(request.getParticipants(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "参与者不能为空");
+
+                // 社会实践 等第参数强校验
+                if (StringUtils.isNotBlank(request.getGrades())) {
+                    GradesEnum gradesEnum = GradesEnum.getByCode(request.getGrades());
+                    AssertUtil.assertNotNull(gradesEnum);
+                    request.setGrades(gradesEnum.getCode());
+                }
             }
 
             @Override
@@ -89,7 +98,9 @@ public class ActivityStampController {
                         .withScannerUserId(request.getUserId())
                         .withStuIds(request.getParticipants())
                         .withTerm(TermUtil.getNowTerm())
-                        .withStatus(ActivityStampStatusEnum.ENABLE.getCode());
+                        .withStatus(ActivityStampStatusEnum.ENABLE.getCode())
+                        .withGrades(request.getGrades())
+                        .withTime(request.getTime());
                 List<String> notStampStuId = activityRecordService.batchStamp(builder.build(), context);
                 if (CollectionUtils.isEmpty(notStampStuId)) {
                     return RestResultUtil.buildSuccessResult(notStampStuId, "盖章成功");

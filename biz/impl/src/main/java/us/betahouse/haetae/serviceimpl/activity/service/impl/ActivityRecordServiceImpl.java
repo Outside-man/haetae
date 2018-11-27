@@ -17,7 +17,9 @@ import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
+import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -26,7 +28,6 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
-import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
@@ -57,6 +58,12 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Autowired
     private UserInfoRepoService userInfoRepoService;
 
+    /**
+     * 章管理器
+     */
+    @Autowired
+    private StampManager stampManager;
+
     @Override
     public List<String> batchStamp(ActivityStampRequest request, OperateContext context) {
         // 校验盖章权限
@@ -75,15 +82,15 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 userIds.add(userInfoBO.getUserId());
             }
         }
-        // 批量盖章
-        activityRecordManager.batchCreate(request, userIds);
+        stampManager.batchStamp(request, userIds);
         return notStampStuIds;
     }
 
     @Override
-    public List<ActivityStamp> getUserStamps(ActivityStampRequest request, OperateContext context) {
+    public StampRecord getUserStamps(ActivityStampRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
         AssertUtil.assertStringNotBlank(request.getType(), "活动类型不能为空");
+
 
         List<ActivityRecordBO> activityRecords = new ArrayList<>();
         // 判断是否请求中带有学期过滤
@@ -105,7 +112,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 ActivityBO activity = new ActivityBO();
                 activity.setActivityName("异常活动, 请尽快联系管理员");
                 activityMap.put(activityId, activity);
-            }else{
+            } else {
                 activityMap.put(activityId, activityBO);
             }
         }
@@ -119,7 +126,8 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                     .withActivityRecordBO(record);
             stamps.add(stampBuilder.build());
         }
-        return stamps;
+
+        return stampManager.parseStampRecord(request.getType(), stamps);
     }
 
     @Override

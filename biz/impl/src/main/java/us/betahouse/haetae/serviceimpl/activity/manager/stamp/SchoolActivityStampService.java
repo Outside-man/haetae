@@ -4,8 +4,16 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
-import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
+import us.betahouse.haetae.activity.manager.ActivityRecordManager;
+import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
+import us.betahouse.util.utils.CollectionUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -16,13 +24,24 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
  */
 public class SchoolActivityStampService implements StampService {
 
-    @Override
-    public StampRecord getStampRecord(String userId, String term) {
-        return null;
-    }
+    @Autowired
+    protected ActivityRecordManager activityRecordManager;
+
+    @Autowired
+    protected ActivityRecordRepoService activityRecordRepoService;
 
     @Override
-    public void batchStamp(ActivityStampRequest request) {
+    public void batchStamp(ActivityStampRequest request, List<String> userIds) {
+        // 获取参加过的活动记录
+        List<ActivityRecordBO> joinedActivityRecords = activityRecordRepoService.parseJoinUserIds(request.getActivityId(), userIds);
+        // 获取参加过的userId
+        List<String> joinedUserIds = CollectionUtils.toStream(joinedActivityRecords)
+                .filter(Objects::nonNull).map(ActivityRecordBO::getUserId)
+                .collect(Collectors.toList());
 
+        // 去除参加过的userId
+        CollectionUtils.removeDuplicate(userIds, joinedUserIds, String::toString);
+        // 批量盖章
+        activityRecordManager.batchCreate(request, userIds);
     }
 }

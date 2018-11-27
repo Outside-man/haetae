@@ -57,10 +57,20 @@ public interface ActivityRecordRepoService {
 
     /**
      * 查询用户活动记录
+     *
      * @param userId
      * @param activityTypes
      * @param terms
      * @return
      */
     List<ActivityRecordBO> queryUserTermActivityRecord(String userId, List<String> activityTypes, List<String> terms);
+
+    /**
+     * 解析参加过的用户记录
+     *
+     * @param activityId
+     * @param userIds
+     * @return
+     */
+    List<ActivityRecordBO> parseJoinUserIds(String activityId, List<String> userIds);
 }

@@ -14,13 +14,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum ActivityTypeEnum {
 
-    SCHOOL_ACTIVITY("SCHOOL_ACTIVITY", "校园活动"),
+    SCHOOL_ACTIVITY("schoolActivity", "校园活动"),
 
-    VOLUNTEER_ACTIVITY("VOLUNTEER_ACTIVITY", "志愿活动"),
+    VOLUNTEER_ACTIVITY("volunteerActivity", "志愿活动"),
 
-    PRACTICE_ACTIVITY("PRACTICE_ACTIVITY", "实践活动"),
+    PRACTICE_ACTIVITY("practiceActivity", "实践活动"),
 
-    VOLUNTEER_WORK("VOLUNTEER_WORK", "义工"),
+    VOLUNTEER_WORK("volunteerWork", "义工"),
     ;
 
     private String code;

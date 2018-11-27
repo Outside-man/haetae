@@ -102,6 +102,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     @Override
     public List<ActivityRecordBO> batchCreate(ActivityRecordRequest request, List<String> userIds) {
         ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        AssertUtil.assertNotNull(activityBO, "活动不存在");
         // 校验活动是否有效
         AssertUtil.assertTrue(activityBO.isRunning(), "活动不在进行中");
 

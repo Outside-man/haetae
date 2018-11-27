@@ -46,6 +46,7 @@ public class CollectionUtils {
 
     /**
      * 不同的两个集合 按一定方法去重
+     * <br/> collection 通过getR 去除 remove
      *
      * @param collection
      * @param remove

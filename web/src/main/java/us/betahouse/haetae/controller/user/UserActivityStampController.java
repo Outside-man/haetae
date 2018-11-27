@@ -16,7 +16,7 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.user.request.UserActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampRequestBuilder;
-import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
+import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
@@ -27,7 +27,6 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 用户活动章操作
@@ -50,8 +49,8 @@ public class UserActivityStampController {
     @GetMapping(value = "/activityStamp")
     @CheckLogin
     @Log(loggerName = LoggerName.USER_DIGEST)
-    public Result<List<ActivityStamp>> fetchUserStamp(UserActivityStampRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户查询活动章", request, new RestOperateCallBack<List<ActivityStamp>>() {
+    public Result<StampRecord> fetchUserStamp(UserActivityStampRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户查询活动章", request, new RestOperateCallBack<StampRecord>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -60,15 +59,15 @@ public class UserActivityStampController {
             }
 
             @Override
-            public Result<List<ActivityStamp>> execute() {
+            public Result<StampRecord> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
                         .withTerm(request.getTerm())
                         .withUserId(request.getUserId())
                         .withType(request.getActivityType());
-                List<ActivityStamp> stamps = activityRecordService.getUserStamps(builder.build(), context);
-                return RestResultUtil.buildSuccessResult(stamps, "获取活动章成功");
+                StampRecord stampRecord = activityRecordService.getUserStamps(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(stampRecord, "获取活动章成功");
             }
         });
     }

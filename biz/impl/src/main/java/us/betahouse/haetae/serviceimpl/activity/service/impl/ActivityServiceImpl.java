@@ -15,6 +15,7 @@ import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -69,10 +70,11 @@ public class ActivityServiceImpl implements ActivityService {
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
+        ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
+        AssertUtil.assertNotNull(activityType, "该活动类型不存在");
+
         // 创建活动
         ActivityBO activityBO = activityManager.create(request);
-
-
         // 创建权限
         PermBO permBO = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限").build();
         // 将活动id 冗余到权限拓展信息

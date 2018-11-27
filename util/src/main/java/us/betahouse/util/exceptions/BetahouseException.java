@@ -48,6 +48,11 @@ public class BetahouseException extends RuntimeException {
         this.message = resultCode.getMessage();
     }
 
+    public BetahouseException(ResultCode resultCode, String message) {
+        this.errorCode = resultCode.getCode();
+        this.message = message;
+    }
+
     public BetahouseException(Throwable cause, String errorCode, String message) {
         super(cause);
         this.errorCode = errorCode;

@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.activity.service;
 
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
+import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -35,7 +36,7 @@ public interface ActivityRecordService {
      * @param context
      * @return
      */
-    List<ActivityStamp> getUserStamps(ActivityStampRequest request, OperateContext context);
+    StampRecord getUserStamps(ActivityStampRequest request, OperateContext context);
 
     /**
      * 通过活动id统计活动记录条数

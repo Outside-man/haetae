@@ -117,6 +117,15 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ActivityRecordBO> parseJoinUserIds(String activityId, List<String> userIds) {
+        List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.findAllByActivityIdAndUserIdIn(activityId, userIds);
+        return CollectionUtils.toStream(activityRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 活动记录DO2BO
      *

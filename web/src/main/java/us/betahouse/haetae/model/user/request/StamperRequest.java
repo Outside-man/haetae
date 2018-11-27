@@ -5,6 +5,7 @@
 package us.betahouse.haetae.model.user.request;
 
 import us.betahouse.haetae.common.RestRequest;
+import us.betahouse.haetae.serviceimpl.activity.constant.GradesConstant;
 
 import java.util.List;
 
@@ -33,6 +34,18 @@ public class StamperRequest extends RestRequest {
      */
     private String stampStuId;
 
+    /**
+     * 等第 实践活动使用
+     *
+     * @see GradesConstant
+     */
+    private String grades;
+
+    /**
+     * 时长 志愿/义工使用
+     */
+    private Double time;
+
     public List<String> getParticipants() {
         return participants;
     }
@@ -55,5 +68,29 @@ public class StamperRequest extends RestRequest {
 
     public void setStamperStuId(String stampStuId) {
         this.stampStuId = stampStuId;
+    }
+
+    public String getStampStuId() {
+        return stampStuId;
+    }
+
+    public void setStampStuId(String stampStuId) {
+        this.stampStuId = stampStuId;
+    }
+
+    public String getGrades() {
+        return grades;
+    }
+
+    public void setGrades(String grades) {
+        this.grades = grades;
+    }
+
+    public Double getTime() {
+        return time;
+    }
+
+    public void setTime(Double time) {
+        this.time = time;
     }
 }
