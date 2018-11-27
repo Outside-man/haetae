@@ -70,7 +70,7 @@ public class ActivityStampController {
      */
     @PostMapping
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.STAMP_DIGEST)
     public Result<List<String>> fetchUserStamp(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "盖活动章", request, new RestOperateCallBack<List<String>>() {
             @Override
@@ -83,7 +83,7 @@ public class ActivityStampController {
                 // 社会实践 等第参数强校验
                 if (StringUtils.isNotBlank(request.getGrades())) {
                     GradesEnum gradesEnum = GradesEnum.getByCode(request.getGrades());
-                    AssertUtil.assertNotNull(gradesEnum);
+                    AssertUtil.assertNotNull(gradesEnum, "等第格式错误");
                     request.setGrades(gradesEnum.getCode());
                 }
             }
@@ -105,7 +105,10 @@ public class ActivityStampController {
                 if (CollectionUtils.isEmpty(notStampStuId)) {
                     return RestResultUtil.buildSuccessResult(notStampStuId, "盖章成功");
                 } else {
-                    return RestResultUtil.buildSuccessResult(notStampStuId, MessageFormat.format("部分学号盖章失败, {0}", notStampStuId));
+                    Result<List<String>> result = RestResultUtil.buildResult(RestResultCode.PARTIAL_CONTENT, MessageFormat.format("部分学号盖章失败, {0}", notStampStuId));
+                    result.setSuccess(true);
+                    result.setData(notStampStuId);
+                    return result;
                 }
             }
         });
@@ -120,7 +123,7 @@ public class ActivityStampController {
      */
     @PostMapping(value = "/stamper")
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.STAMP_DIGEST)
     public Result<List<ActivityStamp>> stamperAdd(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "添加盖章员", request, new RestOperateCallBack<List<ActivityStamp>>() {
             @Override
@@ -156,7 +159,7 @@ public class ActivityStampController {
      */
     @GetMapping(value = "/mission")
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.STAMP_DIGEST)
     public Result<List<ActivityBO>> getMission(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取盖章任务", request, new RestOperateCallBack<List<ActivityBO>>() {
             @Override

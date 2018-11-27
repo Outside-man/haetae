@@ -107,7 +107,7 @@
     </appender>
 
     <!--======================================摘要日志======================================-->
-    <!-- biz-service-impl 日志 -->
+    <!-- 用户摘要 日志 -->
     <appender name="USER-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${log_dir}/digest/user-digest.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -119,51 +119,86 @@
         </encoder>
     </appender>
 
+    <!-- 活动摘要 日志 -->
+    <appender name="ACTIVITY-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log_dir}/digest/user-digest.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/digest/activity-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 章摘要 日志 -->
+    <appender name="STAMP-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log_dir}/digest/user-digest.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/digest/stamp-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <!--======================================日志配置======================================-->
     <!--数据库日志-->
-    <logger name="org.hibernate.SQL" additivity="false" >
-        <level value="DEBUG" />
-        <appender-ref ref="COMMON-DAL" />
+    <logger name="org.hibernate.SQL" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="COMMON-DAL"/>
     </logger>
 
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="TRACE" >
-        <level value="TRACE" />
-        <appender-ref ref="COMMON-DAL" />
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="TRACE">
+        <level value="TRACE"/>
+        <appender-ref ref="COMMON-DAL"/>
     </logger>
 
     <!-- root级别   INFO -->
     <root level="INFO">
         <!-- 控制台输出 -->
         <appender-ref ref="STDOUT"/>
-        <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="SYS-INFO"/>
     </root>
 
-    <!--模块日志-->
+    <!--=======模块日志=======-->
+    <!--用户模块-->
     <logger name="us.betahouse.haetae.user" level="INFO">
-        <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="CORE-USER"/>
     </logger>
 
+    <!--活动模块-->
     <logger name="us.betahouse.haetae.activity" level="INFO">
-        <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="CORE-ACTIVITY"/>
     </logger>
 
+    <!--业务实现模块-->
     <logger name="us.betahouse.haetae.serviceimpl" level="INFO">
-        <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="BIZ-SERVICE-IMPL"/>
     </logger>
 
-    <!--摘要日志-->
+    <!--=======摘要日志=======-->
+    <!--用户摘要-->
     <logger name="USER_DIGEST" level="INFO">
-        <!-- 文件输出 -->
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="USER-DIGEST"/>
+    </logger>
+
+    <!--活动摘要-->
+    <logger name="ACTIVITY_DIGEST" level="INFO">
+        <appender-ref ref="COMMON-ERROR"/>
+        <appender-ref ref="ACTIVITY-DIGEST"/>
+    </logger>
+
+    <!--活动摘要-->
+    <logger name="STAMP_DIGEST" level="INFO">
+        <appender-ref ref="COMMON-ERROR"/>
+        <appender-ref ref="STAMP-DIGEST"/>
     </logger>
 
 </configuration>

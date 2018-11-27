@@ -16,6 +16,7 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -29,6 +30,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
@@ -157,6 +159,10 @@ public class ActivityController {
 
             @Override
             public Result<ActivityBO> execute() {
+                // 强校验操作类型
+                ActivityOperationEnum operation = ActivityOperationEnum.getByCode(request.getOperation());
+                AssertUtil.assertNotNull(operation, "操作类型不存在");
+
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
@@ -165,7 +171,7 @@ public class ActivityController {
                         .withOperation(request.getOperation())
                         .build();
                 ActivityBO activityBO = activityService.operate(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO, "活动成功通过");
+                return RestResultUtil.buildSuccessResult(activityBO, MessageFormat.format("活动{0}成功", operation.getDesc()));
             }
         });
     }

@@ -18,6 +18,8 @@ public enum RestResultCode implements ResultCode {
 
     SUCCESS("200", "执行成功"),
 
+    PARTIAL_CONTENT("206", "部分执行"),
+
     ILLEGAL_PARAMETERS("400", "参数异常"),
 
     UNAUTHORIZED("401", "未登录"),

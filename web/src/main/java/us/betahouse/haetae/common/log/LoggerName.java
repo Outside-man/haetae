@@ -20,15 +20,20 @@ public class LoggerName {
     /**
      * 活动摘要日志
      */
-    public final static String ACTIVITY_DIGEST="ACTIVITY_DIGEST";
+    public final static String ACTIVITY_DIGEST = "ACTIVITY_DIGEST";
+
+    /**
+     * 章摘要日志
+     */
+    public final static String STAMP_DIGEST = "STAMP_DIGEST";
 
     /**
      * 组织摘要日志
      */
-    public final static String ORGANIZATION_DIGEST ="ORGANIZATION_DIGEST";
+    public final static String ORGANIZATION_DIGEST = "ORGANIZATION_DIGEST";
 
     /**
      * 履历摘要日志
      */
-    public final static String POSITION_RECORD ="POSITION_RECORD";
+    public final static String POSITION_RECORD = "POSITION_RECORD";
 }
