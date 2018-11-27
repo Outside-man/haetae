@@ -41,6 +41,7 @@ public class DurationStampRecord extends StampRecord {
                 }
             }
         }
+        volunteerTotalTime = totalTime;
     }
 
     public double getVolunteerTotalTime() {
