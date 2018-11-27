@@ -70,7 +70,8 @@ public class StampManager {
             LoggerUtil.error(LOGGER, "活动数据存在异常, activity={0}", activityBO);
             throw new BetahouseException(CommonResultCode.SYSTEM_ERROR, "活动数据存在异常，请尽快联系管理员");
         }
-        stampServices.get(type.getCode()).batchStamp(request, userIds);
+        request.setType(type.getCode());
+        stampServices.get(type.getCode()).batchStamp(request, userIds, activityBO);
     }
 
     public void setStampServices(Map<String, StampService> stampServices) {

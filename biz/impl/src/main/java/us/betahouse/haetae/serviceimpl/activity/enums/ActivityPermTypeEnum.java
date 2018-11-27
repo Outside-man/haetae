@@ -16,6 +16,8 @@ import us.betahouse.haetae.user.enums.PermType;
  */
 public enum ActivityPermTypeEnum implements PermType {
 
+    //=====校园活动 权限相关=======
+
     ACTIVITY_CREATE(ActivityPermType.ACTIVITY_CREATE, "活动创建", true),
 
     ACTIVITY_PUBLISH(ActivityPermType.ACTIVITY_PUBLISH, "活动发布", true),
@@ -27,6 +29,20 @@ public enum ActivityPermTypeEnum implements PermType {
     STAMPER_MANAGE(ActivityPermType.STAMPER_MANAGE, "盖章员管理", true),
 
     ACTIVITY_STAMPER(ActivityPermType.ACTIVITY_STAMPER, "活动盖章", false),
+
+    //=====义工 权限相关=======
+
+    VOLUNTEER_WORK_CREATE(ActivityPermType.ACTIVITY_CREATE, "活动创建", true),
+
+    VOLUNTEER_WORK_PUBLISH(ActivityPermType.ACTIVITY_PUBLISH, "活动发布", true),
+
+    VOLUNTEER_WORK_FINISH(ActivityPermType.ACTIVITY_FINISH, "活动结束", true),
+
+    VOLUNTEER_WORK_RESTART(ActivityPermType.ACTIVITY_RESTART, "活动重启", true),
+
+    VOLUNTEER_WORK_MANAGE(ActivityPermType.STAMPER_MANAGE, "盖章员管理", true),
+
+    VOLUNTEER_WORK_STAMPER(ActivityPermType.ACTIVITY_STAMPER, "活动盖章", false),
 
     ;
 

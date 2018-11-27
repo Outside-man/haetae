@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
+import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.model.DurationStampRecord;
@@ -34,7 +35,7 @@ public class VolunteerActivityStampService  implements StampService {
     }
 
     @Override
-    public void batchStamp(ActivityStampRequest request, List<String> userIds) {
+    public void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO) {
         AssertUtil.assertNotNull(request.getTime(), "志愿时长不能为空");
 
         // 批量盖章

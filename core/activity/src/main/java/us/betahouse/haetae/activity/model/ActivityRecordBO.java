@@ -67,6 +67,21 @@ public class ActivityRecordBO extends ToString {
      */
     private Map<String, String> extInfo = new HashMap<>();
 
+
+    public String fetchExtInfo(String key){
+        if(extInfo == null){
+            return null;
+        }
+        return extInfo.get(key);
+    }
+
+    public void putExtInfo(String key, String value){
+        if(extInfo == null){
+            extInfo = new HashMap<>();
+        }
+        extInfo.put(key, value);
+    }
+
     public String getActivityRecordId() {
         return activityRecordId;
     }

@@ -7,6 +7,7 @@ package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
+import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.enums.GradesEnum;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
@@ -33,7 +34,7 @@ public class PracticeActivityStampService implements StampService {
     protected ActivityRecordRepoService activityRecordRepoService;
 
     @Override
-    public void batchStamp(ActivityStampRequest request, List<String> userIds) {
+    public void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO) {
         GradesEnum grades = GradesEnum.getByCode(request.getGrades());
         AssertUtil.assertNotNull(grades, "实践等第不能为空");
 

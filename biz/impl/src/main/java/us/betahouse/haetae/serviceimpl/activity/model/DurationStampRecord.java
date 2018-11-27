@@ -20,7 +20,7 @@ public class DurationStampRecord extends StampRecord {
     private static final long serialVersionUID = 543493486999019429L;
 
     /**
-     * 志愿时长
+     * 统计时长
      */
     private double volunteerTotalTime = 0;
 

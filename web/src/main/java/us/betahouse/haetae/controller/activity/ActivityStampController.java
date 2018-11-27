@@ -23,6 +23,7 @@ import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 import us.betahouse.haetae.serviceimpl.activity.enums.GradesEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -101,7 +102,14 @@ public class ActivityStampController {
                         .withStatus(ActivityStampStatusEnum.ENABLE.getCode())
                         .withGrades(request.getGrades())
                         .withTime(request.getTime());
-                List<String> notStampStuId = activityRecordService.batchStamp(builder.build(), context);
+                ActivityStampRequest stampRequest = builder.build();
+
+                // 义工逻辑 需要传递义工名称
+                if (StringUtils.isNotBlank(request.getVolunteerWorkName())) {
+                    stampRequest.setVolunteerWorkName(request.getVolunteerWorkName());
+                }
+
+                List<String> notStampStuId = activityRecordService.batchStamp(stampRequest, context);
                 if (CollectionUtils.isEmpty(notStampStuId)) {
                     return RestResultUtil.buildSuccessResult(notStampStuId, "盖章成功");
                 } else {

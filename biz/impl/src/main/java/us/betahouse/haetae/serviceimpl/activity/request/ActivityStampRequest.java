@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.activity.request;
 
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityRecordExtInfoKey;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 
 import java.util.List;
@@ -21,7 +22,6 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     private List<String> stuIds;
 
-
     @Override
     public String getVerifyUserId() {
         return getScannerUserId();
@@ -33,5 +33,13 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     public void setStuIds(List<String> stuIds) {
         this.stuIds = stuIds;
+    }
+
+    public String getVolunteerWorkName() {
+        return fetchExtInfo(ActivityRecordExtInfoKey.VOLUNTEER_WORK_NAME);
+    }
+
+    public void setVolunteerWorkName(String volunteerWorkName) {
+        putExtInfo(ActivityRecordExtInfoKey.VOLUNTEER_WORK_NAME, volunteerWorkName);
     }
 }

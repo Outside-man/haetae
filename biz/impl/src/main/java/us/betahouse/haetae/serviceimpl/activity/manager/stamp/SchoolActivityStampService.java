@@ -7,8 +7,10 @@ package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
+import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
+import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;
@@ -31,7 +33,10 @@ public class SchoolActivityStampService implements StampService {
     protected ActivityRecordRepoService activityRecordRepoService;
 
     @Override
-    public void batchStamp(ActivityStampRequest request, List<String> userIds) {
+    public void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO) {
+        // 校验活动是否有效
+        AssertUtil.assertTrue(activityBO.isRunning(), "活动不在进行中");
+
         // 获取参加过的活动记录
         List<ActivityRecordBO> joinedActivityRecords = activityRecordRepoService.parseJoinUserIds(request.getActivityId(), userIds);
         // 获取参加过的userId

@@ -33,39 +33,6 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     private ActivityRepoService activityRepoService;
 
     /**
-     * 创建活动记录
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public ActivityRecordBO create(ActivityRecordRequest request) {
-        ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
-        // 校验活动是否有效
-        AssertUtil.assertTrue(activityBO.isRunning(), "活动不在进行中");
-
-        // 活动记录时长处理
-        int time = 0;
-        if (request.getTime() != null) {
-            time = (int) Math.round(request.getTime() * 10);
-        }
-
-        ActivityRecordBOBuilder builder = ActivityRecordBOBuilder.getInstance()
-                .withActivityId(request.getActivityId())
-                .withScannerUserId(request.getScannerUserId())
-                .withTime(time)
-                .withType(request.getType())
-                .withType(activityBO.getType())
-                .withStatus(request.getStatus())
-                .withTerm(request.getTerm())
-                .withExtInfo(request.getExtInfo());
-
-        // 绑上用户id
-        builder.withUserId(request.getUserId());
-        return activityRecordRepoService.createActivityRecord(builder.build());
-    }
-
-    /**
      * 通过用户id查询活动记录
      *
      * @param userId
@@ -101,11 +68,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
 
     @Override
     public List<ActivityRecordBO> batchCreate(ActivityRecordRequest request, List<String> userIds) {
-        ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
-        AssertUtil.assertNotNull(activityBO, "活动不存在");
-        // 校验活动是否有效
-        AssertUtil.assertTrue(activityBO.isRunning(), "活动不在进行中");
-
+        AssertUtil.assertStringNotBlank(request.getType(), "活动类型不能为空");
         // 活动记录时长处理
         int time = 0;
         if (request.getTime() != null) {
@@ -117,7 +80,7 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
                 .withScannerUserId(request.getScannerUserId())
                 .withExtInfo(request.getExtInfo())
                 .withTime(time)
-                .withType(activityBO.getType())
+                .withType(request.getType())
                 .withStatus(request.getStatus())
                 .withTerm(request.getTerm())
                 .withGrades(request.getGrades());

@@ -4,6 +4,9 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
@@ -18,6 +21,8 @@ import java.util.List;
  * @version : StampService.java 2018/11/27 1:49 AM dango.yxm
  */
 public interface StampService {
+
+    Logger LOGGER = LoggerFactory.getLogger(StampService.class);
 
     /**
      * 解析章记录
@@ -35,5 +40,5 @@ public interface StampService {
      * @param request
      * @param userIds
      */
-    void batchStamp(ActivityStampRequest request, List<String> userIds);
+    void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO);
 }

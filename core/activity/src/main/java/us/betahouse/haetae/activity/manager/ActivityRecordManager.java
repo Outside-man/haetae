@@ -16,13 +16,6 @@ import java.util.List;
  * @version : ActivityRecordManager.java 2018/11/22 23:42 MessiahJK
  */
 public interface ActivityRecordManager {
-    /**
-     * 创建活动记录
-     *
-     * @param request
-     * @return
-     */
-    ActivityRecordBO create(ActivityRecordRequest request);
 
     /**
      * 通过用户id查询活动记录

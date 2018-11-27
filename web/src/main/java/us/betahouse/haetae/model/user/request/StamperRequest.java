@@ -46,6 +46,11 @@ public class StamperRequest extends RestRequest {
      */
     private Double time;
 
+    /**
+     * 义工名称
+     */
+    private String volunteerWorkName;
+
     public List<String> getParticipants() {
         return participants;
     }
@@ -92,5 +97,13 @@ public class StamperRequest extends RestRequest {
 
     public void setTime(Double time) {
         this.time = time;
+    }
+
+    public String getVolunteerWorkName() {
+        return volunteerWorkName;
+    }
+
+    public void setVolunteerWorkName(String volunteerWorkName) {
+        this.volunteerWorkName = volunteerWorkName;
     }
 }
