@@ -8,9 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
+import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 权限管理器实现
@@ -34,16 +39,27 @@ public class PermManagerImpl implements PermManager {
         AssertUtil.assertNotNull(request);
         AssertUtil.assertNotNull(request.getPermBO());
         AssertUtil.assertStringNotBlank(request.getPermBO().getPermId());
-        AssertUtil.assertNotNull(request.getUserId());
-        permRepoService.usersBindPerm(request.getUserId(), request.getPermBO().getPermId());
+        AssertUtil.assertNotNull(request.getUserIds());
+        permRepoService.usersBindPerm(request.getUserIds(), request.getPermBO().getPermId());
     }
 
     @Override
     public void batchUsersUnbindPerms(PermManageRequest request) {
         AssertUtil.assertNotNull(request);
         AssertUtil.assertNotNull(request.getPermBO());
-        AssertUtil.assertNotNull(request.getUserId());
+        AssertUtil.assertNotNull(request.getUserIds());
         AssertUtil.assertStringNotBlank(request.getPermBO().getPermId());
-        permRepoService.usersUnbindPerm(request.getUserId(), request.getPermBO().getPermId());
+        permRepoService.usersUnbindPerm(request.getUserIds(), request.getPermBO().getPermId());
+    }
+
+    @Override
+    public void detachAllUsers(String permId) {
+        permRepoService.detachAllUsers(permId);
+    }
+
+    @Override
+    public List<String> getPermUsers(String permId) {
+        return CollectionUtils.toStream(permRepoService.getUserPermRelationsOrderByCreate(permId))
+                .map(UserPermRelationBO::getUserId).collect(Collectors.toList());
     }
 }

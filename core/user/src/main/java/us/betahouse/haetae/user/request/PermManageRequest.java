@@ -29,7 +29,7 @@ public class PermManageRequest extends BaseRequest {
     /**
      * 绑定的用户
      */
-    private List<String> userId = new ArrayList<>();
+    private List<String> userIds = new ArrayList<>();
 
 
     /**
@@ -45,12 +45,12 @@ public class PermManageRequest extends BaseRequest {
         this.permBO = permBO;
     }
 
-    public List<String> getUserId() {
-        return userId;
+    public List<String> getUserIds() {
+        return userIds;
     }
 
-    public void setUserId(List<String> userId) {
-        this.userId = userId;
+    public void setUserIds(List<String> userId) {
+        this.userIds = userId;
     }
 
     public List<String> getRoleIds() {

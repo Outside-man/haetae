@@ -6,6 +6,7 @@ package us.betahouse.haetae.user.dal.service;
 
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
 
 import java.util.List;
 
@@ -165,4 +166,12 @@ public interface PermRepoService {
      * @return
      */
     PermBO initPerm(PermBO permBO);
+
+    /**
+     * 获取有权限的所有用户 并按照创建顺序排序
+     *
+     * @param permId
+     * @return
+     */
+    List<UserPermRelationBO> getUserPermRelationsOrderByCreate(String permId);
 }

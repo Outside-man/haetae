@@ -284,7 +284,7 @@ public class PermRepoServiceImpl implements PermRepoService {
                 .map(EntityConverter::convert).collect(Collectors.toList());
 
         // 查询已经绑定的权限
-        List<String> boundUserIds = CollectionUtils.toStream(userPermRelationDORepo.findAllByPermId(permId))
+        List<String> boundUserIds = CollectionUtils.toStream(userPermRelationDORepo.findAllByPermIdOrderByGmtCreate(permId))
                 .filter(Objects::nonNull).map(UserPermRelationDO::getUserId)
                 .collect(Collectors.toList());
 
@@ -412,5 +412,13 @@ public class PermRepoServiceImpl implements PermRepoService {
             permDO = permDORepo.save(EntityConverter.convert(permBO));
         }
         return EntityConverter.convert(permDO);
+    }
+
+    @Override
+    public List<UserPermRelationBO> getUserPermRelationsOrderByCreate(String permId) {
+        return CollectionUtils.toStream(userPermRelationDORepo.findAllByPermIdOrderByGmtCreate(permId))
+                .filter(Objects::nonNull)
+                .map(RelationConverter::convert)
+                .collect(Collectors.toList());
     }
 }

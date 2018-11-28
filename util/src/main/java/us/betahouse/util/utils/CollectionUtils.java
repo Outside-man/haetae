@@ -4,6 +4,7 @@
  */
 package us.betahouse.util.utils;
 
+import java.io.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -67,5 +68,44 @@ public class CollectionUtils {
                 }
             }
         }
+    }
+
+    /**
+     * 列表保留长度 还是原数组
+     *
+     * @param listresult
+     * @param lenth
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> subList(List<T> list, int lenth) {
+        List<T> result = (List<T>) copy(list);
+        if (result.size() <= lenth) {
+            return result;
+        }
+        return result.subList(0, lenth);
+    }
+
+    /**
+     * 集合深度克隆, 不建议直接使用
+     *
+     * @param collection
+     * @param <T>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Collection<T> copy(Collection<T> collection) {
+        Collection<T> result;
+        try {
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            out.writeObject(collection);
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+            ObjectInputStream in = new ObjectInputStream(byteIn);
+            result = (Collection<T>) in.readObject();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("集合深度克隆失败");
+        }
+        return result;
     }
 }

@@ -5,11 +5,15 @@
 package us.betahouse.haetae.serviceimpl.activity.manager.operate;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
+import us.betahouse.haetae.user.manager.PermManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +25,9 @@ import java.util.List;
  * @version : ActivityPublish.java 2018/11/26 2:28 PM dango.yxm
  */
 public class ActivityCancel extends CommonActivityOperate {
+
+    @Autowired
+    private PermManager permManager;
 
     @Override
     protected boolean canOperate(ActivityBO activityBO) {
@@ -45,9 +52,15 @@ public class ActivityCancel extends CommonActivityOperate {
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    @Transactional
     public ActivityBO doOperate(ActivityOperationRequest request) {
         ActivityBO activityBO = request.getActivity();
         activityBO.setState(ActivityStateEnum.CANCELED.getCode());
+        String activityPermId = activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+        // 取消活动需要将权限关系全解除
+        if (StringUtils.isNotBlank(activityPermId)) {
+            permManager.detachAllUsers(activityPermId);
+        }
         return activityRepoService.updateActivity(activityBO);
     }
 

@@ -82,7 +82,7 @@ public class ActivityServiceImpl implements ActivityService {
         // 构建请求
         PermManageRequest permManageRequest = new PermManageRequest();
         permManageRequest.setPermBO(permBO);
-        permManageRequest.setUserId(Collections.singletonList(request.getUserId()));
+        permManageRequest.setUserIds(Collections.singletonList(request.getUserId()));
         permBO = permManager.createPerm(permManageRequest);
 
         // 更新信息

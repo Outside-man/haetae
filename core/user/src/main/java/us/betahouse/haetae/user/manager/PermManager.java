@@ -7,6 +7,8 @@ package us.betahouse.haetae.user.manager;
 import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
+import java.util.List;
+
 /**
  * 权限管理器
  *
@@ -39,5 +41,18 @@ public interface PermManager {
      */
     void batchUsersUnbindPerms(PermManageRequest request);
 
+    /**
+     * 和所有用户解绑
+     *
+     * @param permId
+     */
+    void detachAllUsers(String permId);
 
+    /**
+     * 获取权限的用户 并按照创建时间顺序排序
+     *
+     * @param permId
+     * @return
+     */
+    List<String> getPermUsers(String permId);
 }
