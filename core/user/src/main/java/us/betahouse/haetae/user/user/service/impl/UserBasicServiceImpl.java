@@ -116,6 +116,12 @@ public class UserBasicServiceImpl implements UserBasicService {
 
     @Override
     public void loginOut(String userId) {
+        // 清除用户 sessionId
+        userRepoService.clearSessionId(userId);
+    }
+
+    @Override
+    public void wxLoginOut(String userId) {
         // 清除用户openid and sessionId
         userRepoService.clearOpenIdAndSessionId(userId);
     }

@@ -8,15 +8,19 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
-import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
+import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,13 +58,26 @@ public class ActivityFinish extends CommonActivityOperate {
     }
 
     @Override
-    protected List<String> fetchVerifyPerms() {
-        return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
+    protected List<String> fetchVerifyPerms(ActivityBO activityBO) {
+        ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(activityBO.getType());
+        AssertUtil.assertNotNull(activityType, CommonResultCode.SYSTEM_ERROR.getCode(), "活动类型不存在, 请尽快和管理员联系");
+        // 对于活动类型进行 权限分发判断
+        switch (activityType) {
+            case SCHOOL_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
+            case VOLUNTEER_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
+            case PRACTICE_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
+            case VOLUNTEER_WORK:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
+            default:
+                LoggerUtil.error(LOGGER, "活动类型不存在 ，activityBO={0}", activityBO);
+                throw new BetahouseException(CommonResultCode.SYSTEM_ERROR, "活动类型不存在, 请尽快和管理员联系");
+        }
     }
 
-
     @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_FINISH)
     @Transactional
     public ActivityBO doOperate(ActivityOperationRequest request) {
         ActivityBO activityBO = request.getActivity();

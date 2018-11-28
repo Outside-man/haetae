@@ -116,9 +116,9 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             while (roleIterator.hasNext()) {
                 RoleDO role = roleIterator.next();
                 for (String boundId : userBoundRoleIds) {
-                    LoggerUtil.warn(LOGGER, "重复绑定角色 userId={0}, role={1}", userId, role);
-                    // 是已绑的角色 就从里面溢出
+                    // 是已绑的角色 就从里面移除
                     if (StringUtils.equals(boundId, role.getRoleId())) {
+                        LoggerUtil.warn(LOGGER, "重复绑定角色 userId={0}, role={1}", userId, role);
                         roleIterator.remove();
                     }
                 }
@@ -194,9 +194,9 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             while (userIterator.hasNext()) {
                 UserDO user = userIterator.next();
                 for (String boundId : boundUserIds) {
-                    LoggerUtil.warn(LOGGER, "重复绑定角色 roleId={0}, user={1}", roleId, user);
                     // 是已绑的角色 就从里面移除
                     if (StringUtils.equals(boundId, user.getUserId())) {
+                        LoggerUtil.warn(LOGGER, "重复绑定角色 roleId={0}, user={1}", roleId, user);
                         userIterator.remove();
                     }
                 }

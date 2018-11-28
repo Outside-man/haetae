@@ -46,9 +46,10 @@ public abstract class CommonActivityOperate implements ActivityOperate {
         AssertUtil.assertNotNull(activityBO, "活动不存在");
 
         // 鉴权
-        boolean verifyPerm = userBasicService.verifyPermissionByPermType(userId, fetchVerifyPerms());
+        List<String> permTypes = fetchVerifyPerms(activityBO);
+        boolean verifyPerm = userBasicService.verifyPermissionByPermType(userId, permTypes);
         if (!verifyPerm) {
-            LoggerUtil.warn(LOGGER, "用户无权操作 userId={0}, permType={1}", userId, fetchVerifyPerms());
+            LoggerUtil.warn(LOGGER, "用户无权操作 userId={0}, permType={1}", userId, permTypes);
             throw new BetahouseException(CommonResultCode.FORBIDDEN);
         }
 
@@ -57,6 +58,7 @@ public abstract class CommonActivityOperate implements ActivityOperate {
             return activityBO;
         }
 
+        // 判断能否处理
         AssertUtil.assertTrue(canOperate(activityBO), MessageFormat.format("该活动目前不能{0}", getOperate()));
 
         ActivityOperationRequest request = new ActivityOperationRequest();
@@ -84,9 +86,8 @@ public abstract class CommonActivityOperate implements ActivityOperate {
 
     /**
      * 获取需要鉴权的内容
-     * TODO dango.yxm 2018年11月26日16:35:11 权限切面不生效，先挫一点解决
      *
      * @return
      */
-    protected abstract List<String> fetchVerifyPerms();
+    protected abstract List<String> fetchVerifyPerms(ActivityBO activityBO);
 }

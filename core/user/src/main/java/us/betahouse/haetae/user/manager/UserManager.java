@@ -32,6 +32,13 @@ public interface UserManager {
     void batchBindRole(UserManageRequest request);
 
     /**
+     * 给用户批量添加角色
+     *
+     * @param request
+     */
+    void batchBindRolByCode(UserManageRequest request);
+
+    /**
      * 给用户批量删除角色
      *
      * @param request

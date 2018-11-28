@@ -37,4 +37,28 @@ public class RoleRepoServiceTest {
         roleRepoService.userBindRoles("123456789", Collections.singletonList("201811171435334621498500021117"));
 
     }
+
+    @Test
+    public void userBindRolesByCode() {
+    }
+
+    @Test
+    public void userUnbindRoles() {
+    }
+
+    @Test
+    public void usersBindRole() {
+    }
+
+    @Test
+    public void usersUnbindRole() {
+    }
+
+    @Test
+    public void detachAllUser() {
+    }
+
+    @Test
+    public void initRole() {
+    }
 }

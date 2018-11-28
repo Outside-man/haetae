@@ -74,7 +74,6 @@ public class UserInfoDO extends BaseDO {
     /**
      * 入学时间
      */
-    @Column(length = 8)
     private Date enrollDate;
 
     /**

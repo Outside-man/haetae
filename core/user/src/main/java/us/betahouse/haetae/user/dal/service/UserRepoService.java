@@ -71,6 +71,14 @@ public interface UserRepoService {
     UserBO clearOpenIdAndSessionId(String userId);
 
     /**
+     * 清除 登陆信息
+     *
+     * @param userId
+     * @return
+     */
+    UserBO clearSessionId(String userId);
+
+    /**
      * 通过sessionId 获取用户信息
      *
      * @param sessionId

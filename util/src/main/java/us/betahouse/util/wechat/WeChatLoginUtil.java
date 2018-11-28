@@ -50,12 +50,12 @@ public class WeChatLoginUtil {
         try {
             result = HttpUtils.doGet(url);
         } catch (Exception e) {
-            throw new BetahouseException(e, CommonResultCode.SYSTEM_ERROR.getCode(), e.getMessage());
+            throw new BetahouseException(e, CommonResultCode.SYSTEM_ERROR.getCode(), "微信服务器请求失败, 网络异常");
         }
         JSONObject jsonObject = JSONObject.parseObject(result);
 
         String openId = jsonObject.getString(OPEN_ID);
-        AssertUtil.assertStringNotBlank(openId, CommonResultCode.SYSTEM_ERROR.getCode(), jsonObject.getString(ERROR_CODE));
+        AssertUtil.assertStringNotBlank(openId, CommonResultCode.SYSTEM_ERROR.getCode(), MessageFormat.format("微信服务器请求失败:{0}", jsonObject.getString(ERROR_CODE)));
 
         return openId;
     }

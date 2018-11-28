@@ -58,7 +58,7 @@ public class UserController {
     @PostMapping(value = "/openId")
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> wxLogin(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户微信登录", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "用户普通登录", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -77,6 +77,30 @@ public class UserController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
+            }
+        });
+    }
+
+    @DeleteMapping(value = "/openId")
+    @CheckLogin
+    @Log(loggerName = LoggerName.USER_DIGEST)
+    public Result<UserVO> wxLogout(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户微信登出", request, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<UserVO> execute() {
+                CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
+                        .withRequestId(request.getRequestId())
+                        .withUserId(request.getUserId());
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                userService.wxLogout(builder.build(), context);
+                return RestResultUtil.buildSuccessResult("微信登出成功");
             }
         });
     }
@@ -143,11 +167,17 @@ public class UserController {
         });
     }
 
-    @DeleteMapping(value = "/openId")
+    /**
+     * 用户登出
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @DeleteMapping(value = "/token")
     @CheckLogin
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> logout(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户登出", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "用户普通登出", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");

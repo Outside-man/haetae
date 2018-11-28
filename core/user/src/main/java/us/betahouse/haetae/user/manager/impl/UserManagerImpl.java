@@ -92,6 +92,11 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
+    public void batchBindRolByCode(UserManageRequest request) {
+        roleRepoService.userBindRolesByCode(request.getUserId(), request.getRoleCode());
+    }
+
+    @Override
     public void batchUnbindRole(UserManageRequest request) {
         roleRepoService.userUnbindRoles(request.getUserId(), request.getRoleIds());
     }

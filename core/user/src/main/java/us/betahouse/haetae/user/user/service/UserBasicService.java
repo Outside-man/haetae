@@ -61,6 +61,14 @@ public interface UserBasicService {
     void loginOut(String userId);
 
     /**
+     * 登出
+     *
+     * @param userId
+     * @return
+     */
+    void wxLoginOut(String userId);
+
+    /**
      * 修改密码
      *
      * @param userId

@@ -5,6 +5,7 @@
 package us.betahouse.haetae.user.request;
 
 import org.hibernate.validator.constraints.NotBlank;
+import us.betahouse.haetae.user.enums.RoleCode;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
 import java.util.ArrayList;
@@ -61,6 +62,11 @@ public class UserManageRequest extends BaseRequest {
      * 绑定的权限ids
      */
     private List<String> permIds = new ArrayList<>();
+
+    /**
+     * 绑定的权限码
+     */
+    private RoleCode roleCode;
 
     public String getUserId() {
         return userId;
@@ -124,5 +130,13 @@ public class UserManageRequest extends BaseRequest {
 
     public void setPermIds(List<String> permIds) {
         this.permIds = permIds;
+    }
+
+    public RoleCode getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(RoleCode roleCode) {
+        this.roleCode = roleCode;
     }
 }

@@ -55,6 +55,14 @@ public interface UserService {
     void logout(CommonUserRequest request, OperateContext context);
 
     /**
+     * 登出
+     *
+     * @param request
+     * @return
+     */
+    void wxLogout(CommonUserRequest request, OperateContext context);
+
+    /**
      * 获取权限
      *
      * @param request

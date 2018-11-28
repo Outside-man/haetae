@@ -85,6 +85,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void wxLogout(CommonUserRequest request, OperateContext context) {
+        userBasicService.wxLoginOut(request.getUserId());
+    }
+
+    @Override
     public Map<String, PermBO> fetchUserPerms(CommonUserRequest request, OperateContext context) {
         return userBasicService.fetchUserPerms(request.getUserId());
     }

@@ -221,9 +221,9 @@ public class PermRepoServiceImpl implements PermRepoService {
             while (permIterator.hasNext()) {
                 PermDO perm = permIterator.next();
                 for (String boundId : userBoundPermIds) {
-                    LoggerUtil.warn(LOGGER, "用户重复绑定权限 userId={0}, perm={1}", userId, perm);
-                    // 是已绑的角色 就从里面溢出
+                    // 是已绑的角色 就从里面移除
                     if (StringUtils.equals(boundId, perm.getPermId())) {
+                        LoggerUtil.warn(LOGGER, "用户重复绑定权限 userId={0}, perm={1}", userId, perm);
                         permIterator.remove();
                     }
                 }
