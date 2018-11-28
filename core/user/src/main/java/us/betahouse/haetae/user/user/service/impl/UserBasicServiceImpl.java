@@ -63,11 +63,8 @@ public class UserBasicServiceImpl implements UserBasicService {
         }
         if (StringUtils.isNotBlank(openId)) {
             userBO.setOpenId(openId);
-            token = EncryptUtil.getToken(openId);
-        } else {
-            // 无openId登陆
-            token = UUID.randomUUID().toString();
         }
+        token = UUID.randomUUID().toString();
         userBO.setLastLoginIP(loginIP);
         userBO.setLastLoginDate(new Date());
         // 覆盖会话信息
