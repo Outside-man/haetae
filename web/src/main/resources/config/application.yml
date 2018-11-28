@@ -18,3 +18,6 @@ spring:
       write-dates-as-timestamps: true
 logging:
   config: classpath:config/logback.xml
+wechat:
+  appId:
+  secret:

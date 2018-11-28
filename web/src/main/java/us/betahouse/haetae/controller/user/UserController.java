@@ -58,7 +58,7 @@ public class UserController {
     @PostMapping(value = "/openId")
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> wxLogin(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户普通登录", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "用户微信登录", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -115,7 +115,7 @@ public class UserController {
     @PostMapping(value = "/token")
     @Log(loggerName = LoggerName.USER_DIGEST)
     public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户正常登录", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "用户普通登录", request, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");

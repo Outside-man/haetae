@@ -37,10 +37,10 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Value("")
+    @Value("${wechat.appId}")
     private String APP_ID;
 
-    @Value("")
+    @Value("${wechat.secret}")
     private String SECRET;
 
     @Autowired
