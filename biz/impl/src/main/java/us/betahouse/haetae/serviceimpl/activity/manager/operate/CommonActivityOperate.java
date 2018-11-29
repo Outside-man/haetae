@@ -41,6 +41,7 @@ public abstract class CommonActivityOperate implements ActivityOperate {
      * @param activityId
      * @return
      */
+    @Override
     public ActivityBO operate(String activityId, String userId) {
         ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityId);
         AssertUtil.assertNotNull(activityBO, "活动不存在");
