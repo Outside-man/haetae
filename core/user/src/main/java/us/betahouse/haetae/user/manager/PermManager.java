@@ -49,7 +49,7 @@ public interface PermManager {
     void detachAllUsers(String permId);
 
     /**
-     * 获取权限的用户 并按照创建时间顺序排序
+     * 获取权限的用户id 并按照创建时间顺序排序
      *
      * @param permId
      * @return

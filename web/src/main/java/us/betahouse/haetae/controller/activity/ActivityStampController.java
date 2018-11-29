@@ -8,10 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -29,6 +26,7 @@ import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -132,8 +130,8 @@ public class ActivityStampController {
     @PostMapping(value = "/stamper")
     @CheckLogin
     @Log(loggerName = LoggerName.STAMP_DIGEST)
-    public Result<List<ActivityStamp>> stamperAdd(StamperRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "添加盖章员", request, new RestOperateCallBack<List<ActivityStamp>>() {
+    public Result stamperAdd(StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "添加盖章员", request, new RestOperateCallBack<Result>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -142,7 +140,7 @@ public class ActivityStampController {
             }
 
             @Override
-            public Result<List<ActivityStamp>> execute() {
+            public Result execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance()
@@ -157,6 +155,78 @@ public class ActivityStampController {
             }
         });
     }
+
+    /**
+     * 校园活动盖章 添加盖章员
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @GetMapping(value = "/stamper")
+    @CheckLogin
+    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    public Result<List<UserInfoBO>> getStamper(StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取盖章员", request, new RestOperateCallBack<List<UserInfoBO>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+
+            @Override
+            public Result<List<UserInfoBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance()
+                        .withRequestId(request.getRequestId())
+                        .withUserId(request.getUserId())
+                        .withActivityId(request.getActivityId());
+                ActivityManagerRequest activityManagerRequest = builder.build();
+
+                List<UserInfoBO> stampers = activityService.getStampers(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(stampers, "获取盖章员成功");
+            }
+        });
+    }
+
+
+    /**
+     * 校园活动盖章 删除盖章员
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @DeleteMapping(value = "/stamper")
+    @CheckLogin
+    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    public Result stamperRemove(StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "删除盖章员", request, new RestOperateCallBack<Result>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getStamperStuId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "盖章员学号不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+
+            @Override
+            public Result execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance()
+                        .withRequestId(request.getRequestId())
+                        .withUserId(request.getUserId())
+                        .withActivityId(request.getActivityId());
+                ActivityManagerRequest activityManagerRequest = builder.build();
+                activityManagerRequest.putStamperStuId(request.getStamperStuId());
+
+                activityService.unbindStamper(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult("删除盖章员成功");
+            }
+        });
+    }
+
 
     /**
      * 获取盖章任务

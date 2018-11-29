@@ -6,6 +6,8 @@ package us.betahouse.haetae.user.dal.service;
 
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
+import java.util.List;
+
 /**
  * 用户信息仓储服务
  *
@@ -43,6 +45,14 @@ public interface UserInfoRepoService {
      * @return
      */
     UserInfoBO modifyUserInfoByUserId(String userId, UserInfoBO userInfoBO);
+
+    /**
+     * 批量获取用户信息
+     *
+     * @param userIds
+     * @return
+     */
+    List<UserInfoBO> batchQueryByUserIds(List<String> userIds);
 
 
 }

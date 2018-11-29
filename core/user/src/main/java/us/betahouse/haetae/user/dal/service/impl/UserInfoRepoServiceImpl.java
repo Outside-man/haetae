@@ -19,8 +19,12 @@ import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息仓储服务实现
@@ -106,5 +110,13 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
             userInfoDO.setExtInfo(newUserInfoDO.getExtInfo());
         }
         return EntityConverter.convert(userInfoDORepo.save(userInfoDO));
+    }
+
+    @Override
+    public List<UserInfoBO> batchQueryByUserIds(List<String> userIds) {
+        return CollectionUtils.toStream(userInfoDORepo.findAllByUserIdIn(userIds))
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert)
+                .collect(Collectors.toList());
     }
 }

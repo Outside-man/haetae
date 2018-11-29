@@ -7,6 +7,7 @@ package us.betahouse.haetae.serviceimpl.activity.service;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
 import java.util.List;
 
@@ -59,4 +60,21 @@ public interface ActivityService {
      * @param context
      */
     void bindStamper(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 获取盖章员信息
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<UserInfoBO> getStampers(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 活动去除盖章员
+     *
+     * @param request
+     * @param context
+     */
+    void unbindStamper(ActivityManagerRequest request, OperateContext context);
 }

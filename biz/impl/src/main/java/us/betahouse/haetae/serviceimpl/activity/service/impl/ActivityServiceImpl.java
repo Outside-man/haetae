@@ -113,7 +113,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    @VerifyPerm(permType = ActivityPermType.STAMPER_MANAGE)
     @Transactional
     public void bindStamper(ActivityManagerRequest request, OperateContext context) {
         ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
@@ -135,5 +135,38 @@ public class ActivityServiceImpl implements ActivityService {
 
         // 绑定角色
         roleRepoService.userBindRolesByCode(userInfo.getUserId(), UserRoleCode.ACTIVITY_STAMPER);
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.STAMPER_MANAGE)
+    public List<UserInfoBO> getStampers(ActivityManagerRequest request, OperateContext context) {
+        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        AssertUtil.assertNotNull(activity, "活动不存在");
+        String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+        AssertUtil.assertStringNotBlank(stampPermId, "活动没有盖章权限");
+
+        // 获取全体扫码员id
+        List<String> stamperUserIds = permManager.getPermUsers(stampPermId);
+        return userInfoRepoService.batchQueryByUserIds(stamperUserIds);
+    }
+
+    @Override
+    @VerifyPerm(permType = ActivityPermType.STAMPER_MANAGE)
+    public void unbindStamper(ActivityManagerRequest request, OperateContext context) {
+        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        AssertUtil.assertNotNull(activity, "活动不存在");
+        String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+        AssertUtil.assertStringNotBlank(stampPermId, "活动没有盖章权限");
+
+        // 获取指定扫描员stuId
+        String stamperStuId = request.fetchStamperStuId();
+        UserInfoBO userInfo = userInfoRepoService.queryUserInfoByStuId(stamperStuId);
+        AssertUtil.assertNotNull(userInfo, "用户不存在或该用户未绑定个人信息");
+
+        // 解除绑定
+        PermManageRequest permManageRequest = new PermManageRequest();
+        permManageRequest.setUserIds(Collections.singletonList(userInfo.getUserId()));
+        permManageRequest.setPermId(stampPermId);
+        permManager.batchUsersUnbindPerms(permManageRequest);
     }
 }

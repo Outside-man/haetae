@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.user.dal.convert.EntityConverter;
 import us.betahouse.haetae.user.dal.convert.RelationConverter;
 import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
@@ -173,6 +174,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    @Transactional
     public void roleUnbindPerms(String roleId, List<String> permIds) {
         // 获取用户信息
         RoleDO roleDO = roleDORepo.findByRoleId(roleId);
@@ -308,6 +310,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    @Transactional
     public void usersUnbindPerm(List<String> userIds, String permId) {
         // 获取权限信息
         PermDO permDO = permDORepo.findByPermId(permId);
@@ -322,6 +325,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    @Transactional
     public void detachAllRoles(String permId) {
         // 获取权限信息
         PermDO permDO = permDORepo.findByPermId(permId);
@@ -330,6 +334,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    @Transactional
     public void detachAllUsers(String permId) {
         // 获取权限信息
         PermDO permDO = permDORepo.findByPermId(permId);

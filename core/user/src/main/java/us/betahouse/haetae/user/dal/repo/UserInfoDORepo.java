@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 
+import java.util.List;
+
 /**
  * 用户信息仓储
  *
@@ -32,4 +34,12 @@ public interface UserInfoDORepo extends JpaRepository<UserInfoDO, Long> {
      * @return
      */
     UserInfoDO findByStuId(String stuId);
+
+    /**
+     * 批量获取用户信息
+     *
+     * @param userIds
+     * @return
+     */
+    List<UserInfoDO> findAllByUserIdIn(List<String> userIds);
 }
