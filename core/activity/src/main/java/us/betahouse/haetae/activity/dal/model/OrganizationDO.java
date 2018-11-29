@@ -18,7 +18,8 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "activity_organization",
         indexes = {
-                @Index(name = "uk_organization_id", columnList = "organization_id", unique = true)
+                @Index(name = "uk_organization_id", columnList = "organization_id", unique = true),
+                @Index(name = "uk_organization_name", columnList = "organization_name", unique = true)
         })
 public class OrganizationDO extends BaseDO{
 

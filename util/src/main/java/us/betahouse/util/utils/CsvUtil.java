@@ -52,7 +52,7 @@ public class CsvUtil {
                 resultList.add(row);
             }
             int rowCount = resultList.size();
-            String[][] result = new String[rowCount + 1][csvReader.getValues().length];
+            String[][] result = new String[rowCount ][csvReader.getValues().length];
             int i = 0;
             for (String[] row : resultList) {
                 result[i] = row;
@@ -109,17 +109,16 @@ public class CsvUtil {
     public static String[][] getWithoutHeader(String filePath,char delimiter,String charset,boolean haveHeader){
         try {
             CsvReader csvReader = new CsvReader(filePath, delimiter, Charset.forName(charset));
-            csvReader.readHeaders();
             List<String[]> resultList = new ArrayList<>();
             if(haveHeader){
-                csvReader.getHeaders();
+                csvReader.readHeaders();
             }
             while (csvReader.readRecord()) {
                 String[] row = csvReader.getValues();
                 resultList.add(row);
             }
             int rowCount = resultList.size();
-            String[][] result = new String[rowCount + 1][csvReader.getValues().length];
+            String[][] result = new String[rowCount][csvReader.getValues().length];
             int i = 0;
             for (String[] row : resultList) {
                 result[i] = row;
