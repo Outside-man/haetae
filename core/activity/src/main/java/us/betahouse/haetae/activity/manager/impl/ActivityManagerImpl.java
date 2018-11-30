@@ -15,7 +15,6 @@ import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,11 +26,6 @@ import java.util.List;
  */
 @Service
 public class ActivityManagerImpl implements ActivityManager {
-
-    /**
-     * 系统结束标志
-     */
-    private final static String SYSTEM_FINISH_SIGN = "systemFinish";
 
     @Autowired
     private ActivityRepoService activityRepoService;
@@ -114,19 +108,5 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo());
         return activityRepoService.updateActivity(builder.build());
-    }
-
-    @Override
-    public List<ActivityBO> systemFinishActivity() {
-        List<ActivityBO> activityBOList = activityRepoService.queryActivitiesByState(ActivityStateEnum.PUBLISHED.getCode());
-        List<ActivityBO> systemFinishActivities = new ArrayList<>();
-        for (ActivityBO activityBO : activityBOList) {
-            if (activityBO.canFinish()) {
-                activityBO.setState(ActivityStateEnum.FINISHED.getCode());
-                activityBO.putExtInfo(SYSTEM_FINISH_SIGN, SYSTEM_FINISH_SIGN);
-                systemFinishActivities.add(activityRepoService.updateActivity(activityBO));
-            }
-        }
-        return systemFinishActivities;
     }
 }

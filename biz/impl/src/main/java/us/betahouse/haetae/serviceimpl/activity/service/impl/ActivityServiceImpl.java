@@ -34,8 +34,10 @@ import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +49,11 @@ import java.util.List;
  */
 @Service
 public class ActivityServiceImpl implements ActivityService {
+
+    /**
+     * 系统结束标志
+     */
+    private final static String SYSTEM_FINISH_SIGN = "systemFinish";
 
     @Autowired
     private ActivityManager activityManager;
@@ -179,5 +186,42 @@ public class ActivityServiceImpl implements ActivityService {
         permManageRequest.setUserIds(Collections.singletonList(userInfo.getUserId()));
         permManageRequest.setPermId(stampPermId);
         permManager.batchUsersUnbindPerms(permManageRequest);
+    }
+
+    @Override
+    public List<ActivityBO> systemFinishActivity() {
+        List<ActivityBO> activityBOList = activityRepoService.queryActivitiesByState(ActivityStateEnum.PUBLISHED.getCode());
+        List<ActivityBO> systemFinishActivities = new ArrayList<>();
+        for (ActivityBO activityBO : activityBOList) {
+            if (activityBO.canFinish()) {
+                activityBO.setState(ActivityStateEnum.FINISHED.getCode());
+                activityBO.putExtInfo(SYSTEM_FINISH_SIGN, SYSTEM_FINISH_SIGN);
+                String activityPermId = activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+                // 结束活动时 保留前两个权限关系 其他全去除
+                if (StringUtils.isNotBlank(activityPermId)) {
+                    List<String> userIds = permManager.getPermUsers(activityPermId);
+                    // 保留两个权限 其他都移除
+                    permManager.batchUsersUnbindPerms(buildUnbindRequest(activityPermId, CollectionUtils.subList(userIds, 2)));
+                }
+                systemFinishActivities.add(activityRepoService.updateActivity(activityBO));
+            }
+
+
+        }
+        return systemFinishActivities;
+    }
+
+    /**
+     * 生成权限移除请求
+     *
+     * @param permId
+     * @param userIds
+     * @return
+     */
+    private PermManageRequest buildUnbindRequest(String permId, List<String> userIds) {
+        PermManageRequest  permManageRequest= new PermManageRequest();
+        permManageRequest.setPermId(permId);
+        permManageRequest.setUserIds(userIds);
+        return permManageRequest;
     }
 }

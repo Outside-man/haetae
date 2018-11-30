@@ -46,11 +46,4 @@ public interface ActivityManager {
      * @return
      */
     ActivityBO update(ActivityRequest request);
-
-    /**
-     * 结束可以结束的活动
-     *
-     * @return
-     */
-    List<ActivityBO> systemFinishActivity();
 }
