@@ -57,14 +57,19 @@ public class UserBasicServiceImpl implements UserBasicService {
         AssertUtil.assertTrue(passwordRight, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
 
         // 更新登陆信息
-        String token = null;
         if (StringUtils.isBlank(loginIP)) {
             LoggerUtil.warn(LOGGER, "用户登陆没有登陆ip信息");
         }
         if (StringUtils.isNotBlank(openId)) {
             userBO.setOpenId(openId);
+
+            // 如果之前登陆的账号没正常退出 需要自动登出
+            UserBO beforeLoginUser = userRepoService.queryByOpenId(openId);
+            if (beforeLoginUser != null && StringUtils.equals(openId, beforeLoginUser.getOpenId())) {
+                userRepoService.clearOpenIdAndSessionId(beforeLoginUser.getUserId());
+            }
         }
-        token = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
         userBO.setLastLoginIP(loginIP);
         userBO.setLastLoginDate(new Date());
         // 覆盖会话信息
