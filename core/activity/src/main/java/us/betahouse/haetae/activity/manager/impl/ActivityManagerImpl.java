@@ -38,10 +38,6 @@ public class ActivityManagerImpl implements ActivityManager {
      */
     @Override
     public ActivityBO create(ActivityRequest request) {
-        int time = 0;
-        if (request.getDefaultTime() != null) {
-            time = (int) Math.round(request.getDefaultTime() * 10);
-        }
         if (request.getStart() == null) {
             request.setStart(0L);
         }
@@ -89,10 +85,6 @@ public class ActivityManagerImpl implements ActivityManager {
      */
     @Override
     public ActivityBO update(ActivityRequest request) {
-        int time = 0;
-        if (request.getDefaultTime() != null) {
-            time = (int) Math.round(request.getDefaultTime() * 10);
-        }
         ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
                 .withActivityId(request.getActivityId())
                 .withActivityName(request.getActivityName())

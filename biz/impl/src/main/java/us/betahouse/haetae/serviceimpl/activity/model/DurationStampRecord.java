@@ -22,7 +22,7 @@ public class DurationStampRecord extends StampRecord {
     /**
      * 统计时长
      */
-    private double volunteerTotalTime = 0;
+    private String volunteerTotalTime = "0";
 
     public DurationStampRecord(List<ActivityStamp> activityStamps) {
         super(activityStamps);
@@ -41,14 +41,14 @@ public class DurationStampRecord extends StampRecord {
                 }
             }
         }
-        volunteerTotalTime = totalTime;
+        volunteerTotalTime = String.format("%.1f", totalTime);
     }
 
-    public double getVolunteerTotalTime() {
+    public String getVolunteerTotalTime() {
         return volunteerTotalTime;
     }
 
-    public void setVolunteerTotalTime(double volunteerTotalTime) {
+    public void setVolunteerTotalTime(String volunteerTotalTime) {
         this.volunteerTotalTime = volunteerTotalTime;
     }
 }
