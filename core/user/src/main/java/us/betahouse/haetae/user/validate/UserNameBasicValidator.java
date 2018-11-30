@@ -12,6 +12,8 @@ import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CharsetEncodingUtil;
 import us.betahouse.util.validator.Validator;
 
+import java.text.MessageFormat;
+
 /**
  * 用户名基础校验器
  *
@@ -34,6 +36,6 @@ public class UserNameBasicValidator implements Validator<UserManageRequest> {
         AssertUtil.assertStringNotBlank(request.getUsername(), "用户名不能为空");
         AssertUtil.assertTrue(CharsetEncodingUtil.canEncodeGBK(request.getUsername()), "用户名不能包含特殊字符");
         UserBO userBO = userRepoService.queryByUserName(request.getUsername());
-        AssertUtil.assertNull(userBO, "用户名已经注册");
+        AssertUtil.assertNull(userBO, MessageFormat.format("用户名已经注册, {0}", request.getUsername()));
     }
 }

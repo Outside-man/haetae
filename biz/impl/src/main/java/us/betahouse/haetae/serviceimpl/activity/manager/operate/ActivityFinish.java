@@ -110,6 +110,7 @@ public class ActivityFinish extends CommonActivityOperate {
         PermBO permBO = new PermBO();
         permBO.setPermId(permId);
         permManageRequest.setUserIds(userIds);
+        permManageRequest.setPermBO(permBO);
         return permManageRequest;
     }
 }

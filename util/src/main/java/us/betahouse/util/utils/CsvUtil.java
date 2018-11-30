@@ -20,28 +20,28 @@ public class CsvUtil {
     /**
      * 分隔符
      */
-    private final static char DELIMITER =',';
+    private final static char DELIMITER = ',';
 
     /**
      * 字符集
      */
-    private final static String CHARSET ="UTF-8";
+    private final static String CHARSET = "UTF-8";
 
     /**
      * 源文件是否包含header
      */
-    private final static boolean HAVE_HEADER=false;
+    private final static boolean HAVE_HEADER = false;
 
 
     /**
-     *将csv文件转为二维数组（含Header）
+     * 将csv文件转为二维数组（含Header）
      *
-     * @param filePath 路径
+     * @param filePath  路径
      * @param delimiter 分隔符
-     * @param charset 字符集
+     * @param charset   字符集
      * @return
      */
-    public static String[][] getWithHeader(String filePath,char delimiter,String charset) {
+    public static String[][] getWithHeader(String filePath, char delimiter, String charset) {
         try {
             CsvReader csvReader = new CsvReader(filePath, delimiter, Charset.forName(charset));
             csvReader.readHeaders();
@@ -52,7 +52,7 @@ public class CsvUtil {
                 resultList.add(row);
             }
             int rowCount = resultList.size();
-            String[][] result = new String[rowCount ][csvReader.getValues().length];
+            String[][] result = new String[rowCount][csvReader.getValues().length];
             int i = 0;
             for (String[] row : resultList) {
                 result[i] = row;
@@ -68,11 +68,11 @@ public class CsvUtil {
     /**
      * 将csv文件转为二维数组（含Header）
      *
-     * @param filePath 路径
+     * @param filePath  路径
      * @param delimiter 分隔符
      * @return
      */
-    public static String[][] getWithHeader(String filePath,char delimiter) {
+    public static String[][] getWithHeader(String filePath, char delimiter) {
         return getWithHeader(filePath, delimiter, CHARSET);
     }
 
@@ -80,10 +80,10 @@ public class CsvUtil {
      * 将csv文件转为二维数组（含Header）
      *
      * @param filePath 路径
-     * @param charset 字符集
+     * @param charset  字符集
      * @return
      */
-    public static String[][] getWithHeader(String filePath,String charset) {
+    public static String[][] getWithHeader(String filePath, String charset) {
         return getWithHeader(filePath, DELIMITER, charset);
     }
 
@@ -100,17 +100,17 @@ public class CsvUtil {
     /**
      * 将csv文件转为二维数组（不含Header）
      *
-     * @param filePath 路径
-     * @param delimiter 分隔符
-     * @param charset 字符集
+     * @param filePath   路径
+     * @param delimiter  分隔符
+     * @param charset    字符集
      * @param haveHeader 源文件是否含Header
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,char delimiter,String charset,boolean haveHeader){
+    public static String[][] getWithoutHeader(String filePath, char delimiter, String charset, boolean haveHeader) {
         try {
             CsvReader csvReader = new CsvReader(filePath, delimiter, Charset.forName(charset));
             List<String[]> resultList = new ArrayList<>();
-            if(haveHeader){
+            if (haveHeader) {
                 csvReader.readHeaders();
             }
             while (csvReader.readRecord()) {
@@ -134,12 +134,12 @@ public class CsvUtil {
     /**
      * 将csv文件转为二维数组（不含Header）
      *
-     * @param filePath 路径
+     * @param filePath  路径
      * @param delimiter 分隔符
-     * @param charset 字符集
+     * @param charset   字符集
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,char delimiter,String charset){
+    public static String[][] getWithoutHeader(String filePath, char delimiter, String charset) {
         return getWithoutHeader(filePath, delimiter, charset, HAVE_HEADER);
     }
 
@@ -147,46 +147,46 @@ public class CsvUtil {
     /**
      * 将csv文件转为二维数组（不含Header）
      *
-     * @param filePath 路径
-     * @param delimiter 分隔符
+     * @param filePath   路径
+     * @param delimiter  分隔符
      * @param haveHeader 源文件是否含Header
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,char delimiter,boolean haveHeader){
+    public static String[][] getWithoutHeader(String filePath, char delimiter, boolean haveHeader) {
         return getWithoutHeader(filePath, delimiter, CHARSET, haveHeader);
     }
 
     /**
      * 将csv文件转为二维数组（不含Header）
      *
-     * @param filePath 路径
-     * @param charset 字符集
+     * @param filePath   路径
+     * @param charset    字符集
      * @param haveHeader 源文件是否含Header
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,String charset,boolean haveHeader){
+    public static String[][] getWithoutHeader(String filePath, String charset, boolean haveHeader) {
         return getWithoutHeader(filePath, DELIMITER, charset, haveHeader);
     }
 
     /**
      * 将csv文件转为二维数组（不含Header）
      *
-     * @param filePath 路径
+     * @param filePath  路径
      * @param delimiter 分隔符
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,char delimiter){
+    public static String[][] getWithoutHeader(String filePath, char delimiter) {
         return getWithoutHeader(filePath, delimiter, CHARSET, HAVE_HEADER);
     }
 
     /**
      * 将csv文件转为二维数组（不含Header）
      *
-     * @param filePath 路径
+     * @param filePath   路径
      * @param haveHeader 源文件是否含Header
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,boolean haveHeader){
+    public static String[][] getWithoutHeader(String filePath, boolean haveHeader) {
         return getWithoutHeader(filePath, DELIMITER, CHARSET, haveHeader);
     }
 
@@ -194,19 +194,20 @@ public class CsvUtil {
      * 将csv文件转为二维数组（不含Header）
      *
      * @param filePath 路径
-     * @param charset 字符集
+     * @param charset  字符集
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath,String charset){
+    public static String[][] getWithoutHeader(String filePath, String charset) {
         return getWithoutHeader(filePath, DELIMITER, charset, HAVE_HEADER);
     }
+
     /**
      * 将csv文件转为二维数组（不含Header）
      *
      * @param filePath 路径
      * @return
      */
-    public static String[][] getWithoutHeader(String filePath){
+    public static String[][] getWithoutHeader(String filePath) {
         return getWithoutHeader(filePath, DELIMITER, CHARSET, HAVE_HEADER);
     }
 }

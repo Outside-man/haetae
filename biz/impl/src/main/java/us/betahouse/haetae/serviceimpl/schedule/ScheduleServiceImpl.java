@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.util.utils.CollectionUtils;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author dango.yxm
  * @version : ScheduleServiceImpl.java 2018/11/30 12:39 PM dango.yxm
  */
+@Component
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ScheduleServiceImpl.class);

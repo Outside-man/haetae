@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import us.betahouse.haetae.serviceimpl.common.init.InitService;
 
@@ -16,6 +17,7 @@ import javax.annotation.PostConstruct;
 @EnableAspectJAutoProxy
 @ImportResource(locations = {"classpath:spring/user.xml", "classpath:spring/biz-service.xml"})
 @SpringBootApplication
+@EnableScheduling
 public class HaetaeWebApplication {
 
 
