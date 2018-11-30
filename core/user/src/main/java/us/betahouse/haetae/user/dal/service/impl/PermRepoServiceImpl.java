@@ -4,29 +4,32 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
-import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.user.dal.convert.EntityConverter;
-import us.betahouse.haetae.user.dal.convert.RelationConverter;
-import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
-import us.betahouse.haetae.user.model.basic.perm.UserBO;
-import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
-import us.betahouse.util.enums.CommonResultCode;
-import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.user.dal.convert.EntityConverter;
+import us.betahouse.haetae.user.dal.convert.RelationConverter;
 import us.betahouse.haetae.user.dal.model.perm.*;
 import us.betahouse.haetae.user.dal.repo.perm.*;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**

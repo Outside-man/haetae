@@ -17,7 +17,6 @@ import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
-import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;

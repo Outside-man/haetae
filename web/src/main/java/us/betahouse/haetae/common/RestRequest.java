@@ -31,11 +31,6 @@ public abstract class RestRequest extends ToString {
     private String userId;
 
     /**
-     * 登陆凭证
-     */
-    private String token;
-
-    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -80,14 +75,6 @@ public abstract class RestRequest extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getUserId() {

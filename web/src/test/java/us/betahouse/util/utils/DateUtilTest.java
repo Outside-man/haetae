@@ -5,8 +5,6 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
 /**
  * 日期工具的测试类
  *

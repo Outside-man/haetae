@@ -4,10 +4,10 @@
  */
 package us.betahouse.util.template;
 
+import org.slf4j.Logger;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
-import org.slf4j.Logger;
 import us.betahouse.util.utils.LoggerUtil;
 
 

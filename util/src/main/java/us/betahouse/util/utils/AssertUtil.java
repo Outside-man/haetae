@@ -4,10 +4,10 @@
  */
 package us.betahouse.util.utils;
 
+import org.apache.commons.lang.StringUtils;
 import us.betahouse.util.common.ResultCode;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 断言工具

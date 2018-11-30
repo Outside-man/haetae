@@ -4,10 +4,8 @@
  */
 package us.betahouse.haetae.user.manager;
 
-import us.betahouse.haetae.user.request.RoleManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
-
-import java.util.List;
+import us.betahouse.haetae.user.request.RoleManageRequest;
 
 /**
  * 角色管理器

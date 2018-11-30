@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.util.common.ToString;
-import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.DateUtil;
 
 import java.util.Date;
@@ -119,10 +118,10 @@ public class ActivityBO extends ToString {
             return true;
         }
         ActivityTypeEnum activityTypeEnum = ActivityTypeEnum.getByCode(type);
-        if(activityTypeEnum == null){
+        if (activityTypeEnum == null) {
             return false;
         }
-        switch (activityTypeEnum){
+        switch (activityTypeEnum) {
             case VOLUNTEER_WORK:
                 return true;
             case PRACTICE_ACTIVITY:
@@ -131,6 +130,36 @@ public class ActivityBO extends ToString {
                 return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
             case SCHOOL_ACTIVITY:
                 return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * 判断是否可以结束
+     *
+     * @return
+     */
+    public boolean canFinish() {
+        // 活动手动重启 系统不会去结束
+        if (StringUtils.equals(state, ActivityStateEnum.RESTARTED.getCode())) {
+            return false;
+        }
+        ActivityTypeEnum activityTypeEnum = ActivityTypeEnum.getByCode(type);
+        if (activityTypeEnum == null) {
+            return false;
+        }
+        switch (activityTypeEnum) {
+            case VOLUNTEER_WORK:
+                // 义工都不要结束
+                return false;
+            case PRACTICE_ACTIVITY:
+                // 实践不要结束
+                return false;
+            case VOLUNTEER_ACTIVITY:
+                return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && end.before(new Date());
+            case SCHOOL_ACTIVITY:
+                return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && end.before(new Date());
             default:
                 return false;
         }

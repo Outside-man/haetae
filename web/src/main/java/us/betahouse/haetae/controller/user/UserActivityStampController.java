@@ -48,7 +48,7 @@ public class UserActivityStampController {
 
     @GetMapping(value = "/activityStamp")
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<StampRecord> fetchUserStamp(UserActivityStampRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户查询活动章", request, new RestOperateCallBack<StampRecord>() {
             @Override

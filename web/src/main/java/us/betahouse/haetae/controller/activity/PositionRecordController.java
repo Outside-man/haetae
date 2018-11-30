@@ -57,7 +57,7 @@ public class PositionRecordController {
      * @return
      */
     @CheckLogin
-    @Log(loggerName = LoggerName.POSITION_RECORD)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     @GetMapping(value = "/userId")
     public Result<List<PositionRecordBO>> getByUserId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "获取个人履历", request, new RestOperateCallBack<List<PositionRecordBO>>() {
@@ -90,7 +90,7 @@ public class PositionRecordController {
      * @return
      */
     @CheckLogin
-    @Log(loggerName = LoggerName.POSITION_RECORD)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     @GetMapping(value = "/organizationId")
     public Result<List<PositionRecordBO>> getByOrganizationId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "获取组织人员列表", request, new RestOperateCallBack<List<PositionRecordBO>>() {

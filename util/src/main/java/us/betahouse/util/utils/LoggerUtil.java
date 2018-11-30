@@ -4,9 +4,9 @@
  */
 package us.betahouse.util.utils;
 
-import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
+import us.betahouse.util.exceptions.BetahouseException;
 
 import java.lang.reflect.Method;
 import java.text.MessageFormat;

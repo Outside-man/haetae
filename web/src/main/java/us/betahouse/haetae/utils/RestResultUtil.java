@@ -7,8 +7,6 @@ package us.betahouse.haetae.utils;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
 
-import javax.xml.crypto.Data;
-
 /**
  * restful 结果处理工具类
  *

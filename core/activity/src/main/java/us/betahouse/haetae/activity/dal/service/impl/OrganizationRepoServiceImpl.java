@@ -3,8 +3,6 @@
  * CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service.impl;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +14,11 @@ import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.OrganizationBO;
 import us.betahouse.util.utils.CollectionUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author MessiahJK
@@ -70,6 +73,11 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
             organizationBO.setOrganizationId(activityBizFactory.getOrganizationId());
         }
         return convert(organizationDORepo.save(convert(organizationBO)));
+    }
+
+    @Override
+    public OrganizationBO queryOrganizationByName(String organizationName) {
+        return convert(organizationDORepo.findByOrganizationName(organizationName));
     }
 
     /**

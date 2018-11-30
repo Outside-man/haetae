@@ -59,7 +59,7 @@ public class ActivityController {
 
     @CheckLogin
     @PostMapping
-    @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityBO> add(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "新增活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override
@@ -108,7 +108,7 @@ public class ActivityController {
      */
     @CheckLogin
     @GetMapping
-    @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<ActivityBO>> getActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取活动列表", request, new RestOperateCallBack<List<ActivityBO>>() {
 
@@ -130,6 +130,10 @@ public class ActivityController {
                     builder.withState(request.getState());
                 }
 
+                if(StringUtils.isNotBlank(request.getTerm())){
+
+                }
+
                 List<ActivityBO> activityBOList = activityService.findAll(builder.build(), context);
                 return RestResultUtil.buildSuccessResult(activityBOList, "获取活动列表成功");
             }
@@ -145,7 +149,7 @@ public class ActivityController {
      */
     @CheckLogin
     @PutMapping
-    @Log(loggerName = LoggerName.ACTIVITY_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityBO> operate(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "操作活动", request, new RestOperateCallBack<ActivityBO>() {
             @Override

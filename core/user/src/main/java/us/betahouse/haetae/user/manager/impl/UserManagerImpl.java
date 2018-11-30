@@ -15,11 +15,11 @@ import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.manager.UserManager;
 import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserBOBuilder;
-import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.validator.MultiValidator;
 

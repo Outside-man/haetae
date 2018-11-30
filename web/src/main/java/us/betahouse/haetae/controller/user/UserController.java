@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.common.log.LoggerName;
+import us.betahouse.haetae.common.session.CheckLogin;
+import us.betahouse.haetae.common.template.RestOperateCallBack;
+import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.converter.UserVOConverter;
 import us.betahouse.haetae.model.user.request.UserRequest;
 import us.betahouse.haetae.model.user.vo.UserVO;
@@ -18,9 +21,6 @@ import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
-import us.betahouse.haetae.common.session.CheckLogin;
-import us.betahouse.haetae.common.template.RestOperateCallBack;
-import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -56,9 +56,9 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/openId")
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> wxLogin(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户微信登录", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "用户微信登录", null, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -83,7 +83,7 @@ public class UserController {
 
     @DeleteMapping(value = "/openId")
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> wxLogout(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户微信登出", request, new RestOperateCallBack<UserVO>() {
             @Override
@@ -113,9 +113,9 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/token")
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "用户普通登录", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "用户普通登录", null, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -146,7 +146,7 @@ public class UserController {
      */
     @GetMapping
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> checkLogin(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户登录维持", request, new RestOperateCallBack<UserVO>() {
             @Override
@@ -175,7 +175,7 @@ public class UserController {
      */
     @DeleteMapping(value = "/token")
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> logout(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "用户普通登出", request, new RestOperateCallBack<UserVO>() {
             @Override
@@ -206,9 +206,9 @@ public class UserController {
      */
     @PutMapping(value = "/pwd")
     @CheckLogin
-    @Log(loggerName = LoggerName.USER_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> modifyPassword(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "修改密码", request, new RestOperateCallBack<UserVO>() {
+        return RestOperateTemplate.operate(LOGGER, "修改密码", null, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");

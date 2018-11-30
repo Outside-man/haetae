@@ -5,7 +5,6 @@
 package us.betahouse.haetae.activity.manager;
 
 import us.betahouse.haetae.activity.model.PositionRecordBO;
-import us.betahouse.haetae.activity.request.PositionRecordRequest;
 
 import java.util.List;
 

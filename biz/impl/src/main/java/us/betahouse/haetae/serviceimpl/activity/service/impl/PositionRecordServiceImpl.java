@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.manager.PositionRecordManager;
 import us.betahouse.haetae.activity.model.PositionRecordBO;
-import us.betahouse.haetae.activity.request.PositionRecordRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.PositionRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.PositionRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;

@@ -4,9 +4,9 @@
  */
 package us.betahouse.haetae.activity.manager;
 
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
-import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 
 import java.util.List;
 
@@ -48,9 +48,9 @@ public interface ActivityManager {
     ActivityBO update(ActivityRequest request);
 
     /**
-     * 检查所有活动状态
+     * 结束可以结束的活动
      *
      * @return
      */
-    void chickAll();
+    List<ActivityBO> systemFinishActivity();
 }

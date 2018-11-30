@@ -2,7 +2,7 @@
 
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <!-- 定义日志文件 输入位置 -->
-    <property name="log_dir" value=".logs/haetae"/>
+    <property name="log_dir" value="${user.dir}/logs/haetae"/>
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30"/>
     <!-- 彩色日志 -->
@@ -106,12 +106,11 @@
         </encoder>
     </appender>
 
-    <!--======================================摘要日志======================================-->
-    <!-- 用户摘要 日志 -->
-    <appender name="USER-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log_dir}/digest/user-digest.log</File>
+    <!-- biz-service-impl 日志 -->
+    <appender name="WEB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log_dir}/sys/web.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/digest/user-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>${log_dir}/web.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -119,23 +118,12 @@
         </encoder>
     </appender>
 
-    <!-- 活动摘要 日志 -->
-    <appender name="ACTIVITY-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log_dir}/digest/activity-digest.log</File>
+    <!--======================================接口摘要======================================-->
+    <!-- 接口摘要 日志 -->
+    <appender name="WEB-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log_dir}/digest/web-digest.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/digest/activity-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
-            <maxHistory>${maxHistory}</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!-- 章摘要 日志 -->
-    <appender name="STAMP-DIGEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log_dir}/digest/stamp-digest.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/digest/stamp-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>${log_dir}/digest/web-digest.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -182,23 +170,16 @@
         <appender-ref ref="BIZ-SERVICE-IMPL"/>
     </logger>
 
+    <!--业务实现模块-->
+    <logger name="us.betahouse.haetae.controller" level="INFO">
+        <appender-ref ref="COMMON-ERROR"/>
+        <appender-ref ref="WEB"/>
+    </logger>
+
     <!--=======摘要日志=======-->
     <!--用户摘要-->
-    <logger name="USER_DIGEST" level="INFO">
+    <logger name="WEB_DIGEST" level="INFO">
         <appender-ref ref="COMMON-ERROR"/>
-        <appender-ref ref="USER-DIGEST"/>
+        <appender-ref ref="WEB-DIGEST"/>
     </logger>
-
-    <!--活动摘要-->
-    <logger name="ACTIVITY_DIGEST" level="INFO">
-        <appender-ref ref="COMMON-ERROR"/>
-        <appender-ref ref="ACTIVITY-DIGEST"/>
-    </logger>
-
-    <!--活动摘要-->
-    <logger name="STAMP_DIGEST" level="INFO">
-        <appender-ref ref="COMMON-ERROR"/>
-        <appender-ref ref="STAMP-DIGEST"/>
-    </logger>
-
 </configuration>

@@ -4,8 +4,8 @@
  */
 package us.betahouse.util.enums;
 
-import us.betahouse.util.common.ResultCode;
 import org.apache.commons.lang.StringUtils;
+import us.betahouse.util.common.ResultCode;
 
 /**
  * 通用结果码

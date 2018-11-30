@@ -9,13 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
-import us.betahouse.haetae.activity.enums.ActivityStateEnum;
+import us.betahouse.haetae.activity.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
-import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -33,6 +35,7 @@ import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.util.utils.AssertUtil;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,12 +69,20 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityOperateManager activityOperateManager;
 
+    @Autowired
+    private OrganizationRepoService organizationRepoService;
+
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
         AssertUtil.assertNotNull(activityType, "该活动类型不存在");
+
+        AssertUtil.assertStringNotBlank(request.getOrganizationMessage(), "活动主办组织信息不能为空");
+        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getOrganizationMessage());
+        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在, {0}", request.getOrganizationMessage()));
+
 
         // 创建活动
         ActivityBO activityBO = activityManager.create(request);

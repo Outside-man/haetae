@@ -18,7 +18,6 @@ import us.betahouse.haetae.model.user.request.StamperRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 import us.betahouse.haetae.serviceimpl.activity.enums.GradesEnum;
-import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
@@ -69,7 +68,7 @@ public class ActivityStampController {
      */
     @PostMapping
     @CheckLogin
-    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<String>> fetchUserStamp(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "盖活动章", request, new RestOperateCallBack<List<String>>() {
             @Override
@@ -129,7 +128,7 @@ public class ActivityStampController {
      */
     @PostMapping(value = "/stamper")
     @CheckLogin
-    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result stamperAdd(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "添加盖章员", request, new RestOperateCallBack<Result>() {
             @Override
@@ -165,7 +164,7 @@ public class ActivityStampController {
      */
     @GetMapping(value = "/stamper")
     @CheckLogin
-    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<UserInfoBO>> getStamper(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取盖章员", request, new RestOperateCallBack<List<UserInfoBO>>() {
             @Override
@@ -200,7 +199,7 @@ public class ActivityStampController {
      */
     @DeleteMapping(value = "/stamper")
     @CheckLogin
-    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result stamperRemove(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "删除盖章员", request, new RestOperateCallBack<Result>() {
             @Override
@@ -237,7 +236,7 @@ public class ActivityStampController {
      */
     @GetMapping(value = "/mission")
     @CheckLogin
-    @Log(loggerName = LoggerName.STAMP_DIGEST)
+    @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<ActivityBO>> getMission(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取盖章任务", request, new RestOperateCallBack<List<ActivityBO>>() {
             @Override

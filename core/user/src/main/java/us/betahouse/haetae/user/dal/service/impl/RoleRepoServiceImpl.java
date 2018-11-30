@@ -4,18 +4,13 @@
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
-import us.betahouse.haetae.user.dal.convert.EntityConverter;
-import us.betahouse.haetae.user.dal.convert.RelationConverter;
-import us.betahouse.haetae.user.enums.RoleCode;
-import us.betahouse.haetae.user.model.basic.perm.UserBO;
-import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
-import us.betahouse.util.enums.CommonResultCode;
-import us.betahouse.util.exceptions.BetahouseException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.user.dal.convert.EntityConverter;
+import us.betahouse.haetae.user.dal.convert.RelationConverter;
 import us.betahouse.haetae.user.dal.model.perm.RoleDO;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
 import us.betahouse.haetae.user.dal.model.perm.UserRoleRelationDO;
@@ -23,11 +18,16 @@ import us.betahouse.haetae.user.dal.repo.perm.RoleDORepo;
 import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.haetae.user.dal.repo.perm.UserRoleRelationDORepo;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
+import us.betahouse.haetae.user.enums.RoleCode;
 import us.betahouse.haetae.user.idfactory.BizIdFactory;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;

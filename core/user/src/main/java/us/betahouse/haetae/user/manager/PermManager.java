@@ -4,8 +4,8 @@
  */
 package us.betahouse.haetae.user.manager;
 
-import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.request.PermManageRequest;
 
 import java.util.List;
 

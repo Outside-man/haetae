@@ -7,7 +7,6 @@ package us.betahouse.haetae.serviceimpl.activity.builder;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

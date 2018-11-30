@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.manager.RoleManager;
-import us.betahouse.haetae.user.request.RoleManageRequest;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.request.RoleManageRequest;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 

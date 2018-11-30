@@ -12,6 +12,8 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import java.util.List;
 
 /**
+ * 活动业务服务
+ *
  * @author MessiahJK
  * @version : ActivityService.java 2018/11/22 19:53 MessiahJK
  */

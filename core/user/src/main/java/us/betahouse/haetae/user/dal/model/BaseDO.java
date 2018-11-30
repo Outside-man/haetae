@@ -4,9 +4,9 @@
  */
 package us.betahouse.haetae.user.dal.model;
 
-import us.betahouse.util.common.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import us.betahouse.util.common.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
