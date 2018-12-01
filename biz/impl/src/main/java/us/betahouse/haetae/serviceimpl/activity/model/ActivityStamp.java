@@ -107,4 +107,8 @@ public class ActivityStamp extends ActivityRecordBO {
         super.setTime(time);
         this.activityTime = String.format("%.1f", time / TIME_CONVERT);
     }
+
+    public String getActivityTime() {
+        return activityTime;
+    }
 }
