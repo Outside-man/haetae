@@ -19,6 +19,8 @@ public class DurationStampRecord extends StampRecord {
 
     private static final long serialVersionUID = 543493486999019429L;
 
+    private final static double TEN = 10.0;
+
     /**
      * 统计时长
      */
@@ -33,15 +35,15 @@ public class DurationStampRecord extends StampRecord {
      * 计算志愿时长
      */
     public void countVolunteerTotalTime() {
-        double totalTime = 0;
+        int totalTime = 0;
         if (!CollectionUtils.isEmpty(getActivityStamps())) {
             for (ActivityStamp activityStamp : getActivityStamps()) {
-                if (activityStamp.getActivityTime() != null) {
-                    totalTime += activityStamp.getActivityTime();
+                if (activityStamp.getTime() != null) {
+                    totalTime += activityStamp.getTime();
                 }
             }
         }
-        volunteerTotalTime = String.format("%.1f", totalTime);
+        volunteerTotalTime = String.format("%.1f", totalTime / TEN);
     }
 
     public String getVolunteerTotalTime() {
