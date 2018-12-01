@@ -18,6 +18,8 @@ public class ActivityStamp extends ActivityRecordBO {
 
     private static final long serialVersionUID = -6049854808032443292L;
 
+    private static final double TIME_CONVERT = 10;
+
     /**
      * 活动名
      */
@@ -47,6 +49,11 @@ public class ActivityStamp extends ActivityRecordBO {
      * 活动分数
      */
     private Long score;
+
+    /**
+     * 活动时长
+     */
+    private String activityTime = "0";
 
     public String getActivityName() {
         return activityName;
@@ -94,5 +101,10 @@ public class ActivityStamp extends ActivityRecordBO {
 
     public void setScore(Long score) {
         this.score = score;
+    }
+
+    public void setTime(Integer time) {
+        super.setTime(time);
+        this.activityTime = String.format("%.1f", time / TIME_CONVERT);
     }
 }

@@ -10,9 +10,12 @@ import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.enums.GradesEnum;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
+import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +35,20 @@ public class PracticeActivityStampService implements StampService {
 
     @Autowired
     protected ActivityRecordRepoService activityRecordRepoService;
+
+    @Override
+    public StampRecord parseStampRecord(List<ActivityStamp> activityStamps) {
+
+        for (ActivityStamp activityStamp : activityStamps) {
+            GradesEnum grades = GradesEnum.getByCode(activityStamp.getGrades());
+            if (grades == null) {
+                LoggerUtil.error(LOGGER, "时间记录等第存在问题, activityStamp={0}", activityStamp);
+            } else {
+                activityStamp.setGrades(grades.getDesc());
+            }
+        }
+        return new StampRecord(activityStamps);
+    }
 
     @Override
     public void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO) {

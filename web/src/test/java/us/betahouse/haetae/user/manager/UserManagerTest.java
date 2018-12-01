@@ -10,9 +10,7 @@ import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -29,27 +27,32 @@ public class UserManagerTest {
 
     @Test
     public void create() {
-        System.out.println(userManager.create(genUserCreateRequest()));
+        System.out.println(userManager.create(genUserCreateRequest(1)));
     }
 
     @Test
     public void createManager() {
-        CommonUser commonUser = userManager.create(genUserCreateRequest());
-        System.out.println(commonUser);
-        UserManageRequest request = new UserManageRequest();
-        request.setUserId(commonUser.getUserId());
-        request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
-        userManager.batchBindRolByCode(request);
-        request.setRoleCode(UserRoleCode.NOT_STUDENT);
-        userManager.batchBindRolByCode(request);
+        for(int i =1;i<=10;i++) {
+            CommonUser commonUser = userManager.create(genUserCreateRequest(i));
+            System.out.println(commonUser);
+            UserManageRequest request = new UserManageRequest();
+            request.setUserId(commonUser.getUserId());
+            request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
+            userManager.batchBindRolByCode(request);
+            request.setRoleCode(UserRoleCode.NOT_STUDENT);
+            userManager.batchBindRolByCode(request);
+        }
     }
 
     @Test
     public void batchBindRole() {
-        UserManageRequest request = new UserManageRequest();
-        request.setUserId("201811251917084430680001201864");
-        request.setRoleIds(Collections.singletonList("201811251934333309365400021125"));
-        userManager.batchBindRole(request);
+        List<String> userIds = Arrays.asList("201811302141542658920001201805", "201811302141587352590001201845","201811302141390794090001201864","201811302141437813470001201835", "201811302141304426900001201888");
+        for(String userId: userIds) {
+            UserManageRequest request = new UserManageRequest();
+            request.setUserId(userId);
+            request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
+            userManager.batchBindRolByCode(request);
+        }
     }
 
     @Test
@@ -69,15 +72,15 @@ public class UserManagerTest {
     public void batchUnbindPerm() {
     }
 
-    private UserManageRequest genUserCreateRequest() {
+    private UserManageRequest genUserCreateRequest(int index) {
         UserManageRequest request = new UserManageRequest();
         request.setRequestId(UUID.randomUUID().toString());
         UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
                 .withEnrollDate(new Date())
-                .withRealName("system")
+                .withRealName("beta测试账号_全权限_"+index)
                 .withSex("女")
-                .withStuId("system");
-        request.setUsername("system");
+                .withStuId("0"+index);
+        request.setUsername("beta"+index);
         request.setPassword("a111111");
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;

@@ -30,6 +30,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,6 +71,8 @@ public class ActivityController {
                 AssertUtil.assertStringNotBlank(request.getActivityType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动类型不能为空");
                 AssertUtil.assertNotNull(request.getActivityStartTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
                 AssertUtil.assertNotNull(request.getActivityEndTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动结束时间不能为空");
+                boolean validateTime = new Date(request.getActivityStartTime()).before(new Date(request.getActivityEndTime()));
+                AssertUtil.assertTrue(validateTime, "活动开始时间必须早于结束时间");
                 AssertUtil.assertNotNull(request.getOrganizationMessage(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "举办单位不能为空");
             }
 
