@@ -58,4 +58,13 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      * @return
      */
     List<ActivityDO> findAllByActivityIdIn(List<String> activityIds);
+
+    /**
+     * 通过活动名查找活动
+     *
+     * @param activityName
+     * @return
+     */
+    ActivityDO findByActivityName(String activityName);
+
 }

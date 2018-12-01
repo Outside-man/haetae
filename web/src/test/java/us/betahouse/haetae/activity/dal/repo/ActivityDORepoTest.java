@@ -9,6 +9,10 @@ import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
+import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
+import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
+import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.util.utils.CsvUtil;
 
@@ -28,27 +32,16 @@ public class ActivityDORepoTest {
 
     @Autowired
     private BizIdFactory activityBizFactory;
+
+    @Autowired
+    private ActivityService activityService;
+
     @Test
     public void importit(){
         List<ActivityDO> list=new ArrayList<>();
         String filepath="C:\\Users\\j10k\\Desktop\\11\\sc_activity.csv";
         String[][] csv=CsvUtil.getWithoutHeader(filepath);
         for(int i=0;i<csv.length;i++){
-            ActivityDO activityDO=new ActivityDO();
-            if(csv[i][7].equals("xyhd")){
-                activityDO.setType(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode());
-            }else{
-                activityDO.setType(ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode());
-            }
-            if(csv[i][11].equals("Running")){
-                activityDO.setState(ActivityStateEnum.PUBLISHED.getCode());
-            }else if(csv[i][11].equals("Pause")){
-                activityDO.setState(ActivityStateEnum.FINISHED.getCode());
-            }
-            activityDO.setScore(Long.valueOf(csv[i][2]));
-            activityDO.setDescription(csv[i][9]);
-            activityDO.setTerm(TermUtil.getNowTerm());
-            activityDO.setActivityName(csv[i][1]);
             //22/11/2018 10:43:09.463
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
             Date date= null;
@@ -57,16 +50,28 @@ public class ActivityDORepoTest {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            activityDO.setStart(date);
             Calendar calendar=Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.HOUR, 2);
-            date=calendar.getTime();
-            activityDO.setEnd(date);
-            activityDO.setActivityId(activityBizFactory.getActivityId());
-            //activityDO.setOrganizationMessage();
-            list.add(activityDO);
+            Date end=calendar.getTime();
+            ActivityManagerRequestBuilder builder= ActivityManagerRequestBuilder.getInstance()
+                    .withUserId("201812010040554783180001201835")
+                    .withActivityName(csv[i][1])
+                    .withOrganizationMessage(csv[i][5])
+                    .withStart(date.getTime())
+                    .withEnd(end.getTime())
+                    .withTerm(TermUtil.getNowTerm())
+                    // 以下是可选参数
+                    // 描述
+                    .withDescription(csv[i][9])
+                    // 分数
+                    .withScore(Long.valueOf(csv[i][2]));
+            if(csv[i][7].equals("xyhd")){
+                builder.withType(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode());
+            }else{
+                builder.withType(ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode());
+            }
+            activityService.create(builder.build(), new OperateContext());
         }
-        activityDORepo.saveAll(list);
     }
 }

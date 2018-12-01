@@ -74,10 +74,10 @@ public class UserManagerTest {
         request.setRequestId(UUID.randomUUID().toString());
         UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
                 .withEnrollDate(new Date())
-                .withRealName("beta测试账号_全权限_5")
+                .withRealName("system")
                 .withSex("女")
-                .withStuId("05");
-        request.setUsername("beta5");
+                .withStuId("system");
+        request.setUsername("system");
         request.setPassword("a111111");
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;

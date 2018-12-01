@@ -105,7 +105,6 @@ public class ActivityStampController {
                 if (StringUtils.isNotBlank(request.getVolunteerWorkName())) {
                     stampRequest.setVolunteerWorkName(request.getVolunteerWorkName());
                 }
-
                 List<String> notStampStuId = activityRecordService.batchStamp(stampRequest, context);
                 if (CollectionUtils.isEmpty(notStampStuId)) {
                     return RestResultUtil.buildSuccessResult(notStampStuId, "盖章成功");
