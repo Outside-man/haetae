@@ -16,13 +16,13 @@ public class OperateContext extends ToString {
 
     private static final long serialVersionUID = 4106891104857327576L;
 
-    private String OperateIP;
+    private String operateIP;
 
     public String getOperateIP() {
-        return OperateIP;
+        return operateIP;
     }
 
     public void setOperateIP(String operateIP) {
-        OperateIP = operateIP;
+        this.operateIP = operateIP;
     }
 }

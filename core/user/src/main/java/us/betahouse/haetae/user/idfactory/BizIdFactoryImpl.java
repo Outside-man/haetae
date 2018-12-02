@@ -28,7 +28,7 @@ public class BizIdFactoryImpl implements BizIdFactory {
     /**
      * 随机器
      */
-    private static Random random = new Random();
+    private final static Random random = new Random();
 
     @Override
     public String getUserId() {
@@ -155,7 +155,7 @@ public class BizIdFactoryImpl implements BizIdFactory {
         if (length <= 0) {
             throw new IllegalArgumentException("截取长度非法");
         }
-        String numStr = String.valueOf(random.nextInt(100000000));
+        String numStr = String.valueOf(random.nextInt(RANDOM_RANGE));
         return getLengthString(numStr, length);
     }
 
