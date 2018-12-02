@@ -1,5 +1,8 @@
 server:
   port: 8000
+  ssl:
+    key-store:
+    key-store-password:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
