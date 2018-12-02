@@ -201,7 +201,7 @@ public class ActivityServiceImpl implements ActivityService {
                 if (StringUtils.isNotBlank(activityPermId)) {
                     List<String> userIds = permManager.getPermUsers(activityPermId);
                     // 保留两个权限 其他都移除
-                    permManager.batchUsersUnbindPerms(buildUnbindRequest(activityPermId, CollectionUtils.subList(userIds, 2)));
+                    permManager.batchUsersUnbindPerms(buildUnbindRequest(activityPermId, CollectionUtils.subSuffixList(userIds, 2)));
                 }
                 systemFinishActivities.add(activityRepoService.updateActivity(activityBO));
             }

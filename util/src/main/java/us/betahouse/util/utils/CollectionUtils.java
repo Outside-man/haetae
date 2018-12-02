@@ -78,19 +78,35 @@ public class CollectionUtils {
     /**
      * 列表保留长度 还是原数组
      *
-     * @param listresult
-     * @param lenth
+     * @param list result
+     * @param length
      * @param <T>
      * @return
      */
-    public static <T> List<T> subList(List<T> list, int lenth) {
+    public static <T> List<T> subList(List<T> list, int length) {
         List<T> result = (List<T>) copy(list);
-        if (result.size() <= lenth) {
+        if (result.size() <= length) {
             return result;
         }
-        return result.subList(0, lenth);
+        return result.subList(0, length);
     }
 
+
+    /**
+     * 列表保留长度 还是原数组(从尾部)
+     *
+     * @param list result
+     * @param length
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> subSuffixList(List<T> list, int length) {
+        List<T> result = (List<T>) copy(list);
+        if (result.size() <= length) {
+            return result;
+        }
+        return result.subList(result.size()-1-length, length);
+    }
     /**
      * 集合深度克隆, 不建议直接使用
      *
