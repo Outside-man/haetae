@@ -105,7 +105,7 @@ public class CollectionUtils {
         if (result.size() <= length) {
             return result;
         }
-        return result.subList(result.size()-1-length, length);
+        return result.subList(result.size()-length, result.size());
     }
     /**
      * 集合深度克隆, 不建议直接使用
