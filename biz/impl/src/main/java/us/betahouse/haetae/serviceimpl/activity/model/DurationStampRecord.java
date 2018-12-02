@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**
- * 志愿活动记录
+ * 存在时长的活动记录
  *
  * @author dango.yxm
  * @version : VolunteerActivityStampRecord.java 2018/11/26 10:42 PM dango.yxm

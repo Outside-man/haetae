@@ -9,6 +9,8 @@ import us.betahouse.haetae.activity.model.PositionRecordBO;
 import java.util.List;
 
 /**
+ * 履历仓储服务
+ *
  * @author MessiahJK
  * @version : PositionRecordRepoService.java 2018/11/17 20:02 MessiahJK
  */

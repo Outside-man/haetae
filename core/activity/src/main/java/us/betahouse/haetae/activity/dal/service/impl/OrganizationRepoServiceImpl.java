@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * 组织仓储服务实现
+ *
  * @author MessiahJK
  * @version : OrganizationRepoServiceImpl.java 2018/11/18 16:40 MessiahJK
  */

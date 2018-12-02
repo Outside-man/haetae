@@ -132,7 +132,7 @@ public class ActivityController {
                 if (StringUtils.isNotBlank(request.getState())) {
                     builder.withState(request.getState());
                 }
-
+                //todo
                 if(StringUtils.isNotBlank(request.getTerm())){
 
                 }
@@ -168,7 +168,6 @@ public class ActivityController {
                 // 强校验操作类型
                 ActivityOperationEnum operation = ActivityOperationEnum.getByCode(request.getOperation());
                 AssertUtil.assertNotNull(operation, "操作类型不存在");
-
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()

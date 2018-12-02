@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * 履历仓储服务实现
+ *
  * @author MessiahJK
  * @version : PositionRecordRepoServiceImpl.java 2018/11/18 19:38 MessiahJK
  */

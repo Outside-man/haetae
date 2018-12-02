@@ -9,6 +9,8 @@ import us.betahouse.haetae.activity.model.ActivityRecordBO;
 import java.util.List;
 
 /**
+ * 活动记录仓储服务
+ *
  * @author MessiahJK
  * @version : ActivityRecordRepoService.java 2018/11/17 20:00 MessiahJK
  */

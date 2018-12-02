@@ -155,7 +155,7 @@ public class ActivityStampController {
     }
 
     /**
-     * 校园活动盖章 添加盖章员
+     * 校园活动盖章 获取盖章员
      *
      * @param request
      * @param httpServletRequest

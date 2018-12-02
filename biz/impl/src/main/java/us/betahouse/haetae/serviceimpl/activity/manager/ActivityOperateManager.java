@@ -31,7 +31,7 @@ public class ActivityOperateManager {
 
 
         ActivityOperationEnum operation = ActivityOperationEnum.getByCode(request.getOperation());
-        AssertUtil.assertNotNull(operation, "不是应该有效的操作指令");
+        AssertUtil.assertNotNull(operation, "不是有效的操作指令");
         // 分发处理
         return operateMap.get(operation.getCode()).operate(request.getActivityId(), request.getVerifyUserId());
     }

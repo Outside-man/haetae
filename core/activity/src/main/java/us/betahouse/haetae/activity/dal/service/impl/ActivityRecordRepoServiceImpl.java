@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * 活动记录仓储服务实现
+ *
  * @author MessiahJK
  * @version : ActivityRecordRepoServiceImpl.java 2018/11/18 12:06 MessiahJK
  */
