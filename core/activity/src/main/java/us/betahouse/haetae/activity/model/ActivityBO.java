@@ -130,6 +130,8 @@ public class ActivityBO extends ToString {
                 return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
             case SCHOOL_ACTIVITY:
                 return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
+            case LECTURE_ACTIVITY:
+                return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.nowIsBetween(start, end);
             default:
                 return false;
         }
@@ -159,6 +161,8 @@ public class ActivityBO extends ToString {
             case VOLUNTEER_ACTIVITY:
                 return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && end.before(new Date());
             case SCHOOL_ACTIVITY:
+                return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && end.before(new Date());
+            case LECTURE_ACTIVITY:
                 return StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && end.before(new Date());
             default:
                 return false;
