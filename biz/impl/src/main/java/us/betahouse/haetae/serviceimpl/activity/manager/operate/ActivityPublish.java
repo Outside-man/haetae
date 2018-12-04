@@ -50,6 +50,8 @@ public class ActivityPublish extends CommonActivityOperate {
         switch (activityType) {
             case SCHOOL_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
+            case LECTURE_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
             case VOLUNTEER_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
             case PRACTICE_ACTIVITY:

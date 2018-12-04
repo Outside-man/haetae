@@ -52,6 +52,7 @@
         <property name="stampServices">
             <map>
                 <entry key="schoolActivity" value-ref="schoolActivityStampService"/>
+                <entry key="lectureActivity" value-ref="schoolActivityStampService"/>
                 <entry key="practiceActivity" value-ref="practiceActivityStampService"/>
                 <entry key="volunteerActivity" value-ref="volunteerActivityStampService"/>
                 <entry key="volunteerWork" value-ref="volunteerWorkStampService"/>

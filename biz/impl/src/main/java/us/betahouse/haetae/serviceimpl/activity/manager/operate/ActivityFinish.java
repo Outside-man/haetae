@@ -65,6 +65,8 @@ public class ActivityFinish extends CommonActivityOperate {
         switch (activityType) {
             case SCHOOL_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
+            case LECTURE_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
             case VOLUNTEER_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_FINISH);
             case PRACTICE_ACTIVITY:

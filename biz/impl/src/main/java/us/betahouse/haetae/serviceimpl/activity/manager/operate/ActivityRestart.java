@@ -50,6 +50,8 @@ public class ActivityRestart extends CommonActivityOperate {
         switch (activityType) {
             case SCHOOL_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
+            case LECTURE_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
             case VOLUNTEER_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
             case PRACTICE_ACTIVITY:

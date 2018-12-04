@@ -57,6 +57,8 @@ public class ActivityCancel extends CommonActivityOperate {
         switch (activityType) {
             case SCHOOL_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_CREATE);
+            case LECTURE_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_CREATE);
             case VOLUNTEER_ACTIVITY:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_CREATE);
             case PRACTICE_ACTIVITY:

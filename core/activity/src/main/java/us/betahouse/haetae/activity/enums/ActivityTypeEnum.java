@@ -16,6 +16,8 @@ public enum ActivityTypeEnum {
 
     SCHOOL_ACTIVITY("schoolActivity", "校园活动"),
 
+    LECTURE_ACTIVITY("lectureActivity", "讲座活动"),
+
     VOLUNTEER_ACTIVITY("volunteerActivity", "志愿活动"),
 
     PRACTICE_ACTIVITY("practiceActivity", "实践活动"),
