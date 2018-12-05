@@ -73,7 +73,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         List<String> notStampStuIds = new ArrayList<>();
 
         // 盖章的userIds
-        List<String> userIds = new ArrayList<>();
+        Set<String> userIds = new HashSet<>();
         for (String stuId : request.getStuIds()) {
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
             if (userInfoBO == null) {
@@ -82,7 +82,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 userIds.add(userInfoBO.getUserId());
             }
         }
-        stampManager.batchStamp(request, userIds);
+        stampManager.batchStamp(request, new ArrayList<>(userIds));
         return notStampStuIds;
     }
 

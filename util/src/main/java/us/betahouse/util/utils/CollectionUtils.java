@@ -8,9 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -93,7 +91,7 @@ public class CollectionUtils {
 
 
     /**
-     * 列表保留长度 还是原数组(从尾部)
+     * 列表保留长度 删去尾部
      *
      * @param list result
      * @param length
@@ -103,9 +101,9 @@ public class CollectionUtils {
     public static <T> List<T> subSuffixList(List<T> list, int length) {
         List<T> result = (List<T>) copy(list);
         if (result.size() <= length) {
-            return result;
+            return Collections.emptyList();
         }
-        return result.subList(result.size()-length, result.size());
+        return result.subList(length, result.size());
     }
     /**
      * 集合深度克隆, 不建议直接使用
