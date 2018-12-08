@@ -55,4 +55,12 @@ public interface ActivityRecordService {
      * @return
      */
     List<ActivityBO> fetchStampMission(ActivityStampRequest request, OperateContext context);
+
+    /**
+     * 导入盖章
+     *
+     * @param url
+     * @return 未盖上章的id
+     */
+    List<String> importStamp(String url);
 }

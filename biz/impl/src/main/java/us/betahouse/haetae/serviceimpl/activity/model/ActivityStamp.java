@@ -103,6 +103,7 @@ public class ActivityStamp extends ActivityRecordBO {
         this.score = score;
     }
 
+    @Override
     public void setTime(Integer time) {
         super.setTime(time);
         this.activityTime = String.format("%.1f", time / TIME_CONVERT);

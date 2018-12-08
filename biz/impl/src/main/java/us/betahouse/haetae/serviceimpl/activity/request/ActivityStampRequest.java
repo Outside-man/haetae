@@ -22,6 +22,8 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     private List<String> stuIds;
 
+    private String localURL;
+
     @Override
     public String getVerifyUserId() {
         return getScannerUserId();
@@ -42,4 +44,12 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
     public void setVolunteerWorkName(String volunteerWorkName) {
         putExtInfo(ActivityRecordExtInfoKey.VOLUNTEER_WORK_NAME, volunteerWorkName);
     }
+    public String getLocalURL() {
+        return localURL;
+    }
+
+    public void setLocalURL(String localURL) {
+        this.localURL = localURL;
+    }
+
 }

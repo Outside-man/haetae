@@ -17,6 +17,7 @@ import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampImportTemplateEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
@@ -30,6 +31,7 @@ import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.CsvUtil;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.*;
@@ -152,6 +154,38 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         }
         List<ActivityBO> activityMission = activityRepoService.queryActivityByActivityIds(activityIds);
         return CollectionUtils.toStream(activityMission).filter(ActivityBO::canStamp).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> importStamp(String url) {
+        String[][] csv=CsvUtil.getWithHeader(url);
+        AssertUtil.assertEquals(csv[0].length, 4);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.SCANNER.getDesc(), csv[0][2]);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(),csv[0][3]);
+        ActivityStampRequest request=new ActivityStampRequest();
+        ActivityBO activityBO=activityRepoService.queryActivityByActivityName(csv[1][3]);
+        request.setActivityId(activityBO.getActivityId());
+        // 没有盖章成功的学号
+        List<String> notStampStuIds = new ArrayList<>();
+        List<String> stuIds=new ArrayList<>();
+        for(int i=1;i<csv.length;i++){
+            stuIds.add(csv[i][1]);
+        }
+        // 盖章的userIds
+        Set<String> userIds = new HashSet<>();
+        for (String stuId : stuIds) {
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
+            if (userInfoBO == null) {
+                notStampStuIds.add(stuId);
+            } else {
+                userIds.add(userInfoBO.getUserId());
+            }
+        }
+        request.setScannerUserId("201812010040554783180001201835");
+        stampManager.batchStamp(request, new ArrayList<>(userIds));
+        return notStampStuIds;
     }
 
     /**

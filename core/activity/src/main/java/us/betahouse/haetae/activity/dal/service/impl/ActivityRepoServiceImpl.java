@@ -162,6 +162,11 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ActivityBO queryActivityByActivityName(String name) {
+        return convert(activityDORepo.findByActivityName(name));
+    }
+
     /**
      * 活动DO2BO
      *
