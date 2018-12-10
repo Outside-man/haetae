@@ -24,6 +24,7 @@ import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -184,6 +185,8 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
             }
         }
         request.setScannerUserId("201812010040554783180001201835");
+        request.setStatus("ENABLE");
+        request.setTerm(TermUtil.getNowTerm());
         stampManager.batchStamp(request, new ArrayList<>(userIds));
         return notStampStuIds;
     }

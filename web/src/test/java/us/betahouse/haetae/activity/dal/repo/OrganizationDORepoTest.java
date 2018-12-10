@@ -36,4 +36,11 @@ public class OrganizationDORepoTest {
         }
         organizationDORepo.saveAll(list);
     }
+    @Test
+    public void save(){
+        OrganizationDO organizationDO=new OrganizationDO();
+        organizationDO.setOrganizationName("团学办公室");
+        organizationDO.setOrganizationId(activityBizFactory.getOrganizationId());
+        organizationDORepo.save(organizationDO);
+    }
 }

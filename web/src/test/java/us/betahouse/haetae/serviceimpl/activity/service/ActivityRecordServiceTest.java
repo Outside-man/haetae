@@ -19,7 +19,7 @@ public class ActivityRecordServiceTest {
     @Test
     public void importStamp() {
         //C:\Users\j10k\Documents\Tencent Files\1033161038\FileRecv\第一届课达杯手绘大赛-数据导入.csv
-        String url="";
+        String url="C:\\Users\\j10k\\Documents\\Tencent Files\\1033161038\\FileRecv\\第一届课达杯手绘大赛-数据导入.csv";
         List<String> ls=activityRecordService.importStamp(url);
         for(String str:ls) {
             System.out.println(str);
