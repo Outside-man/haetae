@@ -163,10 +163,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         AssertUtil.assertEquals(csv[0].length, 4);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.SCANNER.getDesc(), csv[0][2]);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(),csv[0][3]);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(),csv[0][2]);
         ActivityStampRequest request=new ActivityStampRequest();
-        ActivityBO activityBO=activityRepoService.queryActivityByActivityName(csv[1][3]);
+        ActivityBO activityBO=activityRepoService.queryActivityByActivityName(csv[1][2]);
         request.setActivityId(activityBO.getActivityId());
         // 没有盖章成功的学号
         List<String> notStampStuIds = new ArrayList<>();
@@ -184,12 +183,15 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 userIds.add(userInfoBO.getUserId());
             }
         }
+        //systemId
         request.setScannerUserId("201812010040554783180001201835");
         request.setStatus("ENABLE");
         request.setTerm(TermUtil.getNowTerm());
         stampManager.batchStamp(request, new ArrayList<>(userIds));
         return notStampStuIds;
     }
+
+
 
     /**
      * 校验盖章权限

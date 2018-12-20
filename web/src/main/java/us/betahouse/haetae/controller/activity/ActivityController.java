@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.ActivityBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -30,6 +31,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -125,7 +127,8 @@ public class ActivityController {
             public Result<List<ActivityBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-
+                //todo
+                //type page
                 ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
 
                 // 填充状态选择条件
@@ -136,8 +139,13 @@ public class ActivityController {
                 if(StringUtils.isNotBlank(request.getTerm())){
 
                 }
+                List<ActivityBO> activityBOList=new ArrayList<>();
+                for(ActivityBO activityBO:activityService.findAll(builder.build(), context)){
+                    if(!ActivityTypeEnum.PRACTICE_ACTIVITY.getCode().equals(activityBO.getType())){
+                        activityBOList.add(activityBO);
+                    }
+                }
 
-                List<ActivityBO> activityBOList = activityService.findAll(builder.build(), context);
                 return RestResultUtil.buildSuccessResult(activityBOList, "获取活动列表成功");
             }
         });

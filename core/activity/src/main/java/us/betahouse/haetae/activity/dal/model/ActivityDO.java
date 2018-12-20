@@ -33,7 +33,7 @@ public class ActivityDO extends BaseDO{
     /**
      * 活动名
      */
-    @Column(name = "activity_name",length = 32)
+    @Column(name = "activity_name",length = 64)
     private String activityName;
 
     /**

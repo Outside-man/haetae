@@ -127,4 +127,18 @@ public class CollectionUtils {
         }
         return result;
     }
+
+    /**
+     * List去重
+     *
+     * @param list
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static List removeDuplicate(List list) {
+        HashSet h = new HashSet(list);
+        list.clear();
+        list.addAll(h);
+        return list;
+    }
 }

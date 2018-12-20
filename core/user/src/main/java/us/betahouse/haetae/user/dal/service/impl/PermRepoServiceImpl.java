@@ -286,6 +286,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 绑定的用户角色
         List<UserBO> bindUsers = CollectionUtils.toStream(userDOList)
                 .filter(Objects::nonNull)
+
                 .map(EntityConverter::convert).collect(Collectors.toList());
 
         // 查询已经绑定的权限

@@ -37,40 +37,25 @@ public class ActivityDORepoTest {
     private ActivityService activityService;
 
     @Test
-    public void importit(){
-        List<ActivityDO> list=new ArrayList<>();
-        String filepath="C:\\Users\\j10k\\Desktop\\11\\sc_activity.csv";
+    public void importit() throws ParseException {
+        String filepath="C:\\Users\\j10k\\Desktop\\活动.csv";
         String[][] csv=CsvUtil.getWithoutHeader(filepath);
-        for(int i=0;i<csv.length;i++){
+        for(int i=1;i<csv.length;i++){
             //22/11/2018 10:43:09.463
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
-            Date date= null;
-            try {
-                date = sdf.parse(csv[i][12]);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Calendar calendar=Calendar.getInstance();
-            calendar.setTime(date);
-            calendar.add(Calendar.HOUR, 2);
-            Date end=calendar.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date date= sdf.parse(csv[i][2]);
+            Date end = sdf.parse(csv[i][3]);
             ActivityManagerRequestBuilder builder= ActivityManagerRequestBuilder.getInstance()
                     .withUserId("201812010040554783180001201835")
-                    .withActivityName(csv[i][1])
-                    .withOrganizationMessage(csv[i][5])
+                    .withActivityName(csv[i][0])
+                    .withOrganizationMessage("青年志愿者协会")
                     .withStart(date.getTime())
                     .withEnd(end.getTime())
                     .withTerm(TermUtil.getNowTerm())
                     // 以下是可选参数
                     // 描述
-                    .withDescription(csv[i][9])
-                    // 分数
-                    .withScore(Long.valueOf(csv[i][2]));
-            if(csv[i][7].equals("xyhd")){
-                builder.withType(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode());
-            }else{
-                builder.withType(ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode());
-            }
+                    .withDescription("2018暑期社会实践")
+                    .withType(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode());
             activityService.create(builder.build(), new OperateContext());
         }
     }

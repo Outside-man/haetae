@@ -63,4 +63,6 @@ public interface ActivityRecordService {
      * @return 未盖上章的id
      */
     List<String> importStamp(String url);
+
+
 }
