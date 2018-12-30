@@ -11,6 +11,8 @@ import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 import java.util.List;
 
 /**
+ * 活动记录仓储
+ *
  * @author MessiahJK
  * @version : ActivityRecordDORepo.java 2018/11/17 15:44 MessiahJK
  */
@@ -54,9 +56,19 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
 
     /**
      * 获取 用户的活动 记录
+     *
      * @param activity
      * @param userIds
      * @return
      */
     List<ActivityRecordDO> findAllByActivityIdAndUserIdIn(String activity, List<String> userIds);
+
+    /**
+     * 获取用户 指定学期的所有活动记录
+     *
+     * @param userId
+     * @param term
+     * @return
+     */
+    List<ActivityRecordDO> findAllByUserIdAndTerm(String userId, String term);
 }

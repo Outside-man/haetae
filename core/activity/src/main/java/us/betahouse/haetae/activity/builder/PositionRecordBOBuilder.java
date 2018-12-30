@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.builder;
 
-import us.betahouse.haetae.activity.model.PositionRecordBO;
+import us.betahouse.haetae.activity.model.basic.PositionRecordBO;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -12,7 +12,7 @@ import us.betahouse.haetae.activity.dal.model.PositionRecordDO;
 import us.betahouse.haetae.activity.dal.repo.PositionRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.PositionRecordRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
-import us.betahouse.haetae.activity.model.PositionRecordBO;
+import us.betahouse.haetae.activity.model.basic.PositionRecordBO;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;

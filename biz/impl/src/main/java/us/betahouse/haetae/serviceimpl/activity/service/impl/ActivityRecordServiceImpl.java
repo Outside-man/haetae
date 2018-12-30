@@ -10,15 +10,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
-import us.betahouse.haetae.activity.model.ActivityBO;
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampImportTemplateEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
@@ -159,18 +161,18 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     public List<String> importStamp(String url) {
-        String[][] csv=CsvUtil.getWithHeader(url);
+        String[][] csv = CsvUtil.getWithHeader(url);
 //        AssertUtil.assertEquals(csv[0].length, 4);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(),csv[0][2]);
-        ActivityStampRequest request=new ActivityStampRequest();
-        ActivityBO activityBO=activityRepoService.queryActivityByActivityName(csv[1][2]);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][2]);
+        ActivityStampRequest request = new ActivityStampRequest();
+        ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[1][2]);
         request.setActivityId(activityBO.getActivityId());
         // 没有盖章成功的学号
         List<String> notStampStuIds = new ArrayList<>();
-        List<String> stuIds=new ArrayList<>();
-        for(int i=1;i<csv.length;i++){
+        List<String> stuIds = new ArrayList<>();
+        for (int i = 1; i < csv.length; i++) {
             stuIds.add(csv[i][1]);
         }
         // 盖章的userIds
@@ -191,6 +193,53 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         return notStampStuIds;
     }
 
+    @Override
+    public ActivityRecordStatistics fetchUserRecordStatistics(String userId, String term) {
+        UserInfoBO userInfo = userInfoRepoService.queryUserInfoByUserId(userId);
+        AssertUtil.assertNotNull(userInfo, "统计活动记录的用户不存在");
+
+        // 组装基础信息
+        ActivityRecordStatistics recordStatistics = new ActivityRecordStatistics();
+        recordStatistics.setUserId(userId);
+        recordStatistics.setStuId(userInfo.getStuId());
+        recordStatistics.setRealName(userInfo.getRealName());
+
+        // 组装统计信息
+        List<ActivityRecordBO> activityRecords;
+        // 判断是否传入学期
+        if (StringUtils.isBlank(term)) {
+            activityRecords = activityRecordManager.findByUserId(userId);
+        } else {
+            activityRecords = activityRecordManager.findByUserIdAndTerm(userId, term);
+        }
+        parseActivityRecordStatistics(recordStatistics, activityRecords);
+        return recordStatistics;
+    }
+
+    /**
+     * 处理 统计结果
+     *
+     * @param recordStatistics
+     * @param activityRecords
+     * @return
+     */
+    private ActivityRecordStatistics parseActivityRecordStatistics(ActivityRecordStatistics recordStatistics, List<ActivityRecordBO> activityRecords) {
+        // 构建统计结果
+        recordStatistics.initStatisticsKey();
+        // 将用户的所有记录统计
+        for (ActivityRecordBO activityRecord : activityRecords) {
+            recordStatistics.addStatistics(activityRecord.getType());
+
+            // 志愿和义工需要统计时长
+            boolean needCountTime = StringUtils.equals(activityRecord.getType(), ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode())
+                    || StringUtils.equals(activityRecord.getType(), ActivityTypeEnum.VOLUNTEER_WORK.getCode());
+            // 记录时长不为空 才会统计进去
+            if (needCountTime && activityRecord.getTime() != null) {
+                recordStatistics.addStatisticsTime(activityRecord.getType(), activityRecord.getTime());
+            }
+        }
+        return recordStatistics;
+    }
 
 
     /**

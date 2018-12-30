@@ -4,8 +4,8 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.builder;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.util.utils.AssertUtil;
 

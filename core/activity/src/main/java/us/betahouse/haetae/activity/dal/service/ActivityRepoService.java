@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 
 import java.util.List;
 

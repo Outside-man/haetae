@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;

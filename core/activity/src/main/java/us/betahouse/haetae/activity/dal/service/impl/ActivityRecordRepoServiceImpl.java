@@ -12,7 +12,7 @@ import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;
@@ -61,6 +61,15 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
     @Override
     public List<ActivityRecordBO> queryActivityRecordByUserId(String userId) {
         List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.findByUserId(userId);
+        return CollectionUtils.toStream(activityRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ActivityRecordBO> queryActivityRecordByUserIdAndTerm(String userId, String term) {
+        List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.findAllByUserIdAndTerm(userId, term);
         return CollectionUtils.toStream(activityRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;

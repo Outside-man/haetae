@@ -10,7 +10,7 @@ import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;

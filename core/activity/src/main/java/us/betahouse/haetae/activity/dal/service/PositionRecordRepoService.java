@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
-import us.betahouse.haetae.activity.model.PositionRecordBO;
+import us.betahouse.haetae.activity.model.basic.PositionRecordBO;
 
 import java.util.List;
 

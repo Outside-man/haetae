@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.manager;
 
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 
 import java.util.List;
@@ -24,6 +24,14 @@ public interface ActivityRecordManager {
      * @return
      */
     List<ActivityRecordBO> findByUserId(String userId);
+
+    /**
+     * 通过用户id查询活动记录
+     * @param userId
+     * @param term
+     * @return
+     */
+    List<ActivityRecordBO> findByUserIdAndTerm(String userId, String term);
 
     /**
      * 通过用户id和类型查找活动记录

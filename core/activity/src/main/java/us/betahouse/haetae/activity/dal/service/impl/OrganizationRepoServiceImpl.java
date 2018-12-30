@@ -12,7 +12,7 @@ import us.betahouse.haetae.activity.dal.model.OrganizationDO;
 import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
-import us.betahouse.haetae.activity.model.OrganizationBO;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.operate;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 import us.betahouse.util.common.ToString;
 

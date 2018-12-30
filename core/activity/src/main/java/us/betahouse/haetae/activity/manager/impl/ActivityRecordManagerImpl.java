@@ -10,7 +10,7 @@ import us.betahouse.haetae.activity.builder.ActivityRecordBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.util.utils.AssertUtil;
 
@@ -40,6 +40,11 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     @Override
     public List<ActivityRecordBO> findByUserId(String userId) {
         return activityRecordRepoService.queryActivityRecordByUserId(userId);
+    }
+
+    @Override
+    public List<ActivityRecordBO> findByUserIdAndTerm(String userId, String term) {
+        return activityRecordRepoService.queryActivityRecordByUserIdAndTerm(userId, term);
     }
 
     /**

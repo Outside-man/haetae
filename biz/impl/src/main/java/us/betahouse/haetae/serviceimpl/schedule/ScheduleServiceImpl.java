@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;

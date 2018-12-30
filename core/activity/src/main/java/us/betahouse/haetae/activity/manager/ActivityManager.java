@@ -5,7 +5,7 @@
 package us.betahouse.haetae.activity.manager;
 
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 
 import java.util.List;

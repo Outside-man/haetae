@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.builder;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 
 import java.util.Date;
 import java.util.HashMap;

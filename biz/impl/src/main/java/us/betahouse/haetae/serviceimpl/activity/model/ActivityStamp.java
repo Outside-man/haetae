@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.model;
 
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 
 import java.util.Date;
 

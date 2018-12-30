@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import us.betahouse.haetae.activity.model.OrganizationBO;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;

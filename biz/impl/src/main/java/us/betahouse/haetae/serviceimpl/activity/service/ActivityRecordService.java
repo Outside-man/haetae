@@ -4,7 +4,8 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -64,5 +65,21 @@ public interface ActivityRecordService {
      */
     List<String> importStamp(String url);
 
+    /**
+     * 统计用户活动记录
+     *
+     * @param userId
+     * @param term
+     * @return
+     */
+    ActivityRecordStatistics fetchUserRecordStatistics(String userId, String term);
 
+    /**
+     * 统计用户活动记录
+     * @param userId
+     * @return
+     */
+    default ActivityRecordStatistics fetchUserRecordStatistics(String userId) {
+        return fetchUserRecordStatistics(userId, null);
+    }
 }

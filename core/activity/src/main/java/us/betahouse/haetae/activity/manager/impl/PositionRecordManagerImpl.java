@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.service.PositionRecordRepoService;
 import us.betahouse.haetae.activity.manager.PositionRecordManager;
-import us.betahouse.haetae.activity.model.PositionRecordBO;
+import us.betahouse.haetae.activity.model.basic.PositionRecordBO;
 
 import java.util.List;
 

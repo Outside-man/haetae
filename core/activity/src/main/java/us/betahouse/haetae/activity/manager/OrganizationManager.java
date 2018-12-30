@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.manager;
 
-import us.betahouse.haetae.activity.model.OrganizationBO;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;

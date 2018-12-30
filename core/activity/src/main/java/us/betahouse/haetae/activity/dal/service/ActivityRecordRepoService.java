@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
-import us.betahouse.haetae.activity.model.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 
 import java.util.List;
 
@@ -30,6 +30,14 @@ public interface ActivityRecordRepoService {
      * @return
      */
     List<ActivityRecordBO> queryActivityRecordByUserId(String userId);
+
+    /**
+     * 通过用户id查询活动记录
+     *
+     * @param userId
+     * @return
+     */
+    List<ActivityRecordBO> queryActivityRecordByUserIdAndTerm(String userId, String term);
 
     /**
      * 通过用户id和活动类型查询活动记录

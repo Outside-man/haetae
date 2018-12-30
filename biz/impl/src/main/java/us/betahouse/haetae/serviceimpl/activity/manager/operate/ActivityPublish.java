@@ -7,7 +7,7 @@ package us.betahouse.haetae.serviceimpl.activity.manager.operate;
 import org.apache.commons.lang.StringUtils;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 import us.betahouse.util.enums.CommonResultCode;

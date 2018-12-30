@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.manager.OrganizationManager;
-import us.betahouse.haetae.activity.model.OrganizationBO;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 
 import java.util.List;
 

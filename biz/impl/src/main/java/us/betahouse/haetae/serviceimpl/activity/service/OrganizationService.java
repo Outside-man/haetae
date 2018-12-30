@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
-import us.betahouse.haetae.activity.model.OrganizationBO;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
 import java.util.List;

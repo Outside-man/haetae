@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.activity.model;
+package us.betahouse.haetae.activity.model.basic;
 
 import org.apache.commons.lang.StringUtils;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;

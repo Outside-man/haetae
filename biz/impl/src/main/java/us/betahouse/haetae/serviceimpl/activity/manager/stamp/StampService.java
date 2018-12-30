@@ -6,7 +6,7 @@ package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;

@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.manager;
 
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.operate.ActivityOperate;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;

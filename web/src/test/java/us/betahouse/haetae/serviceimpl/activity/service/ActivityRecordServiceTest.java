@@ -9,6 +9,7 @@ import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.serviceimpl.activity.constant.GradesConstant;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
@@ -90,5 +91,15 @@ public class ActivityRecordServiceTest {
             }
         }
         System.out.println(notStampStuIds.size());
+    }
+
+    @Test
+    public void fetchUserRecordStatistics() {
+        ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics("201811302142241446120001201817");
+        System.out.println(activityRecordStatistics);
+    }
+
+    @Test
+    public void fetchUserRecordStatistics1() {
     }
 }

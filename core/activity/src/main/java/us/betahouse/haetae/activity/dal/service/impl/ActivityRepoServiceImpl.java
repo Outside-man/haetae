@@ -14,7 +14,7 @@ import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;

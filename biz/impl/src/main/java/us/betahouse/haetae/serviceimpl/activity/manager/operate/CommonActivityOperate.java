@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
-import us.betahouse.haetae.activity.model.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
