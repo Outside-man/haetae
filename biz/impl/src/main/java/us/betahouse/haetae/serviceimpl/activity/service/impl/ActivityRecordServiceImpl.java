@@ -160,7 +160,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Override
     public List<String> importStamp(String url) {
         String[][] csv=CsvUtil.getWithHeader(url);
-        AssertUtil.assertEquals(csv[0].length, 4);
+//        AssertUtil.assertEquals(csv[0].length, 4);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(),csv[0][2]);
