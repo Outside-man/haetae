@@ -24,6 +24,7 @@
         <module>core/activity</module>
         <module>biz/impl</module>
         <module>web</module>
+        <module>core/asset</module>
     </modules>
 
     <dependencyManagement>
