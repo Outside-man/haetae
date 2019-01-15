@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.idfactory;
 
@@ -15,18 +15,21 @@ public interface BizIdFactory {
 
     /**
      * 生成用户id
+     *
      * @return
      */
     String getUserId();
 
     /**
      * 生成角色id
+     *
      * @return
      */
     String getRoleId();
 
     /**
      * 生成用户角色关联关系id
+     *
      * @param roleId
      * @param userId
      * @return
@@ -35,12 +38,14 @@ public interface BizIdFactory {
 
     /**
      * 生成权限id
+     *
      * @return
      */
     String getPermId();
 
     /**
      * 生成角色权限关联关系id
+     *
      * @param roleId
      * @param permId
      * @return
@@ -49,6 +54,7 @@ public interface BizIdFactory {
 
     /**
      * 生成用户权限关联关系id
+     *
      * @param userId
      * @param permId
      * @return
@@ -57,6 +63,7 @@ public interface BizIdFactory {
 
     /**
      * 生成用户信息id
+     *
      * @param userId
      * @return
      */

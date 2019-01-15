@@ -33,7 +33,7 @@ public class UserRepoServiceTest {
         System.out.println(userBO);
     }
 
-    private UserBO buildUserBO(){
+    private UserBO buildUserBO() {
         UserBO userBO = new UserBO();
         userBO.setUserId("123456789");
         userBO.setUserName("aaa");

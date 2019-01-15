@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.validate;
 
@@ -33,6 +33,7 @@ public class PasswordStrengthValidator implements Validator<UserManageRequest> {
         AssertUtil.assertStringNotBlank(request.getPassword(), "密码不能为空");
         AssertUtil.assertTrue(parsePasswordStrength(request.getPassword()) >= PASSWORD_STRENGTH, "密码强度过弱");
     }
+
     /**
      * 密码强度等级计算
      *

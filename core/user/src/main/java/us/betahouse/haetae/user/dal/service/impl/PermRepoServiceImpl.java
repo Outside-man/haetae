@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
@@ -414,7 +414,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     @Override
     public PermBO initPerm(PermBO permBO) {
         PermDO permDO = permDORepo.findByPermType(permBO.getPermType());
-        if(permDO == null) {
+        if (permDO == null) {
             if (StringUtils.isBlank(permBO.getPermId())) {
                 permBO.setPermId(userBizIdFactory.getPermId());
             }

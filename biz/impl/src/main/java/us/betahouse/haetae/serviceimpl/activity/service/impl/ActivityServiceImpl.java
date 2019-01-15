@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
@@ -219,7 +219,7 @@ public class ActivityServiceImpl implements ActivityService {
      * @return
      */
     private PermManageRequest buildUnbindRequest(String permId, List<String> userIds) {
-        PermManageRequest  permManageRequest= new PermManageRequest();
+        PermManageRequest permManageRequest = new PermManageRequest();
         permManageRequest.setPermId(permId);
         permManageRequest.setUserIds(userIds);
         return permManageRequest;

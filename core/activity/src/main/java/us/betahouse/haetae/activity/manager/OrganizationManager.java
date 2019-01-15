@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.manager;
 
@@ -17,6 +17,7 @@ import java.util.List;
 public interface OrganizationManager {
     /**
      * 查询所有组织信息
+     *
      * @return
      */
     List<OrganizationBO> findAll();

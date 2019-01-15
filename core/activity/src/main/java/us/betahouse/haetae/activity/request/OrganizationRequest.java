@@ -1,11 +1,12 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.request;
 
 /**
  * 组织管理请求
+ *
  * @author MessiahJK
  * @version : OrganizationRequest.java 2018/11/22 16:35 MessiahJK
  */

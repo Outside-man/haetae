@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.repo;
 
@@ -17,9 +17,10 @@ import java.util.List;
  * @version : PositionRecordDORepo.java 2018/11/17 15:45 MessiahJK
  */
 @Repository
-public interface PositionRecordDORepo extends JpaRepository<PositionRecordDO,Long> {
+public interface PositionRecordDORepo extends JpaRepository<PositionRecordDO, Long> {
     /**
      * 通过学号查询履历
+     *
      * @param userId
      * @return
      */
@@ -27,6 +28,7 @@ public interface PositionRecordDORepo extends JpaRepository<PositionRecordDO,Lon
 
     /**
      * 通过组织id查询履历
+     *
      * @param organizationId
      * @return
      */

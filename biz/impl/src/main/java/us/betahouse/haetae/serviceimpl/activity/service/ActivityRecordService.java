@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
@@ -76,6 +76,7 @@ public interface ActivityRecordService {
 
     /**
      * 统计用户活动记录
+     *
      * @param userId
      * @return
      */

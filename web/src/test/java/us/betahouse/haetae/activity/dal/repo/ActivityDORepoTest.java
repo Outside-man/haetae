@@ -38,14 +38,14 @@ public class ActivityDORepoTest {
 
     @Test
     public void importit() throws ParseException {
-        String filepath="C:\\Users\\j10k\\Desktop\\活动.csv";
-        String[][] csv=CsvUtil.getWithHeader(filepath);
-        for(int i=1;i<csv.length;i++){
+        String filepath = "C:\\Users\\j10k\\Desktop\\活动.csv";
+        String[][] csv = CsvUtil.getWithHeader(filepath);
+        for (int i = 1; i < csv.length; i++) {
             //22/11/2018 10:43:09.463
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-            Date date= sdf.parse(csv[i][2]);
+            Date date = sdf.parse(csv[i][2]);
             Date end = sdf.parse(csv[i][3]);
-            ActivityManagerRequestBuilder builder= ActivityManagerRequestBuilder.getInstance()
+            ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance()
                     .withUserId("201812010040554783180001201835")
                     .withActivityName(csv[i][0])
                     .withOrganizationMessage("青年志愿者协会")

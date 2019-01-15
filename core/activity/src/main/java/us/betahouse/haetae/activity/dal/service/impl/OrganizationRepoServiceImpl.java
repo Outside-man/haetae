@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service.impl;
 
@@ -45,7 +45,7 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
      */
     @Override
     public List<OrganizationBO> queryAllOrganization() {
-        List<OrganizationDO> organizationDOList=organizationDORepo.findAll();
+        List<OrganizationDO> organizationDOList = organizationDORepo.findAll();
         return CollectionUtils.toStream(organizationDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -71,7 +71,7 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
      */
     @Override
     public OrganizationBO createOrganization(OrganizationBO organizationBO) {
-        if(StringUtils.isBlank(organizationBO.getOrganizationId())){
+        if (StringUtils.isBlank(organizationBO.getOrganizationId())) {
             organizationBO.setOrganizationId(activityBizFactory.getOrganizationId());
         }
         return convert(organizationDORepo.save(convert(organizationBO)));
@@ -88,11 +88,11 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
      * @param organizationBO
      * @return
      */
-    private OrganizationDO convert(OrganizationBO organizationBO){
-        if(organizationBO==null){
+    private OrganizationDO convert(OrganizationBO organizationBO) {
+        if (organizationBO == null) {
             return null;
         }
-        OrganizationDO organizationDO=new OrganizationDO();
+        OrganizationDO organizationDO = new OrganizationDO();
         organizationDO.setOrganizationId(organizationBO.getOrganizationId());
         organizationDO.setOrganizationName(organizationBO.getOrganizationName());
         organizationDO.setExtInfo(JSON.toJSONString(organizationBO.getExtInfo()));
@@ -106,11 +106,11 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private OrganizationBO convert(OrganizationDO organizationDO){
+    private OrganizationBO convert(OrganizationDO organizationDO) {
         if (organizationDO == null) {
             return null;
         }
-        OrganizationBO organizationBO=new OrganizationBO();
+        OrganizationBO organizationBO = new OrganizationBO();
         organizationBO.setOrganizationId(organizationDO.getOrganizationId());
         organizationBO.setOrganizationName(organizationDO.getOrganizationName());
         organizationBO.setExtInfo(JSON.parseObject(organizationDO.getExtInfo(), Map.class));

@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.enums;
 
@@ -18,11 +18,9 @@ public enum ActivityOperationEnum {
 
     PUBLISH("publish", "发布"),
 
-    FINISH("finish","结束"),
+    FINISH("finish", "结束"),
 
-    RESTART("restart","重启"),
-
-    ;
+    RESTART("restart", "重启"),;
 
     public static ActivityOperationEnum getByCode(String code) {
         if (StringUtils.isNotBlank(code)) {

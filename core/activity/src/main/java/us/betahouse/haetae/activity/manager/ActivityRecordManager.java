@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.manager;
 
@@ -27,6 +27,7 @@ public interface ActivityRecordManager {
 
     /**
      * 通过用户id查询活动记录
+     *
      * @param userId
      * @param term
      * @return

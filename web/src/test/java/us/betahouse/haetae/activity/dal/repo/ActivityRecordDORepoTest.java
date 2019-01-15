@@ -33,21 +33,22 @@ public class ActivityRecordDORepoTest {
     UserInfoDORepo userInfoDORepo;
     @Autowired
     private BizIdFactory activityBizFactory;
+
     @Test
-    public void importit(){
-        String filepath="C:\\Users\\j10k\\Desktop\\11\\sc_user_activity.csv";
-        String csv[][]=CsvUtil.getWithoutHeader(filepath);
-        for(int i=0;i<csv.length;i++){
+    public void importit() {
+        String filepath = "C:\\Users\\j10k\\Desktop\\11\\sc_user_activity.csv";
+        String csv[][] = CsvUtil.getWithoutHeader(filepath);
+        for (int i = 0; i < csv.length; i++) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date date= null;
+            Date date = null;
             try {
                 date = sdf.parse(csv[i][8]);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            ActivityRecordDO activityRecordDO=new ActivityRecordDO();
+            ActivityRecordDO activityRecordDO = new ActivityRecordDO();
             activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[i][4]).getActivityId());
-            System.out.println(i+" "+csv[i][1]);
+            System.out.println(i + " " + csv[i][1]);
             activityRecordDO.setUserId(userInfoDORepo.findByStuId(csv[i][1]).getUserId());
             activityRecordDO.setScannerUserId(userInfoDORepo.findByStuId(csv[i][2]).getUserId());
             activityRecordDO.setTerm(TermUtil.getNowTerm());

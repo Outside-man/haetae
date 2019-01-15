@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.request;
 
@@ -44,6 +44,7 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
     public void setVolunteerWorkName(String volunteerWorkName) {
         putExtInfo(ActivityRecordExtInfoKey.VOLUNTEER_WORK_NAME, volunteerWorkName);
     }
+
     public String getLocalURL() {
         return localURL;
     }

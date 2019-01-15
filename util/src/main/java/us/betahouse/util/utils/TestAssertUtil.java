@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.util.utils;
 
@@ -23,6 +23,7 @@ public class TestAssertUtil {
 
     /**
      * 断言测试case会抛出指定异常
+     *
      * @param excClass
      * @param testCase
      */

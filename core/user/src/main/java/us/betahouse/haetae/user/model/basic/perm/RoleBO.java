@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.model.basic.perm;
 
@@ -28,6 +28,7 @@ public class RoleBO extends ToString {
 
     /**
      * 角色码
+     *
      * @see RoleCode
      */
     @NotBlank

@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.idfactory;
 
@@ -24,8 +24,7 @@ public enum IdTypeEnum {
 
     USER_PERM_RELATION_ID("0006", "用户权限关联id"),
 
-    USER_INFO_ID("0007", "用户信息id"),
-    ;
+    USER_INFO_ID("0007", "用户信息id"),;
 
     /**
      * 业务id

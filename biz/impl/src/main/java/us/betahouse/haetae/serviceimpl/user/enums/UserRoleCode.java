@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.user.enums;
 
@@ -28,9 +28,7 @@ public enum UserRoleCode implements RoleCode {
     /**
      * 非学生用户
      */
-    NOT_STUDENT("NOT_STUDENT", "非学生用户"),
-
-    ;
+    NOT_STUDENT("NOT_STUDENT", "非学生用户"),;
 
     public static UserRoleCode getByCode(String code) {
         if (StringUtils.isBlank(code)) {

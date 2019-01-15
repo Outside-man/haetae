@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.operate;
 
@@ -24,6 +24,7 @@ public interface ActivityOperate {
 
     /**
      * 活动操作
+     *
      * @param activityId
      * @param userId
      * @return

@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.request;
 
@@ -17,10 +17,12 @@ public class OrganizationManagerRequest extends OrganizationRequest implements V
      * 用户id
      */
     private String userId;
+
     @Override
     public String getVerifyUserId() {
         return getUserId();
     }
+
     public String getUserId() {
         return userId;
     }

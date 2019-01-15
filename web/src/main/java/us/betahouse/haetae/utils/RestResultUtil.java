@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.utils;
 
@@ -151,7 +151,7 @@ public class RestResultUtil {
         result.setRetry(false);
         if (resultCode != RestResultCode.SUCCESS) {
             result.setSuccess(true);
-        }else{
+        } else {
             result.setSuccess(false);
         }
         return result;

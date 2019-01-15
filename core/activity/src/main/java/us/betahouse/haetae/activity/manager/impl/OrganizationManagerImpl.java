@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.manager.impl;
 
@@ -20,8 +20,10 @@ import java.util.List;
 public class OrganizationManagerImpl implements OrganizationManager {
     @Autowired
     private OrganizationRepoService organizationRepoService;
+
     /**
      * 查询所有组织信息
+     *
      * @return
      */
     @Override

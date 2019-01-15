@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service;
 
@@ -34,6 +34,7 @@ public interface PositionRecordRepoService {
 
     /**
      * 通过组织id查询履历
+     *
      * @param organizationId
      * @return
      */

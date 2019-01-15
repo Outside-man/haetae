@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.model;
 
@@ -21,7 +21,7 @@ import javax.persistence.*;
                 @Index(name = "uk_organization_id", columnList = "organization_id", unique = true),
                 @Index(name = "uk_organization_name", columnList = "organization_name", unique = true)
         })
-public class OrganizationDO extends BaseDO{
+public class OrganizationDO extends BaseDO {
 
     private static final long serialVersionUID = 4653981489828967152L;
 

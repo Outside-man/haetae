@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.enums;
 
@@ -23,8 +23,9 @@ public enum ActivityStampImportTemplateEnum {
     }
 
     String desc;
-    ActivityStampImportTemplateEnum(String desc){
-        this.desc=desc;
+
+    ActivityStampImportTemplateEnum(String desc) {
+        this.desc = desc;
     }
 
 }

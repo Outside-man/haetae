@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.idfactory;
 
@@ -18,8 +18,7 @@ public enum IdTypeEnum {
 
     Organization_ID("1003", "组织id"),
 
-    Position_Record_ID("1004", "履历id"),
-    ;
+    Position_Record_ID("1004", "履历id"),;
 
 
     /**

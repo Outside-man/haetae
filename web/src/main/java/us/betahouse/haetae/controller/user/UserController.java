@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.controller.user;
 
@@ -169,6 +169,7 @@ public class UserController {
 
     /**
      * 用户登出
+     *
      * @param request
      * @param httpServletRequest
      * @return

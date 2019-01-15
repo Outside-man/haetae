@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.util.utils;
 
@@ -18,34 +18,35 @@ import java.io.*;
 public class Fileutil {
     public class UploadUtil {
 
-        private static final String BASE_PATH="";
+        private static final String BASE_PATH = "";
         /**
          * 默认路径
          */
-        private static final String DEFAULT_FILE_PATH="file/default/";
+        private static final String DEFAULT_FILE_PATH = "file/default/";
 
         /**
          * 图片默认路径
          */
-        private static final String IMAGE_FILE_PATH="file/image/";
+        private static final String IMAGE_FILE_PATH = "file/image/";
 
         /**
          * 视频默认路径
          */
-        private static final String VIDEO_FILE_PATH="file/video/";
+        private static final String VIDEO_FILE_PATH = "file/video/";
 
 
         /**
          * 上传文件
-         * @param file 文件
+         *
+         * @param file     文件
          * @param filePath 文件路径
          * @return Result
          */
         public Result upload(MultipartFile file, String filePath) {
-            String filename=file.getOriginalFilename();
+            String filename = file.getOriginalFilename();
             if (!file.isEmpty()) {
                 try {
-                    File newFile=new File(BASE_PATH+filePath+filename);
+                    File newFile = new File(BASE_PATH + filePath + filename);
                     //如果不存在文件路径则创建
                     try {
                         if (!newFile.getParentFile().exists()) {
@@ -56,7 +57,7 @@ public class Fileutil {
                                 e.printStackTrace();
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                     BufferedOutputStream out = new BufferedOutputStream(
@@ -68,14 +69,14 @@ public class Fileutil {
 
 
                     e.printStackTrace();
-                    return new Result(false,FileEnums.UPLOAD_FALSE.name(),e.getMessage());
+                    return new Result(false, FileEnums.UPLOAD_FALSE.name(), e.getMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return new Result(false,FileEnums.UPLOAD_FALSE.name(),e.getMessage());
+                    return new Result(false, FileEnums.UPLOAD_FALSE.name(), e.getMessage());
                 }
-                return new Result(true,FileEnums.UPLOAD_SUCCESSFUL.name(),filePath+filename);
+                return new Result(true, FileEnums.UPLOAD_SUCCESSFUL.name(), filePath + filename);
             } else {
-                return new Result(false,FileEnums.UPLOAD_NULL.name(),"文件为空");
+                return new Result(false, FileEnums.UPLOAD_NULL.name(), "文件为空");
             }
         }
 
@@ -86,7 +87,7 @@ public class Fileutil {
          * @param file 文件
          * @return Result
          */
-        public Result upload( MultipartFile file ) {
+        public Result upload(MultipartFile file) {
             return upload(file, DEFAULT_FILE_PATH);
         }
 
@@ -96,7 +97,7 @@ public class Fileutil {
          * @param file
          * @return
          */
-        public Result uploadImage( MultipartFile file ) {
+        public Result uploadImage(MultipartFile file) {
             return upload(file, IMAGE_FILE_PATH);
         }
 
@@ -106,7 +107,7 @@ public class Fileutil {
          * @param file
          * @return
          */
-        public Result uploadWithoutPath(MultipartFile file){
+        public Result uploadWithoutPath(MultipartFile file) {
             return upload(file, "");
         }
     }

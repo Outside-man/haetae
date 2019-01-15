@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.controller.activity;
 
@@ -136,12 +136,12 @@ public class ActivityController {
                     builder.withState(request.getState());
                 }
                 //todo
-                if(StringUtils.isNotBlank(request.getTerm())){
+                if (StringUtils.isNotBlank(request.getTerm())) {
 
                 }
-                List<ActivityBO> activityBOList=new ArrayList<>();
-                for(ActivityBO activityBO:activityService.findAll(builder.build(), context)){
-                    if(!ActivityTypeEnum.PRACTICE_ACTIVITY.getCode().equals(activityBO.getType())){
+                List<ActivityBO> activityBOList = new ArrayList<>();
+                for (ActivityBO activityBO : activityService.findAll(builder.build(), context)) {
+                    if (!ActivityTypeEnum.PRACTICE_ACTIVITY.getCode().equals(activityBO.getType())) {
                         activityBOList.add(activityBO);
                     }
                 }

@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.controller.activity;
 
@@ -59,7 +59,7 @@ public class PositionRecordController {
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @GetMapping(value = "/userId")
-    public Result<List<PositionRecordBO>> getByUserId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<PositionRecordBO>> getByUserId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取个人履历", request, new RestOperateCallBack<List<PositionRecordBO>>() {
             @Override
             public void before() {
@@ -71,13 +71,13 @@ public class PositionRecordController {
             public Result<List<PositionRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                PositionRecordManagerRequest positionRecordManagerRequest=PositionRecordManagerRequestBuilder.getInstance()
+                PositionRecordManagerRequest positionRecordManagerRequest = PositionRecordManagerRequestBuilder.getInstance()
                         .withPositionRecordId(request.getPositionRecordId())
                         .withUserId(request.getUserId())
                         .build();
 
-                List<PositionRecordBO> positionRecordBOList=positionRecordService.findByUserId(positionRecordManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(positionRecordBOList,"获取个人履历成功");
+                List<PositionRecordBO> positionRecordBOList = positionRecordService.findByUserId(positionRecordManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(positionRecordBOList, "获取个人履历成功");
             }
         });
     }
@@ -92,7 +92,7 @@ public class PositionRecordController {
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @GetMapping(value = "/organizationId")
-    public Result<List<PositionRecordBO>> getByOrganizationId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<PositionRecordBO>> getByOrganizationId(PositionRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取组织人员列表", request, new RestOperateCallBack<List<PositionRecordBO>>() {
             @Override
             public void before() {
@@ -104,12 +104,12 @@ public class PositionRecordController {
             public Result<List<PositionRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                PositionRecordManagerRequest positionRecordManagerRequest=PositionRecordManagerRequestBuilder.getInstance()
+                PositionRecordManagerRequest positionRecordManagerRequest = PositionRecordManagerRequestBuilder.getInstance()
                         .withPositionRecordId(request.getPositionRecordId())
                         .withOrganizationId(request.getOrganizationId())
                         .build();
-                List<PositionRecordBO> positionRecordBOList=positionRecordService.findByOrganizationId(positionRecordManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(positionRecordBOList,"获取组织人员列表成功");
+                List<PositionRecordBO> positionRecordBOList = positionRecordService.findByOrganizationId(positionRecordManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(positionRecordBOList, "获取组织人员列表成功");
             }
         });
     }

@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.util.utils;
 
@@ -20,6 +20,7 @@ public class CharsetEncodingUtil {
 
     /**
      * 是否可以转换成GBK编码
+     *
      * @param str
      * @return
      */

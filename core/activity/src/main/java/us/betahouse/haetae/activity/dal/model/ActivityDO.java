@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.model;
 
@@ -21,7 +21,7 @@ import java.util.Date;
         indexes = {
                 @Index(name = "uk_activity_id", columnList = "activity_id", unique = true)
         })
-public class ActivityDO extends BaseDO{
+public class ActivityDO extends BaseDO {
 
     private static final long serialVersionUID = -6722889286261263968L;
     /**
@@ -33,7 +33,7 @@ public class ActivityDO extends BaseDO{
     /**
      * 活动名
      */
-    @Column(name = "activity_name",length = 64)
+    @Column(name = "activity_name", length = 64)
     private String activityName;
 
     /**
@@ -45,7 +45,7 @@ public class ActivityDO extends BaseDO{
     /**
      * 单位信息
      */
-    @Column(name ="organization_message" ,length = 256)
+    @Column(name = "organization_message", length = 256)
     private String organizationMessage;
 
     /**
@@ -76,7 +76,7 @@ public class ActivityDO extends BaseDO{
     /**
      * 活动创建者
      */
-    @Column(name ="user_id")
+    @Column(name = "user_id")
     private String userId;
 
     /**

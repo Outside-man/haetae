@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.controller.activity;
 
@@ -268,21 +268,22 @@ public class ActivityStampController {
     @GetMapping(value = "/count")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<Long> count(StamperRequest request, HttpServletRequest httpServletRequest){
+    public Result<Long> count(StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取已盖活动章数", request, new RestOperateCallBack<Long>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
             }
+
             @Override
             public Result<Long> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityStampRequestBuilder builder=ActivityStampRequestBuilder.getInstance()
+                ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
                         .withActivityId(request.getActivityId());
-                Long ans=activityRecordService.countByActivityId(builder.build(), context);
+                Long ans = activityRecordService.countByActivityId(builder.build(), context);
                 return RestResultUtil.buildSuccessResult(ans, "获取已盖活动章数成功");
             }
         });

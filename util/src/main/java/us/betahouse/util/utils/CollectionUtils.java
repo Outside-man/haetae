@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.util.utils;
 
@@ -76,7 +76,7 @@ public class CollectionUtils {
     /**
      * 列表保留长度 还是原数组
      *
-     * @param list result
+     * @param list   result
      * @param length
      * @param <T>
      * @return
@@ -93,7 +93,7 @@ public class CollectionUtils {
     /**
      * 列表保留长度 删去尾部
      *
-     * @param list result
+     * @param list   result
      * @param length
      * @param <T>
      * @return
@@ -105,6 +105,7 @@ public class CollectionUtils {
         }
         return result.subList(length, result.size());
     }
+
     /**
      * 集合深度克隆, 不建议直接使用
      *

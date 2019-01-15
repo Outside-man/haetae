@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.builder;
 
@@ -28,7 +28,7 @@ public final class ActivityRequestBuilder {
      */
     private String type;
     /**
-     *请求id
+     * 请求id
      */
     private String requestId;
     /**

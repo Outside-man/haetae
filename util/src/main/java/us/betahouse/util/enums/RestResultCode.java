@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.util.enums;
 
@@ -28,10 +28,7 @@ public enum RestResultCode implements ResultCode {
 
     NOT_FOUND("404", "请求内容不存在"),
 
-    SYSTEM_ERROR("500", "系统异常"),
-
-
-    ;
+    SYSTEM_ERROR("500", "系统异常"),;
 
     private String code;
 

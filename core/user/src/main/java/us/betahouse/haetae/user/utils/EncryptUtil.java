@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.utils;
 
@@ -37,10 +37,11 @@ public class EncryptUtil {
 
     /**
      * 获取token
+     *
      * @param bizStr
      * @return
      */
-    public static String getToken(String bizStr){
+    public static String getToken(String bizStr) {
         return MD5Util.MD5(bizStr);
     }
 }

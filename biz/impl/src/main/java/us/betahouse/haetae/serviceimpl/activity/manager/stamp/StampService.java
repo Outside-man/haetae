@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
@@ -30,7 +30,7 @@ public interface StampService {
      * @param activityStamps
      * @return
      */
-    default StampRecord parseStampRecord(List<ActivityStamp> activityStamps){
+    default StampRecord parseStampRecord(List<ActivityStamp> activityStamps) {
         return new StampRecord(activityStamps);
     }
 

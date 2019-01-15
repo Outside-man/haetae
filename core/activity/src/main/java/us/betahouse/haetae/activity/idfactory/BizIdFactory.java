@@ -1,13 +1,12 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.idfactory;
 
 import org.springframework.stereotype.Service;
 
 /**
- *
  * 业务id生成工厂
  * 生成32位业务id
  *
@@ -19,24 +18,28 @@ public interface BizIdFactory {
 
     /**
      * 生成活动id
+     *
      * @return
      */
     String getActivityId();
 
     /**
      * 生成活动记录id
+     *
      * @return
      */
     String getActivityRecordId();
 
     /**
      * 生成组织id
+     *
      * @return
      */
     String getOrganizationId();
 
     /**
      * 生成履历id
+     *
      * @return
      */
     String getPositionRecordId();

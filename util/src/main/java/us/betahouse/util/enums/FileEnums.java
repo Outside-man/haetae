@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.util.enums;
 
@@ -29,8 +29,9 @@ public enum FileEnums {
      * 描述
      */
     String desc;
-    public static FileEnums getByCode(String name){
-        for(FileEnums fileEnum:values()){
+
+    public static FileEnums getByCode(String name) {
+        for (FileEnums fileEnum : values()) {
             if (!StringUtils.equals(name, fileEnum.name())) {
                 continue;
             }
@@ -38,8 +39,9 @@ public enum FileEnums {
         }
         return null;
     }
-    FileEnums(String desc){
-        this.desc=desc;
+
+    FileEnums(String desc) {
+        this.desc = desc;
     }
 
     public String getDesc() {
@@ -50,7 +52,7 @@ public enum FileEnums {
         this.desc = desc;
     }
 
-    public String getCode(){
+    public String getCode() {
         return this.name();
     }
 }

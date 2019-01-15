@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.manager.stamp;
 
@@ -22,7 +22,7 @@ import java.util.List;
  * @author dango.yxm
  * @version : SchoolActivityStampService.java 2018/11/27 1:50 AM dango.yxm
  */
-public class VolunteerActivityStampService  implements StampService {
+public class VolunteerActivityStampService implements StampService {
 
     @Autowired
     protected ActivityRecordManager activityRecordManager;

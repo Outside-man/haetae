@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.model;
 
@@ -33,12 +33,12 @@ public class ActivityRecordStatistics extends ToString {
     /**
      * 志愿时长
      */
-    private final static String VOLUNTEER_ACTIVITY_TIME = "volunteerActivityTime";
+    final static String VOLUNTEER_ACTIVITY_TIME = "volunteerActivityTime";
 
     /**
      * 义工时长
      */
-    private final static String VOLUNTEER_WORK_TIME = "volunteerWorkTime";
+    final static String VOLUNTEER_WORK_TIME = "volunteerWorkTime";
 
     /**
      * 用户id
@@ -65,7 +65,7 @@ public class ActivityRecordStatistics extends ToString {
      */
     public void initStatisticsKey() {
         if (statistics == null) {
-            statistics = new HashMap<>();
+            statistics = new HashMap<>(16);
         }
         // 将活动类型都放入
         for (ActivityTypeEnum activityType : ActivityTypeEnum.values()) {

@@ -23,22 +23,24 @@ public class OrganizationDORepoTest {
 
     @Autowired
     private BizIdFactory activityBizFactory;
+
     @Test
-    public void importit(){
-        String filepath="C:\\Users\\j10k\\Desktop\\11\\name.csv";
-        String[][] csv=CsvUtil.getWithoutHeader(filepath);
-        List<OrganizationDO> list=new ArrayList<>();
-        for(int i=0;i<csv.length;i++){
-            OrganizationDO organizationDO=new OrganizationDO();
+    public void importit() {
+        String filepath = "C:\\Users\\j10k\\Desktop\\11\\name.csv";
+        String[][] csv = CsvUtil.getWithoutHeader(filepath);
+        List<OrganizationDO> list = new ArrayList<>();
+        for (int i = 0; i < csv.length; i++) {
+            OrganizationDO organizationDO = new OrganizationDO();
             organizationDO.setOrganizationName(csv[i][0]);
             organizationDO.setOrganizationId(activityBizFactory.getOrganizationId());
             list.add(organizationDO);
         }
         organizationDORepo.saveAll(list);
     }
+
     @Test
-    public void save(){
-        OrganizationDO organizationDO=new OrganizationDO();
+    public void save() {
+        OrganizationDO organizationDO = new OrganizationDO();
         organizationDO.setOrganizationName("团学办公室");
         organizationDO.setOrganizationId(activityBizFactory.getOrganizationId());
         organizationDORepo.save(organizationDO);

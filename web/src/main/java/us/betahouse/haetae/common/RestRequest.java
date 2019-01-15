@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.common;
 
@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * rest请求
+ *
  * @author dango.yxm
  * @version : RestRequest.java 2018/11/25 12:22 AM dango.yxm
  */

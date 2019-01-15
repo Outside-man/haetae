@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.dal.service;
 
@@ -70,6 +70,7 @@ public interface ActivityRepoService {
 
     /**
      * 通过活动名查询活动
+     *
      * @param name
      * @return
      */

@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.model.basic;
 
@@ -74,15 +74,15 @@ public class ActivityRecordBO extends ToString {
     private Date createTime;
 
 
-    public String fetchExtInfo(String key){
-        if(extInfo == null){
+    public String fetchExtInfo(String key) {
+        if (extInfo == null) {
             return null;
         }
         return extInfo.get(key);
     }
 
-    public void putExtInfo(String key, String value){
-        if(extInfo == null){
+    public void putExtInfo(String key, String value) {
+        if (extInfo == null) {
             extInfo = new HashMap<>();
         }
         extInfo.put(key, value);

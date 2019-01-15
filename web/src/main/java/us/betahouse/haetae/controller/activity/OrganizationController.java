@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.controller.activity;
 
@@ -48,7 +48,7 @@ public class OrganizationController {
     @CheckLogin
     @GetMapping("/all")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<OrganizationBO>> getAllOrganization(OrganizationRestRequest request, HttpServletRequest httpServletRequest){
+    public Result<List<OrganizationBO>> getAllOrganization(OrganizationRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取组织列表", request, new RestOperateCallBack<List<OrganizationBO>>() {
             @Override
             public void before() {
@@ -60,8 +60,8 @@ public class OrganizationController {
             public Result<List<OrganizationBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<OrganizationBO> organizationBOList=organizationService.findAll(context);
-                return RestResultUtil.buildSuccessResult(organizationBOList,"获取组织列表成功");
+                List<OrganizationBO> organizationBOList = organizationService.findAll(context);
+                return RestResultUtil.buildSuccessResult(organizationBOList, "获取组织列表成功");
             }
         });
     }

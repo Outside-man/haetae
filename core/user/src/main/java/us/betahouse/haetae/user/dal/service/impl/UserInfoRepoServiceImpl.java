@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.dal.service.impl;
 
@@ -115,6 +115,14 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
     @Override
     public List<UserInfoBO> batchQueryByUserIds(List<String> userIds) {
         return CollectionUtils.toStream(userInfoDORepo.findAllByUserIdIn(userIds))
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserInfoBO> queryAllUser() {
+        return CollectionUtils.toStream(userInfoDORepo.findAll())
                 .filter(Objects::nonNull)
                 .map(EntityConverter::convert)
                 .collect(Collectors.toList());

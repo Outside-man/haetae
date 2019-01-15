@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
@@ -19,6 +19,7 @@ public interface OrganizationService {
 
     /**
      * 查询所有组织信息
+     *
      * @param context
      * @return
      */

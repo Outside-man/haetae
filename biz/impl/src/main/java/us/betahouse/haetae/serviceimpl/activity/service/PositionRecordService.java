@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
@@ -17,6 +17,7 @@ import java.util.List;
 public interface PositionRecordService {
     /**
      * 通过用户id 查找履历
+     *
      * @param request
      * @param context
      * @return
@@ -25,11 +26,12 @@ public interface PositionRecordService {
 
     /**
      * 通过组织id 查找组织内成员
+     *
      * @param request
      * @param context
      * @return
      */
-    List<PositionRecordBO> findByOrganizationId(PositionRecordManagerRequest request,OperateContext context);
+    List<PositionRecordBO> findByOrganizationId(PositionRecordManagerRequest request, OperateContext context);
 
 
 }

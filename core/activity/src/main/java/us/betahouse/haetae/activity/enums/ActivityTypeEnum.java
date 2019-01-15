@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.activity.enums;
 
@@ -22,8 +22,7 @@ public enum ActivityTypeEnum {
 
     PRACTICE_ACTIVITY("practiceActivity", "实践活动"),
 
-    VOLUNTEER_WORK("volunteerWork", "义工"),
-    ;
+    VOLUNTEER_WORK("volunteerWork", "义工"),;
 
     private String code;
 

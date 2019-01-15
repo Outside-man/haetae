@@ -32,7 +32,7 @@ public class UserManagerTest {
 
     @Test
     public void createManager() {
-        for(int i =1;i<=10;i++) {
+        for (int i = 1; i <= 10; i++) {
             CommonUser commonUser = userManager.create(genUserCreateRequest(i));
             System.out.println(commonUser);
             UserManageRequest request = new UserManageRequest();
@@ -46,8 +46,8 @@ public class UserManagerTest {
 
     @Test
     public void batchBindRole() {
-        List<String> userIds = Arrays.asList("201811302141542658920001201805", "201811302141587352590001201845","201811302141390794090001201864","201811302141437813470001201835", "201811302141304426900001201888");
-        for(String userId: userIds) {
+        List<String> userIds = Arrays.asList("201811302141542658920001201805", "201811302141587352590001201845", "201811302141390794090001201864", "201811302141437813470001201835", "201811302141304426900001201888");
+        for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
             request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
@@ -56,7 +56,7 @@ public class UserManagerTest {
     }
 
     @Test
-    public void batchBindRolByCode(){
+    public void batchBindRolByCode() {
 
     }
 
@@ -77,10 +77,10 @@ public class UserManagerTest {
         request.setRequestId(UUID.randomUUID().toString());
         UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
                 .withEnrollDate(new Date())
-                .withRealName("beta测试账号_全权限_"+index)
+                .withRealName("beta测试账号_全权限_" + index)
                 .withSex("女")
-                .withStuId("0"+index);
-        request.setUsername("beta"+index);
+                .withStuId("0" + index);
+        request.setUsername("beta" + index);
         request.setPassword("a111111");
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;

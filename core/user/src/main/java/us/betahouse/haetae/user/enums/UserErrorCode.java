@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.enums;
 
@@ -19,9 +19,7 @@ public enum UserErrorCode implements ResultCode {
 
     USER_NOT_EXIST(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不存在"),
 
-    USER_NOT_LOGIN(CommonResultCode.UNAUTHORIZED.getCode(), "用户未登陆"),
-
-    ;
+    USER_NOT_LOGIN(CommonResultCode.UNAUTHORIZED.getCode(), "用户未登陆"),;
 
     private String code;
 

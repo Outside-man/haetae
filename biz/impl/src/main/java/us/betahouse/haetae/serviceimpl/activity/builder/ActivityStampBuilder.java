@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.builder;
 
@@ -21,11 +21,11 @@ final public class ActivityStampBuilder {
 
     private ActivityBO activityBO;
 
-    public static ActivityStampBuilder getInstance(){
+    public static ActivityStampBuilder getInstance() {
         return new ActivityStampBuilder();
     }
 
-    public ActivityStamp build(){
+    public ActivityStamp build() {
         AssertUtil.assertNotNull(activityBO, "活动不存在");
         AssertUtil.assertNotNull(activityBO, "活动记录不存在");
         ActivityStamp activityStamp = new ActivityStamp();

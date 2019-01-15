@@ -1,6 +1,6 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.serviceimpl.activity.enums;
 
@@ -42,9 +42,7 @@ public enum ActivityPermTypeEnum implements PermType {
 
     VOLUNTEER_WORK_MANAGE(ActivityPermType.STAMPER_MANAGE, "盖章员管理", true),
 
-    VOLUNTEER_WORK_STAMPER(ActivityPermType.ACTIVITY_STAMPER, "活动盖章", false),
-
-    ;
+    VOLUNTEER_WORK_STAMPER(ActivityPermType.ACTIVITY_STAMPER, "活动盖章", false),;
 
     private String code;
 
