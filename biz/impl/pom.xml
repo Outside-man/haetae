@@ -22,6 +22,10 @@
             <groupId>us.betahouse</groupId>
             <artifactId>haetae-activity</artifactId>
         </dependency>
+        <dependency>
+            <groupId>us.betahouse</groupId>
+            <artifactId>haetae-asset</artifactId>
+        </dependency>
     </dependencies>
 
 
