@@ -92,6 +92,16 @@ public class ActivityRestRequest extends RestRequest {
      */
     private String term;
 
+    /**
+     * 每页条数
+     */
+    private Integer limit;
+
+    /**
+     * 页数
+     */
+    private Integer page;
+
     public String getActivityId() {
         return activityId;
     }
@@ -204,5 +214,22 @@ public class ActivityRestRequest extends RestRequest {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 }

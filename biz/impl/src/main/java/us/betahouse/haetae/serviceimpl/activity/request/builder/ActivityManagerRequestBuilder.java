@@ -29,6 +29,8 @@ public final class ActivityManagerRequestBuilder {
     private String state;
     private String operation;
     private String term;
+    private Integer page;
+    private Integer limit;
 
     private ActivityManagerRequestBuilder() {
     }
@@ -111,7 +113,14 @@ public final class ActivityManagerRequestBuilder {
         this.term = term;
         return this;
     }
-
+    public ActivityManagerRequestBuilder withPage(Integer page) {
+        this.page = page;
+        return this;
+    }
+    public ActivityManagerRequestBuilder withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
     public ActivityManagerRequest build() {
         ActivityManagerRequest activityManagerRequest = new ActivityManagerRequest();
         activityManagerRequest.setActivityId(activityId);
@@ -129,6 +138,8 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setState(state);
         activityManagerRequest.setOperation(operation);
         activityManagerRequest.setTerm(term);
+        activityManagerRequest.setPage(page);
+        activityManagerRequest.setLimit(limit);
         return activityManagerRequest;
     }
 }

@@ -9,12 +9,15 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
@@ -149,8 +152,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     }
 
     @Override
-    public ActivityBO queryActivityByActivityId(String ActivityId) {
-        return convert(activityDORepo.findByActivityId(ActivityId));
+    public ActivityBO queryActivityByActivityId(String activityId) {
+        return convert(activityDORepo.findByActivityId(activityId));
     }
 
     @Override
@@ -165,6 +168,22 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     @Override
     public ActivityBO queryActivityByActivityName(String name) {
         return convert(activityDORepo.findByActivityName(name));
+    }
+
+    @Override
+    public PageList<ActivityBO> queryActivityByTermAndStateAndTypePager(String term, String status, String type, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<ActivityBO>(activityDORepo.findAllByTermContainsAndStateContainsAndTypeContainsOrderByActivityIdDesc(pageable,term ,status ,type ),this::convert);
+    }
+
+    private Object convert(Object o) {
+        if(o instanceof ActivityDO){
+            return convert((ActivityDO)o);
+        }else if(o instanceof ActivityBO){
+            return convert((ActivityBO)o);
+        }else{
+            return null;
+        }
     }
 
     /**

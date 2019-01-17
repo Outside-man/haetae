@@ -87,6 +87,16 @@ public class ActivityRequest extends BaseRequest {
      */
     private String term;
 
+    /**
+     * 每页条数
+     */
+    private Integer limit;
+
+    /**
+     * 页数
+     */
+    private Integer page;
+
     public String getActivityId() {
         return activityId;
     }
@@ -198,4 +208,21 @@ public class ActivityRequest extends BaseRequest {
     public void setOperation(String operation) {
         this.operation = operation;
     }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
 }

@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.manager.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
@@ -11,6 +12,7 @@ import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
@@ -100,5 +102,10 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withTerm(request.getTerm())
                 .withExtInfo(request.getExtInfo());
         return activityRepoService.updateActivity(builder.build());
+    }
+
+    @Override
+    public PageList<ActivityBO> find(ActivityRequest request) {
+        return activityRepoService.queryActivityByTermAndStateAndTypePager(request.getTerm(), request.getState(), request.getType(), request.getPage(), request.getLimit());
     }
 }

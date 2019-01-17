@@ -1,9 +1,13 @@
 package us.betahouse.haetae.activity.dal.repo;
 
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
@@ -58,5 +62,40 @@ public class ActivityDORepoTest {
                     .withType(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode());
             activityService.create(builder.build(), new OperateContext());
         }
+    }
+    @Test
+    public void showTest() {
+        List<ActivityDO> activityDOList=activityDORepo.findAllByState(ActivityStateEnum.RESTARTED.getCode());
+        activityDOList.forEach(System.out::println);
+        System.out.println();
+        activityDOList=activityDORepo.findAllByStateOrderByActivityIdDesc(ActivityStateEnum.RESTARTED.getCode());
+        activityDOList.forEach(System.out::println);
+    }
+    @Test
+    public void pageTest(){
+        int page=0;
+        int limit=10;
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<ActivityDO> activityDOPage=activityDORepo.findAllByTermContainsAndStateContainsAndTypeContainsOrderByActivityIdDesc(pageable, "", "","");
+        activityDOPage.forEach(System.out::println);
+        System.out.println(activityDOPage.getTotalElements());
+        System.out.println(activityDOPage.getTotalPages());
+        System.out.println(activityDOPage.getNumber());
+        System.out.println(activityDOPage.getNumberOfElements());
+        System.out.println(activityDOPage.getSize());
+        System.out.println(activityDOPage.isFirst());
+        System.out.println(activityDOPage.isEmpty());
+        System.out.println(activityDOPage.isLast());
+        System.out.println("-------------------------------------");
+        activityDOPage=activityDORepo.findAllByTermContainsAndStateContainsAndTypeNotOrderByActivityIdDesc(pageable, "", "", ActivityTypeEnum.PRACTICE_ACTIVITY.getCode());
+        activityDOPage.forEach(System.out::println);
+        System.out.println(activityDOPage.getTotalElements());
+        System.out.println(activityDOPage.getTotalPages());
+        System.out.println(activityDOPage.getNumber());
+        System.out.println(activityDOPage.getNumberOfElements());
+        System.out.println(activityDOPage.getSize());
+        System.out.println(activityDOPage.isFirst());
+        System.out.println(activityDOPage.isEmpty());
+        System.out.println(activityDOPage.isLast());
     }
 }
