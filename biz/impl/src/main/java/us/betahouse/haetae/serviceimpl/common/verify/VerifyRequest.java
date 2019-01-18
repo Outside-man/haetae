@@ -12,5 +12,9 @@ package us.betahouse.haetae.serviceimpl.common.verify;
  */
 public interface VerifyRequest {
 
+    /**
+     * 验权id
+     * @return
+     */
     String getVerifyUserId();
 }

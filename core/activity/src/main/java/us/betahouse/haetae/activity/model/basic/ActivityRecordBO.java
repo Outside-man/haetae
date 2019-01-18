@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.model.basic;
 
+import us.betahouse.haetae.activity.enums.ActivityRecordExtInfoKey;
 import us.betahouse.util.common.ToString;
 
 import java.util.Date;
@@ -175,5 +176,12 @@ public class ActivityRecordBO extends ToString {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+    public String getScannerName() {
+        return fetchExtInfo(ActivityRecordExtInfoKey.SCANNER_NAME);
+    }
+
+    public void setScannerName(String scannerName) {
+        putExtInfo(ActivityRecordExtInfoKey.SCANNER_NAME,scannerName);
     }
 }

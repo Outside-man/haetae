@@ -2,7 +2,7 @@
   betahouse.us
   CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.serviceimpl.activity.constant;
+package us.betahouse.haetae.activity.enums;
 
 /**
  * 活动拓展字段
@@ -17,4 +17,8 @@ public class ActivityRecordExtInfoKey {
      */
     public final static String VOLUNTEER_WORK_NAME = "volunteerWorkName";
 
+    /**
+     * 盖章员姓名
+     */
+    public final static String SCANNER_NAME="scannerName";
 }

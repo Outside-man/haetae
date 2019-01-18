@@ -32,7 +32,7 @@ public interface ActivityRecordRepoService {
     List<ActivityRecordBO> queryActivityRecordByUserId(String userId);
 
     /**
-     * 通过用户id查询活动记录
+     * 通过用户id和学期查询活动记录
      *
      * @param userId
      * @return
@@ -83,4 +83,13 @@ public interface ActivityRecordRepoService {
      * @return
      */
     List<ActivityRecordBO> parseJoinUserIds(String activityId, List<String> userIds);
+
+    /**
+     * 更新扫码员姓名
+     *
+     * @param activityRecordId
+     * @param scannerName
+     * @return
+     */
+    ActivityRecordBO updateScannerName(String activityRecordId,String scannerName);
 }

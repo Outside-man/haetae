@@ -71,4 +71,12 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
      * @return
      */
     List<ActivityRecordDO> findAllByUserIdAndTerm(String userId, String term);
+
+    /**
+     * 通过活动记录id查询活动记录
+     *
+     * @param activityRecordId
+     * @return
+     */
+    ActivityRecordDO findByActivityRecordId(String activityRecordId);
 }

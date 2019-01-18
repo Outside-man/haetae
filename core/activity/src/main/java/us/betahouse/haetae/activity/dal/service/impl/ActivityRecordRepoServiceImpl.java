@@ -32,6 +32,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
     @Autowired
     private ActivityRecordDORepo activityRecordDORepo;
 
+
     /**
      * id工厂
      */
@@ -136,6 +137,14 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
                 .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ActivityRecordBO updateScannerName(String activityRecordId,String scannerName) {
+        ActivityRecordDO activityRecordDO=activityRecordDORepo.findByActivityRecordId(activityRecordId);
+        ActivityRecordBO activityRecordBO=convert(activityRecordDO);
+        activityRecordBO.setScannerName(scannerName);
+        return convert(activityRecordDORepo.save(convert(activityRecordBO)));
     }
 
     /**

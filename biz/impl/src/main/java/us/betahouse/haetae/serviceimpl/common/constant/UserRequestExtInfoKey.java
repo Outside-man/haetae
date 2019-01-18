@@ -12,6 +12,8 @@ package us.betahouse.haetae.serviceimpl.common.constant;
  */
 public class UserRequestExtInfoKey {
 
-    // 用户的新密码
+    /**
+     * 用户的新密码
+     */
     public final static String USER_NEW_PASSWORD = "USER_NEW_PASSWORD";
 }

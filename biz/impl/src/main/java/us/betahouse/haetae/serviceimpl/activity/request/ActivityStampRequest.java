@@ -5,7 +5,7 @@
 package us.betahouse.haetae.serviceimpl.activity.request;
 
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityRecordExtInfoKey;
+import us.betahouse.haetae.activity.enums.ActivityRecordExtInfoKey;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 
 import java.util.List;
@@ -43,6 +43,14 @@ public class ActivityStampRequest extends ActivityRecordRequest implements Verif
 
     public void setVolunteerWorkName(String volunteerWorkName) {
         putExtInfo(ActivityRecordExtInfoKey.VOLUNTEER_WORK_NAME, volunteerWorkName);
+    }
+
+    public String getScannerName(){
+        return fetchExtInfo(ActivityRecordExtInfoKey.SCANNER_NAME);
+    }
+
+    public void setScannerName(String scannerName){
+        putExtInfo(ActivityRecordExtInfoKey.SCANNER_NAME, scannerName);
     }
 
     public String getLocalURL() {

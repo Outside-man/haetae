@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.manager;
 
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 
@@ -69,4 +70,12 @@ public interface ActivityRecordManager {
      * @return
      */
     List<ActivityRecordBO> fetchUserActivityRecord(String userId, String activityType, String term);
+
+    /**
+     * 更新扫码员姓名
+     *
+     * @param activityRecordId
+     * @return
+     */
+    ActivityRecordBO updateScannerName(String activityRecordId,String scannerName);
 }

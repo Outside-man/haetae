@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityRecordExtInfoKey;
+import us.betahouse.haetae.activity.enums.ActivityRecordExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityStamp;
 import us.betahouse.haetae.serviceimpl.activity.model.DurationStampRecord;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;

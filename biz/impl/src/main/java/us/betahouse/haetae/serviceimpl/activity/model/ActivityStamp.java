@@ -55,6 +55,9 @@ public class ActivityStamp extends ActivityRecordBO {
      */
     private String activityTime = "0";
 
+
+
+
     public String getActivityName() {
         return activityName;
     }
@@ -112,4 +115,5 @@ public class ActivityStamp extends ActivityRecordBO {
     public String getActivityTime() {
         return activityTime;
     }
+
 }

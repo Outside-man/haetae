@@ -127,6 +127,11 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
         ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance();
         for (ActivityRecordBO record : activityRecords) {
+            if(StringUtils.isBlank(record.getScannerName())){
+                String scannerName=userInfoRepoService.queryUserInfoByUserId(record.getUserId()).getRealName();
+                activityRecordManager.updateScannerName(record.getActivityId(), scannerName);
+                record.setScannerName(scannerName);
+            }
             stampBuilder.withActivityBO(activityMap.get(record.getActivityId()))
                     .withActivityRecordBO(record);
             stamps.add(stampBuilder.build());
@@ -162,7 +167,6 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Override
     public List<String> importStamp(String url) {
         String[][] csv = CsvUtil.getWithHeader(url);
-//        AssertUtil.assertEquals(csv[0].length, 4);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][2]);

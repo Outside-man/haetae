@@ -10,6 +10,7 @@ import us.betahouse.haetae.activity.builder.ActivityRecordBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.util.utils.AssertUtil;
@@ -102,5 +103,10 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     @Override
     public List<ActivityRecordBO> fetchUserActivityRecord(String userId, String activityType, String term) {
         return activityRecordRepoService.queryUserTermActivityRecord(userId, Collections.singletonList(activityType), Collections.singletonList(term));
+    }
+
+    @Override
+    public ActivityRecordBO updateScannerName(String activityRecordId,String scannerName) {
+        return activityRecordRepoService.updateScannerName(activityRecordId, scannerName);
     }
 }
