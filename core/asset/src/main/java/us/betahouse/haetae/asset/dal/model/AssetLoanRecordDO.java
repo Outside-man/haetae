@@ -9,22 +9,27 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 /**
- * 物资基础类
- * @author yiyu.hxy
- * @version : AssetDO.java 2019/01/19 17:53 yiyu.hxy
+ * 物资借取实体类
+ * @author 10584004
+ * @version : AssetLoanRecordDO.java 2019/01/19 22:03 10584004
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "asset",
+@Table(name = "asset_loan_record",
         indexes = {
-                @Index(name = "uk_asset_id", columnList = "asset_id", unique = true)
+                @Index(name = "uk_asset_loan_id", columnList = "loan_record_id", unique = true)
         })
-public class AssetDO extends BaseDO{
+public class AssetLoanRecordDO extends BaseDO {
     private static final long serialVersionUID = -6722889286261263968L;
     /**
-    * 物资ID
-    */
-    @Column(name = "asset_id", length = 32, updatable = false)
+     * 物资借取ID
+     */
+    @Column(name = "loan_recordid", length = 32, updatable = false)
+    private String loanRecoedId;
+    /**
+     * 物资ID
+     */
+    @Column(name = "asset_id", length = 32)
     private String assetId;
     /**
      * 物资名称
@@ -32,7 +37,7 @@ public class AssetDO extends BaseDO{
     @Column(name = "asset_name", length = 32)
     private String assetName;
     /**
-     * ?状态
+     * ?
      */
     @Column(name = "status", length = 32)
     private String status;
@@ -59,6 +64,14 @@ public class AssetDO extends BaseDO{
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getLoanRecoedId() {
+        return loanRecoedId;
+    }
+
+    public void setLoanRecoedId(String loanRecoedId) {
+        this.loanRecoedId = loanRecoedId;
     }
 
     public String getAssetId() {
