@@ -1,4 +1,4 @@
-package betahouse.haetae.asset.idfactory;
+package us.betahouse.haetae.asset.idfactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.Random;
 */
 @Service("assetBizIdFactory")
 //这边注解主要作用是起一个别名方便别处导入
-public class BizIdFactoryImpl implements BizIdFactory{
+public class BizIdFactoryImpl implements BizIdFactory {
     /**
     * @Description: 随机数范围1
     * @Param:
