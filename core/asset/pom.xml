@@ -11,7 +11,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>haetae-asset</artifactId>
-    <packaging>jar</packaging>
 
     <dependencies>
 
@@ -33,12 +32,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-        </dependency>
-
-        <!--jsr 303-->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
         </dependency>
         <!-- hibernate validator-->
         <dependency>
