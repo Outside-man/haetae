@@ -15,6 +15,7 @@ import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
@@ -110,14 +111,33 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context) {
-        if (StringUtils.isBlank(request.getState())) {
-            return activityManager.findAll();
-        } else {
+    public PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context) {
+        String term="";
+        String status="";
+        String type="";
+        Integer page=0;
+        Integer limit=10;
+        if(StringUtils.isNotBlank(request.getTerm())){
+            term=request.getTerm();
+        }
+        if(StringUtils.isNotBlank(request.getState())){
             ActivityStateEnum state = ActivityStateEnum.getByCode(request.getState());
             AssertUtil.assertNotNull(state, "活动状态不存在");
-            return activityManager.findByState(state);
+            status=request.getState();
         }
+        if(StringUtils.isNotBlank(request.getType())){
+            ActivityTypeEnum typeEnum=ActivityTypeEnum.getByCode(request.getType());
+            AssertUtil.assertNotNull(typeEnum, "活动类型不存在");
+            type=request.getType();
+        }
+        if(request.getPage()!=null&&request.getPage()!=0){
+            page=request.getPage();
+        }
+        if(request.getLimit()!=null&&request.getLimit()!=0){
+            limit=request.getLimit();
+        }
+        return activityManager.find(request);
+
     }
 
     @Override

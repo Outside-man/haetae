@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 
 import java.util.Date;
 
@@ -47,5 +50,25 @@ public class ActivityRepoServiceTest {
 
     @Test
     public void queryActivityByActivityId() {
+    }
+
+    @Test
+    public void queryActivityByTermAndStateAndTypePager() {
+        String term="2018A";
+        String status=ActivityStateEnum.RESTARTED.getCode();
+        String type=ActivityTypeEnum.SCHOOL_ACTIVITY.getCode();
+        Integer page=0;
+        Integer limit=10;
+        PageList<ActivityBO> activityBOPageList=activityRepoService.queryActivityByTermAndStateAndTypePager(term, status, type, page, limit);
+        for(ActivityBO activityBO:activityBOPageList.getContent()){
+            System.out.println(activityBO);
+        }
+        System.out.println(activityBOPageList.getNumber());
+        System.out.println(activityBOPageList.getNumberOfElements());
+        System.out.println(activityBOPageList.getSize());
+        System.out.println(activityBOPageList.getTotalElements());
+        System.out.println(activityBOPageList.getTotalPages());
+        System.out.println(activityBOPageList.isEnd());
+        System.out.println(activityBOPageList.isFirst());
     }
 }

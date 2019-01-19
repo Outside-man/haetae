@@ -5,6 +5,7 @@
 package us.betahouse.haetae.activity.dal.service;
 
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 
 import java.util.List;
 
@@ -75,4 +76,16 @@ public interface ActivityRepoService {
      * @return
      */
     ActivityBO queryActivityByActivityName(String name);
+
+    /**
+     * 通过学期、状态、类型分页查询 分页
+     *
+     * @param term 学期
+     * @param status 状态
+     * @param type 类型
+     * @param page 页面
+     * @param limit 每页行数
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryActivityByTermAndStateAndTypePager(String term,String status,String type,Integer page,Integer limit);
 }

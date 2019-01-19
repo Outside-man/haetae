@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.activity.service;
 
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
@@ -35,7 +36,7 @@ public interface ActivityService {
      * @param context
      * @return
      */
-    List<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context);
+    PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context);
 
     /**
      * 更新活动

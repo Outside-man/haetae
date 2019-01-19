@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -114,8 +115,8 @@ public class ActivityController {
     @CheckLogin
     @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<ActivityBO>> getActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取活动列表", request, new RestOperateCallBack<List<ActivityBO>>() {
+    public Result<PageList<ActivityBO>> getActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
 
             @Override
             public void before() {
@@ -124,7 +125,7 @@ public class ActivityController {
             }
 
             @Override
-            public Result<List<ActivityBO>> execute() {
+            public Result<PageList<ActivityBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 //todo
@@ -135,18 +136,23 @@ public class ActivityController {
                 if (StringUtils.isNotBlank(request.getState())) {
                     builder.withState(request.getState());
                 }
-                //todo
+                // 添加学期选择条件
                 if (StringUtils.isNotBlank(request.getTerm())) {
-
+                    builder.withTerm(request.getTerm());
                 }
-                List<ActivityBO> activityBOList = new ArrayList<>();
-                for (ActivityBO activityBO : activityService.findAll(builder.build(), context)) {
-                    if (!ActivityTypeEnum.PRACTICE_ACTIVITY.getCode().equals(activityBO.getType())) {
-                        activityBOList.add(activityBO);
-                    }
+                // 添加类型选择条件
+                if(StringUtils.isNotBlank(request.getActivityType())){
+                    builder.withType(request.getActivityType());
                 }
-
-                return RestResultUtil.buildSuccessResult(activityBOList, "获取活动列表成功");
+                //添加页码
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+                //添加每页条数
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withPage(request.getLimit());
+                }
+                return RestResultUtil.buildSuccessResult(activityService.findAll(builder.build(), context), "获取活动列表成功");
             }
         });
     }

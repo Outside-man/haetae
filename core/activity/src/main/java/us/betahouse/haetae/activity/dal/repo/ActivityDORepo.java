@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.activity.dal.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
@@ -50,6 +52,13 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      */
     List<ActivityDO> findAllByState(String state);
 
+    /**
+     * 通过活动状态查找活动 按活动id逆序
+     *
+     * @param status
+     * @return
+     */
+    List<ActivityDO> findAllByStateOrderByActivityIdDesc(String status);
 
     /**
      * 通过活动ids查找活动
@@ -67,4 +76,25 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      */
     ActivityDO findByActivityName(String activityName);
 
+    /**
+     * 通过学期、状态、类型分页查询
+     *
+     * @param pageable 分页工具
+     * @param term 学期
+     * @param status 状态
+     * @param type 类型
+     * @return Page<ActivityDO>
+     */
+    Page<ActivityDO> findAllByTermContainsAndStateContainsAndTypeContainsOrderByActivityIdDesc(Pageable pageable,String term,String status,String type);
+
+    /**
+     * 通过学期、状态、类型（不包含）分页查询
+     *
+     * @param pageable 分页工具
+     * @param term 学期
+     * @param status 不包含的状态
+     * @param notType 类型
+     * @return Page<ActivityDO>
+     */
+    Page<ActivityDO> findAllByTermContainsAndStateContainsAndTypeNotOrderByActivityIdDesc(Pageable pageable,String term,String status,String notType);
 }
