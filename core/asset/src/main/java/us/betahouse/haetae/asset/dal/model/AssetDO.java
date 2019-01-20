@@ -32,7 +32,7 @@ public class AssetDO extends BaseDO{
     @Column(name = "asset_name", length = 32)
     private String assetName;
     /**
-     * ?状态
+     * 是否可借用
      */
     @Column(name = "status", length = 32)
     private String status;
