@@ -9,23 +9,23 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 /**
- * 物资借取记录实体类
+ * 物资归还记录实体类
  * @author yiyuk,hxy
- * @version : AssetLoanRecordDO.java 2019/01/19 22:03 yiyuk,hxy
+ * @version : AssetBackRecordDO.java 2019/01/20 16:40 yiyuk,hxy
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "asset_loan_record",
+@Table(name = "asset_back_record",
         indexes = {
-                @Index(name = "uk_asset_loan_id", columnList = "loan_record_id", unique = true)
+                @Index(name = "uk_asset_back_id", columnList = "back_record_id", unique = true)
         })
-public class AssetLoanRecordDO extends BaseDO {
+public class AssetBackRecordDO extends BaseDO {
     private static final long serialVersionUID = -6722889286261263968L;
     /**
-     * 物资借取记录ID
+     * 物资归还记录ID
      */
-    @Column(name = "loan_record_id", length = 32, updatable = false)
-    private String loanRecoedId;
+    @Column(name = "back_record_id", length = 32, updatable = false)
+    private String backRecoedId;
     /**
      * 物资ID
      */
@@ -37,30 +37,25 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "asset_type", length = 32)
     private String assetType;
     /**
-     * 借取时间
+     * 物资借取记录ID
      */
-    @Column(name = "loan_time", length = 32)
-    private String loanTime;
-    /**
-     * 最后一次归还时间
-     */
-    @Column(name = "back_time", length = 32)
-    private String backTime;
+    @Column(name = "loan_record_id", length = 32, updatable = false)
+    private String loanRecoedId;
     /**
      * 借取人ID
      */
     @Column(name = "user_id", length = 32)
     private String userId;
     /**
-     * ？
-     */
-    @Column(name = "status", length = 32)
-    private String status;
-    /**
      * 物资数量
      */
     @Column(name = "amount", length = 10)
     private Integer amount;
+    /**
+     * 物资种类
+     */
+    @Column(name = "type", length = 32)
+    private String type;
     /**
      * 是否全部归还
      */
@@ -71,12 +66,12 @@ public class AssetLoanRecordDO extends BaseDO {
         return serialVersionUID;
     }
 
-    public String getLoanRecoedId() {
-        return loanRecoedId;
+    public String getBackRecoedId() {
+        return backRecoedId;
     }
 
-    public void setLoanRecoedId(String loanRecoedId) {
-        this.loanRecoedId = loanRecoedId;
+    public void setBackRecoedId(String backRecoedId) {
+        this.backRecoedId = backRecoedId;
     }
 
     public String getAssetId() {
@@ -87,22 +82,6 @@ public class AssetLoanRecordDO extends BaseDO {
         this.assetId = assetId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
     public String getAssetType() {
         return assetType;
     }
@@ -111,20 +90,12 @@ public class AssetLoanRecordDO extends BaseDO {
         this.assetType = assetType;
     }
 
-    public String getLoanTime() {
-        return loanTime;
+    public String getLoanRecoedId() {
+        return loanRecoedId;
     }
 
-    public void setLoanTime(String loanTime) {
-        this.loanTime = loanTime;
-    }
-
-    public String getBackTime() {
-        return backTime;
-    }
-
-    public void setBackTime(String backTime) {
-        this.backTime = backTime;
+    public void setLoanRecoedId(String loanRecoedId) {
+        this.loanRecoedId = loanRecoedId;
     }
 
     public String getUserId() {
@@ -135,6 +106,22 @@ public class AssetLoanRecordDO extends BaseDO {
         this.userId = userId;
     }
 
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Integer getRemark() {
         return remark;
     }
@@ -142,4 +129,5 @@ public class AssetLoanRecordDO extends BaseDO {
     public void setRemark(Integer remark) {
         this.remark = remark;
     }
+
 }

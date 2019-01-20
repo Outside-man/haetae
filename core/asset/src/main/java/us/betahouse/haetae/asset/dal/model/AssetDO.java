@@ -42,7 +42,7 @@ public class AssetDO extends BaseDO{
     @Column(name = "orginazation_id", length = 32)
     private String orginazationId;
     /**
-     * 物资状态
+     * 物资种类
      */
     @Column(name = "type", length = 32)
     private String type;
