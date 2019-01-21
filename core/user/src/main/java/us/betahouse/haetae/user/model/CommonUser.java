@@ -19,6 +19,7 @@ public class CommonUser extends BasicUser {
 
     private static final long serialVersionUID = -5647855589382683224L;
 
+
     /**
      * 角色信息
      */
