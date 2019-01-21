@@ -20,7 +20,6 @@ public class UserVO extends BasicUser {
 
     private List<String> roleInfo;
 
-
     public List<String> getRoleInfo() {
         return roleInfo;
     }
