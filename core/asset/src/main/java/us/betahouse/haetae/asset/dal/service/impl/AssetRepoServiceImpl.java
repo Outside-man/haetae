@@ -1,4 +1,4 @@
-/**
+/*
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
