@@ -116,4 +116,5 @@ public class AssetDO extends BaseDO{
     public void setRemain(Integer remain) {
         this.remain = remain;
     }
+
 }
