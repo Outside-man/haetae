@@ -33,7 +33,7 @@ public class AssetRequest extends  BaseRequest  {
     /**
      * 物资所属组织id
      */
-    private String assetOrginazationId;
+    private String organizationId;
     /**
      * 物资剩余数量
      */
@@ -44,7 +44,7 @@ public class AssetRequest extends  BaseRequest  {
     private String assetType;
 
     /**
-     * \物资创建者
+     * 物资创建者
      */
     private  String userId;
 
@@ -88,12 +88,16 @@ public class AssetRequest extends  BaseRequest  {
         this.assetAmount = assetAmount;
     }
 
-    public String getAssetOrginazationId() {
-        return assetOrginazationId;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setAssetOrginazationId(String assetOrginazationId) {
-        this.assetOrginazationId = assetOrginazationId;
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
     }
 
     public String getAssetRemain() {

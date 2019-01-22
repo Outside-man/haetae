@@ -5,8 +5,8 @@
 package us.betahouse.haetae.asset.dal.repo;
 
 /**
- * @author 10584004
- * @version : AssetLoanRecordDO.java 2019/01/20 18:56 10584004
+ * @author yiyu.hxy
+ * @version : AssetLoanRecordDO.java 2019/01/20 18:56 yiyu.hxy
  */
 public interface AssetLoanRecordDO {
 }

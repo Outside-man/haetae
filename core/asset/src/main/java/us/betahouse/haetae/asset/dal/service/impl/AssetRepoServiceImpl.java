@@ -12,6 +12,8 @@ import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
+import java.util.List;
+
 /**
  * @author guofan.cp
  * @version : AssetRepoServiceImpl.java 2019/01/21 22:32 guofan.cp
@@ -32,5 +34,25 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         }
         //save 返回该对象
         return entityConverter.convert(assetDORepo.save(entityConverter.convert(assetBO)));
+    }
+
+    @Override
+    public AssetBO updateAsset(AssetBO assetBO) {
+        return null;
+    }
+
+    @Override
+    public List<AssetBO> queryAllAsset() {
+        return null;
+    }
+
+    @Override
+    public AssetBO queryAssetById(String assetId) {
+        return null;
+    }
+
+    @Override
+    public List<AssetBO> queryAssetByName(String name) {
+        return null;
     }
 }

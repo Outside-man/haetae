@@ -52,12 +52,12 @@ public class AssetBackRecordDO extends BaseDO {
     @Column(name = "amount", length = 10)
     private Integer amount;
     /**
-     * 物资种类
+     * 归还/报销
      */
     @Column(name = "type", length = 32)
     private String type;
     /**
-     * 是否全部归还
+     * 备注，用于报损时
      */
     @Column(name = "remark",length = 10)
     private Integer remark;

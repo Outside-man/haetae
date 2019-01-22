@@ -52,7 +52,7 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "user_id", length = 32)
     private String userId;
     /**
-     * ？
+     * 是否全部归还/报损
      */
     @Column(name = "status", length = 32)
     private String status;
@@ -62,7 +62,7 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "amount", length = 10)
     private Integer amount;
     /**
-     * 是否全部归还
+     * 备注，用于报损时
      */
     @Column(name = "remark",length = 10)
     private Integer remark;
