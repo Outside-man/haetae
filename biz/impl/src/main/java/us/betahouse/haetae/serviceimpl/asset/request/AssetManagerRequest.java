@@ -14,22 +14,26 @@ import java.io.Serializable;
  * @version : AssetManagerRequest.java 2019/01/21 9:13 guofan.cp
  */
 public class AssetManagerRequest extends AssetRequest implements VerifyRequest {
+
     private static final long serialVersionUID = 3245100919662928018L;
+
     private final static  String ASSET_CREATE_ID="assetStuid";
     @Override
     public String getVerifyUserId() {
         return getUserId();
     }
-    /**
-     *存入物资创建者学号
-     */
-    public void putStamperStuId(String stuId) {
-        putExtInfo(ASSET_CREATE_ID, stuId);
-    }
-    /**
-     * 取出物资创建者学号
-     */
-    public static String getAssetCreateId() {
-        return ASSET_CREATE_ID;
-    }
+//    暂时不知道有没有用先保留一下
+//    /**
+//     *存入物资创建者学号
+//     */
+//    public void putStamperStuId(String stuId) {
+//        putExtInfo(ASSET_CREATE_ID, stuId);
+//    }
+//    /**
+//     * 取出物资创建者学号
+//     */
+//    public static String getAssetCreateId() {
+//        return ASSET_CREATE_ID;
+//    }
+
 }

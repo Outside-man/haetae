@@ -36,23 +36,23 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         return entityConverter.convert(assetDORepo.save(entityConverter.convert(assetBO)));
     }
 
-    @Override
-    public AssetBO updateAsset(AssetBO assetBO) {
-        return null;
-    }
-
-    @Override
-    public List<AssetBO> queryAllAsset() {
-        return null;
-    }
-
-    @Override
-    public AssetBO queryAssetById(String assetId) {
-        return null;
-    }
-
-    @Override
-    public List<AssetBO> queryAssetByName(String name) {
-        return null;
-    }
+//    @Override
+//    public AssetBO updateAsset(AssetBO assetBO) {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<AssetBO> queryAllAsset() {
+//        return null;
+//    }
+//
+//    @Override
+//    public AssetBO queryAssetById(String assetId) {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<AssetBO> queryAssetByName(String name) {
+//        return null;
+//    }
 }

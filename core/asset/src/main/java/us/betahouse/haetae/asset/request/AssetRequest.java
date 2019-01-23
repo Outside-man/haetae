@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 物质请求管理
  *
  * @author guofan.cp
- * @version : AssetRequest.java 2019/01/20 23:21 曹鹏
+ * @version : AssetRequest.java 2019/01/20 23:21 guofan.cp
  */
 public class AssetRequest extends  BaseRequest  {
     private static final long serialVersionUID = 7597108455802717599L;
@@ -29,7 +29,7 @@ public class AssetRequest extends  BaseRequest  {
     /**
      * 物资总数量
      */
-    private String assetAmount;
+    private int  assetAmount;
     /**
      * 物资所属组织id
      */
@@ -37,7 +37,7 @@ public class AssetRequest extends  BaseRequest  {
     /**
      * 物资剩余数量
      */
-    private String assetRemain;
+    private int assetRemain;
     /**
      * 物资类别
      */
@@ -72,20 +72,14 @@ public class AssetRequest extends  BaseRequest  {
         this.assetName = assetName;
     }
 
-    public String getAssetExtInfo() {
-        return assetExtInfo;
+
+
+    public int getAssetRemain() {
+        return assetRemain;
     }
 
-    public void setAssetExtInfo(String assetExtInfo) {
-        this.assetExtInfo = assetExtInfo;
-    }
-
-    public String getAssetAmount() {
-        return assetAmount;
-    }
-
-    public void setAssetAmount(String assetAmount) {
-        this.assetAmount = assetAmount;
+    public void setAssetRemain(int assetRemain) {
+        this.assetRemain = assetRemain;
     }
 
     public static long getSerialVersionUID() {
@@ -100,12 +94,12 @@ public class AssetRequest extends  BaseRequest  {
         this.organizationId = organizationId;
     }
 
-    public String getAssetRemain() {
-        return assetRemain;
+    public int getAssetAmount() {
+        return assetAmount;
     }
 
-    public void setAssetRemain(String assetRemain) {
-        this.assetRemain = assetRemain;
+    public void setAssetAmount(int assetAmount) {
+        this.assetAmount = assetAmount;
     }
 
     public String getAssetType() {
