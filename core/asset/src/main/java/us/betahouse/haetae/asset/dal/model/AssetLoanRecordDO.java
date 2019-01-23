@@ -4,9 +4,11 @@
  */
 package us.betahouse.haetae.asset.dal.model;
 
+import com.sun.xml.internal.stream.StaxErrorReporter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 物资借取记录实体类
@@ -40,12 +42,12 @@ public class AssetLoanRecordDO extends BaseDO {
      * 借取时间
      */
     @Column(name = "loan_time", length = 32)
-    private String loanTime;
+    private Date loanTime;
     /**
      * 最后一次归还时间
      */
     @Column(name = "back_time", length = 32)
-    private String backTime;
+    private Date backTime;
     /**
      * 借取人ID
      */
@@ -64,8 +66,8 @@ public class AssetLoanRecordDO extends BaseDO {
     /**
      * 备注，用于报损时
      */
-    @Column(name = "remark",length = 10)
-    private Integer remark;
+    @Column(name = "remark",length = 32)
+    private String remark;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -111,19 +113,19 @@ public class AssetLoanRecordDO extends BaseDO {
         this.assetType = assetType;
     }
 
-    public String getLoanTime() {
+    public Date getLoanTime() {
         return loanTime;
     }
 
-    public void setLoanTime(String loanTime) {
+    public void setLoanTime(Date loanTime) {
         this.loanTime = loanTime;
     }
 
-    public String getBackTime() {
+    public Date getBackTime() {
         return backTime;
     }
 
-    public void setBackTime(String backTime) {
+    public void setBackTime(Date backTime) {
         this.backTime = backTime;
     }
 
@@ -135,11 +137,11 @@ public class AssetLoanRecordDO extends BaseDO {
         this.userId = userId;
     }
 
-    public Integer getRemark() {
+    public String getRemark() {
         return remark;
     }
 
-    public void setRemark(Integer remark) {
+    public void setRemark(String remark) {
         this.remark = remark;
     }
 }

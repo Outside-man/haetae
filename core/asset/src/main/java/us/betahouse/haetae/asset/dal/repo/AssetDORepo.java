@@ -16,7 +16,7 @@ import java.util.List;
  * @version : AssetLoanRecordDO.java 2019/01/20 18:56 yiyu.hxy
  */
 @Repository
-public interface AssetDORepo  extends JpaRepository<AssetDO, Long> {
+public interface AssetDORepo extends JpaRepository<AssetDO, Long> {
     /**
      * 通过名称查找物资
      *
@@ -30,5 +30,11 @@ public interface AssetDORepo  extends JpaRepository<AssetDO, Long> {
      * @param id
      * @return
      */
-    AssetDO findAssetById(Long id);
+    AssetDO findAssetById(String id);
+    /**
+     * 通过id确定物资是否存在
+     * @param id
+     * @return
+     */
+    boolean existAssetById(String id);
 }
