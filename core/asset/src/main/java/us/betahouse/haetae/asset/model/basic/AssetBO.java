@@ -39,9 +39,13 @@ public class AssetBO extends ToString{
      */
     private int assetMount;
     /**
-     * 物资归属组织
+     * 物资归属组织id
      */
-    private String assetOrginnazation;
+    private String assetOrginnazationId;
+    /**
+     * 物资归属组织名字
+     */
+    private String getAssetOrginnazationName;
     /**
      * 物资剩余
      */
@@ -57,7 +61,7 @@ public class AssetBO extends ToString{
     /**
      * 物资额外信息
      */
-    private Map<String ,String> extInfo=new HashMap<>();
+    private Map<String , String> extInfo=new HashMap<>();
     public  String fecthExtInfo(String key){
         if(extInfo==null) {
             return  null;
@@ -103,12 +107,20 @@ public class AssetBO extends ToString{
         this.modified = modified;
     }
 
-    public String getAssetOrginnazation() {
-        return assetOrginnazation;
+    public String getAssetOrginnazationId() {
+        return assetOrginnazationId;
     }
 
-    public void setAssetOrginnazation(String assetOrginnazation) {
-        this.assetOrginnazation = assetOrginnazation;
+    public void setAssetOrginnazationId(String assetOrginnazationId) {
+        this.assetOrginnazationId = assetOrginnazationId;
+    }
+
+    public String getGetAssetOrginnazationName() {
+        return getAssetOrginnazationName;
+    }
+
+    public void setGetAssetOrginnazationName(String getAssetOrginnazationName) {
+        this.getAssetOrginnazationName = getAssetOrginnazationName;
     }
 
     public String getAssetStatus() {

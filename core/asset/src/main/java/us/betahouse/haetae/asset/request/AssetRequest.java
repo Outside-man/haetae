@@ -33,7 +33,11 @@ public class AssetRequest extends  BaseRequest  {
     /**
      * 物资所属组织id
      */
-    private String organizationId;
+    private String assetOrganizationId;
+    /**
+     *物资所属组织名字
+     */
+    private String AssetOrganizationName;
     /**
      * 物资剩余数量
      */
@@ -42,6 +46,11 @@ public class AssetRequest extends  BaseRequest  {
      * 物资类别
      */
     private String assetType;
+
+    /**
+     *物资状态
+     */
+    private String assetStatus;
 
     /**
      * 物资创建者
@@ -72,8 +81,6 @@ public class AssetRequest extends  BaseRequest  {
         this.assetName = assetName;
     }
 
-
-
     public int getAssetRemain() {
         return assetRemain;
     }
@@ -86,12 +93,20 @@ public class AssetRequest extends  BaseRequest  {
         return serialVersionUID;
     }
 
-    public String getOrganizationId() {
-        return organizationId;
+    public String getAssetOrganizationId() {
+        return assetOrganizationId;
     }
 
-    public void setOrganizationId(String organizationId) {
-        this.organizationId = organizationId;
+    public void setAssetOrganizationId(String assetOrganizationId) {
+        this.assetOrganizationId = assetOrganizationId;
+    }
+
+    public String getAssetOrganizationName() {
+        return AssetOrganizationName;
+    }
+
+    public void setAssetOrganizationName(String assetOrganizationName) {
+        AssetOrganizationName = assetOrganizationName;
     }
 
     public int getAssetAmount() {
@@ -108,5 +123,13 @@ public class AssetRequest extends  BaseRequest  {
 
     public void setAssetType(String assetType) {
         this.assetType = assetType;
+    }
+
+    public String getAssetStatus() {
+        return assetStatus;
+    }
+
+    public void setAssetStatus(String assetStatus) {
+        this.assetStatus = assetStatus;
     }
 }

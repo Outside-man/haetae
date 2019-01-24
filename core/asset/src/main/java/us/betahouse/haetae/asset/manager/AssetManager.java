@@ -4,12 +4,20 @@
  */
 package us.betahouse.haetae.asset.manager;
 
-import org.springframework.stereotype.Service;
+import us.betahouse.haetae.asset.model.basic.AssetBO;
+import us.betahouse.haetae.asset.request.AssetRequest;
 
 /**
- * @author yiyuk.hxy
- * @version : AssetManager.java 2019/01/22 17:23 yiyuk.hxy
+ * 物资管理器
+ *
+ * @author guofan.cp
+ * @version : AssetManager.java 2019/01/24 9:32 guofan.cp
  */
-@Service
-public class AssetManager {
+public interface AssetManager {
+    /**
+    * @Description: 创建物资
+    * @Param: [request]
+    */
+    AssetBO create(AssetRequest request);
+
 }

@@ -6,30 +6,22 @@ package us.betahouse.haetae.serviceimpl.asset.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
+import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
-import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
-import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
-import us.betahouse.haetae.serviceimpl.asset.manager.AssetRequestBuilder;
+import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.haetae.user.manager.UserManager;
-import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.PermBO;
-import us.betahouse.haetae.user.request.PermManageRequest;
-import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.util.utils.AssertUtil;
 
-import javax.transaction.Transactional;
 import java.text.MessageFormat;
-import java.util.Collections;
 
 /**
  * 物资业务实现
@@ -43,14 +35,12 @@ public class AssetServiceImpl implements AssetService {
      */
     private final static String SYSTEM_FINISH_SIGN = "systemFinish";
 
-    @Autowired
-    private AssetManager assetManager;
 
     @Autowired
     private PermManager permManager;
 
     @Autowired
-    private UserManager userManager;
+    private AssetManager assetManager;
 
     @Autowired
     private UserInfoRepoService userInfoRepoService;
@@ -58,15 +48,24 @@ public class AssetServiceImpl implements AssetService {
     @Autowired
     private RoleRepoService roleRepoService;
 
-    //@Autowired
-    //private ActivityOperateManager activityOperateManager;
-
     @Autowired
     private OrganizationRepoService organizationRepoService;
 
 
     @Override
-    public AssetBO create(AssetRequestBuilder request, OperateContext context) {
+    @Transactional
+    public AssetBO create(AssetManagerRequest request, OperateContext context) {
+
+        AssetTypeEnum assetTypeEnum=AssetTypeEnum.getByCode(request.getAssetType());
+        AssertUtil.assertNotNull(assetTypeEnum,"物资类型不存在");
+        AssertUtil.assertStringNotBlank(request.getAssetName(),"物资名字不能为空");
+        AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(),"组织名字不能为空");
+        OrganizationBO organizationBO=organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
+        AssertUtil.assertNotNull(organizationBO,MessageFormat.format("组织不存在,{0}",request.getAssetOrganizationName()));
+        AssertUtil.assertStringNotBlank(request.getAssetType(),"物资类型不能为空");
+
+        //创建物资
+        AssetBO assetBO=assetManager.create(request);
         return null;
     }
 }

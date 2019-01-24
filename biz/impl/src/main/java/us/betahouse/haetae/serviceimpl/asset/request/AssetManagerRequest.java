@@ -17,7 +17,22 @@ public class AssetManagerRequest extends AssetRequest implements VerifyRequest {
 
     private static final long serialVersionUID = 3245100919662928018L;
 
-    private final static  String ASSET_CREATE_ID="assetStuid";
+    private String assetOrganizationName;
+
+    /**
+     * 获取组织的名字
+     */
+    public String getAssetOrganizationName() {
+        return assetOrganizationName;
+    }
+
+    /**
+     * 设置组织名字(基本没用)
+     */
+    public void setAssetOrganizationName(String assetOrganizationName) {
+        this.assetOrganizationName = assetOrganizationName;
+    }
+
     @Override
     public String getVerifyUserId() {
         return getUserId();

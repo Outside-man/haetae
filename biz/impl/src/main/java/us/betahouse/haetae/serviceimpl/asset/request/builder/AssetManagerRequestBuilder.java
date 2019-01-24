@@ -103,7 +103,7 @@ public class AssetManagerRequestBuilder {
         assetManagerRequest.setAssetName(assetName);
         assetManagerRequest.setAssetRemain(assetReamain);
         assetManagerRequest.setAssetType(assetType);
-        assetManagerRequest.setOrganizationId(assetOrginazationId);
+        assetManagerRequest.setAssetOrganizationId(assetOrginazationId);
         return assetManagerRequest;
     }
 }

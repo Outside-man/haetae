@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.asset.service;
 
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.serviceimpl.asset.manager.AssetRequestBuilder;
+import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
 /**
@@ -22,5 +23,5 @@ public interface AssetService {
      * @param context
      * @return
      */
-    AssetBO create(AssetRequestBuilder request, OperateContext context);
+    AssetBO create(AssetManagerRequest request, OperateContext context);
 }

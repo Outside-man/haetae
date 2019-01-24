@@ -11,5 +11,10 @@ import us.betahouse.haetae.asset.model.basic.AssetBO;
  * @version : AssetRepoService.java 2019/01/21 22:31 guofan.cp
  */
 public interface AssetRepoService {
+    /**
+     *
+    * @Description: 新增物资
+    * @Param: [assetBO]
+    */
     AssetBO createAsset(AssetBO assetBO);
 }
