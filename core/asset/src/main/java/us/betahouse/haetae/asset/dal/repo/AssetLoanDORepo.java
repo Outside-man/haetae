@@ -5,7 +5,7 @@
 package us.betahouse.haetae.asset.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import us.betahouse.haetae.asset.dal.model.AssetDO;
+import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
 
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetLoanDORepo.java 2019/01/23 18:00 yiyuk.hxy
  */
+@Repository
 public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> {
     /**
      * 根据用户id获取
@@ -21,7 +22,7 @@ public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> 
      * @param userId
      * @return
      */
-    List<AssetLoanRecordDO> findAssetLoanRecordByUserId(String userId);
+    List<AssetLoanRecordDO> findByUserId(String userId);
 
     /**
      * 根据借用记录id获取
@@ -29,6 +30,6 @@ public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> 
      * @param loanId
      * @return
      */
-    AssetLoanRecordDO findAssetLoanRecordDOByLoanId(String loanId);
+    AssetLoanRecordDO findByLoanRecordId(String loanId);
 
 }

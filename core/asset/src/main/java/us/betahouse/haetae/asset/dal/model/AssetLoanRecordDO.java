@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.asset.dal.model;
 
-import com.sun.xml.internal.stream.StaxErrorReporter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -27,7 +26,7 @@ public class AssetLoanRecordDO extends BaseDO {
      * 物资借取记录ID
      */
     @Column(name = "loan_record_id", length = 32, updatable = false)
-    private String loanRecoedId;
+    private String loanRecordId;
     /**
      * 物资ID
      */
@@ -73,12 +72,12 @@ public class AssetLoanRecordDO extends BaseDO {
         return serialVersionUID;
     }
 
-    public String getLoanRecoedId() {
-        return loanRecoedId;
+    public String getLoanRecordId() {
+        return loanRecordId;
     }
 
-    public void setLoanRecoedId(String loanRecoedId) {
-        this.loanRecoedId = loanRecoedId;
+    public void setLoanRecordId(String loanRecordId) {
+        this.loanRecordId = loanRecordId;
     }
 
     public String getAssetId() {

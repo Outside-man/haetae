@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.asset.dal.service;
 
-import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 
 import java.util.List;

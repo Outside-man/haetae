@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.asset.dal.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +14,7 @@ import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.util.utils.CollectionUtils;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -27,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoService {
+
     @Autowired
     private AssetLoanDORepo assetLoanDORepo;
 
@@ -34,7 +32,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
      * id工厂
      */
     @Autowired
-    private BizIdFactory assetBizFactory;;
+    private BizIdFactory assetBizFactory;
 
     /**
      *
@@ -51,7 +49,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
 
     @Override
     public List<AssetLoanRecordBO> queryAssetLoanRecordByUserId(String userId) {
-        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findAssetLoanRecordByUserId(userId);
+        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findByUserId(userId);
         return CollectionUtils.toStream(assetLoanRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -60,7 +58,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
 
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoadId(String loanId) {
-        return convert(assetLoanDORepo.findAssetLoanRecordDOByLoanId(loanId));
+        return convert(assetLoanDORepo.findByLoanRecordId(loanId));
     }
 
     @Override
@@ -78,7 +76,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = new AssetLoanRecordBO();
-        assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecoedId());
+        assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecordId());
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
         assetLoanRecordBO.setAssetType(assetLoanRecordDO.getAssetType());
@@ -100,7 +98,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordDO.setAssetId(assetLoanRecordBO.getAssetId());
         assetLoanRecordDO.setAmount(assetLoanRecordBO.getAmount());
         assetLoanRecordDO.setAssetType(assetLoanRecordBO.getAssetType());
-        assetLoanRecordDO.setLoanRecoedId(assetLoanRecordBO.getLoanRecordId());
+        assetLoanRecordDO.setLoanRecordId(assetLoanRecordBO.getLoanRecordId());
         assetLoanRecordDO.setLoanTime(assetLoanRecordBO.getLoanTime());
         assetLoanRecordDO.setBackTime(assetLoanRecordBO.getBackTime());
         assetLoanRecordDO.setStatus(assetLoanRecordBO.getStatus());
