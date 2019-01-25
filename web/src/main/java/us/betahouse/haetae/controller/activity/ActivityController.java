@@ -144,13 +144,15 @@ public class ActivityController {
                 if(StringUtils.isNotBlank(request.getActivityType())){
                     builder.withType(request.getActivityType());
                 }
+
                 //添加页码
                 if(request.getPage()!=null&&request.getPage()!=0){
                     builder.withPage(request.getPage());
                 }
+
                 //添加每页条数
                 if(request.getLimit()!=null&&request.getLimit()!=0){
-                    builder.withPage(request.getLimit());
+                    builder.withLimit(request.getLimit());
                 }
                 return RestResultUtil.buildSuccessResult(activityService.findAll(builder.build(), context), "获取活动列表成功");
             }
