@@ -58,7 +58,7 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "status", length = 32)
     private String status;
     /**
-     * 物资数量
+     * 借用数量
      */
     @Column(name = "amount", length = 10)
     private Integer amount;

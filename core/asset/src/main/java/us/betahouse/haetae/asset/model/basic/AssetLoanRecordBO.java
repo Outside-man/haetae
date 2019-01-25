@@ -6,6 +6,8 @@ package us.betahouse.haetae.asset.model.basic;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 物资借取记录模型
@@ -24,6 +26,28 @@ public class AssetLoanRecordBO {
     private String status;
     private Integer amount;
     private String remark;
+    /**
+     * 拓展信息
+     */
+    private Map<String, String> extInfo = new HashMap<>();
+
+    public String fetchExtInfo(String key) {
+        if (extInfo == null) {
+            return null;
+        }
+        return extInfo.get(key);
+    }
+
+    public void putExtInfo(String key, String value) {
+        if (extInfo == null) {
+            extInfo = new HashMap<>();
+        }
+        extInfo.put(key, value);
+    }
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -99,5 +123,21 @@ public class AssetLoanRecordBO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Map<String, String> getExtInfo() {
+        return extInfo;
+    }
+
+    public void setExtInfo(Map<String, String> extInfo) {
+        this.extInfo = extInfo;
     }
 }

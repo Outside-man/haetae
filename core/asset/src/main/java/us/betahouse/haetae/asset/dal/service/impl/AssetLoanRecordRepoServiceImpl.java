@@ -12,7 +12,10 @@ import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,10 +44,27 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
      */
     @Override
     public AssetLoanRecordBO createAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO) {
+        // TODO 验证物资是否存在/可借用
+
         if (StringUtils.isBlank(assetLoanRecordBO.getLoanRecordId())) {
             assetLoanRecordBO.setLoanRecordId(assetBizFactory.getAssetLoadId());
         }
         return convert(assetLoanDORepo.save(convert(assetLoanRecordBO)));
+    }
+
+    @Override
+    public AssetLoanRecordBO updateAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO) {
+        AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetLoanRecordBO.getLoanRecordId());
+        AssetLoanRecordDO assetLoanRecordDO1 = convert(assetLoanRecordBO);
+        if (assetLoanRecordDO1.getBackTime() != null) {
+            assetLoanRecordDO.setLoanTime(assetLoanRecordDO1.getLoanTime());
+        }
+        if (assetLoanRecordDO1.getRemark() != null) {
+            assetLoanRecordDO.setRemark(assetLoanRecordDO1.getRemark());
+        }
+        // TODO 还要更新归还数量
+
+        return convert(assetLoanDORepo.save(assetLoanRecordDO));
     }
 
     @Override
@@ -59,6 +79,11 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoadId(String loanId) {
         return convert(assetLoanDORepo.findByLoanRecordId(loanId));
+    }
+
+    @Override
+    public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
+        return null;
     }
 
     @Override

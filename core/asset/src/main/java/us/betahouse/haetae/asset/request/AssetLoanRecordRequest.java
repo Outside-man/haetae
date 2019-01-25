@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.asset.request;
 
-import us.betahouse.haetae.asset.dal.model.BaseDO;
+import java.util.Date;
 
 /**
  * @author yiyuk.hxy
@@ -16,8 +16,8 @@ public class AssetLoanRecordRequest extends BaseRequest {
     private String assetId;
     private String userId;
     private String assetType;
-    private Long loanTime;
-    private Long backTime;
+    private Date loanTime;
+    private Date backTime;
     private String status;
     private Integer amount;
     private String remark;
@@ -58,19 +58,19 @@ public class AssetLoanRecordRequest extends BaseRequest {
         this.assetType = assetType;
     }
 
-    public Long getLoanTime() {
+    public Date getLoanTime() {
         return loanTime;
     }
 
-    public void setLoanTime(Long loanTime) {
+    public void setLoanTime(Date loanTime) {
         this.loanTime = loanTime;
     }
 
-    public Long getBackTime() {
+    public Date getBackTime() {
         return backTime;
     }
 
-    public void setBackTime(Long backTime) {
+    public void setBackTime(Date backTime) {
         this.backTime = backTime;
     }
 

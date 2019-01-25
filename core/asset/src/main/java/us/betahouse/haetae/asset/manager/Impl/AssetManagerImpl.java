@@ -17,13 +17,13 @@ import us.betahouse.haetae.asset.request.AssetRequest;
  * @version : AssetManagerInpl.java 2019/01/24 9:33 guofan.cp
  */
 @Service
-public class AssetManagerInpl  implements AssetManager {
+public class AssetManagerImpl implements AssetManager {
     @Autowired
-    private AssetRepoService  assetRepoService;
+    private AssetRepoService assetRepoService;
     /**
-    * @Description: 创建物资
-    * @Param: [request]
-    */
+     * @Description: 创建物资
+     * @Param: [request]
+     */
     @Override
     public AssetBO create(AssetRequest request) {
         AssetBOBuilder assetBOBuilder=AssetBOBuilder.getInstance()

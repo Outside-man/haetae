@@ -27,17 +27,17 @@ public interface AssetBackDORepo extends JpaRepository<AssetBackRecordDO, Long> 
     /**
      * 根据借用记录id获取
      *
-     * @param loanRecoedId
+     * @param loanRecordId
      * @return
      */
-    AssetBackRecordDO findByLoanRecoedId(String loanRecoedId);
+    AssetBackRecordDO findByLoanRecoedId(String loanRecordId);
 
     /**
      * 根据归还记录id获取
      *
-     * @param backRecoedId
+     * @param backRecordId
      * @return
      */
-    AssetBackRecordDO findByBackRecoedId(String backRecoedId);
+    AssetBackRecordDO findByBackRecoedId(String backRecordId);
 
 }

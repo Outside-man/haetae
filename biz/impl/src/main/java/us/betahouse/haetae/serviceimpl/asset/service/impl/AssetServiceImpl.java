@@ -18,7 +18,6 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
-import us.betahouse.haetae.user.manager.UserManager;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.text.MessageFormat;

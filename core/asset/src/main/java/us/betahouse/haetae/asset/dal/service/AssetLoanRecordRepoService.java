@@ -21,6 +21,13 @@ public interface AssetLoanRecordRepoService {
      */
     AssetLoanRecordBO createAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO);
     /**
+     * 新增借用记录
+     *
+     * @param assetLoanRecordBO
+     * @return
+     */
+    AssetLoanRecordBO updateAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO);
+    /**
      * 通过用户id获取
      *
      * @param userId
@@ -34,6 +41,13 @@ public interface AssetLoanRecordRepoService {
      * @return
      */
     AssetLoanRecordBO findAssetLoanRecordByLoadId(String loanId);
+    /**
+     * 通过物资id获取
+     *
+     * @param assetId
+     * @return
+     */
+    List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId);
     /**
      * 通过名称查找
      *
