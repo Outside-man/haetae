@@ -16,6 +16,7 @@ import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.activity.model.common.PageList;
+import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
@@ -136,7 +137,13 @@ public class ActivityServiceImpl implements ActivityService {
         if(request.getLimit()!=null&&request.getLimit()!=0){
             limit=request.getLimit();
         }
-        return activityManager.find(request);
+        ActivityRequest re=new ActivityRequest();
+        re.setTerm(term);
+        re.setState(status);
+        re.setType(type);
+        re.setPage(page);
+        re.setLimit(limit);
+        return activityManager.find(re);
 
     }
 

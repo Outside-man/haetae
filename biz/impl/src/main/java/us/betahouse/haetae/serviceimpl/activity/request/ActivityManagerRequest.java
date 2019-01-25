@@ -17,7 +17,6 @@ public class ActivityManagerRequest extends ActivityRequest implements VerifyReq
 
     private static final long serialVersionUID = -7830970003881573855L;
 
-
     private final static String STAMPER_STU_ID = "stamperStuId";
 
     @Override
@@ -29,7 +28,7 @@ public class ActivityManagerRequest extends ActivityRequest implements VerifyReq
     /**
      * 存入赋权盖章员学号
      *
-     * @param stuId
+     * @param stuId 学号
      */
     public void putStamperStuId(String stuId) {
         putExtInfo(STAMPER_STU_ID, stuId);
@@ -38,7 +37,7 @@ public class ActivityManagerRequest extends ActivityRequest implements VerifyReq
     /**
      * 取出赋权盖章员学号
      *
-     * @return
+     * @return 学号
      */
     public String fetchStamperStuId() {
         return fetchExtInfo(STAMPER_STU_ID);
