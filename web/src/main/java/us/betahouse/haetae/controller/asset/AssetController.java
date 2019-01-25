@@ -74,6 +74,7 @@ public class AssetController {
                 AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不能为空");
                 AssertUtil.assertNotNull(request.getAssetAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能为空");
+                AssertUtil.assertStringNotBlank(request.getAssetAmount()>0?"1":"", RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资数量不能小于0");
             }
 
             @Override
@@ -84,7 +85,7 @@ public class AssetController {
                  * 通过组织名字查找组织id
                  */
                 String organizationId = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName()).getOrganizationId();
-                AssertUtil.assertStringNotBlank(organizationId,"组织不存在");
+                AssertUtil.assertStringNotBlank(organizationId,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"组织不存在");
 
                 AssetManagerRequest assetManagerRequest=AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())

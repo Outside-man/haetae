@@ -31,7 +31,7 @@ public class AssetManagerInpl  implements AssetManager {
                 .withAssetType(request.getAssetType())
                 .withAssetMount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
-                .withAssetOrginnaztionId(request.getAssetOrganizationName());
+                .withAssetOrginnaztionName(request.getAssetOrganizationName());
         return assetRepoService.createAsset(assetBOBuilder.builder());
     }
 }

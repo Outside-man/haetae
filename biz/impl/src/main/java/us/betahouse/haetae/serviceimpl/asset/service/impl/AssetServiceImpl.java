@@ -66,6 +66,6 @@ public class AssetServiceImpl implements AssetService {
 
         //创建物资
         AssetBO assetBO=assetManager.create(request);
-        return null;
+        return assetBO;
     }
 }

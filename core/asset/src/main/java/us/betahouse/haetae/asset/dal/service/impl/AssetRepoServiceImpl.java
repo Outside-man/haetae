@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import us.betahouse.haetae.asset.dal.convert.EntityConverter;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
@@ -30,8 +31,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
-    @Autowired
-    private EntityConverter entityConverter;
     /**
     * @Description: 新增物资
     * @Param: [assetBO]
@@ -41,7 +40,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         if (StringUtils.isBlank(assetBO.getAssetId())) {
             assetBO.setAssetId(assetBizFactory.getAssetId());
     }
-        return entityConverter.convert(assetDORepo.save(entityConverter.convert(assetBO)));
+        return EntityConverter.convert(assetDORepo.save(EntityConverter.convert(assetBO)));
     }
 
 //    @Override

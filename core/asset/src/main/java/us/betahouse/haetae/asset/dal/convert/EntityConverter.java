@@ -15,7 +15,7 @@ import java.util.Map;
  * @version : EntityConverter.java 2019/01/21 23:47 guofan.cp
  * 实体转换器 jk那边跟yxm这边封装不一样 感觉还是抽出来更方便一些
  */
-public class EntityConverter {
+final public class EntityConverter {
     /**
     * @Description:  物资DO2BO
     * @Param: [assetDO]
@@ -29,7 +29,7 @@ public class EntityConverter {
         assetBO.setAssetMount(assetDO.getAmount());
         assetBO.setAssetRemain(assetDO.getRemain());
         assetBO.setAssetName(assetDO.getAssetName());
-        assetBO.setAssetOrginnazation(assetDO.getOrginazationId());
+        assetBO.setAssetOrginnazationId(assetDO.getOrginazationId());
         assetBO.setAssetStatus(assetDO.getStatus());
         assetBO.setAssetType(assetDO.getType());
         assetBO.setCreate(assetDO.getGmtCreate());
@@ -50,7 +50,7 @@ public class EntityConverter {
         assetDO.setAmount(assetBO.getAssetMount());
         assetDO.setAssetId(assetBO.getAssetId());
         assetDO.setAssetName(assetBO.getAssetName());
-        assetDO.setOrginazationId(assetBO.getAssetOrginnazation());
+        assetDO.setOrginazationId(assetBO.getAssetOrginnazationId());
         assetDO.setRemain(assetBO.getAssetRemain());
         assetDO.setStatus(assetBO.getAssetStatus());
         assetDO.setType(assetBO.getAssetType());
