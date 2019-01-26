@@ -58,7 +58,7 @@ public class AssetServiceImpl implements AssetService {
         AssetTypeEnum assetTypeEnum=AssetTypeEnum.getByCode(request.getAssetType());
         AssertUtil.assertNotNull(assetTypeEnum,"物资类型不存在");
         AssertUtil.assertStringNotBlank(request.getAssetName(),"物资名字不能为空");
-        AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(),"组织名字不能为空");
+        AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(),"物资归属组织不能为空");
         OrganizationBO organizationBO=organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
         AssertUtil.assertNotNull(organizationBO,MessageFormat.format("组织不存在,{0}",request.getAssetOrganizationName()));
         AssertUtil.assertStringNotBlank(request.getAssetType(),"物资类型不能为空");

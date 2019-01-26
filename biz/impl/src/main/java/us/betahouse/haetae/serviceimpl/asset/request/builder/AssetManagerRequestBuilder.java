@@ -32,9 +32,13 @@ public class AssetManagerRequestBuilder {
      */
     private String assetName;
     /**
-     * 物资归属组织
+     * 物资归属组织id
      */
     private String assetOrginazationId;
+    /**
+     * 物资归属组织名字
+     */
+    private String assetOrganizationName;
     /**
      * 物资剩余
      */
@@ -85,13 +89,18 @@ public class AssetManagerRequestBuilder {
         return this;
     }
 
-    public AssetManagerRequestBuilder withstatus(String assetStatus){
+    public AssetManagerRequestBuilder withStatus(String assetStatus){
         this.assetStatus=assetStatus;
         return this;
     }
 
-    public AssetManagerRequestBuilder withtype(String assetType){
+    public AssetManagerRequestBuilder withType(String assetType){
         this.assetType=assetType;
+        return this;
+    }
+
+    public AssetManagerRequestBuilder withAssetOrganizationName(String assetOrganizationName){
+        this.assetOrganizationName=assetOrganizationName;
         return this;
     }
 
@@ -104,6 +113,7 @@ public class AssetManagerRequestBuilder {
         assetManagerRequest.setAssetRemain(assetReamain);
         assetManagerRequest.setAssetType(assetType);
         assetManagerRequest.setAssetOrganizationId(assetOrginazationId);
+        assetManagerRequest.setAssetOrganizationName(assetOrganizationName);
         return assetManagerRequest;
     }
 }

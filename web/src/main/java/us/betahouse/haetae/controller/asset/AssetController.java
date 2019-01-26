@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,17 +56,15 @@ public class AssetController {
     /**
      *跳转登陆界面 html界面
      */
-    public String redirectToLogin(){
+    @GetMapping(value = "pcLogin")
+    public String pcLogin(){
         return "login";
     }
-
     /**
      * 添加物资
      */
-    @CheckLogin
-    @PostMapping(value = "/asset")
-    @Log(loggerName= LoggerName.WEB_DIGEST)
-    public @ResponseBody Result<AssetBO> add(AssetRequest request, HttpServletRequest httpServletRequest){
+    @PostMapping(value = "asset")
+    public @ResponseBody Result<AssetBO> asset(AssetRequest request, HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "新增物资", request, new RestOperateCallBack<AssetBO>() {
             @Override
             public void before() {
@@ -85,19 +84,20 @@ public class AssetController {
                  * 通过组织名字查找组织id
                  */
                 String organizationId = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName()).getOrganizationId();
-                AssertUtil.assertStringNotBlank(organizationId,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"组织不存在");
+                AssertUtil.assertStringNotBlank(organizationId,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资归属组织不存在");
 
                 AssetManagerRequest assetManagerRequest=AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())
                         .withAmount(request.getAssetAmount())
                         //组织id在上面获得
                         .withOrginazationId(organizationId)
-                        .withtype(request.getAssetType())
+                        .withType(request.getAssetType())
+                        .withAssetOrganizationName(request.getAssetOrganizationName())
                         //以下是可选参数
                         //额外信息
                         .withExtInfo(request.getExtInfo())
                         //状态
-                        .withstatus(request.getAssetStatus())
+                        .withStatus(request.getAssetStatus())
                         //剩余
                         .withReamain(request.getAssetRemain())
                         .builder();
