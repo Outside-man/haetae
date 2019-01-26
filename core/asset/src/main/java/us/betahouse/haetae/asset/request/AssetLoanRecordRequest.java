@@ -20,6 +20,7 @@ public class AssetLoanRecordRequest extends BaseRequest {
     private Date backTime;
     private String status;
     private Integer amount;
+    private Integer remain;
     private String remark;
 
     public static long getSerialVersionUID() {
@@ -88,6 +89,14 @@ public class AssetLoanRecordRequest extends BaseRequest {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Integer getRemain() {
+        return remain;
+    }
+
+    public void setRemain(Integer remain) {
+        this.remain = remain;
     }
 
     public String getRemark() {

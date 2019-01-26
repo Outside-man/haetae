@@ -27,7 +27,7 @@ public class AssetBOBuilder {
     private String assetType;
     private Map<String , String>extInfo=new HashMap<>();
 
-    public AssetBOBuilder() {
+    private AssetBOBuilder() {
     }
 
     public static AssetBOBuilder getInstance(){
@@ -93,7 +93,7 @@ public class AssetBOBuilder {
         assetBO.setAssetId(assetId);
         assetBO.setAssetName(assetName);
         assetBO.setAssetType(assetType);
-        assetBO.setAssetMount(assetAmount);
+        assetBO.setAssetAmount(assetAmount);
         assetBO.setModified(assetModified);
         assetBO.setCreate(assetCreate);
         assetBO.setExtInfo(extInfo);

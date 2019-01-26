@@ -1,4 +1,4 @@
-/**
+/*
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
@@ -17,16 +17,18 @@ import java.util.Map;
  */
 final public class EntityConverter {
     /**
-    * @Description:  物资DO2BO
-    * @Param: [assetDO]
-    */
-    public static AssetBO convert(AssetDO assetDO){
-        if(assetDO==null){
+     * 物资DO2BO
+     *
+     * @param assetDO
+     * @return
+     */
+    public static AssetBO convert(AssetDO assetDO) {
+        if (assetDO == null) {
             return null;
         }
-        AssetBO assetBO=new AssetBO();
+        AssetBO assetBO = new AssetBO();
         assetBO.setAssetId(assetDO.getAssetId());
-        assetBO.setAssetMount(assetDO.getAmount());
+        assetBO.setAssetAmount(assetDO.getAmount());
         assetBO.setAssetRemain(assetDO.getRemain());
         assetBO.setAssetName(assetDO.getAssetName());
         assetBO.setAssetOrginnazationId(assetDO.getOrginazationId());
@@ -38,16 +40,18 @@ final public class EntityConverter {
         //JSON.parseObject jsonn转对象 ，前一个参数为json串，后一个参数为转换成的类
         return assetBO;
     }
+
     /**
-    * @Description: 物资BO2DO
-    * @Param: [assetBO]
-    */
-    public static  AssetDO convert(AssetBO assetBO){
+     * 物资BO2DO
+     *
+     * @param assetBO
+     */
+    public static AssetDO convert(AssetBO assetBO) {
         if (assetBO == null) {
             return null;
         }
-        AssetDO assetDO=new AssetDO();
-        assetDO.setAmount(assetBO.getAssetMount());
+        AssetDO assetDO = new AssetDO();
+        assetDO.setAmount(assetBO.getAssetAmount());
         assetDO.setAssetId(assetBO.getAssetId());
         assetDO.setAssetName(assetBO.getAssetName());
         assetDO.setOrginazationId(assetBO.getAssetOrginnazationId());

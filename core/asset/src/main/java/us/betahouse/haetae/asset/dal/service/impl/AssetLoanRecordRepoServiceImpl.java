@@ -62,7 +62,9 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         if (assetLoanRecordDO1.getRemark() != null) {
             assetLoanRecordDO.setRemark(assetLoanRecordDO1.getRemark());
         }
-        // TODO 还要更新归还数量
+        if (assetLoanRecordDO1.getRemain() != null) {
+            assetLoanRecordDO.setRemain(assetLoanRecordDO1.getRemain()+assetLoanRecordDO.getRemain());
+        }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));
     }
@@ -104,6 +106,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecordId());
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
+        assetLoanRecordBO.setRemain(assetLoanRecordDO.getRemain());
         assetLoanRecordBO.setAssetType(assetLoanRecordDO.getAssetType());
         assetLoanRecordBO.setUserId(assetLoanRecordDO.getUserId());
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
@@ -122,6 +125,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordDO.setRemark(assetLoanRecordBO.getRemark());
         assetLoanRecordDO.setAssetId(assetLoanRecordBO.getAssetId());
         assetLoanRecordDO.setAmount(assetLoanRecordBO.getAmount());
+        assetLoanRecordDO.setRemain(assetLoanRecordBO.getRemain());
         assetLoanRecordDO.setAssetType(assetLoanRecordBO.getAssetType());
         assetLoanRecordDO.setLoanRecordId(assetLoanRecordBO.getLoanRecordId());
         assetLoanRecordDO.setLoanTime(assetLoanRecordBO.getLoanTime());

@@ -63,6 +63,11 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "amount", length = 10)
     private Integer amount;
     /**
+     * 借用数量
+     */
+    @Column(name = "remain", length = 10)
+    private Integer remain;
+    /**
      * 备注，用于报损时
      */
     @Column(name = "remark",length = 32)
@@ -102,6 +107,14 @@ public class AssetLoanRecordDO extends BaseDO {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Integer getRemain() {
+        return remain;
+    }
+
+    public void setRemain(Integer remain) {
+        this.remain = remain;
     }
 
     public String getAssetType() {

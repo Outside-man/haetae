@@ -20,18 +20,29 @@ import us.betahouse.haetae.asset.request.AssetRequest;
 public class AssetManagerImpl implements AssetManager {
     @Autowired
     private AssetRepoService assetRepoService;
+
     /**
-     * @Description: 创建物资
-     * @Param: [request]
+     * 创建物资
+     *
+     * @param request
      */
     @Override
     public AssetBO create(AssetRequest request) {
-        AssetBOBuilder assetBOBuilder=AssetBOBuilder.getInstance()
+        AssetBOBuilder assetBOBuilder = AssetBOBuilder.getInstance()
                 .withAssetName(request.getAssetName())
                 .withAssetType(request.getAssetType())
                 .withAssetMount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
                 .withAssetOrginnaztionName(request.getAssetOrganizationName());
         return assetRepoService.createAsset(assetBOBuilder.builder());
+    }
+
+    /**
+     * @param userId
+     * @return
+     */
+    @Override
+    public AssetBO findAssetByAssetID(String userId) {
+        return null;
     }
 }

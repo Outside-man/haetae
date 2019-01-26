@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
+import us.betahouse.haetae.asset.manager.AssetManager;
+import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
@@ -28,6 +30,9 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     private final Logger LOGGER = LoggerFactory.getLogger(AssetLoanRecordServiceImpl.class);
 
     @Autowired
+    private AssetManager assetManager;
+
+    @Autowired
     private AssetLoanRecordManager assetLoanRecordManager;
 
     @Autowired
@@ -37,7 +42,21 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Transactional
     public AssetLoanRecordBO create(AssetLoanRecordRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-       // AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
+        // AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
+        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
+        if (assetBO == null) {
+            AssertUtil.assertStringNotBlank("", "物资码无效");
+        }
+        // TODO 物资全部报损状态码
+        if (assetBO.getAssetType().equals("耗尽")) {
+            AssertUtil.assertStringNotBlank("", "物资耗尽");
+            // TODO 返回报损记录
+        }
+        if (assetBO.getAssetRemain() == 0) {
+            AssertUtil.assertStringNotBlank("", "物资借完");
+            // TODO 返回最近的出借记录
+        }
+
         return assetLoanRecordManager.create(request);
     }
 

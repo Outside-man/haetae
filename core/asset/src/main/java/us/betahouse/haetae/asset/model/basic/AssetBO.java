@@ -1,4 +1,4 @@
-/**
+/*
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
@@ -37,7 +37,7 @@ public class AssetBO extends ToString{
     /**
      *物资数量
      */
-    private int assetMount;
+    private int assetAmount;
     /**
      * 物资归属组织id
      */
@@ -147,12 +147,16 @@ public class AssetBO extends ToString{
         this.extInfo = extInfo;
     }
 
-    public int getAssetMount() {
-        return assetMount;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setAssetMount(int assetMount) {
-        this.assetMount = assetMount;
+    public int getAssetAmount() {
+        return assetAmount;
+    }
+
+    public void setAssetAmount(int assetAmount) {
+        this.assetAmount = assetAmount;
     }
 
     public int getAssetRemain() {

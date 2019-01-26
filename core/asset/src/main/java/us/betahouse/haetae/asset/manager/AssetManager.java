@@ -15,9 +15,16 @@ import us.betahouse.haetae.asset.request.AssetRequest;
  */
 public interface AssetManager {
     /**
-    * @Description: 创建物资
-    * @Param: [request]
+    * 创建物资
+    * @param request
+     * @return
     */
     AssetBO create(AssetRequest request);
 
+    /**
+     * 通过Id获取物资
+     * @param userId
+     * @return
+     */
+    AssetBO findAssetByAssetID(String userId);
 }

@@ -28,7 +28,6 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * 物资借用接口
@@ -46,6 +45,7 @@ public class AssetLoanRecordController {
 
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
+
     /**
      * 添加借用物资信息
      *
@@ -56,8 +56,8 @@ public class AssetLoanRecordController {
     @CheckLogin
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AssetLoanRecordBO> add(AssetLoanRecordRequest request, HttpServletRequest httpServletRequest){
-        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<AssetLoanRecordBO>(){
+    public Result<AssetLoanRecordBO> add(AssetLoanRecordRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<AssetLoanRecordBO>() {
 
             @Override
             public void before() {
