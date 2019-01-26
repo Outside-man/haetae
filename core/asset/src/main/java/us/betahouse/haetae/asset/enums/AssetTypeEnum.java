@@ -12,9 +12,9 @@ import org.apache.commons.lang.StringUtils;
  * @version : AssetTypeEnum.java 2019/01/24 8:56 guofan.cp
  */
 public enum AssetTypeEnum {
-    ASSET_CONSUME("assetConsume" , "消耗品"),
+    ASSET_CONSUME("消耗品" , "消耗品"),
 
-    ASSET_DURABLE("assetDurable" , "耐用品");
+    ASSET_DURABLE("耐用品" , "耐用品");
 
     private String code;
 

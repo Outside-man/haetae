@@ -16,7 +16,6 @@ import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
-import java.util.List;
 
 /**
  * @author guofan.cp

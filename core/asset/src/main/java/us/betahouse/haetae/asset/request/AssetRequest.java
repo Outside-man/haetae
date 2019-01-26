@@ -37,7 +37,7 @@ public class AssetRequest extends  BaseRequest  {
     /**
      *物资所属组织名字
      */
-    private String AssetOrganizationName;
+    private String assetOrganizationName;
     /**
      * 物资剩余数量
      */
@@ -102,11 +102,11 @@ public class AssetRequest extends  BaseRequest  {
     }
 
     public String getAssetOrganizationName() {
-        return AssetOrganizationName;
+        return assetOrganizationName;
     }
 
     public void setAssetOrganizationName(String assetOrganizationName) {
-        AssetOrganizationName = assetOrganizationName;
+        this.assetOrganizationName = assetOrganizationName;
     }
 
     public int getAssetAmount() {
