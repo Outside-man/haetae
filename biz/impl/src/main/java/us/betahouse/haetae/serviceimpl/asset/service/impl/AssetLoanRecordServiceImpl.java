@@ -51,7 +51,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
             AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
             // TODO 返回报损记录
         }
-        if (assetBO.getAssetRemain() == 3) {
+        if (assetBO.canLoan() == 3) {
             AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
             // TODO 返回最近的出借记录
         }
