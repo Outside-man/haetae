@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.serviceimpl.asset.request.builder;
 
-import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
 
 import java.util.Date;
@@ -48,6 +47,10 @@ public class AssetLoanRecordManagerRequestBuilder {
      * 借用数量
      */
     private Integer amount;
+    /**
+     * 已归还数量
+     */
+    private Integer remain;
     /**
      * 备注，用于报损时
      */
@@ -102,6 +105,11 @@ public class AssetLoanRecordManagerRequestBuilder {
         return this;
     }
 
+    public AssetLoanRecordManagerRequestBuilder withRemain(Integer val) {
+        remain = val;
+        return this;
+    }
+
     public AssetLoanRecordManagerRequestBuilder withRemark(String val) {
         remark = val;
         return this;
@@ -117,11 +125,10 @@ public class AssetLoanRecordManagerRequestBuilder {
         assetLoanRecordManagerRequest.setLoanRecordId(loanRecordId);
         assetLoanRecordManagerRequest.setAssetId(assetId);
         assetLoanRecordManagerRequest.setAssetType(assetType);
-        assetLoanRecordManagerRequest.setLoanTime(loanTime);
-        assetLoanRecordManagerRequest.setBackTime(backTime);
         assetLoanRecordManagerRequest.setUserId(userId);
         assetLoanRecordManagerRequest.setStatus(status);
         assetLoanRecordManagerRequest.setAmount(amount);
+        assetLoanRecordManagerRequest.setRemain(remain);
         assetLoanRecordManagerRequest.setRemark(remark);
         assetLoanRecordManagerRequest.setExtInfo(extInfo);
         return assetLoanRecordManagerRequest;

@@ -10,7 +10,8 @@ import javax.persistence.*;
 
 /**
  * 物资归还记录实体类
- * @author yiyuk,hxy
+ *
+ * @author yiyuk, hxy
  * @version : AssetBackRecordDO.java 2019/01/20 16:40 yiyuk,hxy
  */
 @Entity
@@ -59,7 +60,7 @@ public class AssetBackRecordDO extends BaseDO {
     /**
      * 备注，用于报损时
      */
-    @Column(name = "remark",length = 10)
+    @Column(name = "remark", length = 10)
     private Integer remark;
 
     public static long getSerialVersionUID() {

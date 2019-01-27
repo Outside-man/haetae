@@ -31,19 +31,5 @@ public interface AssetLoanRecordService {
      * @return
      */
     AssetLoanRecordBO update(AssetLoanRecordRequest request, OperateContext context);
-    /**
-     * 通过用户id获取借用记录
-     *
-     * @param userId
-     * @return
-     */
-    List<AssetLoanRecordBO> getAssetLoanRecordByUserId(String userId);
-    /**
-     * 通过物资id获取借用记录
-     *
-     * @param assetId
-     * @return
-     */
-    List<AssetLoanRecordBO> getAssetLoanRecordByAssetId(String assetId);
 
 }

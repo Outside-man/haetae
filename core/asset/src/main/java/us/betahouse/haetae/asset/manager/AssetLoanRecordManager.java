@@ -23,6 +23,7 @@ public interface AssetLoanRecordManager {
      * @return
      */
     AssetLoanRecordBO create(AssetLoanRecordRequest request);
+
     /**
      * 更新记录（归还时间与归还/报损情况）
      *
@@ -30,6 +31,7 @@ public interface AssetLoanRecordManager {
      * @return
      */
     AssetLoanRecordBO update(AssetLoanRecordRequest request);
+
     /**
      * 通过用户id查询记录
      *
@@ -37,6 +39,7 @@ public interface AssetLoanRecordManager {
      * @return
      */
     List<AssetLoanRecordBO> findByUserId(String userId);
+
     /**
      * 通过物资id查询借用记录
      *

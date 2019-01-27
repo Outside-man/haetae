@@ -20,8 +20,6 @@ public class AssetLoanRecordBO {
     private String loanRecordId;
     private String assetId;
     private String assetType;
-    private Date loanTime;
-    private Date backTime;
     private String userId;
     private String status;
     private Integer amount;
@@ -48,6 +46,17 @@ public class AssetLoanRecordBO {
         }
         extInfo.put(key, value);
     }
+
+    /**
+     * 是否全部归还
+     */
+    public boolean allBack() {
+        if (amount - remain == 0) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 创建时间
      */
@@ -79,22 +88,6 @@ public class AssetLoanRecordBO {
 
     public void setAssetType(String assetType) {
         this.assetType = assetType;
-    }
-
-    public Date getLoanTime() {
-        return loanTime;
-    }
-
-    public void setLoanTime(Date loanTime) {
-        this.loanTime = loanTime;
-    }
-
-    public Date getBackTime() {
-        return backTime;
-    }
-
-    public void setBackTime(Date backTime) {
-        this.backTime = backTime;
     }
 
     public String getUserId() {

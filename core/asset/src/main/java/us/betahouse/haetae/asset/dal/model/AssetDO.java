@@ -10,6 +10,7 @@ import javax.persistence.*;
 
 /**
  * 物资基础类
+ *
  * @author yiyu.hxy
  * @version : AssetDO.java 2019/01/19 17:53 yiyu.hxy
  */
@@ -19,11 +20,11 @@ import javax.persistence.*;
         indexes = {
                 @Index(name = "uk_asset_id", columnList = "asset_id", unique = true)
         })
-public class AssetDO extends BaseDO{
+public class AssetDO extends BaseDO {
     private static final long serialVersionUID = -6722889286261263968L;
     /**
-    * 物资ID
-    */
+     * 物资ID
+     */
     @Column(name = "asset_id", length = 32, updatable = false)
     private String assetId;
     /**
@@ -54,7 +55,7 @@ public class AssetDO extends BaseDO{
     /**
      * 剩余
      */
-    @Column(name = "remain",length = 10)
+    @Column(name = "remain", length = 10)
     private Integer remain;
 
     public static long getSerialVersionUID() {

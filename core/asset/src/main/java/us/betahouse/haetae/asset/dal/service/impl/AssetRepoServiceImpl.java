@@ -30,15 +30,16 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
+
     /**
-    * @Description: 新增物资
-    * @Param: [assetBO]
-    */
+     * @Description: 新增物资
+     * @Param: [assetBO]
+     */
     @Override
     public AssetBO createAsset(AssetBO assetBO) {
         if (StringUtils.isBlank(assetBO.getAssetId())) {
             assetBO.setAssetId(assetBizFactory.getAssetId());
-    }
+        }
         return EntityConverter.convert(assetDORepo.save(EntityConverter.convert(assetBO)));
     }
 

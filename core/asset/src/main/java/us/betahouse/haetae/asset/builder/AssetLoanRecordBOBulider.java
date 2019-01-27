@@ -94,8 +94,6 @@ public class AssetLoanRecordBOBulider {
         assetLoanRecordBO.setLoanRecordId(loanRecoedId);
         assetLoanRecordBO.setAssetId(assetId);
         assetLoanRecordBO.setAssetType(assetType);
-        assetLoanRecordBO.setLoanTime(loanTime);
-        assetLoanRecordBO.setBackTime(backTime);
         assetLoanRecordBO.setUserId(userId);
         assetLoanRecordBO.setAmount(amount);
         assetLoanRecordBO.setRemain(remain);

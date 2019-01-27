@@ -12,7 +12,6 @@ import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,17 +26,12 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
 
     @Override
     public AssetLoanRecordBO create(AssetLoanRecordRequest request) {
-        if (request.getLoanTime() == null){
-            request.setLoanTime(new Date());
-        }
         AssetLoanRecordBOBulider bulider = AssetLoanRecordBOBulider.getInstance()
                 .withLoanRecoedId(request.getLoanRecordId())
                 .withAssetId(request.getAssetId())
                 .withAssetType(request.getAssetType())
                 .withAmount(request.getAmount())
                 .withRemain(request.getRemain())
-                .withLoanTime(request.getLoanTime())
-                .withBackTime(request.getBackTime())
                 .withStatus(request.getStatus())
                 .withUserId(request.getUserId())
                 .withRemark(request.getRemark())
@@ -53,8 +47,6 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withAssetType(request.getAssetType())
                 .withAmount(request.getAmount())
                 .withRemain(request.getRemain())
-                .withLoanTime(request.getLoanTime())
-                .withBackTime(request.getBackTime())
                 .withStatus(request.getStatus())
                 .withUserId(request.getUserId())
                 .withRemark(request.getRemark())

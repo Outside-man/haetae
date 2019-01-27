@@ -12,9 +12,8 @@ import us.betahouse.haetae.asset.model.basic.AssetBO;
  */
 public interface AssetRepoService {
     /**
-     *
-    * @Description: 新增物资
-    * @Param: [assetBO]
-    */
+     * @Description: 新增物资
+     * @Param: [assetBO]
+     */
     AssetBO createAsset(AssetBO assetBO);
 }

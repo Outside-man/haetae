@@ -66,6 +66,9 @@ public class AssetLoanRecordController {
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
+                if (request.getRemain() == null) {
+                    request.setRemain(0);
+                }
             }
 
             @Override
@@ -75,10 +78,9 @@ public class AssetLoanRecordController {
                 AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                         .withUserId(request.getUserId())
                         .withAmount(request.getAmount())
+                        .withRemain(request.getRemain())
                         .withAssetId(request.getAssetId())
                         .withAssetType(request.getAssetType())
-                        .withLoanTime(request.getLoanTime())
-                        .withBackTime(request.getBackTime())
                         .withLoanRecordId(request.getLoanRecordId())
                         .withRemark(request.getRemark())
                         .withRemark(request.getStatus())

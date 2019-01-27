@@ -42,18 +42,17 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Transactional
     public AssetLoanRecordBO create(AssetLoanRecordRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-        // AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
+
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         if (assetBO == null) {
-            AssertUtil.assertStringNotBlank("", "物资码无效");
+            AssertUtil.assertStringNotBlank( "物资码无效");
         }
-        // TODO 物资全部报损状态码
-        if (assetBO.getAssetType().equals("耗尽")) {
-            AssertUtil.assertStringNotBlank("", "物资耗尽");
+        if (assetBO.canLoan() == 2) {
+            AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
             // TODO 返回报损记录
         }
-        if (assetBO.getAssetRemain() == 0) {
-            AssertUtil.assertStringNotBlank("", "物资借完");
+        if (assetBO.getAssetRemain() == 3) {
+            AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
             // TODO 返回最近的出借记录
         }
 
@@ -63,15 +62,5 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Override
     public AssetLoanRecordBO update(AssetLoanRecordRequest request, OperateContext context) {
         return assetLoanRecordManager.update(request);
-    }
-
-    @Override
-    public List<AssetLoanRecordBO> getAssetLoanRecordByUserId(String userId) {
-        return null;
-    }
-
-    @Override
-    public List<AssetLoanRecordBO> getAssetLoanRecordByAssetId(String assetId) {
-        return null;
     }
 }

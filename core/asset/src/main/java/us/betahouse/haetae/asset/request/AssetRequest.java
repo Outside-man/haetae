@@ -12,14 +12,14 @@ import java.io.Serializable;
  * @author guofan.cp
  * @version : AssetRequest.java 2019/01/20 23:21 guofan.cp
  */
-public class AssetRequest extends  BaseRequest  {
+public class AssetRequest extends BaseRequest {
     private static final long serialVersionUID = 7597108455802717599L;
     /**
      * 物资id
      */
-    private  String assetId;
+    private String assetId;
     /**
-     *物资名字
+     * 物资名字
      */
     private String assetName;
     /**
@@ -29,13 +29,13 @@ public class AssetRequest extends  BaseRequest  {
     /**
      * 物资总数量
      */
-    private int  assetAmount;
+    private int assetAmount;
     /**
      * 物资所属组织id
      */
     private String assetOrganizationId;
     /**
-     *物资所属组织名字
+     * 物资所属组织名字
      */
     private String assetOrganizationName;
     /**
@@ -48,14 +48,14 @@ public class AssetRequest extends  BaseRequest  {
     private String assetType;
 
     /**
-     *物资状态
+     * 物资状态
      */
     private String assetStatus;
 
     /**
      * 物资创建者
      */
-    private  String userId;
+    private String userId;
 
     public String getUserId() {
         return userId;

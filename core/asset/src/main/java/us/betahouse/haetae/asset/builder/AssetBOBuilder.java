@@ -25,12 +25,12 @@ public class AssetBOBuilder {
     private int assetRemain;
     private String assetStatus;
     private String assetType;
-    private Map<String , String>extInfo=new HashMap<>();
+    private Map<String, String> extInfo = new HashMap<>();
 
     private AssetBOBuilder() {
     }
 
-    public static AssetBOBuilder getInstance(){
+    public static AssetBOBuilder getInstance() {
         return new AssetBOBuilder();
     }
 
@@ -88,7 +88,8 @@ public class AssetBOBuilder {
         this.extInfo = extInfo;
         return this;
     }
-    public AssetBO builder(){
+
+    public AssetBO builder() {
         AssetBO assetBO = new AssetBO();
         assetBO.setAssetId(assetId);
         assetBO.setAssetName(assetName);

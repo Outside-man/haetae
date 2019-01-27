@@ -16,8 +16,6 @@ public class AssetLoanRecordRequest extends BaseRequest {
     private String assetId;
     private String userId;
     private String assetType;
-    private Date loanTime;
-    private Date backTime;
     private String status;
     private Integer amount;
     private Integer remain;
@@ -57,22 +55,6 @@ public class AssetLoanRecordRequest extends BaseRequest {
 
     public void setAssetType(String assetType) {
         this.assetType = assetType;
-    }
-
-    public Date getLoanTime() {
-        return loanTime;
-    }
-
-    public void setLoanTime(Date loanTime) {
-        this.loanTime = loanTime;
-    }
-
-    public Date getBackTime() {
-        return backTime;
-    }
-
-    public void setBackTime(Date backTime) {
-        this.backTime = backTime;
     }
 
     public String getStatus() {

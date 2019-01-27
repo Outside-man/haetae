@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.asset.model.basic;
 
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.util.common.ToString;
 
 import java.util.Date;
@@ -13,10 +14,11 @@ import java.util.Map;
 /**
  * 物资领域对象
  * 暂时还不知道乍用
+ *
  * @author guofan.cp
  * @version : AssetBO.java 2019/01/21 22:53 guofan.cp
  */
-public class AssetBO extends ToString{
+public class AssetBO extends ToString {
     private static final long serialVersionUID = -3850765153043424655L;
     /**
      * 物资id
@@ -31,11 +33,11 @@ public class AssetBO extends ToString{
      */
     private Date create;
     /**
-     *物资修改时间
+     * 物资修改时间
      */
     private Date modified;
     /**
-     *物资数量
+     * 物资数量
      */
     private int assetAmount;
     /**
@@ -61,18 +63,42 @@ public class AssetBO extends ToString{
     /**
      * 物资额外信息
      */
-    private Map<String , String> extInfo=new HashMap<>();
-    public  String fecthExtInfo(String key){
-        if(extInfo==null) {
-            return  null;
+    private Map<String, String> extInfo = new HashMap<>();
+
+    /**
+     * 判断是否可借用
+     *
+     * @return
+     */
+    public int canLoan() {
+        AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetType);
+        if (assetStatusEnum == null) {
+            return 0;
+        }
+        switch (assetStatusEnum) {
+            case ASSET_LOAN:
+                return 1;
+            case ASSET_NOTLOAN:
+                return 2;
+            case ASSET_DISTORY:
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    public String fecthExtInfo(String key) {
+        if (extInfo == null) {
+            return null;
         }
         return extInfo.get(key);
     }
-    public void putExtInfo(String key,String value){
-        if(extInfo==null){
-            extInfo=new HashMap<>();
+
+    public void putExtInfo(String key, String value) {
+        if (extInfo == null) {
+            extInfo = new HashMap<>();
         }
-        extInfo.put(key,value);
+        extInfo.put(key, value);
     }
 
     public String getAssetId() {
@@ -103,7 +129,7 @@ public class AssetBO extends ToString{
         return modified;
     }
 
-    public void setModified (Date modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 

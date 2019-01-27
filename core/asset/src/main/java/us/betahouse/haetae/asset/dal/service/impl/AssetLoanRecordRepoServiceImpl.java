@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.asset.dal.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,14 +40,11 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     private BizIdFactory assetBizFactory;
 
     /**
-     *
      * @param assetLoanRecordBO
      * @return
      */
     @Override
     public AssetLoanRecordBO createAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO) {
-        // TODO 验证物资是否存在/可借用
-
         if (StringUtils.isBlank(assetLoanRecordBO.getLoanRecordId())) {
             assetLoanRecordBO.setLoanRecordId(assetBizFactory.getAssetLoadId());
         }
@@ -63,7 +62,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             assetLoanRecordDO.setRemark(assetLoanRecordDO1.getRemark());
         }
         if (assetLoanRecordDO1.getRemain() != null) {
-            assetLoanRecordDO.setRemain(assetLoanRecordDO1.getRemain()+assetLoanRecordDO.getRemain());
+            assetLoanRecordDO.setRemain(assetLoanRecordDO1.getRemain() + assetLoanRecordDO.getRemain());
         }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));
@@ -110,15 +109,14 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setAssetType(assetLoanRecordDO.getAssetType());
         assetLoanRecordBO.setUserId(assetLoanRecordDO.getUserId());
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
-        assetLoanRecordBO.setLoanTime(assetLoanRecordDO.getLoanTime());
-        assetLoanRecordBO.setBackTime(assetLoanRecordDO.getBackTime());
         assetLoanRecordBO.setRemark(assetLoanRecordDO.getRemark());
+        assetLoanRecordBO.setExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class));
 
         return assetLoanRecordBO;
     }
 
     private AssetLoanRecordDO convert(AssetLoanRecordBO assetLoanRecordBO) {
-        if (assetLoanRecordBO == null){
+        if (assetLoanRecordBO == null) {
             return null;
         }
         AssetLoanRecordDO assetLoanRecordDO = new AssetLoanRecordDO();
@@ -128,9 +126,8 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordDO.setRemain(assetLoanRecordBO.getRemain());
         assetLoanRecordDO.setAssetType(assetLoanRecordBO.getAssetType());
         assetLoanRecordDO.setLoanRecordId(assetLoanRecordBO.getLoanRecordId());
-        assetLoanRecordDO.setLoanTime(assetLoanRecordBO.getLoanTime());
-        assetLoanRecordDO.setBackTime(assetLoanRecordBO.getBackTime());
         assetLoanRecordDO.setStatus(assetLoanRecordBO.getStatus());
+        assetLoanRecordDO.setExtInfo(JSON.toJSONString(assetLoanRecordBO.getExtInfo()));
 
         return assetLoanRecordDO;
     }

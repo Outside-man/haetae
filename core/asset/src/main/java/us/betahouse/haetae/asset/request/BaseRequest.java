@@ -18,35 +18,32 @@ import java.util.Map;
 public abstract class BaseRequest extends ToString implements Serializable {
     private static final long serialVersionUID = 7606672139580193914L;
     /**
-     *请求id
+     * 请求id
      */
     @NotBlank
-    private  String  requestId;
+    private String requestId;
     /**
-     *拓展信息
+     * 拓展信息
      */
-    private Map<String ,String > extInfo= new HashMap<>();
+    private Map<String, String> extInfo = new HashMap<>();
 
-  /**
-  * @Description: 放入拓展信息
-  * @Param:
-  */
-    public void putExtInfo(String key,String value)
-    {
-        if(extInfo==null)
-        {
-            extInfo=new HashMap<>();
-        }
-        extInfo.put(key,value);
-    }
     /**
-    * @Description: 取出拓展信息
-    * @Param:
-    */
-    public  String fetchExtInfo(String key)
-    {
-        if(extInfo==null)
-        {
+     * @Description: 放入拓展信息
+     * @Param:
+     */
+    public void putExtInfo(String key, String value) {
+        if (extInfo == null) {
+            extInfo = new HashMap<>();
+        }
+        extInfo.put(key, value);
+    }
+
+    /**
+     * @Description: 取出拓展信息
+     * @Param:
+     */
+    public String fetchExtInfo(String key) {
+        if (extInfo == null) {
             return null;
         }
         return extInfo.get(key);

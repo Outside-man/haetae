@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.asset.dal.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -11,7 +13,8 @@ import java.util.Date;
 
 /**
  * 物资借取记录实体类
- * @author yiyuk,hxy
+ *
+ * @author yiyuk, hxy
  * @version : AssetLoanRecordDO.java 2019/01/19 22:03 yiyuk,hxy
  */
 @Entity
@@ -40,11 +43,13 @@ public class AssetLoanRecordDO extends BaseDO {
     /**
      * 借取时间
      */
+    @CreatedDate
     @Column(name = "loan_time", length = 32)
     private Date loanTime;
     /**
      * 最后一次归还时间
      */
+    @LastModifiedDate
     @Column(name = "back_time", length = 32)
     private Date backTime;
     /**
@@ -70,7 +75,7 @@ public class AssetLoanRecordDO extends BaseDO {
     /**
      * 备注，用于报损时
      */
-    @Column(name = "remark",length = 32)
+    @Column(name = "remark", length = 32)
     private String remark;
 
     public static long getSerialVersionUID() {
