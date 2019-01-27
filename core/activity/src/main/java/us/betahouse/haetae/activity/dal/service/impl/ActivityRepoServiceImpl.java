@@ -171,9 +171,15 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     }
 
     @Override
-    public PageList<ActivityBO> queryActivityByTermAndStateAndTypePager(String term, String status, String type, Integer page, Integer limit) {
+    public PageList<ActivityBO> queryActivityByTermAndStateAndTypePagerDESC(String term, String status, String type, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        return new PageList<ActivityBO>(activityDORepo.findAllByTermContainsAndStateContainsAndTypeContainsOrderByActivityIdDesc(pageable,term ,status ,type ),this::convert);
+        return new PageList<>(activityDORepo.findAllByTermContainsAndStateContainsAndTypeContainsOrderByActivityIdDesc(pageable, term, status, type), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryActivityByTermAndStateAndTypePagerASC(String term, String status, String type, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findAllByTermContainsAndStateContainsAndTypeContains(pageable, term, status, type), this::convert);
     }
 
     private Object convert(Object o) {

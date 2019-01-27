@@ -97,6 +97,16 @@ public class ActivityRequest extends BaseRequest {
      */
     private Integer page;
 
+    private String orderRule;
+
+    public String getOrderRule() {
+        return orderRule;
+    }
+
+    public void setOrderRule(String orderRule) {
+        this.orderRule = orderRule;
+    }
+
     public String getActivityId() {
         return activityId;
     }

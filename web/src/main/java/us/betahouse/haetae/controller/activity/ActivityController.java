@@ -136,10 +136,12 @@ public class ActivityController {
                 if (StringUtils.isNotBlank(request.getState())) {
                     builder.withState(request.getState());
                 }
+
                 // 添加学期选择条件
                 if (StringUtils.isNotBlank(request.getTerm())) {
                     builder.withTerm(request.getTerm());
                 }
+
                 // 添加类型选择条件
                 if(StringUtils.isNotBlank(request.getActivityType())){
                     builder.withType(request.getActivityType());
@@ -153,6 +155,11 @@ public class ActivityController {
                 //添加每页条数
                 if(request.getLimit()!=null&&request.getLimit()!=0){
                     builder.withLimit(request.getLimit());
+                }
+
+                //添加排序規則
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
                 }
                 return RestResultUtil.buildSuccessResult(activityService.findAll(builder.build(), context), "获取活动列表成功");
             }

@@ -77,7 +77,7 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
     ActivityDO findByActivityName(String activityName);
 
     /**
-     * 通过学期、状态、类型分页查询
+     * 通过学期、状态、类型分页查询 倒序
      *
      * @param pageable 分页工具
      * @param term 学期
@@ -88,13 +88,13 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
     Page<ActivityDO> findAllByTermContainsAndStateContainsAndTypeContainsOrderByActivityIdDesc(Pageable pageable,String term,String status,String type);
 
     /**
-     * 通过学期、状态、类型（不包含）分页查询
+     * 通过学期、状态、类型分页查询
      *
      * @param pageable 分页工具
      * @param term 学期
-     * @param status 不包含的状态
-     * @param notType 类型
+     * @param status 状态
+     * @param type 类型
      * @return Page<ActivityDO>
      */
-    Page<ActivityDO> findAllByTermContainsAndStateContainsAndTypeNotOrderByActivityIdDesc(Pageable pageable,String term,String status,String notType);
+    Page<ActivityDO> findAllByTermContainsAndStateContainsAndTypeContains(Pageable pageable,String term,String status,String type);
 }

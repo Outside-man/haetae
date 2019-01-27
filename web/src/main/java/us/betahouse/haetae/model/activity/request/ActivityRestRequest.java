@@ -102,6 +102,19 @@ public class ActivityRestRequest extends RestRequest {
      */
     private Integer page;
 
+    /**
+     * 排序规则
+     */
+    private String orderRule;
+
+    public String getOrderRule() {
+        return orderRule;
+    }
+
+    public void setOrderRule(String orderRule) {
+        this.orderRule = orderRule;
+    }
+
     public String getActivityId() {
         return activityId;
     }

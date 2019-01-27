@@ -59,7 +59,7 @@ public class ActivityRepoServiceTest {
         String type=ActivityTypeEnum.SCHOOL_ACTIVITY.getCode();
         Integer page=0;
         Integer limit=10;
-        PageList<ActivityBO> activityBOPageList=activityRepoService.queryActivityByTermAndStateAndTypePager(term, status, type, page, limit);
+        PageList<ActivityBO> activityBOPageList=activityRepoService.queryActivityByTermAndStateAndTypePagerDESC(term, status, type, page, limit);
         for(ActivityBO activityBO:activityBOPageList.getContent()){
             System.out.println(activityBO);
         }

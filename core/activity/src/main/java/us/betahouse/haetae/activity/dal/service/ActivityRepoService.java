@@ -26,6 +26,7 @@ public interface ActivityRepoService {
     /**
      * 通过状态查询活动
      *
+     * @param state 狀態
      * @return
      */
     List<ActivityBO> queryActivitiesByState(String state);
@@ -33,6 +34,7 @@ public interface ActivityRepoService {
     /**
      * 通过类型查询活动
      *
+     * @param type 类型
      * @return
      */
     List<ActivityBO> queryActivityByType(String type);
@@ -87,5 +89,18 @@ public interface ActivityRepoService {
      * @param limit 每页行数
      * @return PageList<ActivityBO>
      */
-    PageList<ActivityBO> queryActivityByTermAndStateAndTypePager(String term,String status,String type,Integer page,Integer limit);
+    PageList<ActivityBO> queryActivityByTermAndStateAndTypePagerDESC(String term,String status,String type,Integer page,Integer limit);
+
+
+    /**
+     * 通过学期、状态、类型分页查询 分页
+     *
+     * @param term 学期
+     * @param status 状态
+     * @param type 类型
+     * @param page 页面
+     * @param limit 每页行数
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryActivityByTermAndStateAndTypePagerASC(String term,String status,String type,Integer page,Integer limit);
 }

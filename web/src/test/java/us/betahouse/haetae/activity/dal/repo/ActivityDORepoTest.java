@@ -87,15 +87,5 @@ public class ActivityDORepoTest {
         System.out.println(activityDOPage.isEmpty());
         System.out.println(activityDOPage.isLast());
         System.out.println("-------------------------------------");
-        activityDOPage=activityDORepo.findAllByTermContainsAndStateContainsAndTypeNotOrderByActivityIdDesc(pageable, "", "", ActivityTypeEnum.PRACTICE_ACTIVITY.getCode());
-        activityDOPage.forEach(System.out::println);
-        System.out.println(activityDOPage.getTotalElements());
-        System.out.println(activityDOPage.getTotalPages());
-        System.out.println(activityDOPage.getNumber());
-        System.out.println(activityDOPage.getNumberOfElements());
-        System.out.println(activityDOPage.getSize());
-        System.out.println(activityDOPage.isFirst());
-        System.out.println(activityDOPage.isEmpty());
-        System.out.println(activityDOPage.isLast());
     }
 }

@@ -106,6 +106,13 @@ public class ActivityManagerImpl implements ActivityManager {
 
     @Override
     public PageList<ActivityBO> find(ActivityRequest request) {
-        return activityRepoService.queryActivityByTermAndStateAndTypePager(request.getTerm(), request.getState(), request.getType(), request.getPage(), request.getLimit());
+        //順序
+        String asc ="ASC";
+        if(asc.equals(request.getOrderRule())){
+            return activityRepoService.queryActivityByTermAndStateAndTypePagerASC(request.getTerm(), request.getState(), request.getType(), request.getPage(), request.getLimit());
+        }else{
+            return activityRepoService.queryActivityByTermAndStateAndTypePagerDESC(request.getTerm(), request.getState(), request.getType(), request.getPage(), request.getLimit());
+        }
+
     }
 }

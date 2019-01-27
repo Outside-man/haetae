@@ -31,6 +31,7 @@ public final class ActivityManagerRequestBuilder {
     private String term;
     private Integer page;
     private Integer limit;
+    private String orderRule;
 
     private ActivityManagerRequestBuilder() {
     }
@@ -121,6 +122,10 @@ public final class ActivityManagerRequestBuilder {
         this.limit = limit;
         return this;
     }
+    public ActivityManagerRequestBuilder withOrderRule(String orderRule){
+        this.orderRule=orderRule;
+        return this;
+    }
     public ActivityManagerRequest build() {
         ActivityManagerRequest activityManagerRequest = new ActivityManagerRequest();
         activityManagerRequest.setActivityId(activityId);
@@ -140,6 +145,7 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setTerm(term);
         activityManagerRequest.setPage(page);
         activityManagerRequest.setLimit(limit);
+        activityManagerRequest.setOrderRule(orderRule);
         return activityManagerRequest;
     }
 }

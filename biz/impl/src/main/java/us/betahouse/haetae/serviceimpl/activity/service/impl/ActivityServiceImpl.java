@@ -37,6 +37,7 @@ import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.NumberUtils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
         AssertUtil.assertNotNull(activityType, "该活动类型不存在");
@@ -113,11 +114,14 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context) {
+        //默认值 学期不限 状态不限 类型不限 第0页 每页十条 逆序
         String term="";
         String status="";
         String type="";
         Integer page=0;
         Integer limit=10;
+        String orderRule="DESC";
+
         if(StringUtils.isNotBlank(request.getTerm())){
             term=request.getTerm();
         }
@@ -131,11 +135,19 @@ public class ActivityServiceImpl implements ActivityService {
             AssertUtil.assertNotNull(typeEnum, "活动类型不存在");
             type=request.getType();
         }
-        if(request.getPage()!=null&&request.getPage()!=0){
+
+        if(NumberUtils.isNotBlank(request.getPage())){
             page=request.getPage();
         }
-        if(request.getLimit()!=null&&request.getLimit()!=0){
+        if(NumberUtils.isNotBlank(request.getLimit())){
             limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
         }
         ActivityRequest re=new ActivityRequest();
         re.setTerm(term);
@@ -143,6 +155,7 @@ public class ActivityServiceImpl implements ActivityService {
         re.setType(type);
         re.setPage(page);
         re.setLimit(limit);
+        re.setOrderRule(orderRule);
         return activityManager.find(re);
 
     }
@@ -159,7 +172,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @VerifyPerm(permType = ActivityPermType.STAMPER_MANAGE)
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void bindStamper(ActivityManagerRequest request, OperateContext context) {
         ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
         AssertUtil.assertNotNull(activity, "活动不存在");
