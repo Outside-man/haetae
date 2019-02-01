@@ -25,6 +25,7 @@
         <module>biz/impl</module>
         <module>web</module>
         <module>core/asset</module>
+        <module>core/finance</module>
     </modules>
 
     <dependencyManagement>
@@ -51,6 +52,11 @@
             <dependency>
                 <groupId>us.betahouse</groupId>
                 <artifactId>haetae-asset</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-finance</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!--biz 层-->

@@ -4,9 +4,10 @@
  */
 package us.betahouse.haetae.common;
 
-import org.hibernate.validator.constraints.NotBlank;
+
 import us.betahouse.util.common.ToString;
 
+import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 

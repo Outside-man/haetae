@@ -48,10 +48,12 @@ public class AssetRestRequest extends RestRequest {
      */
     private  String userId;
 
+    @Override
     public String getUserId() {
         return userId;
     }
 
+    @Override
     public void setUserId(String userId) {
         this.userId = userId;
     }

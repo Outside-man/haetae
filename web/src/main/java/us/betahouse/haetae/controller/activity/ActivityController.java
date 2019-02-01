@@ -128,8 +128,7 @@ public class ActivityController {
             public Result<PageList<ActivityBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                //todo
-                //type page
+
                 ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
 
                 // 填充状态选择条件
