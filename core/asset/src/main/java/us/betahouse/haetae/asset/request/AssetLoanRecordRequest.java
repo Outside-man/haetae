@@ -20,6 +20,7 @@ public class AssetLoanRecordRequest extends BaseRequest {
     private Integer amount;
     private Integer remain;
     private String remark;
+    private String assetInfo;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -87,5 +88,13 @@ public class AssetLoanRecordRequest extends BaseRequest {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAssetInfo() {
+        return assetInfo;
+    }
+
+    public void setAssetInfo(String assetInfo) {
+        this.assetInfo = assetInfo;
     }
 }

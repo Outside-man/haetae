@@ -35,7 +35,8 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withStatus(request.getStatus())
                 .withUserId(request.getUserId())
                 .withRemark(request.getRemark())
-                .withExtInfo(request.getExtInfo());
+                .withExtInfo(request.getExtInfo())
+                .withAssetInfo(request.getAssetInfo());
         return assetLoanRecordRepoService.createAssetLoanRecord(bulider.build());
     }
 
@@ -50,7 +51,8 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withStatus(request.getStatus())
                 .withUserId(request.getUserId())
                 .withRemark(request.getRemark())
-                .withExtInfo(request.getExtInfo());
+                .withExtInfo(request.getExtInfo())
+                .withAssetInfo(request.getAssetInfo());
         return assetLoanRecordRepoService.updateAssetLoanRecord(bulider.build());
     }
 

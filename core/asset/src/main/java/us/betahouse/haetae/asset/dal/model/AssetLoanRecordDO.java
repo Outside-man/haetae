@@ -77,6 +77,11 @@ public class AssetLoanRecordDO extends BaseDO {
      */
     @Column(name = "remark", length = 32)
     private String remark;
+    /**
+     * 物资用途
+     */
+    @Column(name = "asset_info", length = 32)
+    private String assetInfo;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -160,5 +165,13 @@ public class AssetLoanRecordDO extends BaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAssetInfo() {
+        return assetInfo;
+    }
+
+    public void setAssetInfo(String assetInfo) {
+        this.assetInfo = assetInfo;
     }
 }

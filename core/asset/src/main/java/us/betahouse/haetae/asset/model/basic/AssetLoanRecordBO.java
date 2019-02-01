@@ -29,6 +29,10 @@ public class AssetLoanRecordBO {
     private Integer remain;
     private String remark;
     /**
+     * 物资用途
+     */
+    private String assetInfo;
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -144,5 +148,13 @@ public class AssetLoanRecordBO {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getAssetInfo() {
+        return assetInfo;
+    }
+
+    public void setAssetInfo(String assetInfo) {
+        this.assetInfo = assetInfo;
     }
 }
