@@ -58,6 +58,12 @@ public class AssetDO extends BaseDO {
     @Column(name = "remain", length = 10)
     private Integer remain;
 
+    /**
+     * 物资用途
+     */
+    @Column(name = "asset_info", length = 32)
+    private String assetInfo;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -118,4 +124,11 @@ public class AssetDO extends BaseDO {
         this.remain = remain;
     }
 
+    public String getAssetInfo() {
+        return assetInfo;
+    }
+
+    public void setAssetInfo(String assetInfo) {
+        this.assetInfo = assetInfo;
+    }
 }

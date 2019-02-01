@@ -64,6 +64,10 @@ public class AssetBO extends ToString {
      * 物资额外信息
      */
     private Map<String, String> extInfo = new HashMap<>();
+    /**
+     * 物资用途
+     */
+    private String assetInfo;
 
     /**
      * 判断是否可借用
@@ -191,5 +195,13 @@ public class AssetBO extends ToString {
 
     public void setAssetRemain(int assetRemain) {
         this.assetRemain = assetRemain;
+    }
+
+    public String getAssetInfo() {
+        return assetInfo;
+    }
+
+    public void setAssetInfo(String assetInfo) {
+        this.assetInfo = assetInfo;
     }
 }
