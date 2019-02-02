@@ -30,7 +30,7 @@ public interface AssetLoanRecordRepoService {
     AssetLoanRecordBO updateAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO);
 
     /**
-     * 通过用户id获取
+     * 通过用户id获取所有记录
      *
      * @param userId
      * @return
@@ -46,12 +46,28 @@ public interface AssetLoanRecordRepoService {
     AssetLoanRecordBO findAssetLoanRecordByLoadId(String loanId);
 
     /**
-     * 通过物资id获取
+     * 通过物资id获取所有记录
      *
      * @param assetId
      * @return
      */
-    List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId);
+    List<AssetLoanRecordBO> queryAllAssetLoanRecordByAssetId(String assetId);
+
+    /**
+     * 通过物资id获取报损记录
+     *
+     * @param assetId
+     * @return
+     */
+    List<AssetLoanRecordBO> queryDistoryRecordByAssetId(String assetId);
+
+    /**
+     * 通过物资id获取借用记录
+     *
+     * @param assetId
+     * @return
+     */
+    List<AssetLoanRecordBO> queryAssetLoanRecordByAssetId(String assetId);
 
     /**
      * 通过名称查找

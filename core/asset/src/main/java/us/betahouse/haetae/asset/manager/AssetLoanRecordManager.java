@@ -38,13 +38,28 @@ public interface AssetLoanRecordManager {
      * @param userId
      * @return
      */
-    List<AssetLoanRecordBO> findByUserId(String userId);
+    List<AssetLoanRecordBO> findAssetLoanRecordByUserId(String userId);
 
+    /**
+     * 通过物资id查询所有借用记录
+     *
+     * @param assetId
+     * @return
+     */
+    List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(String assetId);
+
+    /**
+     * 通过物资id查询报损记录
+     *
+     * @param assetId
+     * @return
+     */
+    List<AssetLoanRecordBO> findDistoryRecordByAssetId(String assetId);
     /**
      * 通过物资id查询借用记录
      *
      * @param assetId
      * @return
      */
-    List<AssetLoanRecordBO> findByAssetId(String assetId);
+    List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId);
 }

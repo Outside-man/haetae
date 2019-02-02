@@ -22,7 +22,8 @@ public interface AssetLoanRecordService {
      * @param context
      * @return
      */
-    AssetLoanRecordBO create(AssetLoanRecordRequest request, OperateContext context);
+    List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context);
+
     /**
      * 更新借用记录
      *
@@ -32,4 +33,12 @@ public interface AssetLoanRecordService {
      */
     AssetLoanRecordBO update(AssetLoanRecordRequest request, OperateContext context);
 
+    /**
+     * 查询所有借用记录
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(AssetLoanRecordRequest request, OperateContext context);
 }

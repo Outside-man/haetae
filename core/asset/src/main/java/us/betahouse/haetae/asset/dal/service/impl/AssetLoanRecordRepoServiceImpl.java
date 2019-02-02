@@ -53,7 +53,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
 
     @Override
     public AssetLoanRecordBO updateAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO) {
-        AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetLoanRecordBO.getLoanRecordId());
+        AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findAllByLoanRecordId(assetLoanRecordBO.getLoanRecordId());
         AssetLoanRecordDO assetLoanRecordDO1 = convert(assetLoanRecordBO);
         if (assetLoanRecordDO1.getBackTime() != null) {
             assetLoanRecordDO.setLoanTime(assetLoanRecordDO1.getLoanTime());
@@ -82,13 +82,36 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
 
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoadId(String loanId) {
-        return convert(assetLoanDORepo.findByLoanRecordId(loanId));
+        return convert(assetLoanDORepo.findAllByLoanRecordId(loanId));
     }
 
     @Override
-    public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
-        return null;
+    public List<AssetLoanRecordBO> queryAllAssetLoanRecordByAssetId(String assetId) {
+        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findAllRecordByAssetId(assetId);
+        return CollectionUtils.toStream(assetLoanRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<AssetLoanRecordBO> queryDistoryRecordByAssetId(String assetId) {
+        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findDistoryRecordByAssetId(assetId);
+        return CollectionUtils.toStream(assetLoanRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AssetLoanRecordBO> queryAssetLoanRecordByAssetId(String assetId) {
+        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findLoanRecordByAssetId(assetId);
+        return CollectionUtils.toStream(assetLoanRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<AssetLoanRecordBO> queryAssetLoanRecordByName(String name) {

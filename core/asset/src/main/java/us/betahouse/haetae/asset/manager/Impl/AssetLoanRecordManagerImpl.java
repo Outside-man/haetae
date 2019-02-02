@@ -57,12 +57,23 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
     }
 
     @Override
-    public List<AssetLoanRecordBO> findByUserId(String userId) {
+    public List<AssetLoanRecordBO> findAssetLoanRecordByUserId(String userId) {
         return assetLoanRecordRepoService.queryAssetLoanRecordByUserId(userId);
     }
 
     @Override
-    public List<AssetLoanRecordBO> findByAssetId(String assetId) {
-        return assetLoanRecordRepoService.findAssetLoanRecordByAssetId(assetId);
+    public List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(String assetId) {
+        return assetLoanRecordRepoService.queryAllAssetLoanRecordByAssetId(assetId);
     }
+
+    @Override
+    public List<AssetLoanRecordBO> findDistoryRecordByAssetId(String assetId) {
+        return assetLoanRecordRepoService.queryDistoryRecordByAssetId(assetId);
+    }
+
+    @Override
+    public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
+        return assetLoanRecordRepoService.queryAssetLoanRecordByAssetId(assetId);
+    }
+
 }
