@@ -87,8 +87,6 @@ public class AssetController {
                         //以下是可选参数
                         //额外信息
                         .withExtInfo(request.getExtInfo())
-                        //剩余
-                        .withReamain(Integer.valueOf(request.getAssetRemain()))
                         .builder();
                 AssetBO assetBo=assetService.create(assetManagerRequest,context);
                 return RestResultUtil.buildSuccessResult(assetBo,"物资创建成功");
