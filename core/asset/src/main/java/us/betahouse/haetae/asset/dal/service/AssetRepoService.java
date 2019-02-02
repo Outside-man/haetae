@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.asset.dal.service;
 
+import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
 /**
@@ -16,4 +17,14 @@ public interface AssetRepoService {
      * @Param: [assetBO]
      */
     AssetBO createAsset(AssetBO assetBO);
+    /** 
+    * @Description: 查找物资 
+    * @Param: [assetId] 
+    */ 
+    AssetDO findByAssetId(String assetId);
+    /** 
+    * @Description: 判断物资状态 
+    * @Param: [assetId] 
+    */ 
+    String judgeByAssetId(String assetId);
 }

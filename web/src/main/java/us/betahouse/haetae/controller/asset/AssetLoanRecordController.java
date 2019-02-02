@@ -54,6 +54,15 @@ public class AssetLoanRecordController {
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
 
+
+    @GetMapping
+    public String assetJudgment(AssetLoanRecordRequest request ,HttpServletRequest httpServletRequest){
+
+        return "";
+    }
+
+
+
     /**
      * 添加借用物资信息
      *

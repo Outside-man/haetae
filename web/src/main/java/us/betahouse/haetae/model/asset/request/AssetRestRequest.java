@@ -35,6 +35,10 @@ public class AssetRestRequest extends RestRequest {
      */
     private String organizationId;
     /**
+     * 物资所属组织名字
+     */
+    private String organizationName;
+    /**
      * 物资剩余数量
      */
     private String assetRemain;
@@ -56,6 +60,14 @@ public class AssetRestRequest extends RestRequest {
     @Override
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 
     public String getAssetId() {

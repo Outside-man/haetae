@@ -68,14 +68,14 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "amount", length = 10)
     private Integer amount;
     /**
-     * 借用数量
+     * 已归还数量
      */
     @Column(name = "remain", length = 10)
     private Integer remain;
     /**
      * 备注，用于报损时
      */
-    @Column(name = "remark", length = 32)
+    @Column(name = "remark", length = 100)
     private String remark;
     /**
      * 物资用途

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import us.betahouse.haetae.asset.dal.convert.EntityConverter;
+import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
@@ -43,33 +45,39 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         return EntityConverter.convert(assetDORepo.save(EntityConverter.convert(assetBO)));
     }
 
-//    @Override
-//    public AssetBO createAsset(AssetBO assetBO) {
-//        //StringUtil类判断空方法
-//        if (StringUtils.isBlank(assetBO.getAssetId())) {
-//            assetBO.setAssetId(assetBizFactory.getAssetId());
-//        }
-//        //save 返回该对象
-//        return entityConverter.convert(assetDORepo.save(entityConverter.convert(assetBO)));
-//    }
+    /**
+    * @Description: 查找物资
+    * @Param: [assetId]
+    */
+    @Override
+    public AssetDO findByAssetId(String assetId) {
+        AssetDO assetDo=assetDORepo.findByAssetId(assetId);
+        return assetDo;
+    }
 
-//    @Override
-//    public AssetBO updateAsset(AssetBO assetBO) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<AssetBO> queryAllAsset() {
-//        return null;
-//    }
-//
-//    @Override
-//    public AssetBO queryAssetById(String assetId) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<AssetBO> queryAssetByName(String name) {
-//        return null;
-//    }
+    /**
+    * @Description: 判断物资状态
+    * @Param: [assetId]
+    */
+    @Override
+    public String judgeByAssetId(String assetId) {
+        final String ALLBORROW="全部借出";
+        boolean isExistence=assetDORepo.existsByAssetId(assetId);
+        String assetStatus;
+        if(isExistence){
+            return AssetStatusEnum.getByCode("物资不存在").toString();
+        }
+        else{
+            assetStatus=assetDORepo.findByStatus(assetId);
+            if("不可借"==assetStatus){
+                return ALLBORROW;
+            }
+            else{
+
+            }
+        }
+        return null;
+    }
+
+
 }

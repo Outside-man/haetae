@@ -15,7 +15,7 @@ import java.util.Map;
  * @author guofan.cp
  * @version : BaseRequest.java 2019/01/20 22:35 guofan.cp
  */
-public abstract class BaseRequest extends ToString implements Serializable {
+public abstract class BaseRequest extends ToString {
     private static final long serialVersionUID = 7606672139580193914L;
     /**
      * 请求id
