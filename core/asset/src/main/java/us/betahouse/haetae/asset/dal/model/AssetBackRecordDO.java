@@ -60,8 +60,8 @@ public class AssetBackRecordDO extends BaseDO {
     /**
      * 备注，用于报损时
      */
-    @Column(name = "remark", length = 10)
-    private Integer remark;
+    @Column(name = "remark", length = 100)
+    private String remark;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -123,12 +123,11 @@ public class AssetBackRecordDO extends BaseDO {
         this.type = type;
     }
 
-    public Integer getRemark() {
+    public String getRemark() {
         return remark;
     }
 
-    public void setRemark(Integer remark) {
+    public void setRemark(String remark) {
         this.remark = remark;
     }
-
 }

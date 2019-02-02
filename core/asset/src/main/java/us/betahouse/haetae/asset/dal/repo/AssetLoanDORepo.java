@@ -31,5 +31,4 @@ public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> 
      * @return
      */
     AssetLoanRecordDO findByLoanRecordId(String loanId);
-
 }

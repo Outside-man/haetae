@@ -39,4 +39,10 @@ public interface AssetDORepo extends JpaRepository<AssetDO, Long> {
      * @return
      */
     boolean existsByAssetId(String assetId);
+    
+    /** 
+    * @Description: 通过判断id物资状态 
+    * @Param: [assetId] 
+    */ 
+    String findByStatus(String assetId);
 }
