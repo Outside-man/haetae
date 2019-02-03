@@ -15,7 +15,8 @@ public enum AssetStatusEnum {
     ASSET_NOTLOAN("assetNotLoan", "全部借出"),
     ASSET_DISTORY("assetDistory", "全部损坏"),
 
-    ASSET_NOTEXISTENCE("物资不存在","物资不存在");
+    ASSET_NOTEXISTENCE("物资不存在", "物资不存在");
+
     private String code;
 
     private String desc;

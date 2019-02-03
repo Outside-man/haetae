@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.controller.asset;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import us.betahouse.haetae.activity.model.basic.ActivityBO;
-import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
-import us.betahouse.haetae.common.RestRequest;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
-import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
@@ -53,15 +48,6 @@ public class AssetLoanRecordController {
 
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
-
-
-    @GetMapping
-    public String assetJudgment(AssetLoanRecordRequest request ,HttpServletRequest httpServletRequest){
-
-        return "";
-    }
-
-
 
     /**
      * 添加借用物资信息
@@ -109,6 +95,7 @@ public class AssetLoanRecordController {
 
         });
     }
+
     /**
      * 获取列表
      *
@@ -132,9 +119,7 @@ public class AssetLoanRecordController {
             public Result<List<AssetLoanRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-
                 AssetLoanRecordManagerRequestBuilder builder = AssetLoanRecordManagerRequestBuilder.getInstance();
-
                 return RestResultUtil.buildSuccessResult(assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context), "获取活动列表成功");
             }
         });

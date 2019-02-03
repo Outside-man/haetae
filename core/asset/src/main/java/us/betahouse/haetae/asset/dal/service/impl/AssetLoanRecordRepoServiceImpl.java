@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
 import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
+import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.util.enums.CommonResultCode;
@@ -51,9 +52,13 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         return convert(assetLoanDORepo.save(convert(assetLoanRecordBO)));
     }
 
+    /**
+     * @param assetLoanRecordBO
+     * @return
+     */
     @Override
     public AssetLoanRecordBO updateAssetLoanRecord(AssetLoanRecordBO assetLoanRecordBO) {
-        AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findAllByLoanRecordId(assetLoanRecordBO.getLoanRecordId());
+        AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetLoanRecordBO.getLoanRecordId());
         AssetLoanRecordDO assetLoanRecordDO1 = convert(assetLoanRecordBO);
         if (assetLoanRecordDO1.getBackTime() != null) {
             assetLoanRecordDO.setLoanTime(assetLoanRecordDO1.getLoanTime());
@@ -71,6 +76,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         return convert(assetLoanDORepo.save(assetLoanRecordDO));
     }
 
+    /**
+     * @param userId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> queryAssetLoanRecordByUserId(String userId) {
         List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findByUserId(userId);
@@ -80,11 +89,19 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param loanId
+     * @return
+     */
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoadId(String loanId) {
-        return convert(assetLoanDORepo.findAllByLoanRecordId(loanId));
+        return convert(assetLoanDORepo.findByLoanRecordId(loanId));
     }
 
+    /**
+     * @param assetId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> queryAllAssetLoanRecordByAssetId(String assetId) {
         List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findAllRecordByAssetId(assetId);
@@ -94,25 +111,66 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param assetId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> queryDistoryRecordByAssetId(String assetId) {
-        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findDistoryRecordByAssetId(assetId);
+        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findAllRecordByAssetId(assetId);
+        //筛选出报损记录
+        for (int i = 0; i < assetLoanRecordDOList.size(); ++i) {
+            AssetLoanRecordStatusEnum assetLoanRecordStatusEnum = AssetLoanRecordStatusEnum
+                    .getByCode(assetLoanRecordDOList.get(i).getStatus());
+            switch (assetLoanRecordStatusEnum) {
+                case ASSET_LOAN_RECORD_LOAN:
+                    assetLoanRecordDOList.remove(i);
+                    break;
+                case ASSET_LOAN_RECORD_NOTLOAN:
+                    assetLoanRecordDOList.remove(i);
+                    break;
+                default:
+                    break;
+            }
+        }
         return CollectionUtils.toStream(assetLoanRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param assetId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> queryAssetLoanRecordByAssetId(String assetId) {
-        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findLoanRecordByAssetId(assetId);
+        List<AssetLoanRecordDO> assetLoanRecordDOList = assetLoanDORepo.findAllRecordByAssetId(assetId);
+        //筛选出借用记录
+        for (int i = 0; i < assetLoanRecordDOList.size(); ++i) {
+            AssetLoanRecordStatusEnum assetLoanRecordStatusEnum = AssetLoanRecordStatusEnum
+                    .getByCode(assetLoanRecordDOList.get(i).getStatus());
+            switch (assetLoanRecordStatusEnum) {
+                case ASSET_LOAN_RECORD_LOAN:
+                    assetLoanRecordDOList.remove(i);
+                    break;
+                case ASSET_LOAN_RECORD_DISTORY:
+                    assetLoanRecordDOList.remove(i);
+                    break;
+                default:
+                    break;
+            }
+        }
         return CollectionUtils.toStream(assetLoanRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * @param name
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> queryAssetLoanRecordByName(String name) {
         return null;
@@ -142,6 +200,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         return assetLoanRecordBO;
     }
 
+    /**
+     * @param assetLoanRecordBO
+     * @return
+     */
     private AssetLoanRecordDO convert(AssetLoanRecordBO assetLoanRecordBO) {
         if (assetLoanRecordBO == null) {
             return null;
