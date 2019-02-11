@@ -7,10 +7,7 @@ package us.betahouse.haetae.controller.asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -56,6 +53,7 @@ public class AssetLoanRecordController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @CheckLogin
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -103,6 +101,7 @@ public class AssetLoanRecordController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @CheckLogin
     @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)

@@ -52,6 +52,7 @@ public class AssetController {
     /**
      * 添加物资
      */
+    @CrossOrigin
     @CheckLogin
     @PostMapping(value = "asset")
     @Log(loggerName = LoggerName.WEB_DIGEST)
