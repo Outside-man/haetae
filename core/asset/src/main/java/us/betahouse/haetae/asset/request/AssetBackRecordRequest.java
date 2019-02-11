@@ -2,16 +2,16 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.asset.model.basic;
+package us.betahouse.haetae.asset.request;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author yiyuk.hxy
- * @version : AssetBackRecordBO.java 2019/01/23 21:05 yiyuk.hxy
+ * @version : AssetBackRecordRequest.java 2019/02/10 22:40 yiyuk.hxy
  */
-public class AssetBackRecordBO {
+public class AssetBackRecordRequest {
     private static final long serialVersionUID = 1910747655670036477L;
     /**
      * 物资归还记录ID
@@ -46,20 +46,6 @@ public class AssetBackRecordBO {
      */
     private String remark;
     private Map<String, String> extInfo = new HashMap<>();
-
-    public String fetchExtInfo(String key) {
-        if (extInfo == null) {
-            return null;
-        }
-        return extInfo.get(key);
-    }
-
-    public void putExtInfo(String key, String value) {
-        if (extInfo == null) {
-            extInfo = new HashMap<>();
-        }
-        extInfo.put(key, value);
-    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

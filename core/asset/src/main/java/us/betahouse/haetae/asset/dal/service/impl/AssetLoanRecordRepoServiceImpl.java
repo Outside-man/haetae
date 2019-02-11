@@ -8,16 +8,15 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.asset.builder.AssetBackRecordBOBulider;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
 import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
+import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
-import us.betahouse.util.enums.CommonResultCode;
-import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
-import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -71,6 +70,19 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         }
         if (assetLoanRecordDO1.getAssetInfo() != null) {
             assetLoanRecordDO.setAssetInfo(assetLoanRecordDO1.getAssetInfo());
+        }
+        if (assetLoanRecordDO.getRemain() == assetLoanRecordDO.getAmount()) {
+            AssetBackRecordBOBulider bulider = AssetBackRecordBOBulider.getInstance()
+                    .withAmount(assetLoanRecordDO.getAmount())
+                    .withAssetId(assetLoanRecordDO.getAssetId())
+                    .withAssetType(assetLoanRecordDO.getAssetType())
+                    .withExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class))
+                    .withLoanRecoedId(assetLoanRecordDO.getLoanRecordId())
+                    .withRemark(assetLoanRecordDO.getRemark())
+                    .withUserId(assetLoanRecordDO.getUserId());
+            //TODO type
+            AssetBackRecordRepoService assetBackRecordRepoService = null;
+            assetBackRecordRepoService.createAssetBackRecord(bulider.build());
         }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));

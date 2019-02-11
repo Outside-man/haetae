@@ -56,7 +56,7 @@ public interface AssetLoanRecordManager {
      */
     List<AssetLoanRecordBO> findDistoryRecordByAssetId(String assetId);
     /**
-     * 通过物资id查询借用记录
+     * 通过物资id查询还在借出状态的借用记录
      *
      * @param assetId
      * @return

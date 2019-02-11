@@ -25,6 +25,14 @@ public interface AssetBackDORepo extends JpaRepository<AssetBackRecordDO, Long> 
     List<AssetBackRecordDO> findAllByUserId(String userId);
 
     /**
+     * 根据物资id获取
+     *
+     * @param assetId
+     * @return
+     */
+    List<AssetBackRecordDO> findAllByAssetId(String assetId);
+
+    /**
      * 根据借用记录id获取
      *
      * @param loanRecordId

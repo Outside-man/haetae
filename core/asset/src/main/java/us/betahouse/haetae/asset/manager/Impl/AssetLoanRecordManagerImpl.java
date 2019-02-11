@@ -24,6 +24,10 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
     @Autowired
     private AssetLoanRecordRepoService assetLoanRecordRepoService;
 
+    /**
+     * @param request
+     * @return
+     */
     @Override
     public AssetLoanRecordBO create(AssetLoanRecordRequest request) {
         AssetLoanRecordBOBulider bulider = AssetLoanRecordBOBulider.getInstance()
@@ -40,6 +44,10 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
         return assetLoanRecordRepoService.createAssetLoanRecord(bulider.build());
     }
 
+    /**
+     * @param request
+     * @return
+     */
     @Override
     public AssetLoanRecordBO update(AssetLoanRecordRequest request) {
         AssetLoanRecordBOBulider bulider = AssetLoanRecordBOBulider.getInstance()
@@ -56,21 +64,37 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
         return assetLoanRecordRepoService.updateAssetLoanRecord(bulider.build());
     }
 
+    /**
+     * @param userId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> findAssetLoanRecordByUserId(String userId) {
         return assetLoanRecordRepoService.queryAssetLoanRecordByUserId(userId);
     }
 
+    /**
+     * @param assetId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryAllAssetLoanRecordByAssetId(assetId);
     }
 
+    /**
+     * @param assetId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> findDistoryRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryDistoryRecordByAssetId(assetId);
     }
 
+    /**
+     * @param assetId
+     * @return
+     */
     @Override
     public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryAssetLoanRecordByAssetId(assetId);

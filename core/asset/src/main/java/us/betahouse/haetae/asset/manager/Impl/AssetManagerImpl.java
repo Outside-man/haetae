@@ -25,6 +25,7 @@ public class AssetManagerImpl implements AssetManager {
      * 创建物资
      *
      * @param request
+     * @return
      */
     @Override
     public AssetBO create(AssetRequest request) {
