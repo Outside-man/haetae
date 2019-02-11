@@ -112,6 +112,7 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @PostMapping(value = "/token")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest) {
@@ -174,6 +175,7 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @DeleteMapping(value = "/token")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)

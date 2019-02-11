@@ -53,7 +53,6 @@ public class AssetLoanRecordController {
      * @param httpServletRequest
      * @return
      */
-    @CrossOrigin
     @CheckLogin
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -101,7 +100,6 @@ public class AssetLoanRecordController {
      * @param httpServletRequest
      * @return
      */
-    @CrossOrigin
     @CheckLogin
     @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)

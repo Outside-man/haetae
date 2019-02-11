@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author guofan.cp
  * @version : AssetController.java 2019/01/23 9:06 guofan.cp
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/asset")
 public class AssetController {
@@ -52,7 +53,6 @@ public class AssetController {
     /**
      * 添加物资
      */
-    @CrossOrigin
     @CheckLogin
     @PostMapping(value = "asset")
     @Log(loggerName = LoggerName.WEB_DIGEST)
