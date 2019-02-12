@@ -17,6 +17,6 @@ public class AssetLoanRecordManagerRequest extends AssetLoanRecordRequest implem
 
     @Override
     public String getVerifyUserId() {
-        return null;
+        return getUserId();
     }
 }

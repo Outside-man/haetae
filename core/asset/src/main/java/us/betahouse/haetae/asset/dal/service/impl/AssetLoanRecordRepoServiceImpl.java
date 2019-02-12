@@ -71,19 +71,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         if (assetLoanRecordDO1.getAssetInfo() != null) {
             assetLoanRecordDO.setAssetInfo(assetLoanRecordDO1.getAssetInfo());
         }
-        if (assetLoanRecordDO.getRemain() == assetLoanRecordDO.getAmount()) {
-            AssetBackRecordBOBulider bulider = AssetBackRecordBOBulider.getInstance()
-                    .withAmount(assetLoanRecordDO.getAmount())
-                    .withAssetId(assetLoanRecordDO.getAssetId())
-                    .withAssetType(assetLoanRecordDO.getAssetType())
-                    .withExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class))
-                    .withLoanRecoedId(assetLoanRecordDO.getLoanRecordId())
-                    .withRemark(assetLoanRecordDO.getRemark())
-                    .withUserId(assetLoanRecordDO.getUserId());
-            //TODO type
-            AssetBackRecordRepoService assetBackRecordRepoService = null;
-            assetBackRecordRepoService.createAssetBackRecord(bulider.build());
-        }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));
     }

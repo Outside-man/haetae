@@ -41,4 +41,12 @@ public interface AssetLoanRecordService {
      * @return
      */
     List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(AssetLoanRecordRequest request, OperateContext context);
+    /**
+     * 查询所有借用记录
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<AssetLoanRecordBO> findAllAssetLoanRecordByUserId(AssetLoanRecordRequest request, OperateContext context);
 }

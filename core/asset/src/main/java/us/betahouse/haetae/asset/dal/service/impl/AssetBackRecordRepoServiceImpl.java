@@ -7,6 +7,7 @@ package us.betahouse.haetae.asset.dal.service.impl;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.repo.AssetBackDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * @author yiyuk.hxy
  * @version : AssetBackRecordRepoServiceImpl.java 2019/02/11 12:28 yiyuk.hxy
  */
+@Service
 public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoService {
     @Autowired
     private AssetBackDORepo assetBackDORepo;

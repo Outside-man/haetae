@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 public enum AssetLoanRecordStatusEnum {
     ASSET_LOAN_RECORD_LOAN("assetLoan", "还在借出状态"),
     ASSET_LOAN_RECORD_NOTLOAN("assetNotLoan", "全部归还"),
-    ASSET_LOAN_RECORD_DISTORY("assetDistory", "有损坏或消耗");
+    ASSET_LOAN_RECORD_DISTORY("assetDistory", "全部损坏或消耗");
 
     private String code;
     private String desc;

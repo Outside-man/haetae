@@ -23,6 +23,7 @@ public class AssetLoanRecordRestRequest extends RestRequest {
     private String status;
     private Integer amount;
     private String remark;
+    private Integer remain;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -100,5 +101,13 @@ public class AssetLoanRecordRestRequest extends RestRequest {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getRemain() {
+        return remain;
+    }
+
+    public void setRemain(Integer remain) {
+        this.remain = remain;
     }
 }

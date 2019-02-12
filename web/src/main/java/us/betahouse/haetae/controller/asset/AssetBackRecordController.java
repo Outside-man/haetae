@@ -7,17 +7,18 @@ package us.betahouse.haetae.controller.asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
-import us.betahouse.haetae.model.asset.request.AssetLoanRecordRestRequest;
-import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
-import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
+import us.betahouse.haetae.model.asset.request.AssetBackRecordRestRequest;
+import us.betahouse.haetae.serviceimpl.asset.request.AssetBackRecordManagerRequest;
+import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetBackRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
-import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -30,27 +31,21 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 物资借用接口
- *
  * @author yiyuk.hxy
- * @version : AssetLoanRecordController.java 2019/01/25 23:57 yiyuk.hxy
+ * @version : AssetBackRecordController.java 2019/02/12 17:53 yiyuk.hxy
  */
-@RestController
-@RequestMapping(value = "/assetLoanRecord")
-public class AssetLoanRecordController {
+@RestController(value = "/assetBackRecord")
+public class AssetBackRecordController {
     /**
      * 日志实体
      */
-    private final Logger LOGGER = LoggerFactory.getLogger(AssetLoanRecordController.class);
-
-    @Autowired
-    private AssetLoanRecordService assetLoanRecordService;
+    private final Logger LOGGER = LoggerFactory.getLogger(AssetBackRecordController.class);
 
     @Autowired
     private AssetBackRecordService assetBackRecordService;
 
     /**
-     * 添加借用物资信息
+     * 归还物资记录
      *
      * @param request
      * @param httpServletRequest
@@ -59,8 +54,8 @@ public class AssetLoanRecordController {
     @CheckLogin
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetLoanRecordBO>> add(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
+    public Result<AssetBackRecordBO> add(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<AssetBackRecordBO>() {
 
             @Override
             public void before() {
@@ -69,30 +64,26 @@ public class AssetLoanRecordController {
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
-                if (request.getRemain() == null) {
-                    request.setRemain(0);
-                }
             }
 
             @Override
-            public Result<List<AssetLoanRecordBO>> execute() {
+            public Result<AssetBackRecordBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
-                        .withUserId(request.getUserId())
-                        .withAmount(request.getAmount())
-                        .withRemain(request.getRemain())
-                        .withAssetId(request.getAssetId())
+                AssetBackRecordManagerRequest assetBackRecordManagerRequest = AssetBackRecordManagerRequestBuilder.getInstance()
+                        .withAssetId(request.getUserId())
                         .withAssetType(request.getAssetType())
-                        .withLoanRecordId(request.getLoanRecordId())
-                        .withRemark(request.getRemark())
-                        .withRemark(request.getStatus())
+                        .withBackRecoedId(request.getBackRecoedId())
+                        .withAmount(request.getAmount())
                         .withExtInfo(request.getExtInfo())
+                        .withLoanRecoedId(request.getLoanRecoedId())
+                        .withRemark(request.getRemark())
+                        .withType(request.getType())
+                        .withUserId(request.getUserId())
                         .build();
-                List<AssetLoanRecordBO> assetLoanRecordBO = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
+                AssetBackRecordBO assetLoanRecordBO = assetBackRecordService.create(assetBackRecordManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "借用物资成功");
             }
-
         });
     }
 
@@ -106,8 +97,8 @@ public class AssetLoanRecordController {
     @CheckLogin
     @GetMapping(value = "/getByAssetId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetLoanRecordBO>> getAssetLoanRecordList(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
+    public Result<List<AssetBackRecordBO>> getAssetBackRecordList(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
 
             @Override
             public void before() {
@@ -116,11 +107,11 @@ public class AssetLoanRecordController {
             }
 
             @Override
-            public Result<List<AssetLoanRecordBO>> execute() {
+            public Result<List<AssetBackRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequestBuilder builder = AssetLoanRecordManagerRequestBuilder.getInstance();
-                return RestResultUtil.buildSuccessResult(assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context), "获取活动列表成功");
+                AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
+                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context), "获取活动列表成功");
             }
         });
     }
@@ -133,8 +124,8 @@ public class AssetLoanRecordController {
     @CheckLogin
     @GetMapping(value = "/getByUserId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetLoanRecordBO>> getAssetLoanRecordListByUserId(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
+    public Result<List<AssetBackRecordBO>> getAssetBackRecordListByUserId(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
 
             @Override
             public void before() {
@@ -143,11 +134,11 @@ public class AssetLoanRecordController {
             }
 
             @Override
-            public Result<List<AssetLoanRecordBO>> execute() {
+            public Result<List<AssetBackRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequestBuilder builder = AssetLoanRecordManagerRequestBuilder.getInstance();
-                return RestResultUtil.buildSuccessResult(assetLoanRecordService.findAllAssetLoanRecordByUserId(builder.build(), context), "获取活动列表成功");
+                AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
+                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetLoanRecordByUserId(builder.build(), context), "获取活动列表成功");
             }
         });
     }
