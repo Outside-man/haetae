@@ -34,6 +34,8 @@ public class AssetManagerImpl implements AssetManager {
                 .withAssetType(request.getAssetType())
                 .withAssetMount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
+                .withAssetRemain(request.getAssetRemain())
+                .withAssetStatus(request.getAssetStatus())
                 .withAssetOrginnaztionName(request.getAssetOrganizationName());
         return assetRepoService.createAsset(assetBOBuilder.builder());
     }

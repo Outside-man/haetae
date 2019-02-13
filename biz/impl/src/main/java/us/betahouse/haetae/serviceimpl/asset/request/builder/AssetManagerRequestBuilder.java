@@ -112,6 +112,7 @@ public class AssetManagerRequestBuilder {
         assetManagerRequest.setAssetName(assetName);
         assetManagerRequest.setAssetRemain(assetReamain);
         assetManagerRequest.setAssetType(assetType);
+        assetManagerRequest.setAssetStatus(assetStatus);
         assetManagerRequest.setAssetOrganizationId(assetOrginazationId);
         assetManagerRequest.setAssetOrganizationName(assetOrganizationName);
         return assetManagerRequest;

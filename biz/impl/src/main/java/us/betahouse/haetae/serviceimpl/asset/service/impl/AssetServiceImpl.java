@@ -62,7 +62,6 @@ public class AssetServiceImpl implements AssetService {
         OrganizationBO organizationBO=organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
         AssertUtil.assertNotNull(organizationBO,MessageFormat.format("组织不存在,{0}",request.getAssetOrganizationName()));
         AssertUtil.assertStringNotBlank(request.getAssetType(),"物资类型不能为空");
-
         //创建物资
         AssetBO assetBO=assetManager.create(request);
         return assetBO;

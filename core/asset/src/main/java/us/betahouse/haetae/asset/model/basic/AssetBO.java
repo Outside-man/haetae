@@ -43,11 +43,11 @@ public class AssetBO extends ToString {
     /**
      * 物资归属组织id
      */
-    private String assetOrginnazationId;
+    private String assetOrganizationId;
     /**
      * 物资归属组织名字
      */
-    private String getAssetOrginnazationName;
+    private String AssetOrganizationName;
     /**
      * 物资剩余
      */
@@ -133,20 +133,20 @@ public class AssetBO extends ToString {
         this.modified = modified;
     }
 
-    public String getAssetOrginnazationId() {
-        return assetOrginnazationId;
+    public String getAssetOrganizationId() {
+        return assetOrganizationId;
     }
 
-    public void setAssetOrginnazationId(String assetOrginnazationId) {
-        this.assetOrginnazationId = assetOrginnazationId;
+    public void setAssetOrganizationId(String assetOrganizationId) {
+        this.assetOrganizationId = assetOrganizationId;
     }
 
-    public String getGetAssetOrginnazationName() {
-        return getAssetOrginnazationName;
+    public String getAssetOrganizationName() {
+        return AssetOrganizationName;
     }
 
-    public void setGetAssetOrginnazationName(String getAssetOrginnazationName) {
-        this.getAssetOrginnazationName = getAssetOrginnazationName;
+    public void setAssetOrganizationName(String assetOrganizationName) {
+        AssetOrganizationName = assetOrganizationName;
     }
 
     public String getAssetStatus() {

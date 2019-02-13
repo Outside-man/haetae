@@ -100,8 +100,8 @@ public class AssetBOBuilder {
         assetBO.setExtInfo(extInfo);
         assetBO.setAssetStatus(assetStatus);
         assetBO.setAssetRemain(assetRemain);
-        assetBO.setAssetOrginnazationId(assetOrginnaztionId);
-        assetBO.setGetAssetOrginnazationName(AssetOrginnaztionName);
+        assetBO.setAssetOrganizationId(assetOrginnaztionId);
+        assetBO.setAssetOrganizationName(AssetOrginnaztionName);
         return assetBO;
     }
 }

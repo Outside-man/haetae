@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -73,9 +74,9 @@ public class AssetController {
                 /**
                  * 通过组织名字查找组织id
                  */
-                String organizationId = organizationRepoService.queryOrganizationByName(request.getOrganizationName()).getOrganizationId();
-                AssertUtil.assertStringNotBlank(organizationId,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资归属组织不存在");
-
+                OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
+                AssertUtil.assertNotNull(organizationBo,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资归属组织不存在");
+                String organizationId=organizationBo.getOrganizationId();
                 AssetManagerRequest assetManagerRequest=AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())
                         .withAmount(Integer.valueOf(request.getAssetAmount()))
@@ -83,6 +84,8 @@ public class AssetController {
                         .withOrginazationId(organizationId)
                         .withType(request.getAssetType())
                         .withAssetOrganizationName(request.getOrganizationName())
+                        .withReamain(Integer.valueOf(request.getAssetAmount()))
+                        .withStatus("1")
                         //以下是可选参数
                         //额外信息
                         .withExtInfo(request.getExtInfo())
