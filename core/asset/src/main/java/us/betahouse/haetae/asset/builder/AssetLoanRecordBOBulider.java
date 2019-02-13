@@ -23,6 +23,7 @@ public class AssetLoanRecordBOBulider {
     private String userId;
     private int amount;
     private int remain;
+    private int distory;
     private String status;
     private String remark;
     private Map<String, String> extInfo = new HashMap<>();
@@ -75,6 +76,11 @@ public class AssetLoanRecordBOBulider {
         return this;
     }
 
+    public AssetLoanRecordBOBulider withDistory(int val) {
+        distory = val;
+        return this;
+    }
+
     public AssetLoanRecordBOBulider withStatus(String val) {
         status = val;
         return this;
@@ -103,6 +109,7 @@ public class AssetLoanRecordBOBulider {
         assetLoanRecordBO.setUserId(userId);
         assetLoanRecordBO.setAmount(amount);
         assetLoanRecordBO.setRemain(remain);
+        assetLoanRecordBO.setDistory(distory);
         assetLoanRecordBO.setRemark(remark);
         assetLoanRecordBO.setStatus(status);
         assetLoanRecordBO.setExtInfo(extInfo);

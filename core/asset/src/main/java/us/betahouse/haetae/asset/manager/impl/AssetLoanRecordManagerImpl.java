@@ -31,7 +31,6 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
     @Override
     public AssetLoanRecordBO create(AssetLoanRecordRequest request) {
         AssetLoanRecordBOBulider bulider = AssetLoanRecordBOBulider.getInstance()
-                .withLoanRecoedId(request.getLoanRecordId())
                 .withAssetId(request.getAssetId())
                 .withAssetType(request.getAssetType())
                 .withAmount(request.getAmount())
@@ -40,7 +39,9 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withUserId(request.getUserId())
                 .withRemark(request.getRemark())
                 .withExtInfo(request.getExtInfo())
-                .withAssetInfo(request.getAssetInfo());
+                .withAssetInfo(request.getAssetInfo())
+                .withDistory(request.getDistory());
+        System.out.print("creat managerimpl");
         return assetLoanRecordRepoService.createAssetLoanRecord(bulider.build());
     }
 
@@ -60,7 +61,8 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withUserId(request.getUserId())
                 .withRemark(request.getRemark())
                 .withExtInfo(request.getExtInfo())
-                .withAssetInfo(request.getAssetInfo());
+                .withAssetInfo(request.getAssetInfo())
+                .withDistory(request.getDistory());
         return assetLoanRecordRepoService.updateAssetLoanRecord(bulider.build());
     }
 

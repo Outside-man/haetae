@@ -19,6 +19,7 @@ public class AssetLoanRecordRequest extends BaseRequest {
     private String status;
     private Integer amount;
     private Integer remain;
+    private Integer distory;
     private String remark;
     private String assetInfo;
 
@@ -80,6 +81,14 @@ public class AssetLoanRecordRequest extends BaseRequest {
 
     public void setRemain(Integer remain) {
         this.remain = remain;
+    }
+
+    public Integer getDistory() {
+        return distory;
+    }
+
+    public void setDistory(Integer distory) {
+        this.distory = distory;
     }
 
     public String getRemark() {

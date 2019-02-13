@@ -27,6 +27,7 @@ public class AssetLoanRecordBO {
      * 已归还数量
      */
     private Integer remain;
+    private Integer distory;
     private String remark;
     /**
      * 物资用途
@@ -132,6 +133,14 @@ public class AssetLoanRecordBO {
 
     public void setRemain(Integer remain) {
         this.remain = remain;
+    }
+
+    public Integer getDistory() {
+        return distory;
+    }
+
+    public void setDistory(Integer distory) {
+        this.distory = distory;
     }
 
     public Date getCreateTime() {

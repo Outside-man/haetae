@@ -25,8 +25,8 @@ public interface AssetManager {
     /**
      * 通过Id获取物资
      *
-     * @param userId
+     * @param assetId
      * @return
      */
-    AssetBO findAssetByAssetID(String userId);
+    AssetBO findAssetByAssetID(String assetId);
 }

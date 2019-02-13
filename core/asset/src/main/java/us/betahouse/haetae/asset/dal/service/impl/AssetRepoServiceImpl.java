@@ -50,9 +50,9 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     * @Param: [assetId]
     */
     @Override
-    public AssetDO findByAssetId(String assetId) {
+    public AssetBO findByAssetId(String assetId) {
         AssetDO assetDo=assetDORepo.findByAssetId(assetId);
-        return assetDo;
+        return EntityConverter.convert(assetDo);
     }
 
     /**
@@ -78,6 +78,4 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         }
         return null;
     }
-
-
 }

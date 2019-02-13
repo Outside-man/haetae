@@ -21,7 +21,7 @@ public interface AssetRepoService {
     * @Description: 查找物资 
     * @Param: [assetId] 
     */ 
-    AssetDO findByAssetId(String assetId);
+    AssetBO findByAssetId(String assetId);
     /** 
     * @Description: 判断物资状态 
     * @Param: [assetId] 

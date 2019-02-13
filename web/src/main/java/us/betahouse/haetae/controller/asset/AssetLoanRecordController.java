@@ -80,19 +80,24 @@ public class AssetLoanRecordController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                         .withUserId(request.getUserId())
-                        .withAmount(request.getAmount())
-                        .withRemain(request.getRemain())
+                        .withAmount(Integer.valueOf(request.getAmount()))
+                        .withRemain(Integer.valueOf(0))
+                        .withDistory(Integer.valueOf(0))
                         .withAssetId(request.getAssetId())
                         .withAssetType(request.getAssetType())
                         .withLoanRecordId(request.getLoanRecordId())
                         .withRemark(request.getRemark())
-                        .withRemark(request.getStatus())
+                        .withStatus(request.getStatus())
                         .withExtInfo(request.getExtInfo())
                         .build();
-                List<AssetLoanRecordBO> assetLoanRecordBO = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "借用物资成功");
+                System.out.println("输出借用物资");
+                List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
+                if (assetLoanRecordBOS != null && assetLoanRecordBOS.size() == 1) {
+                    return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资成功");
+                } else {
+                    return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资失败");
+                }
             }
-
         });
     }
 

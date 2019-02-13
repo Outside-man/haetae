@@ -51,6 +51,7 @@ public class AssetLoanRecordManagerRequestBuilder {
      * 已归还数量
      */
     private Integer remain;
+    private Integer distory;
     /**
      * 备注，用于报损时
      */
@@ -110,6 +111,11 @@ public class AssetLoanRecordManagerRequestBuilder {
         return this;
     }
 
+    public AssetLoanRecordManagerRequestBuilder withDistory(Integer val) {
+        distory = val;
+        return this;
+    }
+
     public AssetLoanRecordManagerRequestBuilder withRemark(String val) {
         remark = val;
         return this;
@@ -129,6 +135,7 @@ public class AssetLoanRecordManagerRequestBuilder {
         assetLoanRecordManagerRequest.setStatus(status);
         assetLoanRecordManagerRequest.setAmount(amount);
         assetLoanRecordManagerRequest.setRemain(remain);
+        assetLoanRecordManagerRequest.setDistory(distory);
         assetLoanRecordManagerRequest.setRemark(remark);
         assetLoanRecordManagerRequest.setExtInfo(extInfo);
         return assetLoanRecordManagerRequest;

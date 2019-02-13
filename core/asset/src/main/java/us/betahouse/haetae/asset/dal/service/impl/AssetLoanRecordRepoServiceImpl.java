@@ -68,6 +68,9 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         if (assetLoanRecordDO1.getRemain() != null) {
             assetLoanRecordDO.setRemain(assetLoanRecordDO1.getRemain() + assetLoanRecordDO.getRemain());
         }
+        if (assetLoanRecordDO1.getDistory() != null) {
+            assetLoanRecordDO.setDistory(assetLoanRecordDO1.getDistory() + assetLoanRecordDO.getDistory());
+        }
         if (assetLoanRecordDO1.getAssetInfo() != null) {
             assetLoanRecordDO.setAssetInfo(assetLoanRecordDO1.getAssetInfo());
         }
@@ -189,6 +192,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
         assetLoanRecordBO.setRemain(assetLoanRecordDO.getRemain());
+        assetLoanRecordBO.setDistory(assetLoanRecordDO.getDistory());
         assetLoanRecordBO.setAssetType(assetLoanRecordDO.getAssetType());
         assetLoanRecordBO.setUserId(assetLoanRecordDO.getUserId());
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
@@ -212,6 +216,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordDO.setAssetId(assetLoanRecordBO.getAssetId());
         assetLoanRecordDO.setAmount(assetLoanRecordBO.getAmount());
         assetLoanRecordDO.setRemain(assetLoanRecordBO.getRemain());
+        assetLoanRecordDO.setDistory(assetLoanRecordBO.getDistory());
         assetLoanRecordDO.setAssetType(assetLoanRecordBO.getAssetType());
         assetLoanRecordDO.setLoanRecordId(assetLoanRecordBO.getLoanRecordId());
         assetLoanRecordDO.setStatus(assetLoanRecordBO.getStatus());

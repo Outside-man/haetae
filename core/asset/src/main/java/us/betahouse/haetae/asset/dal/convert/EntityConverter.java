@@ -36,7 +36,8 @@ final public class EntityConverter {
         assetBO.setAssetType(assetDO.getType());
         assetBO.setCreate(assetDO.getGmtCreate());
         assetBO.setModified(assetDO.getGmtModified());
-        assetBO.setExtInfo(JSON.parseObject(assetDO.getExtInfo(), Map.class));
+        //assetBO.setExtInfo(JSON.parseObject(assetDO.getExtInfo(), Map.class));
+        // TODO 暂时把上一句注释掉，会报JSON错误
         //JSON.parseObject jsonn转对象 ，前一个参数为json串，后一个参数为转换成的类
         return assetBO;
     }
