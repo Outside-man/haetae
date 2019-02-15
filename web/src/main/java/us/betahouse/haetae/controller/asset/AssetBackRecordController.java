@@ -54,7 +54,7 @@ public class AssetBackRecordController {
      * @return
      */
     @CheckLogin
-    @PostMapping
+    @PostMapping(value = "/create")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBackRecordBO> add(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "归还物资", request, new RestOperateCallBack<AssetBackRecordBO>() {
@@ -81,7 +81,7 @@ public class AssetBackRecordController {
                         .withType(request.getType())
                         .build();
                 AssetBackRecordBO assetBackRecordBO = assetBackRecordService.create(assetBackRecordManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(assetBackRecordBO, "借用物资成功");
+                return RestResultUtil.buildSuccessResult(assetBackRecordBO, "归还物资成功");
             }
         });
     }

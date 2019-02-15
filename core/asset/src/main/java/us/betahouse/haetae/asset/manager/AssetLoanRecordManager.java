@@ -33,6 +33,14 @@ public interface AssetLoanRecordManager {
     AssetLoanRecordBO update(AssetLoanRecordRequest request);
 
     /**
+     * 根据借用记录id查询
+     *
+     * @param loanRecordId
+     * @return
+     */
+    AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(String loanRecordId);
+
+    /**
      * 通过用户id查询记录
      *
      * @param userId

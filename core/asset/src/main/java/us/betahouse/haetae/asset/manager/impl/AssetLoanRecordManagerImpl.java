@@ -65,6 +65,11 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
         return assetLoanRecordRepoService.updateAssetLoanRecord(bulider.build());
     }
 
+    @Override
+    public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(String loanRecordId) {
+        return assetLoanRecordRepoService.findAssetLoanRecordByLoadId(loanRecordId);
+    }
+
     /**
      * @param userId
      * @return
