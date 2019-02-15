@@ -46,8 +46,6 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
         System.out.println("成功到达biz");
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-        AssetTypeEnum assetTypeEnum=AssetTypeEnum.getByCode(request.getAssetType());
-        AssertUtil.assertNotNull(assetTypeEnum,"物资类型不存在");
 
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         if (assetBO == null) {
@@ -63,9 +61,10 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
             AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
             return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
         }
+        request.setAssetType(assetBO.getAssetType());
+
         List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
-        AssertUtil.assertNotNull(assetLoanRecordBO,"创建物资失败2");
         assetLoanRecordBOS.add(assetLoanRecordBO);
         if(assetLoanRecordBOS != null){
             System.out.println("biz返回集合为空");

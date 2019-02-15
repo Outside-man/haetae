@@ -27,6 +27,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,39 +62,54 @@ public class AssetLoanRecordController {
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetLoanRecordBO>> add(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
-
+//TODO userId传不回去
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
-                if (request.getRemain() == null) {
-                    request.setRemain(0);
-                }
             }
 
             @Override
             public Result<List<AssetLoanRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
-                        .withUserId(request.getUserId())
-                        .withAmount(Integer.valueOf(request.getAmount()))
-                        .withRemain(Integer.valueOf(0))
-                        .withDistory(Integer.valueOf(0))
-                        .withAssetId(request.getAssetId())
-                        .withAssetType(request.getAssetType())
-                        .withLoanRecordId(request.getLoanRecordId())
-                        .withRemark(request.getRemark())
-                        .withStatus(request.getStatus())
-                        .withExtInfo(request.getExtInfo())
-                        .build();
-                System.out.println("输出借用物资");
-                List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
+                List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
+                if (request.getLoanRecordId() == null) {//create
+                    AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
+                            .withUserId(request.getUserId())
+                            .withAmount(Integer.valueOf(request.getAmount()))
+                            .withRemain(Integer.valueOf(0))
+                            .withDistory(Integer.valueOf(0))
+                            .withAssetId(request.getAssetId())
+                            .withAssetType(request.getAssetType())
+                            .withLoanRecordId(request.getLoanRecordId())
+                            .withRemark(request.getRemark())
+                            .withStatus("0")
+                            .withExtInfo(request.getExtInfo())
+                            .build();
+                    assetLoanRecordBOS = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
+                }else {
+                    AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
+                            .withLoanRecordId(request.getLoanRecordId())
+                            .withUserId(request.getUserId())
+                            .withAmount(Integer.valueOf(request.getAmount()))
+                            .withRemain(Integer.valueOf(request.getRemain()))
+                            .withDistory(Integer.valueOf(request.getDistory()))
+                            .withAssetId(request.getAssetId())
+                            .withAssetType(request.getAssetType())
+                            .withLoanRecordId(request.getLoanRecordId())
+                            .withRemark(request.getRemark())
+                            .withStatus("0")
+                            .withExtInfo(request.getExtInfo())
+                            .withAssetInfo(request.getAssetInfo())
+                            .build();
+                    AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.update(assetLoanRecordManagerRequest, context);
+                    assetLoanRecordBOS.add(assetLoanRecordBO);
+                }
                 if (assetLoanRecordBOS != null && assetLoanRecordBOS.size() == 1) {
-                    return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资成功");
+                    return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用/更新物资成功");
                 } else {
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资失败");
                 }

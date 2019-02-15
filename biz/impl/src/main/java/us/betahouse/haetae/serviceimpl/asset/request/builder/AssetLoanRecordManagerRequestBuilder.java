@@ -56,6 +56,7 @@ public class AssetLoanRecordManagerRequestBuilder {
      * 备注，用于报损时
      */
     private String remark;
+    private String assetInfo;
 
     private Map<String, String> extInfo = new HashMap<>();
 
@@ -126,6 +127,11 @@ public class AssetLoanRecordManagerRequestBuilder {
         return this;
     }
 
+    public AssetLoanRecordManagerRequestBuilder withAssetInfo(String val) {
+        assetInfo = val;
+        return this;
+    }
+
     public AssetLoanRecordManagerRequest build() {
         AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = new AssetLoanRecordManagerRequest();
         assetLoanRecordManagerRequest.setLoanRecordId(loanRecordId);
@@ -138,6 +144,7 @@ public class AssetLoanRecordManagerRequestBuilder {
         assetLoanRecordManagerRequest.setDistory(distory);
         assetLoanRecordManagerRequest.setRemark(remark);
         assetLoanRecordManagerRequest.setExtInfo(extInfo);
+        assetLoanRecordManagerRequest.setAssetInfo(assetInfo);
         return assetLoanRecordManagerRequest;
     }
 

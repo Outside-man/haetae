@@ -212,6 +212,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             return null;
         }
         AssetLoanRecordDO assetLoanRecordDO = new AssetLoanRecordDO();
+        assetLoanRecordDO.setUserId(assetLoanRecordBO.getUserId());
         assetLoanRecordDO.setRemark(assetLoanRecordBO.getRemark());
         assetLoanRecordDO.setAssetId(assetLoanRecordBO.getAssetId());
         assetLoanRecordDO.setAmount(assetLoanRecordBO.getAmount());

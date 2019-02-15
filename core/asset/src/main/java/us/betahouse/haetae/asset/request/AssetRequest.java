@@ -4,8 +4,6 @@
  */
 package us.betahouse.haetae.asset.request;
 
-import java.io.Serializable;
-
 /**
  * 物质请求管理
  *

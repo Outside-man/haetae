@@ -55,7 +55,7 @@ public class AssetBackRecordController {
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBackRecordBO> add(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<AssetBackRecordBO>() {
+        return RestOperateTemplate.operate(LOGGER, "归还物资", request, new RestOperateCallBack<AssetBackRecordBO>() {
 
             @Override
             public void before() {
