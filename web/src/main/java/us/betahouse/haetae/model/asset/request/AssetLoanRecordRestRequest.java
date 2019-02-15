@@ -23,6 +23,10 @@ public class AssetLoanRecordRestRequest extends RestRequest {
     private String status;
     private Integer amount;
     private String remark;
+    /**
+     * 本次归还数量
+     */
+    private Integer back;
     private Integer remain;
     private Integer distory;
     private String assetInfo;
@@ -127,5 +131,13 @@ public class AssetLoanRecordRestRequest extends RestRequest {
 
     public void setAssetInfo(String assetInfo) {
         this.assetInfo = assetInfo;
+    }
+
+    public Integer getBack() {
+        return back;
+    }
+
+    public void setBack(Integer back) {
+        this.back = back;
     }
 }

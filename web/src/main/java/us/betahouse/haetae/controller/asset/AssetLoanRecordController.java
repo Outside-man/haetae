@@ -62,7 +62,6 @@ public class AssetLoanRecordController {
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetLoanRecordBO>> add(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
-//TODO userId传不回去
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -80,17 +79,18 @@ public class AssetLoanRecordController {
                     AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                             .withUserId(request.getUserId())
                             .withAmount(Integer.valueOf(request.getAmount()))
-                            .withRemain(Integer.valueOf(0))
+                            .withRemain(Integer.valueOf(request.getAmount()))
                             .withDistory(Integer.valueOf(0))
                             .withAssetId(request.getAssetId())
                             .withAssetType(request.getAssetType())
                             .withLoanRecordId(request.getLoanRecordId())
                             .withRemark(request.getRemark())
-                            .withStatus("0")
+                            .withStatus("assetLoan")
                             .withExtInfo(request.getExtInfo())
+                            .withAssetInfo(request.getAssetInfo())
                             .build();
                     assetLoanRecordBOS = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
-                }else {
+                } else {
                     AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                             .withLoanRecordId(request.getLoanRecordId())
                             .withUserId(request.getUserId())
@@ -101,7 +101,7 @@ public class AssetLoanRecordController {
                             .withAssetType(request.getAssetType())
                             .withLoanRecordId(request.getLoanRecordId())
                             .withRemark(request.getRemark())
-                            .withStatus("0")
+                            .withStatus(request.getStatus())
                             .withExtInfo(request.getExtInfo())
                             .withAssetInfo(request.getAssetInfo())
                             .build();

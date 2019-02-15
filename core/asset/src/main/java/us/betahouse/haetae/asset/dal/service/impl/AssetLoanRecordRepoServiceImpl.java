@@ -60,19 +60,25 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetLoanRecordBO.getLoanRecordId());
         AssetLoanRecordDO assetLoanRecordDO1 = convert(assetLoanRecordBO);
         if (assetLoanRecordDO1.getBackTime() != null) {
-            assetLoanRecordDO.setLoanTime(assetLoanRecordDO1.getLoanTime());
+            assetLoanRecordDO.setBackTime(assetLoanRecordDO1.getBackTime());
         }
         if (assetLoanRecordDO1.getRemark() != null) {
             assetLoanRecordDO.setRemark(assetLoanRecordDO1.getRemark());
         }
         if (assetLoanRecordDO1.getRemain() != null) {
-            assetLoanRecordDO.setRemain(assetLoanRecordDO1.getRemain() + assetLoanRecordDO.getRemain());
+            assetLoanRecordDO.setRemain(assetLoanRecordDO1.getRemain() - assetLoanRecordDO.getRemain() - assetLoanRecordDO1.getDistory());
         }
         if (assetLoanRecordDO1.getDistory() != null) {
             assetLoanRecordDO.setDistory(assetLoanRecordDO1.getDistory() + assetLoanRecordDO.getDistory());
         }
         if (assetLoanRecordDO1.getAssetInfo() != null) {
             assetLoanRecordDO.setAssetInfo(assetLoanRecordDO1.getAssetInfo());
+        }
+        if (0 == assetLoanRecordDO.getRemain()) {
+            assetLoanRecordDO.setStatus("assetNotLoan");
+        }
+        if (assetLoanRecordDO.getAmount() == assetLoanRecordDO.getDistory()) {
+            assetLoanRecordDO.setStatus("assetDistory");
         }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));

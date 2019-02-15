@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -34,7 +35,8 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetBackRecordController.java 2019/02/12 17:53 yiyuk.hxy
  */
-@RestController(value = "/assetBackRecord")
+@RestController
+@RequestMapping(value = "/assetBackRecord")
 public class AssetBackRecordController {
     /**
      * 日志实体
@@ -56,13 +58,11 @@ public class AssetBackRecordController {
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBackRecordBO> add(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "归还物资", request, new RestOperateCallBack<AssetBackRecordBO>() {
-
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
+                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资id不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
             }
 
@@ -79,10 +79,9 @@ public class AssetBackRecordController {
                         .withLoanRecoedId(request.getLoanRecoedId())
                         .withRemark(request.getRemark())
                         .withType(request.getType())
-                        .withUserId(request.getUserId())
                         .build();
-                AssetBackRecordBO assetLoanRecordBO = assetBackRecordService.create(assetBackRecordManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "借用物资成功");
+                AssetBackRecordBO assetBackRecordBO = assetBackRecordService.create(assetBackRecordManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(assetBackRecordBO, "借用物资成功");
             }
         });
     }

@@ -46,6 +46,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
             AssertUtil.assertStringNotBlank("物资码无效");
             return null;
         }
+        request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
         return assetBackRecordBO;
     }

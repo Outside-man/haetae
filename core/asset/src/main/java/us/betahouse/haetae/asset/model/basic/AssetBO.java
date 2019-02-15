@@ -70,20 +70,16 @@ public class AssetBO extends ToString {
      *
      * @return
      */
-    public int canLoan() {
+    public boolean canLoan() {
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetType);
         if (assetStatusEnum == null) {
-            return 0;
+            return false;
         }
         switch (assetStatusEnum) {
             case ASSET_LOAN:
-                return 1;
-            case ASSET_NOTLOAN:
-                return 2;
-            case ASSET_DISTORY:
-                return 3;
+                return true;
             default:
-                return 0;
+                return false;
         }
     }
 

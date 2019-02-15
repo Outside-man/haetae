@@ -41,7 +41,6 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withExtInfo(request.getExtInfo())
                 .withAssetInfo(request.getAssetInfo())
                 .withDistory(request.getDistory());
-        System.out.print("creat managerimpl");
         return assetLoanRecordRepoService.createAssetLoanRecord(bulider.build());
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.asset.manager.AssetManager;
@@ -44,31 +45,34 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Override
     @Transactional
     public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
-        System.out.println("成功到达biz");
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
 
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         if (assetBO == null) {
-            AssertUtil.assertStringNotBlank( "物资码无效");
+            AssertUtil.assertStringNotBlank("物资码无效");
             return null;
         }
         System.out.println("成功查询到物资");
-        if (assetBO.canLoan() == 2) {
-            AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
-            return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
-        }
-        if (assetBO.canLoan() == 3) {
-            AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
-            return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
+        AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
+        System.out.println(assetBO.getAssetType());
+        System.out.println(assetStatusEnum);
+        switch (assetStatusEnum) {
+            case ASSET_NOTLOAN:
+                AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
+                return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
+            case ASSET_DISTORY:
+                AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
+                return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
+            default:
+                break;
         }
         request.setAssetType(assetBO.getAssetType());
-
         List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
         assetLoanRecordBOS.add(assetLoanRecordBO);
-        if(assetLoanRecordBOS != null){
+        if (assetLoanRecordBOS == null) {
             System.out.println("biz返回集合为空");
-        }else {
+        } else {
             System.out.println("biz返回集合非空");
         }
         return assetLoanRecordBOS;
