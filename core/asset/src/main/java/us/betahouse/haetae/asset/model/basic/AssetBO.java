@@ -13,7 +13,6 @@ import java.util.Map;
 
 /**
  * 物资领域对象
- * 暂时还不知道乍用
  *
  * @author guofan.cp
  * @version : AssetBO.java 2019/01/21 22:53 guofan.cp
@@ -52,6 +51,10 @@ public class AssetBO extends ToString {
      * 物资剩余
      */
     private int assetRemain;
+    /**
+     * 损坏个数
+     */
+    private int assetDestory;
     /**
      * 物资状态
      */
@@ -151,6 +154,14 @@ public class AssetBO extends ToString {
 
     public void setAssetStatus(String assetStatus) {
         this.assetStatus = assetStatus;
+    }
+
+    public int getAssetDestory() {
+        return assetDestory;
+    }
+
+    public void setAssetDestory(int assetDestory) {
+        this.assetDestory = assetDestory;
     }
 
     public String getAssetType() {

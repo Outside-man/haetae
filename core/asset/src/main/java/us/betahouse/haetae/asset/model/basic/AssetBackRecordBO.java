@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.asset.model.basic;
 
+import us.betahouse.util.common.ToString;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +13,8 @@ import java.util.Map;
  * @author yiyuk.hxy
  * @version : AssetBackRecordBO.java 2019/01/23 21:05 yiyuk.hxy
  */
-public class AssetBackRecordBO {
-    private static final long serialVersionUID = 1910747655670036477L;
+public class AssetBackRecordBO extends ToString {
+    private static final long serialVersionUID = 3284782905525291362L;
     /**
      * 物资归还记录ID
      */

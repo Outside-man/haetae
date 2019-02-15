@@ -4,7 +4,8 @@
  */
 package us.betahouse.haetae.asset.model.basic;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import us.betahouse.util.common.ToString;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,20 +16,44 @@ import java.util.Map;
  * @author yiyuk.hxy
  * @version : AssetLoanRecordBO.java 2019/01/23 21:05 yiyuk.hxy
  */
-public class AssetLoanRecordBO {
-    private static final long serialVersionUID = 1910747655670036477L;
+public class AssetLoanRecordBO extends ToString {
+    private static final long serialVersionUID = 2503835687145194184L;
+    /**
+     * 物资借用ID
+     */
     private String loanRecordId;
+    /**
+     * 物资ID
+     */
     private String assetId;
+    /**
+     * 物资类型
+     */
     private String assetType;
+    /**
+     * 用户ID
+     */
     private String userId;
+    /**
+     * 物资归还状态
+     */
     private String status;
+    /**
+     * 物资借用数量
+     */
     private Integer amount;
     /**
      * 已归还数量
      */
     private Integer remain;
-    private Integer distory;
+    /**
+     * 物资报损备注
+     */
     private String remark;
+    /**
+     * 损坏个数
+     */
+    private Integer distory;
     /**
      * 物资用途
      */

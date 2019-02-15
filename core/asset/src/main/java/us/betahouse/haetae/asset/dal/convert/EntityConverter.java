@@ -8,8 +8,6 @@ import com.alibaba.fastjson.JSON;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
-import java.util.Map;
-
 /**
  * @author guofan.cp
  * @version : EntityConverter.java 2019/01/21 23:47 guofan.cp
@@ -30,6 +28,7 @@ final public class EntityConverter {
         assetBO.setAssetId(assetDO.getAssetId());
         assetBO.setAssetAmount(assetDO.getAmount());
         assetBO.setAssetRemain(assetDO.getRemain());
+        assetBO.setAssetDestory(assetDO.getDestory());
         assetBO.setAssetName(assetDO.getAssetName());
         assetBO.setAssetOrganizationId(assetDO.getOrginazationId());
         assetBO.setAssetStatus(assetDO.getStatus());
@@ -57,6 +56,7 @@ final public class EntityConverter {
         assetDO.setAssetName(assetBO.getAssetName());
         assetDO.setOrginazationId(assetBO.getAssetOrganizationId());
         assetDO.setRemain(assetBO.getAssetRemain());
+        assetDO.setDestory(assetBO.getAssetDestory());
         assetDO.setStatus(assetBO.getAssetStatus());
         assetDO.setType(assetBO.getAssetType());
         assetDO.setGmtCreate(assetBO.getCreate());

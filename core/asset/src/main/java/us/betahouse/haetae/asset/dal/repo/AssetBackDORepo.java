@@ -48,4 +48,13 @@ public interface AssetBackDORepo extends JpaRepository<AssetBackRecordDO, Long> 
      */
     AssetBackRecordDO findByBackRecoedId(String backRecordId);
 
+    /**
+     * 通过物资id和归还类型来返回记录
+     * 降序排列
+     * @param assetId
+     * @param assetType
+     * @return
+     */
+    List<AssetBackRecordDO>  findAllByAssetIdAndAssetTypeOrderByIdDesc(String assetId,String assetType);
+
 }

@@ -24,7 +24,8 @@ import java.util.Date;
                 @Index(name = "uk_asset_loan_id", columnList = "loan_record_id", unique = true)
         })
 public class AssetLoanRecordDO extends BaseDO {
-    private static final long serialVersionUID = -6722889286261263968L;
+
+    private static final long serialVersionUID = -5561855724189013084L;
     /**
      * 物资借取记录ID
      */
@@ -68,7 +69,7 @@ public class AssetLoanRecordDO extends BaseDO {
     @Column(name = "amount", length = 10)
     private Integer amount;
     /**
-     * 未归还数量
+     * 可借数量
      */
     @Column(name = "remain", length = 10)
     private Integer remain;

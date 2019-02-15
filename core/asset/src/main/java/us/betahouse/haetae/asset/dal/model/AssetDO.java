@@ -33,7 +33,7 @@ public class AssetDO extends BaseDO {
     @Column(name = "asset_name", length = 32)
     private String assetName;
     /**
-     * 是否可借用1. 可借 2 不可借
+     * 是否可借用 两种：可借   不可借
      */
     @Column(name = "status", length = 32)
     private String status;
@@ -57,6 +57,11 @@ public class AssetDO extends BaseDO {
      */
     @Column(name = "remain", length = 10)
     private Integer remain;
+    /**
+     *物资损坏个数
+     */
+    @Column(name = "destory" ,length = 10)
+    private Integer destory;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -116,5 +121,13 @@ public class AssetDO extends BaseDO {
 
     public void setRemain(Integer remain) {
         this.remain = remain;
+    }
+
+    public Integer getDestory() {
+        return destory;
+    }
+
+    public void setDestory(Integer destory) {
+        this.destory = destory;
     }
 }

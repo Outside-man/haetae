@@ -85,7 +85,8 @@ public class AssetController {
                         .withType(request.getAssetType())
                         .withAssetOrganizationName(request.getOrganizationName())
                         .withReamain(Integer.valueOf(request.getAssetAmount()))
-                        .withStatus("1")
+                        .withStatus("可借")
+                        .withDestory(0)
                         //以下是可选参数
                         //额外信息
                         .withExtInfo(request.getExtInfo())

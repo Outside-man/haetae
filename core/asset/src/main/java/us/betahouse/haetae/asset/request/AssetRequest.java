@@ -41,6 +41,10 @@ public class AssetRequest extends BaseRequest {
      */
     private int assetRemain;
     /**
+     * 物资损坏个数
+     */
+    private int assetDestory;
+    /**
      * 物资类别
      */
     private String assetType;
@@ -54,6 +58,11 @@ public class AssetRequest extends BaseRequest {
      * 物资创建者
      */
     private String userId;
+
+    /**
+     * 物资状态码
+     */
+    private String assetStatusCode;
 
     public String getUserId() {
         return userId;
@@ -85,6 +94,14 @@ public class AssetRequest extends BaseRequest {
 
     public void setAssetRemain(int assetRemain) {
         this.assetRemain = assetRemain;
+    }
+
+    public int getAssetDestory() {
+        return assetDestory;
+    }
+
+    public void setAssetDestory(int assetDestory) {
+        this.assetDestory = assetDestory;
     }
 
     public static long getSerialVersionUID() {
@@ -129,5 +146,13 @@ public class AssetRequest extends BaseRequest {
 
     public void setAssetStatus(String assetStatus) {
         this.assetStatus = assetStatus;
+    }
+
+    public String getAssetStatusCode() {
+        return assetStatusCode;
+    }
+
+    public void setAssetStatusCode(String assetStatusCode) {
+        this.assetStatusCode = assetStatusCode;
     }
 }

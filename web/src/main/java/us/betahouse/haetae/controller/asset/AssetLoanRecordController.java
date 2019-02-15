@@ -7,13 +7,17 @@ package us.betahouse.haetae.controller.asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.asset.request.AssetLoanRecordRestRequest;
+import us.betahouse.haetae.model.asset.request.AssetRestRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
@@ -49,6 +53,8 @@ public class AssetLoanRecordController {
 
     @Autowired
     private AssetBackRecordService assetBackRecordService;
+
+
 
     /**
      * 添加借用物资信息
@@ -172,4 +178,32 @@ public class AssetLoanRecordController {
             }
         });
     }
+
+    /**
+     * 判断物资状态
+     *
+     * @param restRequest
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping("judgeAssetStatus")
+    public Result<List> judgeAssetStatus(AssetRestRequest restRequest, HttpServletRequest httpServletRequest){
+        return RestOperateTemplate.operate(LOGGER, "判断物资状态", restRequest, new RestOperateCallBack<List>() {
+            @Override
+            public void before(){
+                AssertUtil.assertNotNull(restRequest,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"请求体不能为空");
+                AssertUtil.assertNotNull(restRequest.getAssetId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资ID不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getAssetId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资ID不存在");
+            }
+            @Override
+            public Result<List> execute() {
+                OperateContext context=new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                return null;
+            }
+        });
+    }
+
 }

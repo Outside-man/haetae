@@ -7,7 +7,6 @@ package us.betahouse.haetae.asset.manager.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.asset.builder.AssetBOBuilder;
-import us.betahouse.haetae.asset.dal.convert.EntityConverter;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
@@ -36,12 +35,15 @@ public class AssetManagerImpl implements AssetManager {
                 .withAssetMount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
                 .withAssetRemain(request.getAssetRemain())
+                .withAssetDestory(request.getAssetDestory())
                 .withAssetStatus(request.getAssetStatus())
                 .withAssetOrginnaztionName(request.getAssetOrganizationName());
         return assetRepoService.createAsset(assetBOBuilder.builder());
     }
 
     /**
+     * 查找物资
+     *
      * @param assetId
      * @return
      */

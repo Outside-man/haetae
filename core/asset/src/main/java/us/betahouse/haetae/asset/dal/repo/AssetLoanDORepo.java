@@ -23,7 +23,14 @@ public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> 
      * @return
      */
     List<AssetLoanRecordDO> findByUserId(String userId);
-
+   /**
+    * 通过用户id和借用状态查找记录
+    *
+    * @param userId
+    * @param status
+    * @return
+    */
+    List<AssetLoanRecordDO> findByStatusAndUserId(String userId,String status);
     /**
      * 根据借用记录id获取
      *
@@ -39,4 +46,5 @@ public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> 
      * @return
      */
     List<AssetLoanRecordDO> findAllRecordByAssetId(String assetId);
+    
 }

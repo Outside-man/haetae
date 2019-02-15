@@ -21,7 +21,8 @@ import javax.persistence.*;
                 @Index(name = "uk_asset_back_id", columnList = "back_record_id", unique = true)
         })
 public class AssetBackRecordDO extends BaseDO {
-    private static final long serialVersionUID = -6722889286261263968L;
+
+    private static final long serialVersionUID = 7714888938135003677L;
     /**
      * 物资归还记录ID
      */
@@ -48,12 +49,12 @@ public class AssetBackRecordDO extends BaseDO {
     @Column(name = "user_id", length = 32)
     private String userId;
     /**
-     * 物资数量
+     * 物资归还数量
      */
     @Column(name = "amount", length = 10)
     private Integer amount;
     /**
-     * 归还/报销
+     * 归还/报损
      */
     @Column(name = "type", length = 32)
     private String type;

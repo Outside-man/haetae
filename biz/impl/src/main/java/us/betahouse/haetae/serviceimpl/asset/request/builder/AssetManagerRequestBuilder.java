@@ -24,6 +24,10 @@ public class AssetManagerRequestBuilder {
      */
     private int assetAmount;
     /**
+     * 损坏个数
+     */
+    private int assetDestory;
+    /**
      * 物资id
      */
     private String assetId;
@@ -48,7 +52,7 @@ public class AssetManagerRequestBuilder {
      */
     private  String assetStatus;
     /**
-     * 物资类别 消耗品/不消耗
+     * 物资类别 消耗品/耐用品
      */
     private String assetType;
 
@@ -66,6 +70,11 @@ public class AssetManagerRequestBuilder {
 
     public AssetManagerRequestBuilder withAmount(int amount){
         this.assetAmount=amount;
+        return this;
+    }
+
+    public AssetManagerRequestBuilder withDestory(int destory){
+        this.assetDestory=destory;
         return this;
     }
 

@@ -9,9 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
+import us.betahouse.haetae.asset.builder.AssetRecordBOBuilder;
+import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
+import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
+import us.betahouse.haetae.asset.dal.repo.AssetBackDORepo;
+import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
+import us.betahouse.haetae.asset.enums.AssetBackRecordTypeEnum;
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
+import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
+import us.betahouse.haetae.asset.request.AssetRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -21,6 +30,7 @@ import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * 物资业务实现
@@ -50,6 +60,11 @@ public class AssetServiceImpl implements AssetService {
     @Autowired
     private OrganizationRepoService organizationRepoService;
 
+    @Autowired
+    private AssetBackDORepo assetBackDORepo;
+
+    @Autowired
+    private AssetLoanDORepo assetLoanDORepo;
 
     @Override
     @Transactional
@@ -65,5 +80,57 @@ public class AssetServiceImpl implements AssetService {
         //创建物资
         AssetBO assetBO=assetManager.create(request);
         return assetBO;
+    }
+
+    @Override
+    public List<AssetRecordBO> findRecodByAssetStatus(AssetRequest request, OperateContext context) {
+        List<AssetRecordBO> assetRecordBOS=null;
+        AssetStatusEnum assetStatusEnum=AssetStatusEnum.getByCode(request.getAssetStatusCode());
+        switch (assetStatusEnum){
+            //暂无物资 返回报损记录
+            case ASSET_TEMPNOTLOAN:{
+                List<AssetBackRecordDO> assetBackRecordDOS=assetBackDORepo.findAllByAssetIdAndAssetTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
+                AssetBackRecordDO assetBackRecordDO=null;
+                for(int i=0;i<assetBackRecordDOS.size();i++){
+                    assetBackRecordDO=assetBackRecordDOS.get(i);
+                    AssetRecordBOBuilder assetRecordBOBuilder=AssetRecordBOBuilder.getInstance()
+                            .withAssetId(assetBackRecordDO.getAssetId())
+                            .withAssetInfo(assetBackRecordDO.getExtInfo())
+                            .withAssetType(assetBackRecordDO.getAssetType())
+                            .withLoanRecordId(assetBackRecordDO.getLoanRecoedId())
+                            .withUserId(assetBackRecordDO.getUserId())
+                            .withBackAmount(assetBackRecordDO.getAmount())
+                            .withBackType(assetBackRecordDO.getType())
+                            .withBackRemark(assetBackRecordDO.getRemark());
+                    assetRecordBOS.add(assetRecordBOBuilder.builder());
+                }
+                break;
+            }
+            //物资借完 返回借用记录
+            case ASSET_NOTLOAN:{
+                List<AssetLoanRecordDO> assetLoanRecordDOS=assetLoanDORepo.findAllRecordByAssetId(request.getAssetId());
+                AssetLoanRecordDO assetLoanRecordDO=null;
+                for(int i=0;i<assetLoanRecordDOS.size();i++){
+                    assetLoanRecordDO=assetLoanRecordDOS.get(i);
+                    AssetRecordBOBuilder assetRecordBOBuilder=AssetRecordBOBuilder.getInstance()
+                            .withAssetId(assetLoanRecordDO.getAssetId())
+                            .withAssetType(assetLoanRecordDO.getAssetType())
+                            .withUserId(assetLoanRecordDO.getUserId())
+                            .withLoanRecordId(assetLoanRecordDO.getLoanRecordId())
+                            .withLoanTime(assetLoanRecordDO.getLoanTime())
+                            .withBackTime(assetLoanRecordDO.getBackTime())
+                            .withStatus(assetLoanRecordDO.getStatus())
+                            .withLoanamount(assetLoanRecordDO.getAmount())
+                            .withDistory(assetLoanRecordDO.getDistory())
+                            .withRemark(assetLoanRecordDO.getRemark())
+                            .withAssetInfo(assetLoanRecordDO.getAssetInfo());
+                    assetRecordBOS.add(assetRecordBOBuilder.builder());
+                }
+                break;
+            }
+            default:{
+            }
+        }
+        return assetRecordBOS;
     }
 }

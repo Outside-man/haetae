@@ -9,14 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import us.betahouse.haetae.asset.dal.convert.EntityConverter;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
+import us.betahouse.haetae.asset.dal.repo.AssetBackDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
+import us.betahouse.util.enums.RestResultCode;
+import us.betahouse.util.utils.AssertUtil;
 
 
 /**
@@ -32,10 +34,13 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
-
+    @Autowired
+    private AssetBackDORepo assetBackDORepo;
     /**
-     * @Description: 新增物资
-     * @Param: [assetBO]
+     * 创建物资
+     *
+     * @Param assetBO
+     * @return
      */
     @Override
     public AssetBO createAsset(AssetBO assetBO) {
@@ -46,36 +51,49 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     }
 
     /**
-    * @Description: 查找物资
-    * @Param: [assetId]
-    */
+     * 通过物资码判断物资状态
+     * 返回枚举类中的code
+     * @param assetId
+     * @return
+     */
     @Override
-    public AssetBO findByAssetId(String assetId) {
-        AssetDO assetDo=assetDORepo.findByAssetId(assetId);
-        return EntityConverter.convert(assetDo);
+    public String judgeStatusByAssetId(String assetId) {
+        AssetDO assetDO=assetDORepo.findByAssetId(assetId);
+        String assetStatusCode;
+        //物资不存在
+        if(assetDO==null){
+            assetStatusCode=AssetStatusEnum.ASSET_NOTEXISTENCE.getCode();
+            return assetStatusCode;
+        }
+        //物资不可借用状态分情况
+        if(assetDO.getStatus().equals("不可借")){
+            //暂无物资
+            if(assetDO.getAmount()-assetDO.getDestory()==0){
+                assetStatusCode=AssetStatusEnum.ASSET_TEMPNOTLOAN.getCode();
+            }
+            //全部借出
+            else{
+                assetStatusCode=AssetStatusEnum.ASSET_ALLLOAN.getCode();
+            }
+        }
+        //物资可借用
+        else{
+            assetStatusCode=AssetStatusEnum.ASSET_LOAN.getCode();
+        }
+        return assetStatusCode;
     }
 
     /**
-    * @Description: 判断物资状态
-    * @Param: [assetId]
-    */
+     * 查找物资
+     *
+     * @param assetId
+     * @return
+     */
     @Override
-    public String judgeByAssetId(String assetId) {
-        final String ALLBORROW="全部借出";
-        boolean isExistence=assetDORepo.existsByAssetId(assetId);
-        String assetStatus;
-        if(isExistence){
-            return AssetStatusEnum.getByCode("物资不存在").toString();
-        }
-        else{
-            assetStatus=assetDORepo.findByStatus(assetId);
-            if("不可借"==assetStatus){
-                return ALLBORROW;
-            }
-            else{
-
-            }
-        }
-        return null;
+    public AssetBO findByAssetId(String assetId) {
+        AssetDO assetDO=assetDORepo.findByAssetId(assetId);
+        AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码不存在");
+        return EntityConverter.convert(assetDO);
     }
+
 }
