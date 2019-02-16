@@ -53,8 +53,6 @@ public class AssetLoanRecordController {
     @Autowired
     private AssetBackRecordService assetBackRecordService;
 
-
-
     /**
      * 添加借用物资信息
      *
@@ -145,8 +143,11 @@ public class AssetLoanRecordController {
             public Result<List<AssetLoanRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequestBuilder builder = AssetLoanRecordManagerRequestBuilder.getInstance();
-                return RestResultUtil.buildSuccessResult(assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context), "获取活动列表成功");
+                AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
+                        .withAssetId(request.getAssetId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(assetLoanRecordService
+                        .findAllAssetLoanRecordByAssetId(builder, context), "获取借用列表成功");
             }
         });
     }
@@ -177,6 +178,4 @@ public class AssetLoanRecordController {
             }
         });
     }
-
-
 }

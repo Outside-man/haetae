@@ -35,6 +35,7 @@ import java.util.List;
 
 /**
  * 物资接口
+ *
  * @author guofan.cp
  * @version : AssetController.java 2019/01/23 9:06 guofan.cp
  */
@@ -43,9 +44,9 @@ import java.util.List;
 @RequestMapping(value = "/asset")
 public class AssetController {
     /**
-     *日志实体
+     * 日志实体
      */
-    private final Logger LOGGER= LoggerFactory.getLogger(AssetController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(AssetController.class);
 
     @Autowired
     private AssetService assetService;
@@ -62,7 +63,7 @@ public class AssetController {
     @CheckLogin
     @PostMapping(value = "asset")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AssetBO> asset(AssetRestRequest request, HttpServletRequest httpServletRequest){
+    public Result<AssetBO> asset(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "新增物资", request, new RestOperateCallBack<AssetBO>() {
             @Override
             public void before() {
@@ -71,7 +72,7 @@ public class AssetController {
                 AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
                 AssertUtil.assertStringNotBlank(request.getOrganizationName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不能为空");
                 AssertUtil.assertNotNull(request.getAssetAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能为空");
-                AssertUtil.assertStringNotBlank(Integer.valueOf(request.getAssetAmount())>0?"1":"", RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资数量不能小于0");
+                AssertUtil.assertStringNotBlank(Integer.valueOf(request.getAssetAmount()) > 0 ? "1" : "", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能小于0");
             }
 
             @Override
@@ -82,9 +83,9 @@ public class AssetController {
                  * 通过组织名字查找组织id
                  */
                 OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
-                AssertUtil.assertNotNull(organizationBo,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资归属组织不存在");
-                String organizationId=organizationBo.getOrganizationId();
-                AssetManagerRequest assetManagerRequest=AssetManagerRequestBuilder.getInstance()
+                AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
+                String organizationId = organizationBo.getOrganizationId();
+                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())
                         .withAmount(Integer.valueOf(request.getAssetAmount()))
                         //组织id在上面获得
@@ -98,12 +99,11 @@ public class AssetController {
                         //额外信息
                         .withExtInfo(request.getExtInfo())
                         .builder();
-                AssetBO assetBo=assetService.create(assetManagerRequest,context);
-                return RestResultUtil.buildSuccessResult(assetBo,"物资创建成功");
+                AssetBO assetBo = assetService.create(assetManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(assetBo, "物资创建成功");
             }
         });
     }
-
 
 
     /**
@@ -116,25 +116,26 @@ public class AssetController {
     @CheckLogin
     @GetMapping("AssetStatus")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetRecordBO>> AssetStatus(AssetRestRequest restRequest, HttpServletRequest httpServletRequest){
+    public Result<List<AssetRecordBO>> AssetStatus(AssetRestRequest restRequest, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "判断物资状态", restRequest, new RestOperateCallBack<List<AssetRecordBO>>() {
             @Override
-            public void before(){
-                AssertUtil.assertNotNull(restRequest,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"请求体不能为空");
-                AssertUtil.assertNotNull(restRequest.getAssetId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资ID不能为空");
-                AssertUtil.assertStringNotBlank(restRequest.getAssetId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资ID不存在");
+            public void before() {
+                AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertNotNull(restRequest.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
             }
+
             @Override
             public Result<List<AssetRecordBO>> execute() {
-                OperateContext context=new OperateContext();
+                OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 //根据物资id判断物资状态
-                String assetStatusCode= assetRepoService.judgeStatusByAssetId(restRequest.getAssetId());
-                AssetManagerRequest assetManagerRequest=AssetManagerRequestBuilder.getInstance()
+                String assetStatusCode = assetRepoService.judgeStatusByAssetId(restRequest.getAssetId());
+                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                         .withAssetId(restRequest.getAssetId())
                         .withAssetStatusCode(assetStatusCode)
                         .builder();
-                List<AssetRecordBO> assetRecordBOList=assetService.findRecodByAssetStatus(assetManagerRequest,context);
+                List<AssetRecordBO> assetRecordBOList = assetService.findRecodByAssetStatus(assetManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(assetRecordBOList, assetStatusCode);
             }
         });

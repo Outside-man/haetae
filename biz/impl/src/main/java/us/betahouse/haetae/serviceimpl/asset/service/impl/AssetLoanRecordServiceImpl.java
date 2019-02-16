@@ -39,9 +39,6 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Autowired
     private AssetLoanRecordManager assetLoanRecordManager;
 
-    @Autowired
-    private AssetLoanRecordRepoService assetLoanRecordRepoService;
-
     @Override
     @Transactional
     public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
@@ -54,8 +51,6 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         }
         System.out.println("成功查询到物资");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
-        System.out.println(assetBO.getAssetType());
-        System.out.println(assetStatusEnum);
         switch (assetStatusEnum) {
             case ASSET_NOTLOAN:
                 AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
@@ -70,25 +65,23 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
         assetLoanRecordBOS.add(assetLoanRecordBO);
-        if (assetLoanRecordBOS == null) {
-            System.out.println("biz返回集合为空");
-        } else {
-            System.out.println("biz返回集合非空");
-        }
         return assetLoanRecordBOS;
     }
 
     @Override
+    @Transactional
     public AssetLoanRecordBO update(AssetLoanRecordRequest request, OperateContext context) {
         return assetLoanRecordManager.update(request);
     }
 
     @Override
+    @Transactional
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(AssetLoanRecordRequest request, OperateContext context) {
         return assetLoanRecordManager.findAllAssetLoanRecordByAssetId(request.getAssetId());
     }
 
     @Override
+    @Transactional
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByUserId(AssetLoanRecordRequest request, OperateContext context) {
         return assetLoanRecordManager.findAssetLoanRecordByUserId(request.getUserId());
     }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
 import us.betahouse.haetae.asset.manager.AssetBackRecordManager;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
@@ -40,10 +41,8 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     @Autowired
     private AssetBackRecordManager assetBackRecordManager;
 
-    @Autowired
-    private AssetBackRecordRepoService assetBackRecordRepoService;
-
     @Override
+    @Transactional
     public AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
 
@@ -53,8 +52,9 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
-        if(request.getAmount() > assetLoanRecordBO.getAmount()-assetLoanRecordBO.getRemain()){
+        if (request.getAmount() > assetLoanRecordBO.getAmount() - assetLoanRecordBO.getRemain()) {
             AssertUtil.assertStringNotBlank("归还数量超出剩余未归还数量");
+            return null;
         }
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
@@ -62,11 +62,13 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     }
 
     @Override
+    @Transactional
     public List<AssetBackRecordBO> findAllAssetLoanRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
         return assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
     }
 
     @Override
+    @Transactional
     public List<AssetBackRecordBO> findAllAssetLoanRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
         return assetBackRecordManager.findAllAssetBackRecordByUserId(request.getUserId());
     }

@@ -34,6 +34,7 @@ import java.util.List;
 
 /**
  * 物资业务实现
+ *
  * @author guofan.cp
  * @version : AssetServiceImpl.java 2019/01/20 23:58 guofan.cp
  */
@@ -43,7 +44,6 @@ public class AssetServiceImpl implements AssetService {
      * 系统结束标志
      */
     private final static String SYSTEM_FINISH_SIGN = "systemFinish";
-
 
     @Autowired
     private PermManager permManager;
@@ -70,32 +70,32 @@ public class AssetServiceImpl implements AssetService {
     @Transactional
     public AssetBO create(AssetManagerRequest request, OperateContext context) {
 
-        AssetTypeEnum assetTypeEnum=AssetTypeEnum.getByCode(request.getAssetType());
-        AssertUtil.assertNotNull(assetTypeEnum,"物资类型不存在");
-        AssertUtil.assertStringNotBlank(request.getAssetName(),"物资名字不能为空");
-        AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(),"物资归属组织不能为空");
-        OrganizationBO organizationBO=organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
-        AssertUtil.assertNotNull(organizationBO,MessageFormat.format("组织不存在,{0}",request.getAssetOrganizationName()));
-        AssertUtil.assertStringNotBlank(request.getAssetType(),"物资类型不能为空");
+        AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
+        AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");
+        AssertUtil.assertStringNotBlank(request.getAssetName(), "物资名字不能为空");
+        AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(), "物资归属组织不能为空");
+        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
+        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在,{0}", request.getAssetOrganizationName()));
+        AssertUtil.assertStringNotBlank(request.getAssetType(), "物资类型不能为空");
         //创建物资
-        AssetBO assetBO=assetManager.create(request);
+        AssetBO assetBO = assetManager.create(request);
         return assetBO;
     }
 
     @Override
     public List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context) {
-        List<AssetRecordBO> assetRecordBOS=new ArrayList<>();
-        AssetStatusEnum assetStatusEnum=AssetStatusEnum.getByCode(request.getAssetStatusCode());
-        switch (assetStatusEnum){
+        List<AssetRecordBO> assetRecordBOS = new ArrayList<>();
+        AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(request.getAssetStatusCode());
+        switch (assetStatusEnum) {
             //暂无物资 返回报损记录
-            case ASSET_TEMPNOTLOAN:{
-                System.out.println("cp3"+request.getAssetId()+" "+AssetBackRecordTypeEnum.DISTORY.getCode());
-                List<AssetBackRecordDO> assetBackRecordDOS=assetBackDORepo.findAllByAssetIdAndTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
-                AssetBackRecordDO assetBackRecordDO=null;
-                System.out.println("cp2 size"+assetBackRecordDOS.size());
-                for(int i=0;i<assetBackRecordDOS.size();i++){
-                    assetBackRecordDO=assetBackRecordDOS.get(i);
-                    AssetRecordBOBuilder assetRecordBOBuilder=AssetRecordBOBuilder.getInstance()
+            case ASSET_TEMPNOTLOAN: {
+                System.out.println("cp3" + request.getAssetId() + " " + AssetBackRecordTypeEnum.DISTORY.getCode());
+                List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findAllByAssetIdAndTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
+                AssetBackRecordDO assetBackRecordDO = null;
+                System.out.println("cp2 size" + assetBackRecordDOS.size());
+                for (int i = 0; i < assetBackRecordDOS.size(); i++) {
+                    assetBackRecordDO = assetBackRecordDOS.get(i);
+                    AssetRecordBOBuilder assetRecordBOBuilder = AssetRecordBOBuilder.getInstance()
                             .withAssetId(assetBackRecordDO.getAssetId())
                             .withAssetInfo(assetBackRecordDO.getExtInfo())
                             .withAssetType(assetBackRecordDO.getAssetType())
@@ -109,12 +109,12 @@ public class AssetServiceImpl implements AssetService {
                 break;
             }
             //物资借完 返回借用记录
-            case ASSET_ALLLOAN:{
-                List<AssetLoanRecordDO> assetLoanRecordDOS=assetLoanDORepo.findAllRecordByAssetId(request.getAssetId());
-                AssetLoanRecordDO assetLoanRecordDO=null;
-                for(int i=0;i<assetLoanRecordDOS.size();i++){
-                    assetLoanRecordDO=assetLoanRecordDOS.get(i);
-                    AssetRecordBOBuilder assetRecordBOBuilder=AssetRecordBOBuilder.getInstance()
+            case ASSET_ALLLOAN: {
+                List<AssetLoanRecordDO> assetLoanRecordDOS = assetLoanDORepo.findAllRecordByAssetId(request.getAssetId());
+                AssetLoanRecordDO assetLoanRecordDO = null;
+                for (int i = 0; i < assetLoanRecordDOS.size(); i++) {
+                    assetLoanRecordDO = assetLoanRecordDOS.get(i);
+                    AssetRecordBOBuilder assetRecordBOBuilder = AssetRecordBOBuilder.getInstance()
                             .withAssetId(assetLoanRecordDO.getAssetId())
                             .withAssetType(assetLoanRecordDO.getAssetType())
                             .withUserId(assetLoanRecordDO.getUserId())
@@ -130,7 +130,7 @@ public class AssetServiceImpl implements AssetService {
                 }
                 break;
             }
-            default:{
+            default: {
             }
         }
         return assetRecordBOS;

@@ -105,5 +105,4 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
     public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryAssetLoanRecordByAssetId(assetId);
     }
-
 }

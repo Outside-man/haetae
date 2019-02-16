@@ -60,6 +60,7 @@ public class AssetBackRecordController {
         return RestOperateTemplate.operate(LOGGER, "归还物资", request, new RestOperateCallBack<AssetBackRecordBO>() {
             @Override
             public void before() {
+                System.out.println("before");
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资id不能为空");
@@ -72,8 +73,6 @@ public class AssetBackRecordController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 AssetBackRecordManagerRequest assetBackRecordManagerRequest = AssetBackRecordManagerRequestBuilder.getInstance()
                         .withAssetId(request.getUserId())
-                        .withAssetType(request.getAssetType())
-                        .withBackRecoedId(request.getBackRecoedId())
                         .withAmount(request.getAmount())
                         .withExtInfo(request.getExtInfo())
                         .withLoanRecoedId(request.getLoanRecoedId())
