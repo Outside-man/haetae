@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.asset.dal.convert.EntityConverter;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.repo.AssetBackDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
@@ -19,6 +18,8 @@ import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
+
+import static us.betahouse.haetae.asset.dal.convert.EntityConverter.convert;
 
 
 /**
@@ -36,49 +37,87 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private AssetDORepo assetDORepo;
     @Autowired
     private AssetBackDORepo assetBackDORepo;
+
     /**
      * 创建物资
      *
-     * @Param assetBO
      * @return
+     * @Param assetBO
      */
     @Override
     public AssetBO createAsset(AssetBO assetBO) {
         if (StringUtils.isBlank(assetBO.getAssetId())) {
             assetBO.setAssetId(assetBizFactory.getAssetId());
         }
-        return EntityConverter.convert(assetDORepo.save(EntityConverter.convert(assetBO)));
+        return convert(assetDORepo.save(convert(assetBO)));
+    }
+
+    @Override
+    public AssetBO updateAsset(AssetBO assetBO) {
+        AssetDO assetDO = assetDORepo.findByAssetId(assetBO.getAssetId());
+        AssetDO assetDO1 = convert(assetBO);
+        if (assetDO1.getAmount() != null) {
+            assetDO.setAmount(assetDO1.getAmount());
+        }
+        if (assetDO1.getAssetName() != null) {
+            assetDO.setAssetName(assetDO1.getAssetName());
+        }
+        if (assetDO1.getDestroy() != null) {
+            assetDO.setDestroy(assetDO1.getDestroy());
+        }
+        if (assetDO1.getOrginazationId() != null) {
+            assetDO.setOrginazationId(assetDO1.getOrginazationId());
+        }
+        if (assetDO1.getRemain() != null) {
+            assetDO.setRemain(assetDO1.getRemain());
+        }
+        if (assetDO1.getStatus() != null) {
+            assetDO.setStatus(assetDO1.getStatus());
+        }
+        if (assetDO1.getType() != null) {
+            assetDO.setType(assetDO1.getType());
+        }
+        if (assetDO.getRemain() == 0){
+            if(assetDO.getDestroy() == assetDO.getAmount()){
+                assetDO.setStatus("allDestroy");
+            }else {
+                assetDO.setStatus("notLoan");
+            }
+        }
+
+        return convert(assetDORepo.save(assetDO));
     }
 
     /**
      * 通过物资码判断物资状态
      * 返回枚举类中的code
+     *
      * @param assetId
      * @return
      */
     @Override
     public String judgeStatusByAssetId(String assetId) {
-        AssetDO assetDO=assetDORepo.findByAssetId(assetId);
+        AssetDO assetDO = assetDORepo.findByAssetId(assetId);
         String assetStatusCode;
         //物资不存在
-        if(assetDO==null){
-            assetStatusCode=AssetStatusEnum.ASSET_NOTEXISTENCE.getCode();
+        if (assetDO == null) {
+            assetStatusCode = AssetStatusEnum.ASSET_NOTEXISTENCE.getCode();
             return assetStatusCode;
         }
         //物资不可借用状态分情况
-        if(assetDO.getStatus().equals("不可借")){
+        if (assetDO.getStatus().equals("不可借")) {
             //暂无物资
-            if(assetDO.getAmount()-assetDO.getDestory()==0){
-                assetStatusCode=AssetStatusEnum.ASSET_TEMPNOTLOAN.getCode();
+            if (assetDO.getAmount() - assetDO.getDestroy() == 0) {
+                assetStatusCode = AssetStatusEnum.ASSET_TEMPNOTLOAN.getCode();
             }
             //全部借出
-            else{
-                assetStatusCode=AssetStatusEnum.ASSET_ALLLOAN.getCode();
+            else {
+                assetStatusCode = AssetStatusEnum.ASSET_ALLLOAN.getCode();
             }
         }
         //物资可借用
-        else{
-            assetStatusCode=AssetStatusEnum.ASSET_LOAN.getCode();
+        else {
+            assetStatusCode = AssetStatusEnum.ASSET_LOAN.getCode();
         }
         return assetStatusCode;
     }
@@ -91,9 +130,9 @@ public class AssetRepoServiceImpl implements AssetRepoService {
      */
     @Override
     public AssetBO findByAssetId(String assetId) {
-        AssetDO assetDO=assetDORepo.findByAssetId(assetId);
-        AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码不存在");
-        return EntityConverter.convert(assetDO);
+        AssetDO assetDO = assetDORepo.findByAssetId(assetId);
+        AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
+        return convert(assetDO);
     }
 
 }

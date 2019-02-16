@@ -68,11 +68,6 @@ public class AssetController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资名不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
-                AssertUtil.assertStringNotBlank(request.getOrganizationName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不能为空");
-                AssertUtil.assertNotNull(request.getAssetAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能为空");
-                AssertUtil.assertStringNotBlank(Integer.valueOf(request.getAssetAmount()) > 0 ? "1" : "", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能小于0");
             }
 
             @Override
@@ -83,24 +78,54 @@ public class AssetController {
                  * 通过组织名字查找组织id
                  */
                 OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
-                AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
                 String organizationId = organizationBo.getOrganizationId();
-                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
-                        .withAssetName(request.getAssetName())
-                        .withAmount(Integer.valueOf(request.getAssetAmount()))
-                        //组织id在上面获得
-                        .withOrginazationId(organizationId)
-                        .withType(request.getAssetType())
-                        .withAssetOrganizationName(request.getOrganizationName())
-                        .withReamain(Integer.valueOf(request.getAssetAmount()))
-                        .withStatus("可借")
-                        .withDestory(0)
-                        //以下是可选参数
-                        //额外信息
-                        .withExtInfo(request.getExtInfo())
-                        .builder();
-                AssetBO assetBo = assetService.create(assetManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(assetBo, "物资创建成功");
+                AssetBO assetBo = null;
+                if (request.getAssetId() == null) {
+                    AssertUtil.assertStringNotBlank(request.getAssetName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资名不能为空");
+                    AssertUtil.assertStringNotBlank(request.getAssetType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资类型不能为空");
+                    AssertUtil.assertStringNotBlank(request.getOrganizationName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不能为空");
+                    AssertUtil.assertNotNull(request.getAssetAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能为空");
+                    AssertUtil.assertStringNotBlank(Integer.valueOf(request.getAssetAmount()) > 0 ? "1" : "", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能小于0");
+
+                    AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
+                    AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
+                            .withAssetName(request.getAssetName())
+                            .withAmount(Integer.valueOf(request.getAssetAmount()))
+                            //组织id在上面获得
+                            .withOrginazationId(organizationId)
+                            .withType(request.getAssetType())
+                            .withAssetOrganizationName(request.getOrganizationName())
+                            .withReamain(Integer.valueOf(request.getAssetAmount()))
+                            .withStatus("canLoan")
+                            .withDestroy(0)
+                            //以下是可选参数
+                            //额外信息
+                            .withExtInfo(request.getExtInfo())
+                            .builder();
+                    assetBo = assetService.create(assetManagerRequest, context);
+                } else {
+                    AssetManagerRequestBuilder assetManagerRequestBuilder = AssetManagerRequestBuilder.getInstance();
+                    if (request.getAssetRemain() != null) {
+                        assetManagerRequestBuilder.withReamain(request.getAssetRemain());
+                    }
+                    if (request.getAssetAmount() != null) {
+                        assetManagerRequestBuilder.withAmount(request.getAssetAmount());
+                    }
+                    if (request.getAssetDestroy() != null) {
+                        assetManagerRequestBuilder.withDestroy(request.getAssetDestroy());
+                    }
+                    AssetManagerRequest assetManagerRequest = assetManagerRequestBuilder
+                            .withAssetName(request.getAssetName())
+                            .withAssetId(request.getAssetId())
+                            .withOrginazationId(organizationId)
+                            .withType(request.getAssetType())
+                            .withAssetOrganizationName(request.getOrganizationName())
+                            .withExtInfo(request.getExtInfo())
+                            .builder();
+                    assetBo = assetService.update(assetManagerRequest, context);
+                }
+
+                return RestResultUtil.buildSuccessResult(assetBo, "物资创建/更新成功");
             }
         });
     }

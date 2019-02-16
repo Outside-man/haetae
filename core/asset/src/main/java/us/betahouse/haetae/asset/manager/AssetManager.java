@@ -23,6 +23,14 @@ public interface AssetManager {
     AssetBO create(AssetRequest request);
 
     /**
+     * 更新物资
+     *
+     * @param request
+     * @return
+     */
+    AssetBO update(AssetRequest request);
+
+    /**
      * 通过Id获取物资
      *
      * @param assetId

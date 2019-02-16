@@ -26,7 +26,7 @@ public class AssetManagerRequestBuilder {
     /**
      * 损坏个数
      */
-    private int assetDestory;
+    private int assetDestroy;
     /**
      * 物资id
      */
@@ -77,8 +77,8 @@ public class AssetManagerRequestBuilder {
         return this;
     }
 
-    public AssetManagerRequestBuilder withDestory(int destory){
-        this.assetDestory=destory;
+    public AssetManagerRequestBuilder withDestroy(int destroy){
+        this.assetDestroy=destroy;
         return this;
     }
 
@@ -134,6 +134,7 @@ public class AssetManagerRequestBuilder {
         assetManagerRequest.setAssetOrganizationId(assetOrginazationId);
         assetManagerRequest.setAssetOrganizationName(assetOrganizationName);
         assetManagerRequest.setAssetStatusCode(assetStatusCode);
+        assetManagerRequest.setAssetDestroy(assetDestroy);
         return assetManagerRequest;
     }
 }

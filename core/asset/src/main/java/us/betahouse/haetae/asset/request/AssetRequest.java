@@ -43,7 +43,7 @@ public class AssetRequest extends BaseRequest {
     /**
      * 物资损坏个数
      */
-    private int assetDestory;
+    private int assetDestroy;
     /**
      * 物资类别
      */
@@ -96,12 +96,20 @@ public class AssetRequest extends BaseRequest {
         this.assetRemain = assetRemain;
     }
 
-    public int getAssetDestory() {
-        return assetDestory;
+    public String getAssetExtInfo() {
+        return assetExtInfo;
     }
 
-    public void setAssetDestory(int assetDestory) {
-        this.assetDestory = assetDestory;
+    public void setAssetExtInfo(String assetExtInfo) {
+        this.assetExtInfo = assetExtInfo;
+    }
+
+    public int getAssetDestroy() {
+        return assetDestroy;
+    }
+
+    public void setAssetDestroy(int assetDestroy) {
+        this.assetDestroy = assetDestroy;
     }
 
     public static long getSerialVersionUID() {

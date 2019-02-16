@@ -54,7 +54,7 @@ public class AssetBO extends ToString {
     /**
      * 损坏个数
      */
-    private int assetDestory;
+    private int assetDestroy;
     /**
      * 物资状态
      */
@@ -156,12 +156,12 @@ public class AssetBO extends ToString {
         this.assetStatus = assetStatus;
     }
 
-    public int getAssetDestory() {
-        return assetDestory;
+    public int getAssetDestroy() {
+        return assetDestroy;
     }
 
-    public void setAssetDestory(int assetDestory) {
-        this.assetDestory = assetDestory;
+    public void setAssetDestroy(int assetDestroy) {
+        this.assetDestroy = assetDestroy;
     }
 
     public String getAssetType() {

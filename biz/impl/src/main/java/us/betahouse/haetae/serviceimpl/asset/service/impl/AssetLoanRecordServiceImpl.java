@@ -52,7 +52,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         System.out.println("成功查询到物资");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         switch (assetStatusEnum) {
-            case ASSET_NOTLOAN:
+            case ASSET_ALLLOAN:
                 AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
                 return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
             case ASSET_DISTORY:

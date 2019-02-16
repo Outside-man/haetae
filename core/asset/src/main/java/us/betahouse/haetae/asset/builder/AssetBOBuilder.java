@@ -23,7 +23,7 @@ public class AssetBOBuilder {
     private String assetOrginnaztionId;
     private String AssetOrginnaztionName;
     private int assetRemain;
-    private int assetDestory;
+    private int assetDestroy;
     private String assetStatus;
     private String assetType;
     private Map<String, String> extInfo = new HashMap<>();
@@ -75,8 +75,8 @@ public class AssetBOBuilder {
         return this;
     }
 
-    public AssetBOBuilder withAssetDestory(int destory){
-        this.assetDestory=destory;
+    public AssetBOBuilder withAssetDestroy(int destroy) {
+        this.assetDestroy = destroy;
         return this;
     }
 
@@ -108,6 +108,7 @@ public class AssetBOBuilder {
         assetBO.setAssetRemain(assetRemain);
         assetBO.setAssetOrganizationId(assetOrginnaztionId);
         assetBO.setAssetOrganizationName(AssetOrginnaztionName);
+        assetBO.setAssetDestroy(assetDestroy);
         return assetBO;
     }
 }

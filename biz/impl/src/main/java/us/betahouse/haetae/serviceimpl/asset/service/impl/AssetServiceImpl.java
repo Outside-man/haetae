@@ -69,7 +69,6 @@ public class AssetServiceImpl implements AssetService {
     @Override
     @Transactional
     public AssetBO create(AssetManagerRequest request, OperateContext context) {
-
         AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
         AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");
         AssertUtil.assertStringNotBlank(request.getAssetName(), "物资名字不能为空");
@@ -79,6 +78,16 @@ public class AssetServiceImpl implements AssetService {
         AssertUtil.assertStringNotBlank(request.getAssetType(), "物资类型不能为空");
         //创建物资
         AssetBO assetBO = assetManager.create(request);
+        return assetBO;
+    }
+
+    @Override
+    public AssetBO update(AssetManagerRequest request, OperateContext context) {
+        AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
+        AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");
+        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
+        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在,{0}", request.getAssetOrganizationName()));
+        AssetBO assetBO = assetManager.update(request);
         return assetBO;
     }
 

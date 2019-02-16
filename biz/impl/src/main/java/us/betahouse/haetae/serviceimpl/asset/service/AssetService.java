@@ -28,6 +28,15 @@ public interface AssetService {
     AssetBO create(AssetManagerRequest request, OperateContext context);
 
     /**
+     * 更新物资
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    AssetBO update(AssetManagerRequest request, OperateContext context);
+
+    /**
      * 判断物资id 返回记录结果集
      *
      * @param request

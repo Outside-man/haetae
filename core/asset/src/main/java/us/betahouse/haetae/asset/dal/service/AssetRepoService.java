@@ -14,19 +14,30 @@ public interface AssetRepoService {
     /**
      * 新增物资
      *
-     * @Param assetBO
      * @return
+     * @Param assetBO
      */
     AssetBO createAsset(AssetBO assetBO);
+
+    /**
+     * 更新物资
+     *
+     * @param assetBO
+     * @return
+     */
+    AssetBO updateAsset(AssetBO assetBO);
+
     /**
      * 判断物资状态
+     *
      * @param assetId
      * @return
      */
     String judgeStatusByAssetId(String assetId);
 
     /**
-     *查找物资
+     * 查找物资
+     *
      * @param assetId
      * @return
      */

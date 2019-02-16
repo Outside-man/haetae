@@ -29,7 +29,7 @@ public class AssetRestRequest extends RestRequest {
     /**
      * 物资总数量
      */
-    private String assetAmount;
+    private Integer assetAmount;
     /**
      * 物资所属组织id
      */
@@ -41,7 +41,7 @@ public class AssetRestRequest extends RestRequest {
     /**
      * 物资剩余数量
      */
-    private String assetRemain;
+    private Integer assetRemain;
     /**
      * 物资类别
      */
@@ -51,6 +51,8 @@ public class AssetRestRequest extends RestRequest {
      * 物资创建者
      */
     private  String userId;
+
+    private Integer assetDestroy;
 
     @Override
     public String getUserId() {
@@ -94,14 +96,6 @@ public class AssetRestRequest extends RestRequest {
         this.assetExtInfo = assetExtInfo;
     }
 
-    public String getAssetAmount() {
-        return assetAmount;
-    }
-
-    public void setAssetAmount(String assetAmount) {
-        this.assetAmount = assetAmount;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -114,11 +108,19 @@ public class AssetRestRequest extends RestRequest {
         this.organizationId = organizationId;
     }
 
-    public String getAssetRemain() {
+    public Integer getAssetAmount() {
+        return assetAmount;
+    }
+
+    public void setAssetAmount(Integer assetAmount) {
+        this.assetAmount = assetAmount;
+    }
+
+    public Integer getAssetRemain() {
         return assetRemain;
     }
 
-    public void setAssetRemain(String assetRemain) {
+    public void setAssetRemain(Integer assetRemain) {
         this.assetRemain = assetRemain;
     }
 
@@ -130,4 +132,11 @@ public class AssetRestRequest extends RestRequest {
         this.assetType = assetType;
     }
 
+    public Integer getAssetDestroy() {
+        return assetDestroy;
+    }
+
+    public void setAssetDestroy(Integer assetDestroy) {
+        this.assetDestroy = assetDestroy;
+    }
 }

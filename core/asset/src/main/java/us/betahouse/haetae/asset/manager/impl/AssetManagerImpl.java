@@ -35,10 +35,25 @@ public class AssetManagerImpl implements AssetManager {
                 .withAssetMount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
                 .withAssetRemain(request.getAssetRemain())
-                .withAssetDestory(request.getAssetDestory())
+                .withAssetDestroy(request.getAssetDestroy())
                 .withAssetStatus(request.getAssetStatus())
                 .withAssetOrginnaztionName(request.getAssetOrganizationName());
         return assetRepoService.createAsset(assetBOBuilder.builder());
+    }
+
+    @Override
+    public AssetBO update(AssetRequest request) {
+        AssetBOBuilder assetBOBuilder = AssetBOBuilder.getInstance()
+                .withAssetId(request.getAssetId())
+                .withAssetName(request.getAssetName())
+                .withAssetType(request.getAssetType())
+                .withAssetMount(request.getAssetAmount())
+                .withAssetOrginnaztionId(request.getAssetOrganizationId())
+                .withAssetRemain(request.getAssetRemain())
+                .withAssetDestroy(request.getAssetDestroy())
+                .withAssetStatus(request.getAssetStatus())
+                .withAssetOrginnaztionName(request.getAssetOrganizationName());
+        return assetRepoService.updateAsset(assetBOBuilder.builder());
     }
 
     /**

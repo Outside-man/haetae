@@ -93,7 +93,7 @@ public class AssetLoanRecordController {
                             .withAssetInfo(request.getAssetInfo())
                             .build();
                     assetLoanRecordBOS = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
-                } else {
+                } else {    //update
                     AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                             .withLoanRecordId(request.getLoanRecordId())
                             .withUserId(request.getUserId())
@@ -173,8 +173,11 @@ public class AssetLoanRecordController {
             public Result<List<AssetLoanRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequestBuilder builder = AssetLoanRecordManagerRequestBuilder.getInstance();
-                return RestResultUtil.buildSuccessResult(assetLoanRecordService.findAllAssetLoanRecordByUserId(builder.build(), context), "获取活动列表成功");
+                AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(assetLoanRecordService
+                        .findAllAssetLoanRecordByUserId(builder, context), "获取借用列表成功");
             }
         });
     }

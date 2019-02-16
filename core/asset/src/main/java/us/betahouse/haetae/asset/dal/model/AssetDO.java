@@ -60,8 +60,8 @@ public class AssetDO extends BaseDO {
     /**
      *物资损坏个数
      */
-    @Column(name = "destory" ,length = 10)
-    private Integer destory;
+    @Column(name = "destroy" ,length = 10)
+    private Integer destroy;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -123,11 +123,11 @@ public class AssetDO extends BaseDO {
         this.remain = remain;
     }
 
-    public Integer getDestory() {
-        return destory;
+    public Integer getDestroy() {
+        return destroy;
     }
 
-    public void setDestory(Integer destory) {
-        this.destory = destory;
+    public void setDestroy(Integer destroy) {
+        this.destroy = destroy;
     }
 }

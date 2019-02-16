@@ -28,7 +28,7 @@ final public class EntityConverter {
         assetBO.setAssetId(assetDO.getAssetId());
         assetBO.setAssetAmount(assetDO.getAmount());
         assetBO.setAssetRemain(assetDO.getRemain());
-        assetBO.setAssetDestory(assetDO.getDestory());
+        assetBO.setAssetDestroy(assetDO.getDestroy());
         assetBO.setAssetName(assetDO.getAssetName());
         assetBO.setAssetOrganizationId(assetDO.getOrginazationId());
         assetBO.setAssetStatus(assetDO.getStatus());
@@ -56,7 +56,7 @@ final public class EntityConverter {
         assetDO.setAssetName(assetBO.getAssetName());
         assetDO.setOrginazationId(assetBO.getAssetOrganizationId());
         assetDO.setRemain(assetBO.getAssetRemain());
-        assetDO.setDestory(assetBO.getAssetDestory());
+        assetDO.setDestroy(assetBO.getAssetDestroy());
         assetDO.setStatus(assetBO.getAssetStatus());
         assetDO.setType(assetBO.getAssetType());
         assetDO.setGmtCreate(assetBO.getCreate());
