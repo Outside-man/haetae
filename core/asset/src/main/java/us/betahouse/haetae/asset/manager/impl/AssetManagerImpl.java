@@ -32,7 +32,7 @@ public class AssetManagerImpl implements AssetManager {
         AssetBOBuilder assetBOBuilder = AssetBOBuilder.getInstance()
                 .withAssetName(request.getAssetName())
                 .withAssetType(request.getAssetType())
-                .withAssetMount(request.getAssetAmount())
+                .withAssetAmount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
                 .withAssetRemain(request.getAssetRemain())
                 .withAssetDestroy(request.getAssetDestroy())
@@ -47,12 +47,24 @@ public class AssetManagerImpl implements AssetManager {
                 .withAssetId(request.getAssetId())
                 .withAssetName(request.getAssetName())
                 .withAssetType(request.getAssetType())
-                .withAssetMount(request.getAssetAmount())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
-                .withAssetRemain(request.getAssetRemain())
-                .withAssetDestroy(request.getAssetDestroy())
                 .withAssetStatus(request.getAssetStatus())
                 .withAssetOrginnaztionName(request.getAssetOrganizationName());
+        if (request.getAssetRemain() != -1) {
+            assetBOBuilder.withAssetRemain(request.getAssetRemain());
+        } else {
+            assetBOBuilder.withAssetRemain(-1);
+        }
+        if (request.getAssetAmount() != -1) {
+            assetBOBuilder.withAssetAmount(request.getAssetAmount());
+        } else {
+            assetBOBuilder.withAssetAmount(-1);
+        }
+        if (request.getAssetDestroy() != -1) {
+            assetBOBuilder.withAssetDestroy(request.getAssetDestroy());
+        } else {
+            assetBOBuilder.withAssetDestroy(-1);
+        }
         return assetRepoService.updateAsset(assetBOBuilder.builder());
     }
 

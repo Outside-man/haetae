@@ -55,7 +55,7 @@ public class AssetBOBuilder {
         return this;
     }
 
-    public AssetBOBuilder withAssetMount(int assetAmount) {
+    public AssetBOBuilder withAssetAmount(int assetAmount) {
         this.assetAmount = assetAmount;
         return this;
     }

@@ -56,19 +56,20 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     public AssetBO updateAsset(AssetBO assetBO) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetBO.getAssetId());
         AssetDO assetDO1 = convert(assetBO);
-        if (assetDO1.getAmount() != null) {
+        if (assetDO1.getAmount() != null && assetDO1.getAmount() != -1) {
             assetDO.setAmount(assetDO1.getAmount());
         }
         if (assetDO1.getAssetName() != null) {
             assetDO.setAssetName(assetDO1.getAssetName());
         }
-        if (assetDO1.getDestroy() != null) {
+        if (assetDO1.getDestroy() != null && assetDO1.getDestroy() != -1) {
             assetDO.setDestroy(assetDO1.getDestroy());
         }
         if (assetDO1.getOrginazationId() != null) {
             assetDO.setOrginazationId(assetDO1.getOrginazationId());
         }
-        if (assetDO1.getRemain() != null) {
+        if (assetDO1.getRemain() != null && assetDO1.getRemain() != -1) {
+            System.out.println("2"+assetDO1.getRemain());
             assetDO.setRemain(assetDO1.getRemain());
         }
         if (assetDO1.getStatus() != null) {

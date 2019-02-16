@@ -106,13 +106,20 @@ public class AssetController {
                 } else {
                     AssetManagerRequestBuilder assetManagerRequestBuilder = AssetManagerRequestBuilder.getInstance();
                     if (request.getAssetRemain() != null) {
+                        System.out.println("1"+request.getAssetRemain());
                         assetManagerRequestBuilder.withReamain(request.getAssetRemain());
+                    } else {
+                        assetManagerRequestBuilder.withReamain(-1);
                     }
                     if (request.getAssetAmount() != null) {
                         assetManagerRequestBuilder.withAmount(request.getAssetAmount());
+                    } else {
+                        assetManagerRequestBuilder.withAmount(-1);
                     }
                     if (request.getAssetDestroy() != null) {
                         assetManagerRequestBuilder.withDestroy(request.getAssetDestroy());
+                    } else {
+                        assetManagerRequestBuilder.withDestroy(-1);
                     }
                     AssetManagerRequest assetManagerRequest = assetManagerRequestBuilder
                             .withAssetName(request.getAssetName())
