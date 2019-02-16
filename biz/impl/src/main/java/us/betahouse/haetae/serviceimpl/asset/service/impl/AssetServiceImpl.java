@@ -20,7 +20,6 @@ import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
-import us.betahouse.haetae.asset.request.AssetRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -30,6 +29,7 @@ import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,14 +83,15 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public List<AssetRecordBO> findRecodByAssetStatus(AssetRequest request, OperateContext context) {
-        List<AssetRecordBO> assetRecordBOS=null;
+    public List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context) {
+        List<AssetRecordBO> assetRecordBOS=new ArrayList<>();
         AssetStatusEnum assetStatusEnum=AssetStatusEnum.getByCode(request.getAssetStatusCode());
         switch (assetStatusEnum){
             //暂无物资 返回报损记录
             case ASSET_TEMPNOTLOAN:{
                 List<AssetBackRecordDO> assetBackRecordDOS=assetBackDORepo.findAllByAssetIdAndAssetTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
                 AssetBackRecordDO assetBackRecordDO=null;
+                System.out.println("cp2 size"+assetBackRecordDOS.size());
                 for(int i=0;i<assetBackRecordDOS.size();i++){
                     assetBackRecordDO=assetBackRecordDOS.get(i);
                     AssetRecordBOBuilder assetRecordBOBuilder=AssetRecordBOBuilder.getInstance()
@@ -107,7 +108,7 @@ public class AssetServiceImpl implements AssetService {
                 break;
             }
             //物资借完 返回借用记录
-            case ASSET_NOTLOAN:{
+            case ASSET_ALLLOAN:{
                 List<AssetLoanRecordDO> assetLoanRecordDOS=assetLoanDORepo.findAllRecordByAssetId(request.getAssetId());
                 AssetLoanRecordDO assetLoanRecordDO=null;
                 for(int i=0;i<assetLoanRecordDOS.size();i++){

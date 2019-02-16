@@ -55,6 +55,10 @@ public class AssetManagerRequestBuilder {
      * 物资类别 消耗品/耐用品
      */
     private String assetType;
+    /**
+     *
+     */
+    private String assetStatusCode;
 
     public AssetManagerRequestBuilder() {
     }
@@ -113,6 +117,11 @@ public class AssetManagerRequestBuilder {
         return this;
     }
 
+    public AssetManagerRequestBuilder withAssetStatusCode(String assetStatusCode){
+        this.assetStatusCode=assetStatusCode;
+        return this;
+    }
+
     public AssetManagerRequest builder(){
         AssetManagerRequest assetManagerRequest=new AssetManagerRequest();
         assetManagerRequest.setAssetId(assetId);
@@ -124,6 +133,7 @@ public class AssetManagerRequestBuilder {
         assetManagerRequest.setAssetStatus(assetStatus);
         assetManagerRequest.setAssetOrganizationId(assetOrginazationId);
         assetManagerRequest.setAssetOrganizationName(assetOrganizationName);
+        assetManagerRequest.setAssetStatusCode(assetStatusCode);
         return assetManagerRequest;
     }
 }

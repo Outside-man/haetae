@@ -6,7 +6,6 @@ package us.betahouse.haetae.serviceimpl.asset.service;
 
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
-import us.betahouse.haetae.asset.request.AssetRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -35,5 +34,6 @@ public interface AssetService {
      * @param context
      * @return
      */
-    List<AssetRecordBO> findRecodByAssetStatus(AssetRequest request, OperateContext context);
+    List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context);
+
 }

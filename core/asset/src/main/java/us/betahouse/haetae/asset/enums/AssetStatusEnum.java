@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 public enum AssetStatusEnum {
     ASSET_LOAN("assetLoan", "可借"),
     ASSET_NOTLOAN("assetNotLoan", "不可借"),
-    ASSET_ALLLOAN("assetAllLoam","全部借出"),
+    ASSET_ALLLOAN("assetAllLoan","全部借出"),
     ASSET_DISTORY("assetDistory", "全部损坏"),
     ASSET_TEMPNOTLOAN("assetTempNotLoan","暂时不可借"),
     ASSET_NOTEXISTENCE("assetNotExistence", "物资不存在");

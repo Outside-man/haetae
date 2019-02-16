@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
+import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
+import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -28,6 +30,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -49,6 +52,10 @@ public class AssetController {
 
     @Autowired
     private OrganizationRepoService organizationRepoService;
+
+    @Autowired
+    private AssetRepoService assetRepoService;
+
     /**
      * 添加物资
      */
@@ -93,6 +100,42 @@ public class AssetController {
                         .builder();
                 AssetBO assetBo=assetService.create(assetManagerRequest,context);
                 return RestResultUtil.buildSuccessResult(assetBo,"物资创建成功");
+            }
+        });
+    }
+
+
+
+    /**
+     * 判断物资状态
+     *
+     * @param restRequest
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping("AssetStatus")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<AssetRecordBO>> AssetStatus(AssetRestRequest restRequest, HttpServletRequest httpServletRequest){
+        return RestOperateTemplate.operate(LOGGER, "判断物资状态", restRequest, new RestOperateCallBack<List<AssetRecordBO>>() {
+            @Override
+            public void before(){
+                AssertUtil.assertNotNull(restRequest,RestResultCode.ILLEGAL_PARAMETERS.getCode(),"请求体不能为空");
+                AssertUtil.assertNotNull(restRequest.getAssetId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资ID不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getAssetId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资ID不存在");
+            }
+            @Override
+            public Result<List<AssetRecordBO>> execute() {
+                OperateContext context=new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                //根据物资id判断物资状态
+                String assetStatusCode= assetRepoService.judgeStatusByAssetId(restRequest.getAssetId());
+                AssetManagerRequest assetManagerRequest=AssetManagerRequestBuilder.getInstance()
+                        .withAssetId(restRequest.getAssetId())
+                        .withAssetStatusCode(assetStatusCode)
+                        .builder();
+                List<AssetRecordBO> assetRecordBOList=assetService.findRecodByAssetStatus(assetManagerRequest,context);
+                return RestResultUtil.buildSuccessResult(assetRecordBOList, assetStatusCode);
             }
         });
     }
