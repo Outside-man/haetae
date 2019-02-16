@@ -55,6 +55,6 @@ public interface AssetBackDORepo extends JpaRepository<AssetBackRecordDO, Long> 
      * @param assetType
      * @return
      */
-    List<AssetBackRecordDO>  findAllByAssetIdAndAssetTypeOrderByIdDesc(String assetId,String assetType);
+    List<AssetBackRecordDO>  findAllByAssetIdAndTypeOrderByIdDesc(String assetId,String assetType);
 
 }

@@ -89,7 +89,8 @@ public class AssetServiceImpl implements AssetService {
         switch (assetStatusEnum){
             //暂无物资 返回报损记录
             case ASSET_TEMPNOTLOAN:{
-                List<AssetBackRecordDO> assetBackRecordDOS=assetBackDORepo.findAllByAssetIdAndAssetTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
+                System.out.println("cp3"+request.getAssetId()+" "+AssetBackRecordTypeEnum.DISTORY.getCode());
+                List<AssetBackRecordDO> assetBackRecordDOS=assetBackDORepo.findAllByAssetIdAndTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
                 AssetBackRecordDO assetBackRecordDO=null;
                 System.out.println("cp2 size"+assetBackRecordDOS.size());
                 for(int i=0;i<assetBackRecordDOS.size();i++){
