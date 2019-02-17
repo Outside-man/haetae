@@ -8,6 +8,8 @@ import com.alibaba.fastjson.JSON;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
+import java.util.function.Function;
+
 /**
  * @author guofan.cp
  * @version : EntityConverter.java 2019/01/21 23:47 guofan.cp

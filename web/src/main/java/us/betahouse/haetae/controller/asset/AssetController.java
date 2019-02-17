@@ -201,6 +201,30 @@ public class AssetController {
         });
     }
 
+    @CheckLogin
+    @GetMapping(value = "/getByOrganizationId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<AssetBO>> getAssetListByOrganizationId(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取物资信息", request, new RestOperateCallBack<List<AssetBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
+            }
+
+            @Override
+            public Result<List<AssetBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetManagerRequest builder = AssetManagerRequestBuilder.getInstance()
+                        .withOrginazationId(request.getOrganizationId())
+                        .builder();
+                return RestResultUtil.buildSuccessResult(assetService.queryAssetByOrganizationId(builder, context), "获取成功");
+            }
+        });
+    }
+
     @DeleteMapping(value = "/delete")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)

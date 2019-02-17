@@ -37,14 +37,12 @@ public interface AssetService {
     AssetBO update(AssetManagerRequest request, OperateContext context);
 
     /**
-     *
      * @param request
      * @param context
      */
     void delete(AssetManagerRequest request, OperateContext context);
 
     /**
-     *
      * @param request
      * @param context
      * @return
@@ -60,6 +58,11 @@ public interface AssetService {
      */
     List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context);
 
-
+    /**
+     * @param request
+     * @param context
+     * @return
+     */
+    List<AssetBO> queryAssetByOrganizationId(AssetManagerRequest request, OperateContext context);
 
 }

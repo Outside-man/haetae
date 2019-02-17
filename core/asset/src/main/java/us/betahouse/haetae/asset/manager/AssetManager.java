@@ -7,6 +7,8 @@ package us.betahouse.haetae.asset.manager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.request.AssetRequest;
 
+import java.util.List;
+
 /**
  * 物资管理器
  *
@@ -31,7 +33,6 @@ public interface AssetManager {
     AssetBO update(AssetRequest request);
 
     /**
-     *
      * @param assetId
      * @return
      */
@@ -44,4 +45,10 @@ public interface AssetManager {
      * @return
      */
     AssetBO findAssetByAssetID(String assetId);
+
+    /**
+     * @param organizationId
+     * @return
+     */
+    List<AssetBO> queryAssetByOrganizationId(String organizationId);
 }

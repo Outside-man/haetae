@@ -12,6 +12,8 @@ import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.request.AssetRequest;
 
+import java.util.List;
+
 /**
  * @author guofan.cp
  * @version : AssetManagerInpl.java 2019/01/24 9:33 guofan.cp
@@ -81,6 +83,15 @@ public class AssetManagerImpl implements AssetManager {
      */
     @Override
     public AssetBO findAssetByAssetID(String assetId) {
-         return assetRepoService.findByAssetId(assetId);
+        return assetRepoService.findByAssetId(assetId);
+    }
+
+    /**
+     * @param organizationId
+     * @return
+     */
+    @Override
+    public List<AssetBO> queryAssetByOrganizationId(String organizationId) {
+        return assetRepoService.queryAssetByOrganizationId(organizationId);
     }
 }

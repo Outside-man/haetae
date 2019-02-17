@@ -6,6 +6,8 @@ package us.betahouse.haetae.asset.dal.service;
 
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 
+import java.util.List;
+
 /**
  * @author guofan.cp
  * @version : AssetRepoService.java 2019/01/21 22:31 guofan.cp
@@ -27,6 +29,10 @@ public interface AssetRepoService {
      */
     AssetBO updateAsset(AssetBO assetBO);
 
+    /**
+     *
+     * @param assetId
+     */
     void deleteAsset(String assetId);
 
     /**
@@ -44,5 +50,13 @@ public interface AssetRepoService {
      * @return
      */
     AssetBO findByAssetId(String assetId);
+
+    /**
+     * 根据组织id获取物资
+     *
+     * @param organizationId
+     * @return
+     */
+    List<AssetBO> queryAssetByOrganizationId(String organizationId);
 
 }

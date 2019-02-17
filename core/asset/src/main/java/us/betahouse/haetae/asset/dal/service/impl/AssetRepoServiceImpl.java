@@ -4,12 +4,15 @@
  */
 package us.betahouse.haetae.asset.dal.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.asset.dal.convert.EntityConverter;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
+import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
 import us.betahouse.haetae.asset.dal.repo.AssetBackDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
@@ -18,6 +21,12 @@ import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static us.betahouse.haetae.asset.dal.convert.EntityConverter.convert;
 
@@ -35,8 +44,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
-    @Autowired
-    private AssetBackDORepo assetBackDORepo;
 
     /**
      * 创建物资
@@ -94,6 +101,9 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         return convert(assetDORepo.save(assetDO));
     }
 
+    /**
+     * @param assetId
+     */
     @Override
     public void deleteAsset(String assetId) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetId);
@@ -148,4 +158,59 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         return convert(assetDO);
     }
 
+    /**
+     * @param organizationId
+     * @return
+     */
+    @Override
+    public List<AssetBO> queryAssetByOrganizationId(String organizationId) {
+        List<AssetDO> assetDOList = assetDORepo.findAssetByOrginazationId(organizationId);
+        return CollectionUtils.toStream(assetDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    public AssetBO convert(AssetDO assetDO) {
+        if (assetDO == null) {
+            return null;
+        }
+        AssetBO assetBO = new AssetBO();
+        assetBO.setAssetId(assetDO.getAssetId());
+        assetBO.setAssetAmount(assetDO.getAmount());
+        assetBO.setAssetRemain(assetDO.getRemain());
+        assetBO.setAssetDestroy(assetDO.getDestroy());
+        assetBO.setAssetName(assetDO.getAssetName());
+        assetBO.setAssetOrganizationId(assetDO.getOrginazationId());
+        assetBO.setAssetStatus(assetDO.getStatus());
+        assetBO.setAssetType(assetDO.getType());
+        assetBO.setCreate(assetDO.getGmtCreate());
+        assetBO.setModified(assetDO.getGmtModified());
+        //assetBO.setExtInfo(JSON.parseObject(assetDO.getExtInfo(), Map.class));
+        return assetBO;
+    }
+
+    /**
+     * 物资BO2DO
+     *
+     * @param assetBO
+     */
+    public AssetDO convert(AssetBO assetBO) {
+        if (assetBO == null) {
+            return null;
+        }
+        AssetDO assetDO = new AssetDO();
+        assetDO.setAmount(assetBO.getAssetAmount());
+        assetDO.setAssetId(assetBO.getAssetId());
+        assetDO.setAssetName(assetBO.getAssetName());
+        assetDO.setOrginazationId(assetBO.getAssetOrganizationId());
+        assetDO.setRemain(assetBO.getAssetRemain());
+        assetDO.setDestroy(assetBO.getAssetDestroy());
+        assetDO.setStatus(assetBO.getAssetStatus());
+        assetDO.setType(assetBO.getAssetType());
+        assetDO.setGmtCreate(assetBO.getCreate());
+        assetDO.setGmtModified(assetBO.getModified());
+        assetDO.setExtInfo(JSON.toJSONString(assetBO.getExtInfo()));
+        return assetDO;
+    }
 }

@@ -155,4 +155,9 @@ public class AssetServiceImpl implements AssetService {
         }
         return assetRecordBOS;
     }
+
+    @Override
+    public List<AssetBO> queryAssetByOrganizationId(AssetManagerRequest request, OperateContext context) {
+        return assetManager.queryAssetByOrganizationId(request.getAssetOrganizationId());
+    }
 }
