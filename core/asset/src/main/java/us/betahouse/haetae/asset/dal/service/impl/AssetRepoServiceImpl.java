@@ -52,6 +52,12 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         return convert(assetDORepo.save(convert(assetBO)));
     }
 
+    /**
+     * 更新物资
+     *
+     * @param assetBO
+     * @return
+     */
     @Override
     public AssetBO updateAsset(AssetBO assetBO) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetBO.getAssetId());
@@ -69,7 +75,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
             assetDO.setOrginazationId(assetDO1.getOrginazationId());
         }
         if (assetDO1.getRemain() != null && assetDO1.getRemain() != -1) {
-            System.out.println("2"+assetDO1.getRemain());
             assetDO.setRemain(assetDO1.getRemain());
         }
         if (assetDO1.getStatus() != null) {
@@ -78,15 +83,22 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         if (assetDO1.getType() != null) {
             assetDO.setType(assetDO1.getType());
         }
-        if (assetDO.getRemain() == 0){
-            if(assetDO.getDestroy() == assetDO.getAmount()){
+        if (assetDO.getRemain() == 0) {
+            if (assetDO.getDestroy() == assetDO.getAmount()) {
                 assetDO.setStatus("allDestroy");
-            }else {
+            } else {
                 assetDO.setStatus("notLoan");
             }
         }
 
         return convert(assetDORepo.save(assetDO));
+    }
+
+    @Override
+    public void deleteAsset(String assetId) {
+        AssetDO assetDO = assetDORepo.findByAssetId(assetId);
+        AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不存在");
+        assetDORepo.delete(assetDO);
     }
 
     /**

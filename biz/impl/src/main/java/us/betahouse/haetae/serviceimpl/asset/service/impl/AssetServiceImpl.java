@@ -92,9 +92,20 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
+    public void delete(AssetManagerRequest request, OperateContext context) {
+        assetManager.delete(request.getAssetId());
+    }
+
+    @Override
+    public AssetBO findAssetByAssetId(AssetManagerRequest request, OperateContext context) {
+        return assetManager.findAssetByAssetID(request.getAssetId());
+    }
+
+    @Override
     public List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context) {
         List<AssetRecordBO> assetRecordBOS = new ArrayList<>();
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(request.getAssetStatusCode());
+        AssertUtil.assertNotNull(assetStatusEnum, "物资状态不存在");
         switch (assetStatusEnum) {
             //暂无物资 返回报损记录
             case ASSET_TEMPNOTLOAN: {

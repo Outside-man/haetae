@@ -37,6 +37,21 @@ public interface AssetService {
     AssetBO update(AssetManagerRequest request, OperateContext context);
 
     /**
+     *
+     * @param request
+     * @param context
+     */
+    void delete(AssetManagerRequest request, OperateContext context);
+
+    /**
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    AssetBO findAssetByAssetId(AssetManagerRequest request, OperateContext context);
+
+    /**
      * 判断物资id 返回记录结果集
      *
      * @param request
@@ -44,5 +59,7 @@ public interface AssetService {
      * @return
      */
     List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context);
+
+
 
 }

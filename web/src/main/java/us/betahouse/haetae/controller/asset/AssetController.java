@@ -97,7 +97,8 @@ public class AssetController {
                             .withAssetOrganizationName(request.getOrganizationName())
                             .withReamain(Integer.valueOf(request.getAssetAmount()))
                             .withStatus("canLoan")
-                            .withDestroy(0)
+                            .withAssetStatusCode("canloan")
+                            .withDestroy(Integer.valueOf(0))
                             //以下是可选参数
                             //额外信息
                             .withExtInfo(request.getExtInfo())
@@ -106,7 +107,6 @@ public class AssetController {
                 } else {
                     AssetManagerRequestBuilder assetManagerRequestBuilder = AssetManagerRequestBuilder.getInstance();
                     if (request.getAssetRemain() != null) {
-                        System.out.println("1"+request.getAssetRemain());
                         assetManagerRequestBuilder.withReamain(request.getAssetRemain());
                     } else {
                         assetManagerRequestBuilder.withReamain(-1);
@@ -136,7 +136,6 @@ public class AssetController {
             }
         });
     }
-
 
     /**
      * 判断物资状态
@@ -169,6 +168,59 @@ public class AssetController {
                         .builder();
                 List<AssetRecordBO> assetRecordBOList = assetService.findRecodByAssetStatus(assetManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(assetRecordBOList, assetStatusCode);
+            }
+        });
+    }
+
+    /**
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping(value = "/getByAssetId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<AssetBO> getAssetListByUserId(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取物资信息", request, new RestOperateCallBack<AssetBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<AssetBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetManagerRequest builder = AssetManagerRequestBuilder.getInstance()
+                        .withAssetId(request.getAssetId())
+                        .builder();
+                return RestResultUtil.buildSuccessResult(assetService.findAssetByAssetId(builder, context), "获取成功");
+            }
+        });
+    }
+
+    @DeleteMapping(value = "/delete")
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<AssetBO> delete(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "删除物资", request, new RestOperateCallBack<AssetBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资id不能为空");
+            }
+
+            @Override
+            public Result<AssetBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetManagerRequest builder = AssetManagerRequestBuilder.getInstance()
+                        .withAssetId(request.getAssetId())
+                        .builder();
+                assetService.delete(builder,context);
+                return RestResultUtil.buildSuccessResult("删除物资成功");
             }
         });
     }

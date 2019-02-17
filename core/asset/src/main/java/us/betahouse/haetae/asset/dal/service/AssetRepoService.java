@@ -27,6 +27,8 @@ public interface AssetRepoService {
      */
     AssetBO updateAsset(AssetBO assetBO);
 
+    void deleteAsset(String assetId);
+
     /**
      * 判断物资状态
      *

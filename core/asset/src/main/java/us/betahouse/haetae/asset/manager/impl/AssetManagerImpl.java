@@ -68,6 +68,11 @@ public class AssetManagerImpl implements AssetManager {
         return assetRepoService.updateAsset(assetBOBuilder.builder());
     }
 
+    @Override
+    public void delete(String assetId) {
+        assetRepoService.deleteAsset(assetId);
+    }
+
     /**
      * 查找物资
      *
@@ -76,6 +81,6 @@ public class AssetManagerImpl implements AssetManager {
      */
     @Override
     public AssetBO findAssetByAssetID(String assetId) {
-        return assetRepoService.findByAssetId(assetId);
+         return assetRepoService.findByAssetId(assetId);
     }
 }

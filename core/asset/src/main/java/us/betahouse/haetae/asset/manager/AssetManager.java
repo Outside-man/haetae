@@ -31,6 +31,13 @@ public interface AssetManager {
     AssetBO update(AssetRequest request);
 
     /**
+     *
+     * @param assetId
+     * @return
+     */
+    void delete(String assetId);
+
+    /**
      * 通过Id获取物资
      *
      * @param assetId
