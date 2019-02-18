@@ -47,26 +47,6 @@ public class AssetBackRecordController {
     @Autowired
     private AssetBackRecordService assetBackRecordService;
 
-    @CheckLogin
-    @PostMapping(value = "/test")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<String> test(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<String>() {
-
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-            }
-
-            @Override
-            public Result<String> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return RestResultUtil.buildSuccessResult("testsuccess", "获取活动列表成功");
-            }
-        });
-    }
-
     /**
      * 归还物资记录
      *
@@ -83,7 +63,6 @@ public class AssetBackRecordController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
-                System.out.println(request.getUserId());
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资id不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量不能为空");
                 AssertUtil.assertNotNull(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录id不能为空");

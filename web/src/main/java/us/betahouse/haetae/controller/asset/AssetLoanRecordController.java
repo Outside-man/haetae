@@ -81,9 +81,9 @@ public class AssetLoanRecordController {
                 if (request.getLoanRecordId() == null) {//create
                     AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                             .withUserId(request.getUserId())
-                            .withAmount(Integer.valueOf(request.getAmount()))
-                            .withRemain(Integer.valueOf(request.getAmount()))
-                            .withDistory(Integer.valueOf(0))
+                            .withAmount(request.getAmount())
+                            .withRemain(request.getAmount())
+                            .withDistory(0)
                             .withAssetId(request.getAssetId())
                             .withAssetType(request.getAssetType())
                             .withRemark(request.getRemark())

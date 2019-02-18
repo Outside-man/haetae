@@ -54,7 +54,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         }
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
         AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还记录码无效");
-        if (request.getAmount() > assetLoanRecordBO.getAmount() - assetLoanRecordBO.getRemain()) {
+        if (request.getAmount() > assetLoanRecordBO.getRemain()) {
             AssertUtil.assertStringNotBlank("归还数量超出剩余未归还数量");
             return null;
         }
