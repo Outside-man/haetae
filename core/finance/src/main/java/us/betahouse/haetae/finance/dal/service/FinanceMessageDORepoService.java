@@ -9,9 +9,9 @@ import us.betahouse.haetae.finance.model.common.PageList;
 
 /**
  * @author MessiahJK
- * @version : FinanceMessageDOService.java 2019/01/31 2:51 MessiahJK
+ * @version : FinanceMessageDORepoService.java 2019/01/31 2:51 MessiahJK
  */
-public interface FinanceMessageDOService {
+public interface FinanceMessageDORepoService {
 
     /**
      * 创建
@@ -19,7 +19,7 @@ public interface FinanceMessageDOService {
      * @param financeMessageBO
      * @return
      */
-    FinanceMessageBO create(FinanceMessageBO financeMessageBO);
+    FinanceMessageBO createFinanceMessage(FinanceMessageBO financeMessageBO);
 
     /**
      * 更新
@@ -34,10 +34,19 @@ public interface FinanceMessageDOService {
      *
      * @param organizationId 组织id
      * @param term 学期
-     * @param  status 状态
+     * @param status 状态
+     * @param page 页数
+     * @param limit 每页条数
      * @return
      */
-    PageList<FinanceMessageBO> findByOrganizationIdAndtermAndStatus(String organizationId,String term,String status);
+    PageList<FinanceMessageBO> findByOrganizationIdAndTermAndStatus(String organizationId,String term,String status,Integer page, Integer limit);
 
 
+    /**
+     * 通过财务信息id查询
+     *
+     * @param financeMessageId 财务信息id
+     * @return
+     */
+    FinanceMessageBO findByFinanceMessageId(String financeMessageId);
 }

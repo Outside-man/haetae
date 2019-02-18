@@ -7,6 +7,7 @@ package us.betahouse.haetae.finance.dal.model;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -21,6 +22,7 @@ import java.util.Date;
         })
 public class FinanceMessageDO extends BaseDO {
 
+    private static final long serialVersionUID = -7353993025674206439L;
     /**
      * 财务信息id
      */
@@ -47,13 +49,13 @@ public class FinanceMessageDO extends BaseDO {
     /**
      * 预算
      */
-    private String budget;
+    private BigDecimal budget;
 
     /**
      * 真实金额
      */
     @Column(name = "true_money")
-    private String trueMoney;
+    private BigDecimal trueMoney;
 
     /**
      * 状态
@@ -149,19 +151,19 @@ public class FinanceMessageDO extends BaseDO {
         this.type = type;
     }
 
-    public String getBudget() {
+    public BigDecimal getBudget() {
         return budget;
     }
 
-    public void setBudget(String budget) {
+    public void setBudget(BigDecimal budget) {
         this.budget = budget;
     }
 
-    public String getTrueMoney() {
+    public BigDecimal getTrueMoney() {
         return trueMoney;
     }
 
-    public void setTrueMoney(String trueMoney) {
+    public void setTrueMoney(BigDecimal trueMoney) {
         this.trueMoney = trueMoney;
     }
 

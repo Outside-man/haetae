@@ -1,37 +1,24 @@
 /*
   betahouse.us
-  CopyRight (c) 2012 - 2018
+  CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.activity.idfactory;
+package us.betahouse.haetae.finance.idfactory;
 
 /**
- * Id类型枚举
- *
  * @author MessiahJK
- * @version : IdTypeEnum.java 2018/11/17 16:03 MessiahJK
+ * @version : IdTypeEnum.java 2019/02/14 15:13 MessiahJK
  */
 public enum IdTypeEnum {
 
     /**
-     * 活动id
+     * 财务信息id
      */
-    Activity_ID("1001", "活动id"),
+    Finance_Message_Id("3001","财务信息id"),
 
     /**
-     * 活动记录id
+     * 财务统计id
      */
-    Activity_Record_ID("1002", "活动记录id"),
-
-    /**
-     * 组织id
-     */
-    Organization_ID("1003", "组织id"),
-
-    /**
-     * 履历id
-     */
-    Position_Record_ID("1004", "履历id"),;
-
+    Finance_Total_Id("3002","财务统计id");
 
     /**
      * 业务id

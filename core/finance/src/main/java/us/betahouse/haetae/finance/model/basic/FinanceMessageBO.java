@@ -6,6 +6,7 @@ package us.betahouse.haetae.finance.model.basic;
 
 import us.betahouse.util.common.ToString;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,12 @@ import java.util.Map;
 public class FinanceMessageBO extends ToString {
 
     private static final long serialVersionUID = 192982016691118523L;
+
+    /**
+     * id
+     */
+    private Long id;
+
     /**
      * 财务信息id
      */
@@ -40,12 +47,12 @@ public class FinanceMessageBO extends ToString {
     /**
      * 预算
      */
-    private String budget;
+    private BigDecimal budget;
 
     /**
      * 真实金额
      */
-    private String trueMoney;
+    private BigDecimal trueMoney;
 
     /**
      * 状态
@@ -126,6 +133,14 @@ public class FinanceMessageBO extends ToString {
         exInfo.put(key, value);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFinanceMessageId() {
         return financeMessageId;
     }
@@ -158,19 +173,19 @@ public class FinanceMessageBO extends ToString {
         this.type = type;
     }
 
-    public String getBudget() {
+    public BigDecimal getBudget() {
         return budget;
     }
 
-    public void setBudget(String budget) {
+    public void setBudget(BigDecimal budget) {
         this.budget = budget;
     }
 
-    public String getTrueMoney() {
+    public BigDecimal getTrueMoney() {
         return trueMoney;
     }
 
-    public void setTrueMoney(String trueMoney) {
+    public void setTrueMoney(BigDecimal trueMoney) {
         this.trueMoney = trueMoney;
     }
 

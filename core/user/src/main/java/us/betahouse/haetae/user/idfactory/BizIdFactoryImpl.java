@@ -178,14 +178,14 @@ public class BizIdFactoryImpl implements BizIdFactory {
     }
 
     /**
-     * 获取长度lenth的0字符串
+     * 获取长度length的0字符串
      *
-     * @param lenth
+     * @param length
      * @return
      */
-    private String getZeroString(int lenth) {
+    private String getZeroString(int length) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < lenth; i++) {
+        for (int i = 0; i < length; i++) {
             sb.append("0");
         }
         return sb.toString();

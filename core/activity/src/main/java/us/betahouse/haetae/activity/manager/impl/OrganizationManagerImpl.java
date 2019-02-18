@@ -30,4 +30,14 @@ public class OrganizationManagerImpl implements OrganizationManager {
     public List<OrganizationBO> findAll() {
         return organizationRepoService.queryAllOrganization();
     }
+
+    @Override
+    public OrganizationBO findOrganizationByOrganizationId(String organizationId) {
+        return organizationRepoService.queryOrganizationByOrganizationId(organizationId);
+    }
+
+    @Override
+    public OrganizationBO findOrganizationByOrganizationName(String organizationName) {
+        return organizationRepoService.queryOrganizationByName(organizationName);
+    }
 }

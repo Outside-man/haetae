@@ -18,7 +18,23 @@ public interface OrganizationManager {
     /**
      * 查询所有组织信息
      *
-     * @return
+     * @return 组织实体List
      */
     List<OrganizationBO> findAll();
+
+    /**
+     * 通过组织id查询组织实体
+     *
+     * @param organizationId 组织id
+     * @return 组织实体
+     */
+    OrganizationBO findOrganizationByOrganizationId(String organizationId);
+
+    /**
+     * 通过组织名查询组织实体
+     *
+     * @param organizationName 组织名
+     * @return 组织实体
+     */
+    OrganizationBO findOrganizationByOrganizationName(String organizationName);
 }

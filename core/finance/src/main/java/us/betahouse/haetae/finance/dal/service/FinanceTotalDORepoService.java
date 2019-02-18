@@ -10,9 +10,9 @@ import java.util.List;
 
 /**
  * @author MessiahJK
- * @version : FinanceTotalDOService.java 2019/01/31 2:34 MessiahJK
+ * @version : FinanceTotalDORepoService.java 2019/01/31 2:34 MessiahJK
  */
-public interface FinanceTotalDOService {
+public interface FinanceTotalDORepoService {
 
     /**
      * 创建财务统计实体
@@ -20,7 +20,7 @@ public interface FinanceTotalDOService {
      * @param financeTotalBO
      * @return
      */
-    FinanceTotalBO create(FinanceTotalBO financeTotalBO);
+    FinanceTotalBO createFinanceTotal(FinanceTotalBO financeTotalBO);
 
     /**
      * 通过财务id查找财务统计实体

@@ -32,7 +32,7 @@ public interface OrganizationRepoService {
     /**
      * 创建组织
      *
-     * @param organizationBO
+     * @param organizationBO 组织实体
      * @return
      */
     OrganizationBO createOrganization(OrganizationBO organizationBO);
@@ -41,9 +41,10 @@ public interface OrganizationRepoService {
     /**
      * 通过名字获取组织信息
      *
-     * @param organizationName
+     * @param organizationName 组织实体
      * @return
      */
     OrganizationBO queryOrganizationByName(String organizationName);
+
 
 }
