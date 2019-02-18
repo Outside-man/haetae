@@ -61,7 +61,7 @@ public class AssetLoanRecordController {
      * @return
      */
     @CheckLogin
-    @PostMapping
+    @PostMapping(value = "/create")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetLoanRecordBO>> add(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
@@ -86,7 +86,6 @@ public class AssetLoanRecordController {
                             .withDistory(Integer.valueOf(0))
                             .withAssetId(request.getAssetId())
                             .withAssetType(request.getAssetType())
-                            .withLoanRecordId(request.getLoanRecordId())
                             .withRemark(request.getRemark())
                             .withStatus("assetLoan")
                             .withExtInfo(request.getExtInfo())
@@ -96,15 +95,10 @@ public class AssetLoanRecordController {
                 } else {    //update
                     AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                             .withLoanRecordId(request.getLoanRecordId())
-                            .withUserId(request.getUserId())
-                            .withAmount(Integer.valueOf(request.getAmount()))
-                            .withRemain(Integer.valueOf(request.getRemain()))
-                            .withDistory(Integer.valueOf(request.getDistory()))
+                            .withRemain(request.getRemain())
+                            .withDistory(request.getDistory())
                             .withAssetId(request.getAssetId())
-                            .withAssetType(request.getAssetType())
-                            .withLoanRecordId(request.getLoanRecordId())
                             .withRemark(request.getRemark())
-                            .withStatus(request.getStatus())
                             .withExtInfo(request.getExtInfo())
                             .withAssetInfo(request.getAssetInfo())
                             .build();

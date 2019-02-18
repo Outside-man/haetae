@@ -9,15 +9,20 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.asset.builder.AssetBackRecordBOBulider;
+import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
+import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
+import us.betahouse.util.enums.RestResultCode;
+import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
+import javax.swing.text.AbstractDocument;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +44,9 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Autowired
     private BizIdFactory assetBizFactory;
 
+    @Autowired
+    private AssetDORepo assetDORepo;
+
     /**
      * @param assetLoanRecordBO
      * @return
@@ -48,6 +56,24 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         if (StringUtils.isBlank(assetLoanRecordBO.getLoanRecordId())) {
             assetLoanRecordBO.setLoanRecordId(assetBizFactory.getAssetLoadId());
         }
+        AssetDO assetDO = assetDORepo.findByAssetId(assetLoanRecordBO.getAssetId());
+        int num = assetDO.getRemain() - assetLoanRecordBO.getAmount();
+        System.out.println(num);
+        if (num >= 0) {
+            assetDO.setRemain(num);
+            if (assetDO.getRemain() == 0) {
+                if (assetDO.getDestroy() == assetDO.getAmount()) {
+                    assetDO.setStatus("allDestroy");
+                } else {
+                    assetDO.setStatus("notLoan");
+                }
+            }
+            assetDORepo.save(assetDO);
+        } else {
+            assetDO = assetDORepo.findByAssetId("num");
+            AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用物资数量不能超过物资剩余数量");
+        }
+
         return convert(assetLoanDORepo.save(convert(assetLoanRecordBO)));
     }
 

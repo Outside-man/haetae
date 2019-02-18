@@ -20,6 +20,7 @@ import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         }
         System.out.println("成功查询到物资");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
+        AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
         switch (assetStatusEnum) {
             case ASSET_ALLLOAN:
                 AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");

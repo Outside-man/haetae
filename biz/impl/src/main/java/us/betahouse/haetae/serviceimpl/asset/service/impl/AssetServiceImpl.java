@@ -26,6 +26,7 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
+import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.text.MessageFormat;
@@ -83,10 +84,14 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public AssetBO update(AssetManagerRequest request, OperateContext context) {
-        AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
-        AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");
-        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
-        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在,{0}", request.getAssetOrganizationName()));
+        if (request.getAssetType() != null) {
+            AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
+            AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");
+        }
+        if (request.getAssetOrganizationName() != null) {
+            OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
+            AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在,{0}", request.getAssetOrganizationName()));
+        }
         AssetBO assetBO = assetManager.update(request);
         return assetBO;
     }
@@ -98,7 +103,9 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public AssetBO findAssetByAssetId(AssetManagerRequest request, OperateContext context) {
-        return assetManager.findAssetByAssetID(request.getAssetId());
+        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
+        return assetBO;
     }
 
     @Override
@@ -109,8 +116,8 @@ public class AssetServiceImpl implements AssetService {
         switch (assetStatusEnum) {
             //暂无物资 返回报损记录
             case ASSET_TEMPNOTLOAN: {
-                System.out.println("cp3" + request.getAssetId() + " " + AssetBackRecordTypeEnum.DISTORY.getCode());
-                List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findAllByAssetIdAndTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DISTORY.getCode());
+                System.out.println("cp3" + request.getAssetId() + " " + AssetBackRecordTypeEnum.DESTROY.getCode());
+                List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findAllByAssetIdAndTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DESTROY.getCode());
                 AssetBackRecordDO assetBackRecordDO = null;
                 System.out.println("cp2 size" + assetBackRecordDOS.size());
                 for (int i = 0; i < assetBackRecordDOS.size(); i++) {

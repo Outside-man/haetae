@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.model.asset.request;
 
+import us.betahouse.haetae.common.RestRequest;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +13,8 @@ import java.util.Map;
  * @author yiyuk.hxy
  * @version : AssetBackRecordRestRequest.java 2019/02/12 20:12 yiyuk.hxy
  */
-public class AssetBackRecordRestRequest {
-    private static final long serialVersionUID = 1910747655670036477L;
+public class AssetBackRecordRestRequest extends RestRequest {
+    private static final long serialVersionUID = 7597108455802717599L;
     /**
      * 物资归还记录ID
      */
@@ -28,7 +30,7 @@ public class AssetBackRecordRestRequest {
     /**
      * 物资借取记录ID
      */
-    private String loanRecoedId;
+    private String loanRecordId;
     /**
      * 借取人ID
      */
@@ -75,12 +77,12 @@ public class AssetBackRecordRestRequest {
         this.assetType = assetType;
     }
 
-    public String getLoanRecoedId() {
-        return loanRecoedId;
+    public String getLoanRecordId() {
+        return loanRecordId;
     }
 
-    public void setLoanRecoedId(String loanRecoedId) {
-        this.loanRecoedId = loanRecoedId;
+    public void setLoanRecordId(String loanRecordId) {
+        this.loanRecordId = loanRecordId;
     }
 
     public String getUserId() {

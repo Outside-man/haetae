@@ -74,11 +74,6 @@ public class AssetController {
             public Result<AssetBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                /**
-                 * 通过组织名字查找组织id
-                 */
-                OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
-                String organizationId = organizationBo.getOrganizationId();
                 AssetBO assetBo = null;
                 if (request.getAssetId() == null) {
                     AssertUtil.assertStringNotBlank(request.getAssetName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资名不能为空");
@@ -86,7 +81,14 @@ public class AssetController {
                     AssertUtil.assertStringNotBlank(request.getOrganizationName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不能为空");
                     AssertUtil.assertNotNull(request.getAssetAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能为空");
                     AssertUtil.assertStringNotBlank(Integer.valueOf(request.getAssetAmount()) > 0 ? "1" : "", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资数量不能小于0");
-
+                    /**
+                     * 通过组织名字查找组织id
+                     */
+                    OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
+                    String organizationId = organizationBo.getOrganizationId();
+                    if (organizationId == null) {
+                        organizationId = request.getOrganizationId();
+                    }
                     AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
                     AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                             .withAssetName(request.getAssetName())
@@ -124,7 +126,7 @@ public class AssetController {
                     AssetManagerRequest assetManagerRequest = assetManagerRequestBuilder
                             .withAssetName(request.getAssetName())
                             .withAssetId(request.getAssetId())
-                            .withOrginazationId(organizationId)
+                            .withOrginazationId(request.getOrganizationId())
                             .withType(request.getAssetType())
                             .withAssetOrganizationName(request.getOrganizationName())
                             .withExtInfo(request.getExtInfo())
@@ -243,7 +245,7 @@ public class AssetController {
                 AssetManagerRequest builder = AssetManagerRequestBuilder.getInstance()
                         .withAssetId(request.getAssetId())
                         .builder();
-                assetService.delete(builder,context);
+                assetService.delete(builder, context);
                 return RestResultUtil.buildSuccessResult("删除物资成功");
             }
         });

@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum AssetBackRecordTypeEnum {
     BACK("back", "归还"),
-    DISTORY("distory", "全部损坏或消耗");
+    DESTROY("destroy", "全部损坏或消耗");
 
     private String code;
     private String desc;

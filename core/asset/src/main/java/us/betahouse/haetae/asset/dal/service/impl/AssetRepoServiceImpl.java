@@ -82,6 +82,10 @@ public class AssetRepoServiceImpl implements AssetRepoService {
             assetDO.setOrginazationId(assetDO1.getOrginazationId());
         }
         if (assetDO1.getRemain() != null && assetDO1.getRemain() != -1) {
+            if(assetDO1.getRemain() > assetDO.getAmount()){
+                String a = null;
+                AssertUtil.assertNotNull(a, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资剩余数量不能大于物资数量");
+            }
             assetDO.setRemain(assetDO1.getRemain());
         }
         if (assetDO1.getStatus() != null) {
@@ -121,7 +125,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     @Override
     public String judgeStatusByAssetId(String assetId) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetId);
-        String assetStatusCode;
+        String assetStatusCode = null;
         //物资不存在
         if (assetDO == null) {
             assetStatusCode = AssetStatusEnum.ASSET_NOTEXISTENCE.getCode();

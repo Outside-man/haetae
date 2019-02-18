@@ -20,6 +20,7 @@ import us.betahouse.haetae.asset.request.AssetBackRecordRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
+        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还记录码无效");
         if (request.getAmount() > assetLoanRecordBO.getAmount() - assetLoanRecordBO.getRemain()) {
             AssertUtil.assertStringNotBlank("归还数量超出剩余未归还数量");
             return null;

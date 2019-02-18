@@ -87,7 +87,7 @@ public class AssetManagerImpl implements AssetManager {
     }
 
     /**
-     * @param organizationId
++     * @param organizationId
      * @return
      */
     @Override
