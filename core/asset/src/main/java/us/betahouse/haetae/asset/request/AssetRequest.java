@@ -5,7 +5,7 @@
 package us.betahouse.haetae.asset.request;
 
 /**
- * 物质请求管理
+ * 物资请求管理
  *
  * @author guofan.cp
  * @version : AssetRequest.java 2019/01/20 23:21 guofan.cp

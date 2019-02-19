@@ -20,9 +20,11 @@ import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
+import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
@@ -40,7 +42,7 @@ import java.util.List;
  * @version : AssetServiceImpl.java 2019/01/20 23:58 guofan.cp
  */
 @Service
-public class AssetServiceImpl implements AssetService {
+public class AssetServiceImpl implements AssetService  {
     /**
      * 系统结束标志
      */
@@ -68,7 +70,8 @@ public class AssetServiceImpl implements AssetService {
     private AssetLoanDORepo assetLoanDORepo;
 
     @Override
-    @Transactional
+    @VerifyPerm(permType = AssetPermType.ASSET_CREATE)
+    @Transactional(rollbackFor = Exception.class)
     public AssetBO create(AssetManagerRequest request, OperateContext context) {
         AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
         AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
+import us.betahouse.haetae.serviceimpl.asset.enums.AssetPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
@@ -37,12 +39,19 @@ public class InitService {
 
     private final static List<String> activityManagerPerm = new ArrayList<>();
 
+    private final static List<String> assetManagerPerm = new ArrayList<>();
+
     static {
+        //活动
         activityManagerPerm.add(ActivityPermType.ACTIVITY_CREATE);
         activityManagerPerm.add(ActivityPermType.ACTIVITY_PUBLISH);
         activityManagerPerm.add(ActivityPermType.ACTIVITY_FINISH);
         activityManagerPerm.add(ActivityPermType.ACTIVITY_RESTART);
         activityManagerPerm.add(ActivityPermType.STAMPER_MANAGE);
+        //物资
+        assetManagerPerm.add(AssetPermType.ASSET_CREATE);
+        assetManagerPerm.add(AssetPermType.ASSET_UPDATE);
+        assetManagerPerm.add(AssetPermType.ASSET_DELETE);
     }
 
 
@@ -58,7 +67,13 @@ public class InitService {
                 initPermMap.put(permType.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
             }
         }
-
+        for(PermType permType : AssetPermTypeEnum.values()){
+            if(permType.isInit()){
+                permBuilder.withPermType(permType.getCode())
+                        .withPermName(permType.getDesc());
+                initPermMap.put(permType.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
+            }
+        }
         // 初始化角色
         Map<String, String> initRoleMap = new HashMap<>();
         RoleBOBuilder roleBOBuilder = RoleBOBuilder.getInstance();
@@ -82,5 +97,13 @@ public class InitService {
             permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
         }
 
+        //初始化 物资管理员权限
+        if(StringUtils.equals(role.getRoleCode(), UserRoleCode.ASSET_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            assetManagerPerm.forEach(assetPermType -> {
+                permIds.add(initPermMap.get(assetPermType));
+            });
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
     }
 }
