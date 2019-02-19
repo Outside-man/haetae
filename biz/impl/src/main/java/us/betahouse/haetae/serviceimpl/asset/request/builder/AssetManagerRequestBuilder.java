@@ -60,6 +60,8 @@ public class AssetManagerRequestBuilder {
      */
     private String assetStatusCode;
 
+    private String userId;
+
     public AssetManagerRequestBuilder() {
     }
 
@@ -117,6 +119,11 @@ public class AssetManagerRequestBuilder {
         return this;
     }
 
+    public AssetManagerRequestBuilder withUserId(String userId){
+        this.userId=userId;
+        return this;
+    }
+
     public AssetManagerRequestBuilder withAssetStatusCode(String assetStatusCode){
         this.assetStatusCode=assetStatusCode;
         return this;
@@ -135,6 +142,7 @@ public class AssetManagerRequestBuilder {
         assetManagerRequest.setAssetOrganizationName(assetOrganizationName);
         assetManagerRequest.setAssetStatusCode(assetStatusCode);
         assetManagerRequest.setAssetDestroy(assetDestroy);
+        assetManagerRequest.setUserId(userId);
         return assetManagerRequest;
     }
 }

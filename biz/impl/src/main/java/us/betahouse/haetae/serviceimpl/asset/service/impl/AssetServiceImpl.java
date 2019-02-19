@@ -20,11 +20,9 @@ import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
-import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
@@ -70,7 +68,7 @@ public class AssetServiceImpl implements AssetService  {
     private AssetLoanDORepo assetLoanDORepo;
 
     @Override
-    @VerifyPerm(permType = AssetPermType.ASSET_CREATE)
+//    @VerifyPerm(permType = AssetPermType.ASSET_CREATE)
     @Transactional(rollbackFor = Exception.class)
     public AssetBO create(AssetManagerRequest request, OperateContext context) {
         AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
@@ -119,10 +117,8 @@ public class AssetServiceImpl implements AssetService  {
         switch (assetStatusEnum) {
             //暂无物资 返回报损记录
             case ASSET_TEMPNOTLOAN: {
-                System.out.println("cp3" + request.getAssetId() + " " + AssetBackRecordTypeEnum.DESTROY.getCode());
                 List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findAllByAssetIdAndTypeOrderByIdDesc(request.getAssetId(), AssetBackRecordTypeEnum.DESTROY.getCode());
                 AssetBackRecordDO assetBackRecordDO = null;
-                System.out.println("cp2 size" + assetBackRecordDOS.size());
                 for (int i = 0; i < assetBackRecordDOS.size(); i++) {
                     assetBackRecordDO = assetBackRecordDOS.get(i);
                     AssetRecordBOBuilder assetRecordBOBuilder = AssetRecordBOBuilder.getInstance()

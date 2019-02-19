@@ -180,7 +180,6 @@ public class UserBasicServiceImpl implements UserBasicService {
     @Override
     public boolean verifyPermissionByPermType(String userId, List<String> permTypes) {
 
-
         // 判断用户上是否存在权限
         if (permRepoService.verifyUserPermRelationByPermType(userId, permTypes)) {
             return true;

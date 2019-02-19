@@ -63,7 +63,7 @@ public class AssetController {
     @CheckLogin
     @PostMapping(value = "asset")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AssetBO> asset(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+    public Result<AssetBO> addAsset(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "新增物资", request, new RestOperateCallBack<AssetBO>() {
             @Override
             public void before() {
@@ -95,6 +95,8 @@ public class AssetController {
                             .withAmount(Integer.valueOf(request.getAssetAmount()))
                             //组织id在上面获得
                             .withOrginazationId(organizationId)
+                            //鉴权的时候要用
+                            .withUserId(request.getUserId())
                             .withType(request.getAssetType())
                             .withAssetOrganizationName(request.getOrganizationName())
                             .withReamain(Integer.valueOf(request.getAssetAmount()))
@@ -154,8 +156,7 @@ public class AssetController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertNotNull(restRequest.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不能为空");
-                AssertUtil.assertStringNotBlank(restRequest.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
+                AssertUtil.assertStringNotBlank(restRequest.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不能为空");
             }
 
             @Override
@@ -175,20 +176,22 @@ public class AssetController {
     }
 
     /**
+     * 获取物资信息
+     *
      * @param request
      * @param httpServletRequest
      * @return
      */
     @CheckLogin
-    @GetMapping(value = "/getByAssetId")
+    @GetMapping(value = "/byAssetId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AssetBO> getAssetListByUserId(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+    public Result<AssetBO> byAssetId(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取物资信息", request, new RestOperateCallBack<AssetBO>() {
 
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资Id不能为空");
             }
 
             @Override
@@ -203,8 +206,15 @@ public class AssetController {
         });
     }
 
+    /**
+     * 获取物资信息
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
     @CheckLogin
-    @GetMapping(value = "/getByOrganizationId")
+    @GetMapping(value = "/byOrganizationId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetBO>> getAssetListByOrganizationId(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取物资信息", request, new RestOperateCallBack<List<AssetBO>>() {
@@ -212,7 +222,8 @@ public class AssetController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
+                AssertUtil.assertNotNull(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
+                AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空字符串");
             }
 
             @Override
@@ -227,10 +238,17 @@ public class AssetController {
         });
     }
 
-    @DeleteMapping(value = "/delete")
+    /**
+     * 删除物资
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @DeleteMapping(value = "/asset")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AssetBO> delete(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+    public Result<AssetBO> deleteAsset(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "删除物资", request, new RestOperateCallBack<AssetBO>() {
             @Override
             public void before() {
