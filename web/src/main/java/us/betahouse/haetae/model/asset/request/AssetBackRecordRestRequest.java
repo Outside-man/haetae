@@ -85,10 +85,12 @@ public class AssetBackRecordRestRequest extends RestRequest {
         this.loanRecordId = loanRecordId;
     }
 
+    @Override
     public String getUserId() {
         return userId;
     }
 
+    @Override
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -117,6 +119,7 @@ public class AssetBackRecordRestRequest extends RestRequest {
         this.remark = remark;
     }
 
+    @Override
     public Map<String, String> getExtInfo() {
         return extInfo;
     }

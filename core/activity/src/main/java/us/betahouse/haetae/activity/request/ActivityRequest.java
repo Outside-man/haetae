@@ -97,6 +97,9 @@ public class ActivityRequest extends BaseRequest {
      */
     private Integer page;
 
+    /**
+     * 排序方式
+     */
     private String orderRule;
 
     public String getOrderRule() {

@@ -77,7 +77,7 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
      * @param financeMessageBO
      * @return
      */
-    public FinanceMessageDO convert(FinanceMessageBO financeMessageBO){
+    private FinanceMessageDO convert(FinanceMessageBO financeMessageBO){
         if(financeMessageBO==null){
             return null;
         }
@@ -112,7 +112,7 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
      * @return
      */
     @SuppressWarnings("unchecked")
-    public FinanceMessageBO convert(FinanceMessageDO financeMessageDO){
+    private FinanceMessageBO convert(FinanceMessageDO financeMessageDO){
         if(financeMessageDO==null){
             return null;
         }

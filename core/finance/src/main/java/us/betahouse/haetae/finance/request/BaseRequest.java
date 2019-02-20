@@ -1,8 +1,8 @@
 /*
   betahouse.us
-  CopyRight (c) 2012 - 2018
+  CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.activity.request;
+package us.betahouse.haetae.finance.request;
 
 import org.hibernate.validator.constraints.NotBlank;
 import us.betahouse.util.common.ToString;
@@ -11,15 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 用户请求
- *
  * @author MessiahJK
- * @version : BaseRequest.java 2018/11/22 15:55 MessiahJK
+ * @version : BaseRequest.java 2019/02/21 0:45 MessiahJK
  */
 public abstract class BaseRequest extends ToString {
 
-    private static final long serialVersionUID = -7591804651945805773L;
 
+    private static final long serialVersionUID = 2183847441407042227L;
     /**
      * 请求id
      */

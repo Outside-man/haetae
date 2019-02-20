@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.finance.dal.service;
 
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.common.PageList;
 
@@ -11,6 +12,7 @@ import us.betahouse.haetae.finance.model.common.PageList;
  * @author MessiahJK
  * @version : FinanceMessageDORepoService.java 2019/01/31 2:51 MessiahJK
  */
+@Service
 public interface FinanceMessageDORepoService {
 
     /**

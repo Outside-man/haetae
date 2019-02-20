@@ -60,7 +60,6 @@ public class ActivityController {
      * @param httpServletRequest
      * @return
      */
-
     @CheckLogin
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
