@@ -33,4 +33,12 @@ public interface FinanceManager {
      * @return
      */
     FinanceTotalBO getTotalMoney(FinanceRequest request);
+
+    /**
+     * 初始化财务统计
+     *
+     * @param financeTotalBO
+     * @return
+     */
+    void initTotalMoney(FinanceTotalBO financeTotalBO);
 }

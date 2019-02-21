@@ -86,4 +86,9 @@ public class FinanceServiceImpl implements FinanceService {
                         .withOrganizationId(request.getOrganizationId())
                         .build());
     }
+
+    @Override
+    public void initFinanceMessageTotal(FinanceTotalBO financeTotalBO) {
+        financeManager.initTotalMoney(financeTotalBO);
+    }
 }

@@ -71,4 +71,11 @@ public interface FinanceService {
      * @return
      */
     FinanceTotalBO total(FinanceManagerRequest request,OperateContext context);
+
+    /**
+     * 初始化财务统计
+     *
+     * @param financeTotalBO
+     */
+    void initFinanceMessageTotal(FinanceTotalBO financeTotalBO);
 }

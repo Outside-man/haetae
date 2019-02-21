@@ -35,5 +35,13 @@ public class FinanceManagerImpl implements FinanceManager {
         return financeTotalDORepoService.findByOrganizationId(request.getOrganizationId());
     }
 
+    @Override
+    public void initTotalMoney(FinanceTotalBO financeTotalBO) {
+        FinanceTotalBO totalBO=financeTotalDORepoService.findByOrganizationId(financeTotalBO.getOrganizationId());
+        if(totalBO==null){
+            financeTotalDORepoService.createFinanceTotal(financeTotalBO);
+        }
+    }
+
 
 }
