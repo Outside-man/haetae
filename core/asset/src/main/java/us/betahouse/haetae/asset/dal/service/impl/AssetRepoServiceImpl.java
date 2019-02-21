@@ -231,4 +231,5 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         assetDO.setExtInfo(JSON.toJSONString(assetBO.getExtInfo()));
         return assetDO;
     }
+
 }

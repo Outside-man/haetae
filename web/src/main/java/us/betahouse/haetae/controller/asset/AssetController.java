@@ -175,7 +175,7 @@ public class AssetController {
         });
     }
     /**
-     * 获取物资信息
+     * 获取全部物资信息
      *
      * @param request
      * @param httpServletRequest
@@ -199,11 +199,6 @@ public class AssetController {
                 AssetManagerRequest builder = AssetManagerRequestBuilder.getInstance()
                         .builder();
                 List<AssetBO> assetBOS = assetService.findAllAsset(builder, context);
-                int num = assetBOS.size();
-                for (int i = 0; i < num; ++i){
-                    OrganizationBO organizationBO = organizationRepoService.queryOrganizationByOrganizationId(assetBOS.get(i).getAssetOrganizationId());
-                    assetBOS.get(i).setAssetOrganizationName(organizationBO.getOrganizationName());
-                }
                 return RestResultUtil.buildSuccessResult(assetBOS, "获取成功");
             }
         });

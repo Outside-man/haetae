@@ -8,13 +8,12 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.asset.builder.AssetBackRecordBOBulider;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
-import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
+import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
@@ -22,7 +21,6 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
-import javax.swing.text.AbstractDocument;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -47,6 +45,9 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Autowired
     private AssetDORepo assetDORepo;
 
+    @Autowired
+    private AssetRepoService assetRepoService;
+
     /**
      * @param assetLoanRecordBO
      * @return
@@ -58,7 +59,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         }
         AssetDO assetDO = assetDORepo.findByAssetId(assetLoanRecordBO.getAssetId());
         int num = assetDO.getRemain() - assetLoanRecordBO.getAmount();
-        System.out.println(num);
         if (num >= 0) {
             assetDO.setRemain(num);
             if (assetDO.getRemain() == 0) {
@@ -70,8 +70,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             }
             assetDORepo.save(assetDO);
         } else {
-            assetDO = assetDORepo.findByAssetId("num");
-            AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用物资数量不能超过物资剩余数量");
+            AssertUtil.assertNotNull(null, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用物资数量不能超过物资剩余数量");
         }
 
         return convert(assetLoanDORepo.save(convert(assetLoanRecordBO)));
@@ -220,6 +219,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = new AssetLoanRecordBO();
+        String assetName=assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
         assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecordId());
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
@@ -229,6 +229,8 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setUserId(assetLoanRecordDO.getUserId());
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
         assetLoanRecordBO.setRemark(assetLoanRecordDO.getRemark());
+        assetLoanRecordBO.setAssetName(assetName);
+        assetLoanRecordBO.setCreateTime(assetLoanRecordDO.getGmtCreate());
         assetLoanRecordBO.setExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class));
         assetLoanRecordBO.setAssetInfo(assetLoanRecordDO.getAssetInfo());
 
@@ -258,4 +260,5 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
 
         return assetLoanRecordDO;
     }
+
 }
