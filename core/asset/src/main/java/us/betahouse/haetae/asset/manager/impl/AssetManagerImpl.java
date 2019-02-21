@@ -75,6 +75,10 @@ public class AssetManagerImpl implements AssetManager {
         assetRepoService.deleteAsset(assetId);
     }
 
+    @Override
+    public List<AssetBO> findAll(){
+        return assetRepoService.findAll();
+    }
     /**
      * 查找物资
      *

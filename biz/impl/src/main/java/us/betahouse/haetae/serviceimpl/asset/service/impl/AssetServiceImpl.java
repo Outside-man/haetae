@@ -103,6 +103,11 @@ public class AssetServiceImpl implements AssetService  {
     }
 
     @Override
+    public List<AssetBO> findAllAsset(AssetManagerRequest request, OperateContext context) {
+        return assetManager.findAll();
+    }
+
+    @Override
     public AssetBO findAssetByAssetId(AssetManagerRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");

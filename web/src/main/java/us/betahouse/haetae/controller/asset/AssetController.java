@@ -174,7 +174,41 @@ public class AssetController {
             }
         });
     }
+    /**
+     * 获取物资信息
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping(value = "/getAllAsset")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<AssetBO>> getAll(AssetRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取物资信息", request, new RestOperateCallBack<List<AssetBO>>() {
 
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+            }
+
+            @Override
+            public Result<List<AssetBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetManagerRequest builder = AssetManagerRequestBuilder.getInstance()
+                        .builder();
+                List<AssetBO> assetBOS = assetService.findAllAsset(builder, context);
+                int num = assetBOS.size();
+                for (int i = 0; i < num; ++i){
+                    assetBOS.get(i);
+                    OrganizationBO organizationBO = organizationRepoService.queryOrganizationByOrganizationId(assetBOS.get(i).getAssetOrganizationId());
+                    assetBOS.get(i).setAssetOrganizationName(organizationBO.getOrganizationName());
+                }
+                return RestResultUtil.buildSuccessResult(assetBOS, "获取成功");
+            }
+        });
+    }
     /**
      * 获取物资信息
      *

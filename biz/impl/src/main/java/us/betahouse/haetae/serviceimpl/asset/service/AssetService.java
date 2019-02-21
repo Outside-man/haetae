@@ -43,6 +43,14 @@ public interface AssetService {
     void delete(AssetManagerRequest request, OperateContext context);
 
     /**
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<AssetBO> findAllAsset(AssetManagerRequest request, OperateContext context);
+
+    /**
      * 通过物资Id返回AssetBo
      *
      * @param request

@@ -82,7 +82,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
             assetDO.setOrginazationId(assetDO1.getOrginazationId());
         }
         if (assetDO1.getRemain() != null && assetDO1.getRemain() != -1) {
-            if(assetDO1.getRemain() > assetDO.getAmount()){
+            if (assetDO1.getRemain() > assetDO.getAmount()) {
                 String a = null;
                 AssertUtil.assertNotNull(a, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资剩余数量不能大于物资数量");
             }
@@ -103,6 +103,18 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         }
 
         return convert(assetDORepo.save(assetDO));
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<AssetBO> findAll() {
+        List<AssetDO> assetDOList = assetDORepo.findAll();
+        return CollectionUtils.toStream(assetDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
     /**

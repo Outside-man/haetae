@@ -39,6 +39,11 @@ public interface AssetManager {
     void delete(String assetId);
 
     /**
+     * @return
+     */
+    List<AssetBO> findAll();
+
+    /**
      * 通过Id获取物资
      *
      * @param assetId

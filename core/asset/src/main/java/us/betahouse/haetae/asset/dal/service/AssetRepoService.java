@@ -29,8 +29,9 @@ public interface AssetRepoService {
      */
     AssetBO updateAsset(AssetBO assetBO);
 
+    List<AssetBO> findAll();
+
     /**
-     *
      * @param assetId
      */
     void deleteAsset(String assetId);

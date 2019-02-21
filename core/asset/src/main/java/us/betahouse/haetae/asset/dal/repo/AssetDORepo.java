@@ -17,6 +17,11 @@ import java.util.List;
 @Repository
 public interface AssetDORepo extends JpaRepository<AssetDO, Long> {
     /**
+     * @return
+     */
+    List<AssetDO> findAll();
+
+    /**
      * 通过名称查找物资
      *
      * @param assetName
