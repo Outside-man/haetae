@@ -42,6 +42,15 @@ public interface FinanceManager {
      * @return
      */
     FinanceMessageBO createFinanceMessageByBudget(FinanceMessageBO financeMessageBO);
+
+    /**
+     * 创建财务信息 记账
+     *
+     * @param financeMessageBO
+     * @return
+     */
+    FinanceMessageBO createFinanceMessageByTally(FinanceMessageBO financeMessageBO);
+
     /**
      * 初始化财务统计
      *

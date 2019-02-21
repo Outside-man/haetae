@@ -48,6 +48,22 @@ public class FinanceManagerImpl implements FinanceManager {
     }
 
     @Override
+    public FinanceMessageBO createFinanceMessageByTally(FinanceMessageBO financeMessageBO) {
+        financeMessageBO.setStatus(FinanceMessageTypeEnum.CHECKED.getCode());
+        financeMessageBO.setFinishTime(new Date());
+        FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
+        if(financeMessageBO.getType().equals(MoneyRecordTypeEnum.negative.getCode())){
+            financeTotalBO.setTotalMoney(financeTotalBO.getTotalMoney().subtract(financeMessageBO.getTrueMoney()));
+            financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoney().subtract(financeMessageBO.getTrueMoney()));
+        }else if(financeMessageBO.getType().equals(MoneyRecordTypeEnum.positive.getCode())){
+            financeTotalBO.setTotalMoney(financeTotalBO.getTotalMoney().add(financeMessageBO.getTrueMoney()));
+            financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoney().add(financeMessageBO.getTrueMoney()));
+        }
+        financeTotalDORepoService.update(financeTotalBO);
+        return financeMessageDORepoService.createFinanceMessage(financeMessageBO);
+    }
+
+    @Override
     public void initTotalMoney(FinanceTotalBO financeTotalBO) {
         FinanceTotalBO totalBO=financeTotalDORepoService.findByOrganizationId(financeTotalBO.getOrganizationId());
         if(totalBO==null){

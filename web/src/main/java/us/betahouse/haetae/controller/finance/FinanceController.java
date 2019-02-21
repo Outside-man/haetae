@@ -12,10 +12,14 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.finance.enums.MoneyRecordTypeEnum;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
+import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.model.finance.request.FinanceRestRequest;
+import us.betahouse.haetae.model.finance.vo.FinanceTotalVO;
 import us.betahouse.haetae.model.finance.vo.FinanceVO;
+import us.betahouse.haetae.model.finance.vo.builder.FinanceTotalVOBuilder;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.finance.request.FinanceManagerRequest;
 import us.betahouse.haetae.serviceimpl.finance.request.builder.FinanceManagerRequestBuilder;
@@ -28,7 +32,6 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 财务接口
@@ -97,8 +100,8 @@ public class FinanceController {
     @CheckLogin
     @PostMapping("/budget")
     @Log(loggerName =LoggerName.FINANCE_DIGEST)
-    public Result<FinanceVO> submitBudget(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "提交预算", request, new RestOperateCallBack<FinanceVO>(){
+    public Result<FinanceMessageBO> submitBudget(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "提交预算", request, new RestOperateCallBack<FinanceMessageBO>(){
 
             @Override
             public void before() {
@@ -111,7 +114,7 @@ public class FinanceController {
             }
 
             @Override
-            public Result<FinanceVO> execute() {
+            public Result<FinanceMessageBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
@@ -123,7 +126,7 @@ public class FinanceController {
                         .withBudget(request.getBudget())
                         .withUserId(request.getUserId())
                         .build();
-                return null;
+                return RestResultUtil.buildSuccessResult(financeService.submitBudget(financeManagerRequest, context),"预算提交成功");
             }
         });
     }
@@ -201,8 +204,8 @@ public class FinanceController {
     @CheckLogin
     @PutMapping("/tally")
     @Log(loggerName =LoggerName.FINANCE_DIGEST)
-    public Result<FinanceVO> tally(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "记账", request, new RestOperateCallBack<FinanceVO>(){
+    public Result<FinanceMessageBO> tally(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "记账", request, new RestOperateCallBack<FinanceMessageBO>(){
 
             @Override
             public void before() {
@@ -215,10 +218,20 @@ public class FinanceController {
             }
 
             @Override
-            public Result<FinanceVO> execute() {
+            public Result<FinanceMessageBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withOrganizationId(request.getOrganizationId())
+                        .withFinanceName(request.getFinanceName())
+                        .withFinanceInfo(request.getFinanceInfo())
+                        .withRemark(request.getRemark())
+                        .withTrueMoney(request.getTrueMoney())
+                        .withType(request.getType())
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.tally(financeManagerRequest, context),"记账成功");
             }
         });
     }
@@ -233,8 +246,8 @@ public class FinanceController {
     @CheckLogin
     @GetMapping("/total")
     @Log(loggerName =LoggerName.FINANCE_DIGEST)
-    public Result<FinanceVO> total(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取总金额", request, new RestOperateCallBack<FinanceVO>(){
+    public Result<FinanceTotalVO> total(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取总金额", request, new RestOperateCallBack<FinanceTotalVO>(){
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -243,10 +256,20 @@ public class FinanceController {
             }
 
             @Override
-            public Result<FinanceVO> execute() {
+            public Result<FinanceTotalVO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withOrganizationId(request.getOrganizationId())
+                        .withUserId(request.getUserId())
+                        .build();
+                FinanceTotalBO financeTotalBO=financeService.total(financeManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(FinanceTotalVOBuilder
+                        .aFinanceTotalVO()
+                        .withTotalMoney(financeTotalBO.getTotalMoney())
+                        .withTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget())
+                        .build(),"获取总金额成功");
             }
         });
     }

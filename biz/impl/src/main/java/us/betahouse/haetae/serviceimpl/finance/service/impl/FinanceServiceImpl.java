@@ -17,6 +17,7 @@ import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.finance.request.FinanceRequest;
 import us.betahouse.haetae.finance.request.builder.FinanceRequestBuilder;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.finance.request.FinanceManagerRequest;
 import us.betahouse.haetae.serviceimpl.finance.service.FinanceService;
 import us.betahouse.haetae.user.manager.UserManager;
@@ -79,8 +80,9 @@ public class FinanceServiceImpl implements FinanceService {
                 .withFinanceName(request.getFinanceName())
                 .withFinanceInfo(request.getFinanceInfo())
                 .withBudget(request.getBudget())
+                .withTerm(TermUtil.getNowTerm())
                 .build();
-        return null;
+        return financeManager.createFinanceMessageByBudget(financeMessageBO);
     }
 
     @Override
@@ -95,7 +97,18 @@ public class FinanceServiceImpl implements FinanceService {
 
     @Override
     public FinanceMessageBO tally(FinanceManagerRequest request, OperateContext context) {
-        return null;
+        FinanceMessageBO financeMessageBO=FinanceMessageBOBuilder
+                .aFinanceMessageBO()
+                .withAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
+                .withAuditorUserId(request.getUserId())
+                .withOrganizationId(request.getOrganizationId())
+                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())
+                .withFinanceName(request.getFinanceName())
+                .withFinanceInfo(request.getFinanceInfo())
+                .withTrueMoney(request.getTrueMoney())
+                .withTerm(TermUtil.getNowTerm())
+                .build();
+        return financeManager.createFinanceMessageByTally(financeMessageBO);
     }
 
     @Override
