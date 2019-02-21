@@ -87,4 +87,9 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByUserId(AssetLoanRecordRequest request, OperateContext context) {
         return assetLoanRecordManager.findAssetLoanRecordByUserId(request.getUserId());
     }
+
+    @Override
+    public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
+        return assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
+    }
 }

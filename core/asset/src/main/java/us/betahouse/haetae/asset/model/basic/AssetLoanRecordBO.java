@@ -26,6 +26,7 @@ public class AssetLoanRecordBO extends ToString {
      * 物资ID
      */
     private String assetId;
+    private String assetName;
     /**
      * 物资类型
      */
@@ -118,6 +119,14 @@ public class AssetLoanRecordBO extends ToString {
 
     public void setAssetType(String assetType) {
         this.assetType = assetType;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
     }
 
     public String getUserId() {

@@ -49,4 +49,12 @@ public interface AssetLoanRecordService {
      * @return
      */
     List<AssetLoanRecordBO> findAllAssetLoanRecordByUserId(AssetLoanRecordRequest request, OperateContext context);
+
+    /**
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context);
 }

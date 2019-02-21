@@ -16,6 +16,7 @@ public class AssetLoanRecordRestRequest extends RestRequest {
     private static final long serialVersionUID = 7597108455802717599L;
     private String loanRecordId;
     private String assetId;
+    private String assetName;
     private String userId;
     private String assetType;
     private Date loanTime;
@@ -49,6 +50,14 @@ public class AssetLoanRecordRestRequest extends RestRequest {
 
     public void setAssetId(String assetId) {
         this.assetId = assetId;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
     }
 
     @Override

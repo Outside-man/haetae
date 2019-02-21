@@ -18,9 +18,12 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.asset.request.AssetLoanRecordRestRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
+import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
+import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
+import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -46,6 +49,9 @@ public class AssetLoanRecordController {
      * 日志实体
      */
     private final Logger LOGGER = LoggerFactory.getLogger(AssetLoanRecordController.class);
+
+    @Autowired
+    private AssetService assetService;
 
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
@@ -106,6 +112,13 @@ public class AssetLoanRecordController {
                     assetLoanRecordBOS.add(assetLoanRecordBO);
                 }
                 if (assetLoanRecordBOS != null && assetLoanRecordBOS.size() == 1) {
+                    AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordBOS.get(0);
+                    AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
+                            .withAssetId(request.getAssetId())
+                            .builder();
+                    assetLoanRecordBO.setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
+                    assetLoanRecordBOS.remove(0);
+                    assetLoanRecordBOS.add(assetLoanRecordBO);
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用/更新物资成功");
                 } else {
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资失败");
@@ -172,6 +185,40 @@ public class AssetLoanRecordController {
                         .build();
                 return RestResultUtil.buildSuccessResult(assetLoanRecordService
                         .findAllAssetLoanRecordByUserId(builder, context), "获取借用列表成功");
+            }
+        });
+    }
+
+    /**
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping(value = "/getByLoanRecordId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<AssetLoanRecordBO> getAssetLoanRecordListByLoanRecordId(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取借用记录", request, new RestOperateCallBack<AssetLoanRecordBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "id不能为空");
+            }
+
+            @Override
+            public Result<AssetLoanRecordBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
+                        .withLoanRecordId(request.getLoanRecordId())
+                        .build();
+                AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.findAssetLoanRecordByLoanRecordId(builder, context);
+                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
+                        .withAssetId(assetLoanRecordBO.getAssetId())
+                        .builder();
+                assetLoanRecordBO.setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
+                return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "获取借用记录成功");
             }
         });
     }
