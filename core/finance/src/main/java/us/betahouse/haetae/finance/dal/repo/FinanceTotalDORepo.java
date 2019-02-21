@@ -20,4 +20,12 @@ public interface FinanceTotalDORepo  extends JpaRepository<FinanceTotalDO,Long> 
      * @return
      */
     FinanceTotalDO findByFinanceTotalId(String financeTotalId);
+
+    /**
+     * 通过组织id查找财务统计实体
+     *
+     * @param organizationId
+     * @return
+     */
+    FinanceTotalDO findByOrganizationId(String organizationId);
 }

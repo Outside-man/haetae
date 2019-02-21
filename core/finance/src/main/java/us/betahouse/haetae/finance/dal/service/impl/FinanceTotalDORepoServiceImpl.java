@@ -38,6 +38,11 @@ public class FinanceTotalDORepoServiceImpl implements FinanceTotalDORepoService 
     }
 
     @Override
+    public FinanceTotalBO findByOrganizationId(String organizationId) {
+        return convert(financeTotalDORepo.findByOrganizationId(organizationId));
+    }
+
+    @Override
     public FinanceTotalBO update(FinanceTotalBO financeTotalBO) {
         if(financeTotalBO==null){
             return null;

@@ -33,6 +33,14 @@ public interface FinanceTotalDORepoService {
     FinanceTotalBO findByFinanceTotalId(String financeTotalId);
 
     /**
+     * 通过组织id获取财务统计实体
+     *
+     * @param organizationId
+     * @return
+     */
+    FinanceTotalBO findByOrganizationId(String organizationId);
+
+    /**
      * 更新财务统计实体
      *
      * @param financeTotalBO

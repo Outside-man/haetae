@@ -9,6 +9,8 @@ import us.betahouse.util.common.ResultCode;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 
+import java.math.BigDecimal;
+
 /**
  * 断言工具
  *
@@ -150,6 +152,20 @@ public class AssertUtil {
     public static void assertStringBlank(String str, String errorMsg) {
         if (StringUtils.isNotBlank(str)) {
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), errorMsg);
+        }
+    }
+
+    public static void assertBigDecimalNotPositive(BigDecimal bigDecimal, String errorCode, String errorMsg){
+        assertNotNull(bigDecimal, errorCode, errorMsg);
+        if(bigDecimal.compareTo(BigDecimal.ZERO)>0){
+            throw new BetahouseException(errorCode, errorMsg);
+        }
+    }
+
+    public static void assertBigDecimalPositive(BigDecimal bigDecimal, String errorCode, String errorMsg){
+        assertNotNull(bigDecimal, errorCode, errorMsg);
+        if(bigDecimal.compareTo(BigDecimal.ZERO)<=0){
+            throw new BetahouseException(errorCode, errorMsg);
         }
     }
 
