@@ -23,9 +23,6 @@ import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.haetae.user.dal.service.RoleRepoService;
-import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
@@ -41,22 +38,9 @@ import java.util.List;
  */
 @Service
 public class AssetServiceImpl implements AssetService  {
-    /**
-     * 系统结束标志
-     */
-    private final static String SYSTEM_FINISH_SIGN = "systemFinish";
-
-    @Autowired
-    private PermManager permManager;
 
     @Autowired
     private AssetManager assetManager;
-
-    @Autowired
-    private UserInfoRepoService userInfoRepoService;
-
-    @Autowired
-    private RoleRepoService roleRepoService;
 
     @Autowired
     private OrganizationRepoService organizationRepoService;
@@ -68,7 +52,7 @@ public class AssetServiceImpl implements AssetService  {
     private AssetLoanDORepo assetLoanDORepo;
 
     @Override
-//    @VerifyPerm(permType = AssetPermType.ASSET_CREATE)
+    //@VerifyPerm(permType = AssetPermType.ASSET_CREATE) 方便测试
     @Transactional(rollbackFor = Exception.class)
     public AssetBO create(AssetManagerRequest request, OperateContext context) {
         AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
@@ -84,6 +68,8 @@ public class AssetServiceImpl implements AssetService  {
     }
 
     @Override
+    //@VerifyPerm(permType = AssetPermType.ASSET_UPDATE) 方便测试
+    @Transactional(rollbackFor = Exception.class)
     public AssetBO update(AssetManagerRequest request, OperateContext context) {
         if (request.getAssetType() != null) {
             AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
@@ -98,6 +84,8 @@ public class AssetServiceImpl implements AssetService  {
     }
 
     @Override
+    //@VerifyPerm(permType = AssetPermType.ASSET_DELETE) 方便测试
+    @Transactional(rollbackFor = Exception.class)
     public void delete(AssetManagerRequest request, OperateContext context) {
         assetManager.delete(request.getAssetId());
     }

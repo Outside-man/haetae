@@ -10,10 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.asset.dal.convert.EntityConverter;
+import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
-import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
-import us.betahouse.haetae.asset.dal.repo.AssetBackDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetStatusEnum;
@@ -23,12 +22,9 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static us.betahouse.haetae.asset.dal.convert.EntityConverter.convert;
 
 
 /**
@@ -44,6 +40,8 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
+    @Autowired
+    private OrganizationRepoService organizationRepoService;
 
     /**
      * 创建物资
@@ -144,7 +142,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
             return assetStatusCode;
         }
         //物资不可借用状态分情况
-        if (assetDO.getStatus().equals("不可借")) {
+        if (assetDO.getStatus().equals("notLoan")) {
             //暂无物资
             if (assetDO.getAmount() - assetDO.getDestroy() == 0) {
                 assetStatusCode = AssetStatusEnum.ASSET_TEMPNOTLOAN.getCode();
@@ -188,9 +186,12 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     }
 
     public AssetBO convert(AssetDO assetDO) {
+        //封装的转换器无法实现do2bo spring静态注入问题
         if (assetDO == null) {
             return null;
         }
+        OrganizationBO organizationBo = organizationRepoService.queryOrganizationByOrganizationId(assetDO.getOrginazationId());
+        String organizationName = organizationBo.getOrganizationName();
         AssetBO assetBO = new AssetBO();
         assetBO.setAssetId(assetDO.getAssetId());
         assetBO.setAssetAmount(assetDO.getAmount());
@@ -202,6 +203,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         assetBO.setAssetType(assetDO.getType());
         assetBO.setCreate(assetDO.getGmtCreate());
         assetBO.setModified(assetDO.getGmtModified());
+        assetBO.setAssetOrganizationName(organizationName);
         //assetBO.setExtInfo(JSON.parseObject(assetDO.getExtInfo(), Map.class));
         return assetBO;
     }
