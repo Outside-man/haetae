@@ -201,7 +201,6 @@ public class AssetController {
                 List<AssetBO> assetBOS = assetService.findAllAsset(builder, context);
                 int num = assetBOS.size();
                 for (int i = 0; i < num; ++i){
-                    assetBOS.get(i);
                     OrganizationBO organizationBO = organizationRepoService.queryOrganizationByOrganizationId(assetBOS.get(i).getAssetOrganizationId());
                     assetBOS.get(i).setAssetOrganizationName(organizationBO.getOrganizationName());
                 }

@@ -112,13 +112,10 @@ public class AssetLoanRecordController {
                     assetLoanRecordBOS.add(assetLoanRecordBO);
                 }
                 if (assetLoanRecordBOS != null && assetLoanRecordBOS.size() == 1) {
-                    AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordBOS.get(0);
                     AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                             .withAssetId(request.getAssetId())
                             .builder();
-                    assetLoanRecordBO.setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
-                    assetLoanRecordBOS.remove(0);
-                    assetLoanRecordBOS.add(assetLoanRecordBO);
+                    assetLoanRecordBOS.get(0).setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用/更新物资成功");
                 } else {
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资失败");
