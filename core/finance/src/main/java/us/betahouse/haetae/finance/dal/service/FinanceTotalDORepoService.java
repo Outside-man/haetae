@@ -5,6 +5,7 @@
 package us.betahouse.haetae.finance.dal.service;
 
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public interface FinanceTotalDORepoService {
      * @return
      */
     FinanceTotalBO createFinanceTotal(FinanceTotalBO financeTotalBO);
+
 
     /**
      * 通过财务id查找财务统计实体

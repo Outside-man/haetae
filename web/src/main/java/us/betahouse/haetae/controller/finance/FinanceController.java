@@ -106,12 +106,23 @@ public class FinanceController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
                 AssertUtil.assertStringNotBlank(request.getFinanceName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "财务名不能为空");
+                AssertUtil.assertNotNull(request.getBudget(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "预算金额不能为空");
+                AssertUtil.assertBigDecimalPositive(request.getBudget(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "预算金额不能为非正");
             }
 
             @Override
             public Result<FinanceVO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withOrganizationId(request.getOrganizationId())
+                        .withFinanceName(request.getFinanceName())
+                        .withFinanceInfo(request.getFinanceInfo())
+                        .withRemark(request.getRemark())
+                        .withBudget(request.getBudget())
+                        .withUserId(request.getUserId())
+                        .build();
                 return null;
             }
         });
