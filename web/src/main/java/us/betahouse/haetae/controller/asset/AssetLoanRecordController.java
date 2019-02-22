@@ -77,6 +77,7 @@ public class AssetLoanRecordController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
+                AssertUtil.assertNotNull(request.getAmount() <= 0? null:"1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能小于等于0");
             }
             @Override
             public Result<List<AssetLoanRecordBO>> execute() {
