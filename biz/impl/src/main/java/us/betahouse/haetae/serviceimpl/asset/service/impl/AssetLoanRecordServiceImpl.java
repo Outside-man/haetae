@@ -40,10 +40,16 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Override
     @Transactional
     public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
-        AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         String str = null;
+        if (request.getAmount() <= 0) {
+            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量必须大于0");
+        }
+        AssertUtil.assertNotNull(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
+        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
+        if (request.getAmount() > assetBO.getAssetRemain()) {
+            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能大于物资剩余数量");
+        }
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
         switch (assetStatusEnum) {
