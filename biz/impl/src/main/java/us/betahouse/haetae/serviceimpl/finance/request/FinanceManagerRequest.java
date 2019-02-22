@@ -2,19 +2,21 @@
   betahouse.us
   CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.model.finance.request;
+package us.betahouse.haetae.serviceimpl.finance.request;
 
-import us.betahouse.haetae.common.RestRequest;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
+import us.betahouse.util.common.ToString;
 
 import java.math.BigDecimal;
 
 /**
  * @author MessiahJK
- * @version : FinanceRestRequest.java 2019/02/21 1:31 MessiahJK
+ * @version : FinanceManagerRequest.java 2019/02/21 23:33 MessiahJK
  */
-public class FinanceRestRequest  extends RestRequest {
+public class FinanceManagerRequest extends ToString implements VerifyRequest {
 
-    private static final long serialVersionUID = -4850531327378549656L;
+
+    private static final long serialVersionUID = 6414093211473436490L;
     /**
      * 财务信息id
      */
@@ -24,6 +26,10 @@ public class FinanceRestRequest  extends RestRequest {
      */
     private String financeName;
 
+    /**
+     * 学期
+     */
+    private String term;
     /**
      * 财务信息
      */
@@ -50,11 +56,6 @@ public class FinanceRestRequest  extends RestRequest {
     private String status;
 
     /**
-     * 学期
-     */
-    private String term;
-
-    /**
      * 组织id
      */
     private String organizationId;
@@ -78,6 +79,20 @@ public class FinanceRestRequest  extends RestRequest {
      * 是否通过
      */
     private Boolean audite;
+
+    /**
+     * 用户id
+     */
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 
     public String getFinanceMessageId() {
         return financeMessageId;
@@ -175,11 +190,17 @@ public class FinanceRestRequest  extends RestRequest {
         this.audite = audite;
     }
 
+
     public String getTerm() {
         return term;
     }
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    @Override
+    public String getVerifyUserId() {
+        return userId;
     }
 }

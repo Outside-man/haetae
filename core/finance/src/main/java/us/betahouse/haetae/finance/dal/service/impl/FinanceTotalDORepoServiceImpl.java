@@ -9,6 +9,7 @@ import us.betahouse.haetae.finance.dal.model.FinanceTotalDO;
 import us.betahouse.haetae.finance.dal.repo.FinanceTotalDORepo;
 import us.betahouse.haetae.finance.dal.service.FinanceTotalDORepoService;
 import us.betahouse.haetae.finance.idfactory.BizIdFactory;
+import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.util.utils.CollectionUtils;
 
@@ -32,9 +33,15 @@ public class FinanceTotalDORepoServiceImpl implements FinanceTotalDORepoService 
         return convert(financeTotalDORepo.save(convert(financeTotalBO)));
     }
 
+
     @Override
     public FinanceTotalBO findByFinanceTotalId(String financeTotalId) {
         return convert(financeTotalDORepo.findByFinanceTotalId(financeTotalId));
+    }
+
+    @Override
+    public FinanceTotalBO findByOrganizationId(String organizationId) {
+        return convert(financeTotalDORepo.findByOrganizationId(organizationId));
     }
 
     @Override

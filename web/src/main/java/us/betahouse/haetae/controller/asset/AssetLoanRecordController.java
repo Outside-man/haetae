@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -21,7 +22,6 @@ import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerReque
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetManagerRequestBuilder;
-import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -57,7 +57,7 @@ public class AssetLoanRecordController {
     private AssetLoanRecordService assetLoanRecordService;
 
     @Autowired
-    private AssetBackRecordService assetBackRecordService;
+    private AssetRepoService assetRepoService;
 
     /**
      * 添加借用物资信息
@@ -78,13 +78,13 @@ public class AssetLoanRecordController {
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
             }
-
             @Override
             public Result<List<AssetLoanRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
                 if (request.getLoanRecordId() == null) {//create
+                    //AssertUtil.assertNotNull(assetRepoService.findByAssetId(request.getAssetId()).getAssetRemain() < request.getAmount() ? "1": null, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借物资数量大于该物资剩余数量");
                     AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
                             .withUserId(request.getUserId())
                             .withAmount(request.getAmount())
@@ -141,6 +141,7 @@ public class AssetLoanRecordController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不存在");
             }
 
             @Override

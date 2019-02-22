@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
-import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.enums.AssetStatusEnum;
-import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
@@ -50,7 +47,6 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
             AssertUtil.assertStringNotBlank("物资码无效");
             return null;
         }
-        System.out.println("成功查询到物资");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
         switch (assetStatusEnum) {
@@ -90,6 +86,8 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
 
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
-        return assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
+        AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
+        AssertUtil.assertNotNull(assetLoanRecordBO, "借取记录不存在");
+        return assetLoanRecordBO;
     }
 }

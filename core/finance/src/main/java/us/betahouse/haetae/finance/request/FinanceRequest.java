@@ -53,6 +53,16 @@ public class FinanceRequest extends BaseRequest {
      */
     private String organizationId;
 
+    /**
+     * 页数
+     */
+    private Integer page;
+
+    /**
+     * 每页行数
+     */
+    private Integer limit;
+
     public String getFinanceName() {
         return financeName;
     }
@@ -115,5 +125,21 @@ public class FinanceRequest extends BaseRequest {
 
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 }
