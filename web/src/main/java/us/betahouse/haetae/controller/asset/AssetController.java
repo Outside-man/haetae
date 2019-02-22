@@ -85,11 +85,11 @@ public class AssetController {
                      * 通过组织名字查找组织id
                      */
                     OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
+                    AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
                     String organizationId = organizationBo.getOrganizationId();
                     if (organizationId == null) {
                         organizationId = request.getOrganizationId();
                     }
-                    AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
                     AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                             .withAssetName(request.getAssetName())
                             .withAmount(Integer.valueOf(request.getAssetAmount()))
