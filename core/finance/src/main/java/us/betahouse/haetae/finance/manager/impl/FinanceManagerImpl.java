@@ -5,6 +5,7 @@
 package us.betahouse.haetae.finance.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.dal.service.FinanceMessageDORepoService;
 import us.betahouse.haetae.finance.dal.service.FinanceTotalDORepoService;
 import us.betahouse.haetae.finance.enums.FinanceMessageTypeEnum;
@@ -21,6 +22,7 @@ import java.util.Date;
  * @author MessiahJK
  * @version : FinanceManagerImpl.java 2019/02/22 0:42 MessiahJK
  */
+@Service
 public class FinanceManagerImpl implements FinanceManager {
 
     @Autowired

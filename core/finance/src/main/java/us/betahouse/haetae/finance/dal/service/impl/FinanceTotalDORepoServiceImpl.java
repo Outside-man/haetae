@@ -5,6 +5,7 @@
 package us.betahouse.haetae.finance.dal.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.dal.model.FinanceTotalDO;
 import us.betahouse.haetae.finance.dal.repo.FinanceTotalDORepo;
 import us.betahouse.haetae.finance.dal.service.FinanceTotalDORepoService;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * @author MessiahJK
  * @version : FinanceTotalDORepoServiceImpl.java 2019/02/20 23:59 MessiahJK
  */
+@Service
 public class FinanceTotalDORepoServiceImpl implements FinanceTotalDORepoService {
 
     @Autowired

@@ -5,6 +5,7 @@
 package us.betahouse.haetae.finance.idfactory;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 import us.betahouse.util.utils.DateUtil;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Random;
  * @author MessiahJK
  * @version : BizIdFactoryImpl.java 2019/02/14 15:37 MessiahJK
  */
+@Service("factoryBizIdFactory")
 public class BizIdFactoryImpl implements BizIdFactory {
 
     /**

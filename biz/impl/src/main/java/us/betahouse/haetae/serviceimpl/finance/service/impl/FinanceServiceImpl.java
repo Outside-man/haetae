@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.finance.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.manager.OrganizationManager;
 import us.betahouse.haetae.finance.enums.FinanceMessageTypeEnum;
 import us.betahouse.haetae.finance.enums.MoneyRecordTypeEnum;
@@ -29,6 +30,7 @@ import us.betahouse.util.utils.NumberUtils;
  * @author MessiahJK
  * @version : FinanceServiceImpl.java 2019/02/22 0:30 MessiahJK
  */
+@Service
 public class FinanceServiceImpl implements FinanceService {
 
     @Autowired

@@ -12,7 +12,6 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
-import us.betahouse.haetae.finance.enums.MoneyRecordTypeEnum;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.finance.model.common.PageList;

@@ -14,7 +14,7 @@ import java.util.List;
  * @author MessiahJK
  * @version : FinanceTotalDORepoService.java 2019/01/31 2:34 MessiahJK
  */
-@Service
+
 public interface FinanceTotalDORepoService {
 
     /**
