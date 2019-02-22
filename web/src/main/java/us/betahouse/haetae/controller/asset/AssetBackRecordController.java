@@ -17,7 +17,6 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.asset.request.AssetBackRecordRestRequest;
-import us.betahouse.haetae.model.asset.request.AssetLoanRecordRestRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetBackRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetBackRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
@@ -89,7 +88,7 @@ public class AssetBackRecordController {
     }
 
     /**
-     * 获取列表
+     * 获取归还记录列表
      *
      * @param request
      * @param httpServletRequest
@@ -99,7 +98,7 @@ public class AssetBackRecordController {
     @GetMapping(value = "/getByAssetId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetBackRecordBO>> getAssetBackRecordList(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
+        return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
 
             @Override
             public void before() {
@@ -112,12 +111,15 @@ public class AssetBackRecordController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
+                builder.withAssetId(request.getAssetId());
                 return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context), "获取列表成功");
             }
         });
     }
 
     /**
+     * 获取归还记录列表
+     *
      * @param request
      * @param httpServletRequest
      * @return
@@ -126,7 +128,7 @@ public class AssetBackRecordController {
     @GetMapping(value = "/getByUserId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetBackRecordBO>> getAssetBackRecordListByUserId(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
+        return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
 
             @Override
             public void before() {
@@ -139,6 +141,7 @@ public class AssetBackRecordController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
+                builder.withUserId(request.getUserId());
                 return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetLoanRecordByUserId(builder.build(), context), "获取列表成功");
             }
         });
