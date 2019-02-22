@@ -150,8 +150,15 @@ public class AssetLoanRecordController {
                 AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
                         .withAssetId(request.getAssetId())
                         .build();
-                return RestResultUtil.buildSuccessResult(assetLoanRecordService
-                        .findAllAssetLoanRecordByAssetId(builder, context), "获取借用列表成功");
+                List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder, context);
+                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
+                        .withAssetId(request.getAssetId())
+                        .builder();
+                String name = assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName();
+                for(int i = 0; i < assetLoanRecordBOS.size(); ++i){
+                    assetLoanRecordBOS.get(i).setAssetName(name);
+                }
+                return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "获取借用列表成功");
             }
         });
     }
@@ -180,8 +187,14 @@ public class AssetLoanRecordController {
                 AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
                         .withUserId(request.getUserId())
                         .build();
-                return RestResultUtil.buildSuccessResult(assetLoanRecordService
-                        .findAllAssetLoanRecordByUserId(builder, context), "获取借用列表成功");
+                List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByUserId(builder, context);
+                for(int i = 0; i < assetLoanRecordBOS.size(); ++i){
+                    AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
+                            .withAssetId(assetLoanRecordBOS.get(i).getAssetId())
+                            .builder();
+                    assetLoanRecordBOS.get(i).setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
+                }
+                return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "获取借用列表成功");
             }
         });
     }
