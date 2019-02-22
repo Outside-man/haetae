@@ -37,6 +37,39 @@ public class FinanceManagerImpl implements FinanceManager {
     }
 
     @Override
+    public FinanceMessageBO findMessageByFinanceMessageId(String financeMessageId) {
+        return financeMessageDORepoService.findByFinanceMessageId(financeMessageId);
+    }
+
+    @Override
+    public FinanceMessageBO changeStatus(String financeMessageId, String status) {
+        FinanceMessageBO financeMessageBO=financeMessageDORepoService.findByFinanceMessageId(financeMessageId);
+        financeMessageBO.setStatus(status);
+        if(status.equals(FinanceMessageTypeEnum.AUDITED.getCode())){
+            FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
+            financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget().subtract(financeMessageBO.getBudget()));
+            financeTotalDORepoService.update(financeTotalBO);
+            return financeMessageDORepoService.update(financeMessageBO);
+        }else if(status.equals(FinanceMessageTypeEnum.AUDITED_FAIL.getCode())){
+            return financeMessageDORepoService.update(financeMessageBO);
+        }
+        return null;
+    }
+
+    @Override
+    public FinanceMessageBO check(FinanceMessageBO financeMessageBO) {
+        financeMessageBO.setStatus(FinanceMessageTypeEnum.CHECKED.getCode());
+        financeMessageBO.setFinishTime(new Date());
+
+        FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
+        financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget().add(financeMessageBO.getBudget()).subtract(financeMessageBO.getTrueMoney()));
+        financeMessageBO.setTrueMoney(financeTotalBO.getTotalMoney().subtract(financeMessageBO.getTrueMoney()));
+        financeTotalDORepoService.update(financeTotalBO);
+
+        return financeMessageDORepoService.update(financeMessageBO);
+    }
+
+    @Override
     public FinanceTotalBO getTotalMoney(FinanceRequest request) {
         return financeTotalDORepoService.findByOrganizationId(request.getOrganizationId());
     }

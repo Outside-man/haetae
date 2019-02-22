@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.finance.manager;
 
-import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.finance.model.common.PageList;
@@ -25,7 +24,30 @@ public interface FinanceManager {
      */
     PageList<FinanceMessageBO> findMessage(FinanceRequest request);
 
+    /**
+     * 通过财务信息id查询财务信息实体
+     *
+     * @param financeMessageId
+     * @return
+     */
+    FinanceMessageBO findMessageByFinanceMessageId(String financeMessageId);
 
+    /**
+     * 改变状态
+     *
+     * @param financeMessageId
+     * @param status
+     * @return
+     */
+    FinanceMessageBO changeStatus(String financeMessageId,String status);
+
+    /**
+     * 核算
+     *
+     * @param financeMessageBO
+     * @return
+     */
+    FinanceMessageBO check(FinanceMessageBO financeMessageBO);
     /**
      * 获取总金额
      *
@@ -33,6 +55,7 @@ public interface FinanceManager {
      * @return
      */
     FinanceTotalBO getTotalMoney(FinanceRequest request);
+
 
 
     /**
@@ -43,6 +66,7 @@ public interface FinanceManager {
      */
     FinanceMessageBO createFinanceMessageByBudget(FinanceMessageBO financeMessageBO);
 
+
     /**
      * 创建财务信息 记账
      *
@@ -50,6 +74,7 @@ public interface FinanceManager {
      * @return
      */
     FinanceMessageBO createFinanceMessageByTally(FinanceMessageBO financeMessageBO);
+
 
     /**
      * 初始化财务统计

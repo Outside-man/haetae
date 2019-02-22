@@ -32,6 +32,7 @@ public class FinanceTotalDORepoServiceImpl implements FinanceTotalDORepoService 
 
     @Override
     public FinanceTotalBO createFinanceTotal(FinanceTotalBO financeTotalBO) {
+        financeTotalBO.setFinanceTotalId(financeBizFactory.getFinanceTotalId());
         return convert(financeTotalDORepo.save(convert(financeTotalBO)));
     }
 

@@ -15,6 +15,7 @@ import java.util.Map;
  * @version : FinanceRequestBuilder.java 2019/02/22 0:47 MessiahJK
  */
 public final class FinanceRequestBuilder {
+    private String financeMessageId;
     private String financeName;
     private String financeInfo;
     private String type;
@@ -33,6 +34,11 @@ public final class FinanceRequestBuilder {
 
     public static FinanceRequestBuilder aFinanceRequest() {
         return new FinanceRequestBuilder();
+    }
+
+    public FinanceRequestBuilder withFinanceMessageId(String messageId){
+        this.financeMessageId=messageId;
+        return this;
     }
 
     public FinanceRequestBuilder withFinanceName(String financeName) {
@@ -97,6 +103,7 @@ public final class FinanceRequestBuilder {
 
     public FinanceRequest build() {
         FinanceRequest financeRequest = new FinanceRequest();
+        financeRequest.setFinanceMessageId(financeMessageId);
         financeRequest.setFinanceName(financeName);
         financeRequest.setFinanceInfo(financeInfo);
         financeRequest.setType(type);

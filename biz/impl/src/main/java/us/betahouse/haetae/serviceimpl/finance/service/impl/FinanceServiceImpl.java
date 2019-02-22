@@ -89,12 +89,21 @@ public class FinanceServiceImpl implements FinanceService {
 
     @Override
     public FinanceMessageBO audite(FinanceManagerRequest request, OperateContext context) {
-        return null;
+        if(request.getAudite()){
+            return financeManager.changeStatus(request.getFinanceMessageId(), FinanceMessageTypeEnum.AUDITED.getCode());
+        }else{
+            return financeManager.changeStatus(request.getFinanceMessageId(), FinanceMessageTypeEnum.AUDITED_FAIL.getCode());
+        }
     }
 
     @Override
     public FinanceMessageBO checkMessage(FinanceManagerRequest request, OperateContext context) {
-        return null;
+        FinanceMessageBO financeMessageBO=financeManager.findMessageByFinanceMessageId(request.getFinanceMessageId());
+        financeMessageBO.setAuditorUserId(request.getUserId());
+        financeMessageBO.setAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName());
+        financeMessageBO.setTrueMoney(request.getTrueMoney());
+
+        return financeManager.check(financeMessageBO);
     }
 
     @Override

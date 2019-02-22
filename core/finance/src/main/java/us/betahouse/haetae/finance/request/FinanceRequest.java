@@ -14,6 +14,11 @@ public class FinanceRequest extends BaseRequest {
 
     private static final long serialVersionUID = 3836025437989618238L;
     /**
+     * 财务信息id
+     */
+    private String financeMessageId;
+
+    /**
      * 财务名
      */
     private String financeName;
@@ -62,6 +67,14 @@ public class FinanceRequest extends BaseRequest {
      * 每页行数
      */
     private Integer limit;
+
+    public String getFinanceMessageId() {
+        return financeMessageId;
+    }
+
+    public void setFinanceMessageId(String financeMessageId) {
+        this.financeMessageId = financeMessageId;
+    }
 
     public String getFinanceName() {
         return financeName;
