@@ -46,16 +46,18 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     @Transactional
     public AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-
+        String str = null;
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        if (assetBO == null) {
-            AssertUtil.assertStringNotBlank("物资码无效");
-            return null;
-        }
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码无效");
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
         AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还记录码无效");
+
+        if(assetLoanRecordBO.getRemain() == 0){
+            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资已全部归还");
+            return null;
+        }
         if (request.getAmount() > assetLoanRecordBO.getRemain()) {
-            AssertUtil.assertStringNotBlank("归还数量超出剩余未归还数量");
+            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
             return null;
         }
         request.setAssetType(assetBO.getAssetType());

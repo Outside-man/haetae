@@ -41,20 +41,17 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Transactional
     public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
         AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        if (assetBO == null) {
-            AssertUtil.assertStringNotBlank("物资码无效");
-            return null;
-        }
+        String str = null;
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
         switch (assetStatusEnum) {
             case ASSET_ALLLOAN:
-                AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
+                AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资全部借出");
                 return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
             case ASSET_DISTORY:
-                AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
+                AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资耗尽");
                 return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
             default:
                 break;
