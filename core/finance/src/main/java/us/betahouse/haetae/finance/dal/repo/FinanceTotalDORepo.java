@@ -11,6 +11,7 @@ import us.betahouse.haetae.finance.dal.model.FinanceTotalDO;
  * @author MessiahJK
  * @version : FinanceTotalDORepo.java 2019/01/30 0:48 MessiahJK
  */
+
 public interface FinanceTotalDORepo  extends JpaRepository<FinanceTotalDO,Long> {
 
     /**
@@ -20,4 +21,12 @@ public interface FinanceTotalDORepo  extends JpaRepository<FinanceTotalDO,Long> 
      * @return
      */
     FinanceTotalDO findByFinanceTotalId(String financeTotalId);
+
+    /**
+     * 通过组织id查找财务统计实体
+     *
+     * @param organizationId
+     * @return
+     */
+    FinanceTotalDO findByOrganizationId(String organizationId);
 }

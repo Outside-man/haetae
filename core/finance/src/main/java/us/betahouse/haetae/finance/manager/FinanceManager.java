@@ -14,7 +14,7 @@ import us.betahouse.haetae.finance.request.FinanceRequest;
  * @author MessiahJK
  * @version : FinanceManager.java 2019/02/22 0:39 MessiahJK
  */
-@Service
+
 public interface FinanceManager {
 
     /**

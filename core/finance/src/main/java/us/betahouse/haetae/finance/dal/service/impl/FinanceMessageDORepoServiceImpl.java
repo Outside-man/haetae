@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.dal.model.FinanceMessageDO;
 import us.betahouse.haetae.finance.dal.repo.FinanceMessageDORepo;
 import us.betahouse.haetae.finance.dal.service.FinanceMessageDORepoService;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author MessiahJK
  * @version : FinanceMessageDORepoServiceImpl.java 2019/02/14 15:05 MessiahJK
  */
+@Service
 public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoService {
 
     @Autowired

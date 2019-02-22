@@ -12,7 +12,7 @@ import us.betahouse.haetae.finance.model.common.PageList;
  * @author MessiahJK
  * @version : FinanceMessageDORepoService.java 2019/01/31 2:51 MessiahJK
  */
-@Service
+
 public interface FinanceMessageDORepoService {
 
     /**

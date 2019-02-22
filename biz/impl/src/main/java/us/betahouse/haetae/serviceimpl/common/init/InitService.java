@@ -7,6 +7,11 @@ package us.betahouse.haetae.serviceimpl.common.init;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.activity.model.basic.OrganizationBO;
+import us.betahouse.haetae.finance.dal.repo.FinanceTotalDORepo;
+import us.betahouse.haetae.finance.manager.FinanceManager;
+import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
@@ -20,6 +25,7 @@ import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.haetae.user.user.builder.RoleBOBuilder;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -36,6 +42,12 @@ public class InitService {
 
     @Autowired
     private RoleRepoService roleRepoService;
+
+    @Autowired
+    private OrganizationRepoService organizationRepoService;
+
+    @Autowired
+    private FinanceManager financeManager;
 
     private final static List<String> activityManagerPerm = new ArrayList<>();
 
@@ -82,6 +94,16 @@ public class InitService {
                     .withRoleName(roleCode.getDesc());
             RoleBO role = roleRepoService.initRole(roleBOBuilder.build());
             intRoleBindPerm(role, initPermMap);
+        }
+        //初始化财务统计
+        List<OrganizationBO> organizationBOList=organizationRepoService.queryAllOrganization();
+        for(OrganizationBO organizationBO:organizationBOList){
+            FinanceTotalBO financeTotalBO=new FinanceTotalBO();
+            financeTotalBO.setOrganizationId(organizationBO.getOrganizationId());
+            financeTotalBO.setOrganizationName(organizationBO.getOrganizationName());
+            financeTotalBO.setTotalMoney(BigDecimal.ZERO);
+            financeTotalBO.setTotalMoneyIncludeBudget(BigDecimal.ZERO);
+            financeManager.initTotalMoney(financeTotalBO);
         }
     }
 

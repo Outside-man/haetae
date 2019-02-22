@@ -15,22 +15,22 @@ public enum FinanceMessageTypeEnum {
     /**
      * 未审核
      */
-    UNAUDITED("unaudited","未审核"),
+    UNAUDITED("UNAUDITED","未审核"),
 
     /**
      * 已审核
      */
-    AUDITED("audited","已审核"),
+    AUDITED("AUDITED","已审核"),
 
     /**
      * 未通过
      */
-    AUDITED_FAIL("audited_fail","审核未通过"),
+    AUDITED_FAIL("AUDITED_FAIL","审核未通过"),
 
     /**
      * 已核销
      */
-    CHECKED("checked","已核销");
+    CHECKED("CHECKED","已核销");
 
 
 

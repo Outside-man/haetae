@@ -5,6 +5,7 @@
 package us.betahouse.haetae.finance.dal.service;
 
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author MessiahJK
  * @version : FinanceTotalDORepoService.java 2019/01/31 2:34 MessiahJK
  */
-@Service
+
 public interface FinanceTotalDORepoService {
 
     /**
@@ -24,6 +25,7 @@ public interface FinanceTotalDORepoService {
      */
     FinanceTotalBO createFinanceTotal(FinanceTotalBO financeTotalBO);
 
+
     /**
      * 通过财务id查找财务统计实体
      *
@@ -31,6 +33,14 @@ public interface FinanceTotalDORepoService {
      * @return
      */
     FinanceTotalBO findByFinanceTotalId(String financeTotalId);
+
+    /**
+     * 通过组织id获取财务统计实体
+     *
+     * @param organizationId
+     * @return
+     */
+    FinanceTotalBO findByOrganizationId(String organizationId);
 
     /**
      * 更新财务统计实体
