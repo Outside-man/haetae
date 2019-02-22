@@ -83,7 +83,6 @@ public class FinanceController {
                         .withPage(request.getPage())
                         .withLimit(request.getLimit())
                         .build();
-
                 return RestResultUtil.buildSuccessResult(financeService.findMessage(financeManagerRequest,context),"财务信息列表获取成功");
             }
         });
@@ -140,8 +139,8 @@ public class FinanceController {
     @CheckLogin
     @PutMapping("/audite")
     @Log(loggerName =LoggerName.FINANCE_DIGEST)
-    public Result<FinanceVO> audite(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "审核预算", request, new RestOperateCallBack<FinanceVO>(){
+    public Result<FinanceMessageBO> audite(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "审核预算", request, new RestOperateCallBack<FinanceMessageBO>(){
 
             @Override
             public void before() {
@@ -154,10 +153,16 @@ public class FinanceController {
             }
 
             @Override
-            public Result<FinanceVO> execute() {
+            public Result<FinanceMessageBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withFinanceMessageId(request.getFinanceMessageId())
+                        .withAudite(request.getAudite())
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.audite(financeManagerRequest, context),"审核提交成功");
             }
         });
     }
@@ -172,8 +177,8 @@ public class FinanceController {
     @CheckLogin
     @PutMapping("/check")
     @Log(loggerName =LoggerName.FINANCE_DIGEST)
-    public Result<FinanceVO> check(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "核算", request, new RestOperateCallBack<FinanceVO>(){
+    public Result<FinanceMessageBO> check(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "核算", request, new RestOperateCallBack<FinanceMessageBO>(){
 
             @Override
             public void before() {
@@ -185,10 +190,15 @@ public class FinanceController {
             }
 
             @Override
-            public Result<FinanceVO> execute() {
+            public Result<FinanceMessageBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withFinanceMessageId(request.getFinanceMessageId())
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.checkMessage(financeManagerRequest, context),"核查提交成功");
             }
         });
     }

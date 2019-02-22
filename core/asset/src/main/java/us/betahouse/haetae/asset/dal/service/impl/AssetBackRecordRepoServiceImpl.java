@@ -63,6 +63,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetBackRecordBO.getLoanRecoedId());
         AssetBackRecordTypeEnum assetBackRecordTypeEnum = AssetBackRecordTypeEnum.getByCode(assetBackRecordBO.getType());
         AssertUtil.assertNotNull(assetBackRecordTypeEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资类型不正确");
+        AssertUtil.assertNotNull(assetLoanRecordDO.getStatus() == "Destroy" || assetLoanRecordDO.getStatus() == "Loaded", "物资已全部归还，无法再次提交归还请求");
         switch (assetBackRecordTypeEnum) {
             case BACK:
                 assetDO.setRemain(assetDO.getRemain() + assetBackRecordBO.getAmount());
@@ -70,18 +71,19 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
                     assetDO.setStatus("canLoan");
                 }
                 assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain()-assetBackRecordBO.getAmount());
-                if (assetLoanRecordDO.getRemain() <= 0) {
-                    assetLoanRecordDO.setStatus("assetNotLoan");
+                if (assetLoanRecordDO.getRemain() <= 0 && assetLoanRecordDO.getDistory() == 0) {
+                    assetLoanRecordDO.setStatus("Loaded");
                 }
                 break;
             case DESTROY:
                 assetDO.setDestroy(assetDO.getDestroy() + assetBackRecordBO.getAmount());
                 if(assetDO.getDestroy() >= assetDO.getAmount()){
-                    assetDO.setStatus("allDestroy");
+                    assetDO.setStatus("notLoan");
                 }
                 assetLoanRecordDO.setDistory(assetLoanRecordDO.getDistory()+assetBackRecordBO.getAmount());
-                if(assetLoanRecordDO.getDistory() >= assetLoanRecordDO.getAmount()){
-                    assetDO.setStatus("allDestroy");
+                assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
+                if(assetLoanRecordDO.getRemain() <= 0){
+                    assetLoanRecordDO.setStatus("Destroyed");
                 }
                 break;
             default:
@@ -90,9 +92,6 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
 
         if (assetBackRecordBO.getRemark() != null) {
             assetLoanRecordDO.setRemark(assetBackRecordBO.getRemark());
-        }
-        if (assetLoanRecordDO.getAmount() == assetLoanRecordDO.getDistory()) {
-            assetLoanRecordDO.setStatus("assetDistory");
         }
 
         assetLoanDORepo.save(assetLoanRecordDO);

@@ -93,7 +93,7 @@ public class AssetLoanRecordController {
                             .withAssetId(request.getAssetId())
                             .withAssetType(request.getAssetType())
                             .withRemark(request.getRemark())
-                            .withStatus("assetLoan")
+                            .withStatus("Loading")
                             .withExtInfo(request.getExtInfo())
                             .withAssetInfo(request.getAssetInfo())
                             .build();
