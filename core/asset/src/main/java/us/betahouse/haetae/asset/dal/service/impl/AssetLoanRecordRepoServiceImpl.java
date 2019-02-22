@@ -187,7 +187,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
                 case ASSET_LOAN_RECORD_LOAN:
                     assetLoanRecordDOList.remove(i);
                     break;
-                case ASSET_LOAN_RECORD_DISTORY:
+                case ASSET_LOAN_RECORD_DESTORY:
                     assetLoanRecordDOList.remove(i);
                     break;
                 default:
