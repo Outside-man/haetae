@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
 import us.betahouse.haetae.asset.manager.AssetBackRecordManager;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.asset.manager.AssetManager;
@@ -17,7 +16,6 @@ import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetBackRecordRequest;
-import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.util.enums.RestResultCode;
@@ -67,13 +65,22 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
 
     @Override
     @Transactional
-    public List<AssetBackRecordBO> findAllAssetLoanRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
+    public List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
+        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码无效");
         return assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
     }
 
     @Override
     @Transactional
-    public List<AssetBackRecordBO> findAllAssetLoanRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
+    public List<AssetBackRecordBO> findAllAssetBackRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
         return assetBackRecordManager.findAllAssetBackRecordByUserId(request.getUserId());
+    }
+
+    @Override
+    public AssetBackRecordBO findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context) {
+        AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.findAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
+        AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "无对应归还记录");
+        return assetBackRecordBO;
     }
 }

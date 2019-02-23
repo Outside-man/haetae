@@ -21,18 +21,26 @@ public interface AssetBackRecordManager {
      * @return
      */
     AssetBackRecordBO create(AssetBackRecordRequest request);
+
     /**
      * 查询所有归还记录
      *
      * @param assetId
      * @return
      */
-    List<AssetBackRecordBO> findAllAssetBackRecordByAssetId (String assetId);
+    List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(String assetId);
+
     /**
      * 查询所有归还记录
      *
      * @param userId
      * @return
      */
-    List<AssetBackRecordBO> findAllAssetBackRecordByUserId (String userId);
+    List<AssetBackRecordBO> findAllAssetBackRecordByUserId(String userId);
+
+    /**
+     * @param loanRecordId
+     * @return
+     */
+    AssetBackRecordBO findAssetBackRecordByLoanRecordId(String loanRecordId);
 }

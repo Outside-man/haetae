@@ -89,7 +89,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
-        AssertUtil.assertNotNull(assetLoanRecordBO, "借取记录不存在");
+        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借取记录不存在");
         return assetLoanRecordBO;
     }
 }

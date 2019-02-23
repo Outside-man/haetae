@@ -125,6 +125,11 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public AssetBackRecordBO findAssetBackRecordByLoanRecordId(String loanRecordId) {
+        return convert(assetBackDORepo.findByLoanRecoedId(loanRecordId));
+    }
+
     /**
      * @param assetBackRecordDO
      * @return

@@ -7,10 +7,7 @@ package us.betahouse.haetae.controller.asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -35,6 +32,7 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetBackRecordController.java 2019/02/12 17:53 yiyuk.hxy
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/assetBackRecord")
 public class AssetBackRecordController {
@@ -110,9 +108,10 @@ public class AssetBackRecordController {
             public Result<List<AssetBackRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
-                builder.withAssetId(request.getAssetId());
-                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context), "获取列表成功");
+                AssetBackRecordManagerRequest builder = AssetBackRecordManagerRequestBuilder.getInstance()
+                        .withAssetId(request.getAssetId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetBackRecordByAssetId(builder, context), "获取列表成功");
             }
         });
     }
@@ -140,9 +139,41 @@ public class AssetBackRecordController {
             public Result<List<AssetBackRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
-                builder.withUserId(request.getUserId());
-                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetLoanRecordByUserId(builder.build(), context), "获取列表成功");
+                AssetBackRecordManagerRequest builder = AssetBackRecordManagerRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetBackRecordByUserId(builder, context), "获取列表成功");
+            }
+        });
+    }
+
+    /**
+     * 获取归还记录列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping(value = "/getByLoanRecordId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<AssetBackRecordBO> getAssetBackRecordListByLoanRecordId(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<AssetBackRecordBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用id不能为空");
+            }
+
+            @Override
+            public Result<AssetBackRecordBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetBackRecordManagerRequest builder = AssetBackRecordManagerRequestBuilder.getInstance()
+                        .withLoanRecoedId(request.getLoanRecordId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAssetBackRecordByLoanRecordId(builder, context), "获取列表成功");
             }
         });
     }
