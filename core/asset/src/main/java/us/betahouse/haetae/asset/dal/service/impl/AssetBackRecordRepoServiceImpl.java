@@ -22,6 +22,7 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -126,8 +127,12 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
     }
 
     @Override
-    public AssetBackRecordBO findAssetBackRecordByLoanRecordId(String loanRecordId) {
-        return convert(assetBackDORepo.findByLoanRecoedId(loanRecordId));
+    public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(String loanRecordId) {
+        List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findByLoanRecoedId(loanRecordId);
+        return CollectionUtils.toStream(assetBackRecordDOS)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -149,6 +154,9 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         assetBackRecordBO.setRemark(assetBackRecordDO.getRemark());
         assetBackRecordBO.setType(assetBackRecordDO.getType());
         assetBackRecordBO.setUserId(assetBackRecordDO.getUserId());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        assetBackRecordBO.setBackTime(formatter.format(assetBackRecordDO.getGmtCreate()));
 
         return assetBackRecordBO;
     }

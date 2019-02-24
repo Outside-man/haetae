@@ -47,6 +47,8 @@ public class AssetBackRecordBO extends ToString {
      * 备注，用于报损时
      */
     private String remark;
+    private String assetName;
+    private String backTime;
     private Map<String, String> extInfo = new HashMap<>();
 
     public String fetchExtInfo(String key) {
@@ -129,6 +131,22 @@ public class AssetBackRecordBO extends ToString {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
+    }
+
+    public String getBackTime() {
+        return backTime;
+    }
+
+    public void setBackTime(String backTime) {
+        this.backTime = backTime;
     }
 
     public Map<String, String> getExtInfo() {

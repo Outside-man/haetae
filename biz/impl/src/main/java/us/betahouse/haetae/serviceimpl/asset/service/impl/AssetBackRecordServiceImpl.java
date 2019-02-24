@@ -78,8 +78,8 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     }
 
     @Override
-    public AssetBackRecordBO findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context) {
-        AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.findAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
+    public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context) {
+        List<AssetBackRecordBO> assetBackRecordBO = assetBackRecordManager.findAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
         AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "无对应归还记录");
         return assetBackRecordBO;
     }
