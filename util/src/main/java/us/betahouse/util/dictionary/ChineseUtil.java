@@ -57,7 +57,7 @@ public class ChineseUtil {
                     'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
                     's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
             };
-    private int[] table = new int[27];
+    private static int[] table = new int[27];
     //初始化
 
     {
@@ -76,7 +76,7 @@ public class ChineseUtil {
      * @param type 大小写
      * @return 字母
      */
-    private char char2Alpha(char ch, String type) {
+    private static char char2Alpha(char ch, String type) {
         //英文小写字符
         if (ch >= LOWER_CHAR[0] && ch <= LOWER_CHAR[CHAR_NUMBER-1]) {
             if(UPPER.equals(type)){
@@ -148,7 +148,7 @@ public class ChineseUtil {
      * @param type 类型
      * @return
      */
-    public String string2AlphaFirst(String sourceStr,String type) {
+    public static String string2AlphaFirst(String sourceStr,String type) {
         String result = "";
         try {
             result += char2Alpha(sourceStr.charAt(0),type);
@@ -164,7 +164,7 @@ public class ChineseUtil {
      * @param ch
      * @return
      */
-    private int getGBKValue(char ch) {
+    private static int getGBKValue(char ch) {
         String str = "";
         str += ch;
         try {
@@ -180,7 +180,7 @@ public class ChineseUtil {
         }
     }
 
-    private boolean match(int i, int gb) {
+    private static boolean match(int i, int gb) {
         if (gb < table[i]) {
             return false;
         }

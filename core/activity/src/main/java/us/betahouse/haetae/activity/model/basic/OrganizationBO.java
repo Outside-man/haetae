@@ -27,6 +27,7 @@ public class OrganizationBO extends ToString {
      */
     private String organizationName;
 
+    private String firstAlpha;
     /**
      * 拓展信息
      */
@@ -54,5 +55,13 @@ public class OrganizationBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getFirstAlpha() {
+        return firstAlpha;
+    }
+
+    public void setFirstAlpha(String firstAlpha) {
+        this.firstAlpha = firstAlpha;
     }
 }

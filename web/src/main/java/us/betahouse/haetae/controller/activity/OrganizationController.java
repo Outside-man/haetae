@@ -21,6 +21,7 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.dictionary.ChineseUtil;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
@@ -61,6 +62,9 @@ public class OrganizationController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 List<OrganizationBO> organizationBOList = organizationService.findAll(context);
+                for(OrganizationBO organizationBO:organizationBOList){
+                    organizationBO.setFirstAlpha(ChineseUtil.string2AlphaFirst(organizationBO.getOrganizationName(), ChineseUtil.UPPER));
+                }
                 return RestResultUtil.buildSuccessResult(organizationBOList, "获取组织列表成功");
             }
         });
