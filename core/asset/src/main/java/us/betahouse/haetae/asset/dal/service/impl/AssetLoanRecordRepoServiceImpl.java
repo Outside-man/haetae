@@ -21,6 +21,9 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -187,7 +190,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
                 case ASSET_LOAN_RECORD_LOAN:
                     assetLoanRecordDOList.remove(i);
                     break;
-                case ASSET_LOAN_RECORD_DISTORY:
+                case ASSET_LOAN_RECORD_DESTORY:
                     assetLoanRecordDOList.remove(i);
                     break;
                 default:
@@ -230,10 +233,11 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
         assetLoanRecordBO.setRemark(assetLoanRecordDO.getRemark());
         assetLoanRecordBO.setAssetName(assetName);
-        assetLoanRecordBO.setCreateTime(assetLoanRecordDO.getGmtCreate());
         assetLoanRecordBO.setExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class));
         assetLoanRecordBO.setAssetInfo(assetLoanRecordDO.getAssetInfo());
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        assetLoanRecordBO.setCreateTime(formatter.format(assetLoanRecordDO.getGmtCreate()));
         return assetLoanRecordBO;
     }
 

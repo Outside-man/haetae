@@ -22,6 +22,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author yiyuk.hxy
@@ -40,21 +41,22 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Override
     @Transactional
     public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
-        AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-
+        String str = null;
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        if (assetBO == null) {
-            AssertUtil.assertStringNotBlank("物资码无效");
-            return null;
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
+        Boolean isNumber = Pattern.matches("[0-9]*", request.getAmount().toString());
+        AssertUtil.assertNotNull(!isNumber? null: "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "输入物资的数量包含非法字符");
+        if (request.getAmount() > assetBO.getAssetRemain()) {
+            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能大于物资剩余数量");
         }
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
         switch (assetStatusEnum) {
             case ASSET_ALLLOAN:
-                AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资全部借出");
+                AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资全部借出");
                 return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
             case ASSET_DISTORY:
-                AssertUtil.assertStringNotBlank(assetBO.getAssetName(), "物资耗尽");
+                AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资耗尽");
                 return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
             default:
                 break;
@@ -87,7 +89,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
-        AssertUtil.assertNotNull(assetLoanRecordBO, "借取记录不存在");
+        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借取记录不存在");
         return assetLoanRecordBO;
     }
 }

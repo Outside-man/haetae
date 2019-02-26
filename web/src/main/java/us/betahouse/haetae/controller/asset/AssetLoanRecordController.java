@@ -7,11 +7,7 @@ package us.betahouse.haetae.controller.asset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import us.betahouse.haetae.asset.dal.service.AssetRepoService;
+import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -19,12 +15,12 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.asset.request.AssetLoanRecordRestRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
-import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
-import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
+import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -42,6 +38,7 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetLoanRecordController.java 2019/01/25 23:57 yiyuk.hxy
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/assetLoanRecord")
 public class AssetLoanRecordController {
@@ -57,7 +54,10 @@ public class AssetLoanRecordController {
     private AssetLoanRecordService assetLoanRecordService;
 
     @Autowired
-    private AssetRepoService assetRepoService;
+    private UserRepoService userRepoService;
+
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
 
     /**
      * 添加借用物资信息
@@ -77,6 +77,7 @@ public class AssetLoanRecordController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
+                AssertUtil.assertNotNull(request.getAmount() <= 0? null:"1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能小于等于0");
             }
             @Override
             public Result<List<AssetLoanRecordBO>> execute() {
@@ -93,7 +94,7 @@ public class AssetLoanRecordController {
                             .withAssetId(request.getAssetId())
                             .withAssetType(request.getAssetType())
                             .withRemark(request.getRemark())
-                            .withStatus("assetLoan")
+                            .withStatus("Loading")
                             .withExtInfo(request.getExtInfo())
                             .withAssetInfo(request.getAssetInfo())
                             .build();
@@ -112,10 +113,8 @@ public class AssetLoanRecordController {
                     assetLoanRecordBOS.add(assetLoanRecordBO);
                 }
                 if (assetLoanRecordBOS != null && assetLoanRecordBOS.size() == 1) {
-                    AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
-                            .withAssetId(request.getAssetId())
-                            .builder();
-                    assetLoanRecordBOS.get(0).setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
+                    assetLoanRecordBOS.get(0).setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
+                    assetLoanRecordBOS.get(0).setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用/更新物资成功");
                 } else {
                     return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资失败");
@@ -152,12 +151,9 @@ public class AssetLoanRecordController {
                         .withAssetId(request.getAssetId())
                         .build();
                 List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder, context);
-                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
-                        .withAssetId(request.getAssetId())
-                        .builder();
-                String name = assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName();
                 for(int i = 0; i < assetLoanRecordBOS.size(); ++i){
-                    assetLoanRecordBOS.get(i).setAssetName(name);
+                    assetLoanRecordBOS.get(i).setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
+                    assetLoanRecordBOS.get(i).setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
                 }
                 return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "获取借用列表成功");
             }
@@ -190,10 +186,8 @@ public class AssetLoanRecordController {
                         .build();
                 List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByUserId(builder, context);
                 for(int i = 0; i < assetLoanRecordBOS.size(); ++i){
-                    AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
-                            .withAssetId(assetLoanRecordBOS.get(i).getAssetId())
-                            .builder();
-                    assetLoanRecordBOS.get(i).setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
+                    assetLoanRecordBOS.get(i).setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
+                    assetLoanRecordBOS.get(i).setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
                 }
                 return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "获取借用列表成功");
             }
@@ -225,10 +219,8 @@ public class AssetLoanRecordController {
                         .withLoanRecordId(request.getLoanRecordId())
                         .build();
                 AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.findAssetLoanRecordByLoanRecordId(builder, context);
-                AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
-                        .withAssetId(assetLoanRecordBO.getAssetId())
-                        .builder();
-                assetLoanRecordBO.setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
+                assetLoanRecordBO.setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
+                assetLoanRecordBO.setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
                 return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "获取借用记录成功");
             }
         });

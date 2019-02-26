@@ -36,4 +36,12 @@ public interface AssetBackRecordRepoService {
      * @return
      */
     List<AssetBackRecordBO> queryAssetBackRecordByAssetId(String assetId);
+
+    /**
+     * 通过借用记录id获取
+     *
+     * @param loanRecordId
+     * @return
+     */
+    List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(String loanRecordId);
 }

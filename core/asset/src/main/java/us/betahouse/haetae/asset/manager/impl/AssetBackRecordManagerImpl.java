@@ -60,4 +60,13 @@ public class AssetBackRecordManagerImpl implements AssetBackRecordManager {
     public List<AssetBackRecordBO> findAllAssetBackRecordByUserId(String userId) {
         return assetBackRecordRepoService.queryAssetBackRecordByUserId(userId);
     }
+
+    /**
+     * @param loanRecordId
+     * @return
+     */
+    @Override
+    public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(String loanRecordId) {
+        return assetBackRecordRepoService.findAssetBackRecordByLoanRecordId(loanRecordId);
+    }
 }

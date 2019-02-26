@@ -35,6 +35,11 @@ public class AssetLoanRecordBO extends ToString {
      * 用户ID
      */
     private String userId;
+    private String userName;
+    /**
+     * 用户学号
+     */
+    private String userNum;
     /**
      * 物资归还状态
      */
@@ -91,7 +96,7 @@ public class AssetLoanRecordBO extends ToString {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -137,6 +142,22 @@ public class AssetLoanRecordBO extends ToString {
         this.userId = userId;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getUserNum() {
+        return userNum;
+    }
+
+    public void setUserNum(String userNum) {
+        this.userNum = userNum;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -177,11 +198,11 @@ public class AssetLoanRecordBO extends ToString {
         this.distory = distory;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
