@@ -22,11 +22,14 @@ import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.dictionary.ChineseUtil;
+import us.betahouse.util.dictionary.PinyinUtils;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -63,8 +66,14 @@ public class OrganizationController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 List<OrganizationBO> organizationBOList = organizationService.findAll(context);
                 for(OrganizationBO organizationBO:organizationBOList){
-                    organizationBO.setFirstAlpha(ChineseUtil.string2AlphaFirst(organizationBO.getOrganizationName(), ChineseUtil.UPPER));
+                        organizationBO.setFirstAlpha(PinyinUtils.getFirstAlpha(organizationBO.getOrganizationName()));
                 }
+                Collections.sort(organizationBOList, new Comparator<OrganizationBO>() {
+                    @Override
+                    public int compare(OrganizationBO o1, OrganizationBO o2) {
+                        return o1.getFirstAlpha().charAt(0)-o2.getFirstAlpha().charAt(0);
+                    }
+                });
                 return RestResultUtil.buildSuccessResult(organizationBOList, "获取组织列表成功");
             }
         });

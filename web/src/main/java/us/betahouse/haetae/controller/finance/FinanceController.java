@@ -68,7 +68,6 @@ public class FinanceController {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
-                AssertUtil.assertStringNotBlank(request.getFinanceName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "财务名不能为空");
             }
 
             @Override
@@ -148,8 +147,6 @@ public class FinanceController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getFinanceMessageId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "财务信息id不能为空");
                 AssertUtil.assertNotNull(request.getAudite(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核判断不能为空");
-                AssertUtil.assertNotNull(request.getTrueMoney(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "真实金额不能为空");
-                AssertUtil.assertBigDecimalPositive(request.getTrueMoney(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "真实金额不能为非正");
             }
 
             @Override

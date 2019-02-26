@@ -33,7 +33,7 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
 
     @Override
     public FinanceMessageBO createFinanceMessage(FinanceMessageBO financeMessageBO) {
-        if(financeMessageBO==null||StringUtils.isNotBlank(financeMessageBO.getId().toString())||StringUtils.isNotBlank(financeMessageBO.getFinanceMessageId())){
+        if(financeMessageBO==null){
             return null;
         }
         financeMessageBO.setFinanceMessageId(financeBizFactory.getFinanceMessageId());
@@ -65,9 +65,9 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
 
     private Object convert(Object o) {
         if(o instanceof FinanceMessageDO){
-            return convert(o);
+            return convert((FinanceMessageDO)o);
         }else if(o instanceof FinanceMessageBO){
-            return convert(o);
+            return convert((FinanceMessageBO)o);
         }
         return null;
     }
@@ -101,7 +101,7 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
         financeMessageDO.setAuditorName(financeMessageBO.getAuditorName());
         financeMessageDO.setFinishTime(financeMessageBO.getFinishTime());
         financeMessageDO.setRemark(financeMessageBO.getRemark());
-        financeMessageDO.setExinfo(JSON.toJSONString(financeMessageBO.getFinanceInfo()));
+        financeMessageDO.setExinfo(JSON.toJSONString(financeMessageBO.getExInfo()));
         financeMessageDO.setGmtCreate(financeMessageBO.getGmtCreate());
         financeMessageDO.setGmtModified(financeMessageBO.getGmtModified());
         return financeMessageDO;
@@ -119,6 +119,7 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
             return null;
         }
         FinanceMessageBO financeMessageBO= new FinanceMessageBO();
+        financeMessageBO.setId(financeMessageDO.getId());
         financeMessageBO.setFinanceMessageId(financeMessageDO.getFinanceMessageId());
         financeMessageBO.setFinanceName(financeMessageDO.getFinanceName());
         financeMessageBO.setFinanceInfo(financeMessageDO.getFinanceInfo());
@@ -135,6 +136,7 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
         financeMessageBO.setAuditorName(financeMessageDO.getAuditorName());
         financeMessageBO.setFinishTime(financeMessageDO.getFinishTime());
         financeMessageBO.setRemark(financeMessageDO.getRemark());
+        System.out.println(financeMessageDO.getExinfo());
         financeMessageBO.setExInfo(JSON.parseObject(financeMessageDO.getExinfo(),Map.class));
         financeMessageBO.setGmtCreate(financeMessageDO.getGmtCreate());
         financeMessageBO.setGmtModified(financeMessageDO.getGmtModified());

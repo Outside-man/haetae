@@ -167,11 +167,11 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Override
     public List<String> importStamp(String url) {
         String[][] csv = CsvUtil.getWithHeader(url);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][2]);
+//        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
+//        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
+//        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][3]);
         ActivityStampRequest request = new ActivityStampRequest();
-        ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[1][2]);
+        ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[1][3]);
         request.setActivityId(activityBO.getActivityId());
         // 没有盖章成功的学号
         List<String> notStampStuIds = new ArrayList<>();

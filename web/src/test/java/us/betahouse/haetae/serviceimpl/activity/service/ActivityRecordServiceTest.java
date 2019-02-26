@@ -43,7 +43,7 @@ public class ActivityRecordServiceTest {
     @Test
     public void importStamp() {
         //C:\Users\j10k\Documents\Tencent Files\1033161038\FileRecv\第一届课达杯手绘大赛-数据导入.csv
-        String url = "C:\\Users\\j10k\\Desktop\\第六届“明辩杯”辩论赛-数据导入3.0.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2018 - 2019学年第一学期（周度月度）阳光之星C.csv";
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -52,6 +52,24 @@ public class ActivityRecordServiceTest {
         System.out.println(ls.size());
     }
 
+    @Test
+    public void importVolunteerActivity(){
+        String url = "C:\\Users\\j10k\\Desktop\\2018-2019学年第一学期迎新志愿者活动.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        for (int i = 1; i < csv.length; i++) {
+            ActivityRecordDO activityRecordDO = new ActivityRecordDO();
+            activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
+            activityRecordDO.setActivityId("201902251836447455470810012019");
+            System.out.println(csv[i][1]);
+            activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
+            activityRecordDO.setScannerUserId("201812010040554783180001201835");
+            activityRecordDO.setTime((int)(Double.valueOf(csv[i][2])*10));
+            activityRecordDO.setType("volunteerActivity");
+            activityRecordDO.setStatus("ENABLE");
+            activityRecordDO.setTerm(TermUtil.getNowTerm());
+            activityRecordDORepo.save(activityRecordDO);
+        }
+    }
     @Test
     public void importPracticeActivity() {
         String url = "C:\\Users\\j10k\\Desktop\\竞赛抵暑期社会实践人员补充名单.csv";
@@ -87,7 +105,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\数据整理.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2018 - 2019学年第一学期（周度月度）阳光之星A.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {

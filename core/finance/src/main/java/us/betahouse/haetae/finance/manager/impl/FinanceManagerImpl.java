@@ -6,6 +6,7 @@ package us.betahouse.haetae.finance.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.finance.dal.service.FinanceMessageDORepoService;
 import us.betahouse.haetae.finance.dal.service.FinanceTotalDORepoService;
 import us.betahouse.haetae.finance.enums.FinanceMessageTypeEnum;
@@ -42,6 +43,7 @@ public class FinanceManagerImpl implements FinanceManager {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public FinanceMessageBO changeStatus(String financeMessageId, String status) {
         FinanceMessageBO financeMessageBO=financeMessageDORepoService.findByFinanceMessageId(financeMessageId);
         financeMessageBO.setStatus(status);
@@ -49,6 +51,7 @@ public class FinanceManagerImpl implements FinanceManager {
             FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
             financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget().subtract(financeMessageBO.getBudget()));
             financeTotalDORepoService.update(financeTotalBO);
+            System.out.println(financeMessageBO);
             return financeMessageDORepoService.update(financeMessageBO);
         }else if(status.equals(FinanceMessageTypeEnum.AUDITED_FAIL.getCode())){
             return financeMessageDORepoService.update(financeMessageBO);
