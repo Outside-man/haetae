@@ -118,6 +118,7 @@ public class FinanceServiceImpl implements FinanceService {
                 .withFinanceInfo(request.getFinanceInfo())
                 .withTrueMoney(request.getTrueMoney())
                 .withTerm(TermUtil.getNowTerm())
+                .withType(request.getType())
                 .build();
         return financeManager.createFinanceMessageByTally(financeMessageBO);
     }

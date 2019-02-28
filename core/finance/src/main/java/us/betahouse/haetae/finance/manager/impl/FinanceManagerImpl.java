@@ -65,8 +65,10 @@ public class FinanceManagerImpl implements FinanceManager {
         financeMessageBO.setFinishTime(new Date());
 
         FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
+        System.out.println(financeTotalBO);
+        System.out.println(financeMessageBO);
         financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget().add(financeMessageBO.getBudget()).subtract(financeMessageBO.getTrueMoney()));
-        financeMessageBO.setTrueMoney(financeTotalBO.getTotalMoney().subtract(financeMessageBO.getTrueMoney()));
+        financeTotalBO.setTotalMoney(financeTotalBO.getTotalMoney().subtract(financeMessageBO.getTrueMoney()));
         financeTotalDORepoService.update(financeTotalBO);
 
         return financeMessageDORepoService.update(financeMessageBO);

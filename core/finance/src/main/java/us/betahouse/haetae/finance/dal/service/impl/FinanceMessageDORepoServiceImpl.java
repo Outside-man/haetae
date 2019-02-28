@@ -51,7 +51,11 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
     @Override
     public PageList<FinanceMessageBO> findByOrganizationIdAndTermAndStatus(String organizationId, String term, String status,Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        return new PageList<>(financeMessageDORepo.findAllByOrganizationIdContainsAndTermContainsAndStatusContains(pageable, organizationId, term, status), this::convert);
+        if(status==null||"".equals(status)){
+            return new PageList<>(financeMessageDORepo.findAllByOrganizationIdAndTermContainsAndStatus(pageable, organizationId, term, status), this::convert);
+        }else{
+            return new PageList<>(financeMessageDORepo.findAllByOrganizationIdContainsAndTermContainsAndStatusContains(pageable, organizationId, term, status), this::convert);
+        }
     }
 
     @Override

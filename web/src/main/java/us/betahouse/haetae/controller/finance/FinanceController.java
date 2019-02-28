@@ -194,6 +194,7 @@ public class FinanceController {
                         .aFinanceManagerRequest()
                         .withFinanceMessageId(request.getFinanceMessageId())
                         .withUserId(request.getUserId())
+                        .withTrueMoney(request.getTrueMoney())
                         .build();
                 return RestResultUtil.buildSuccessResult(financeService.checkMessage(financeManagerRequest, context),"核查提交成功");
             }
@@ -208,7 +209,7 @@ public class FinanceController {
      * @return
      */
     @CheckLogin
-    @PutMapping("/tally")
+    @PostMapping("/tally")
     @Log(loggerName =LoggerName.FINANCE_DIGEST)
     public Result<FinanceMessageBO> tally(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "记账", request, new RestOperateCallBack<FinanceMessageBO>(){
@@ -219,6 +220,7 @@ public class FinanceController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
                 AssertUtil.assertStringNotBlank(request.getFinanceName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "财务名不能为空");
+                AssertUtil.assertStringNotBlank(request.getType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "类型不能为空");
                 AssertUtil.assertNotNull(request.getTrueMoney(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "真实金额不能为空");
                 AssertUtil.assertBigDecimalPositive(request.getTrueMoney(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "真实金额不能为非正");
             }
