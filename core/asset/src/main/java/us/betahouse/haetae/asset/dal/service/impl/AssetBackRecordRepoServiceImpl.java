@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
@@ -49,6 +50,9 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
     @Autowired
     private AssetLoanDORepo assetLoanDORepo;
 
+    @Autowired
+    private OrganizationDORepo organizationDORepo;
+
     /**
      * 归还物资
      *
@@ -71,19 +75,19 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
                 if (assetDO.getRemain() > 0) {
                     assetDO.setStatus("canLoan");
                 }
-                assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain()-assetBackRecordBO.getAmount());
+                assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
                 if (assetLoanRecordDO.getRemain() <= 0 && assetLoanRecordDO.getDistory() == 0) {
                     assetLoanRecordDO.setStatus("Loaded");
                 }
                 break;
             case DESTROY:
                 assetDO.setDestroy(assetDO.getDestroy() + assetBackRecordBO.getAmount());
-                if(assetDO.getDestroy() >= assetDO.getAmount()){
+                if (assetDO.getDestroy() >= assetDO.getAmount()) {
                     assetDO.setStatus("notLoan");
                 }
-                assetLoanRecordDO.setDistory(assetLoanRecordDO.getDistory()+assetBackRecordBO.getAmount());
+                assetLoanRecordDO.setDistory(assetLoanRecordDO.getDistory() + assetBackRecordBO.getAmount());
                 assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
-                if(assetLoanRecordDO.getRemain() <= 0){
+                if (assetLoanRecordDO.getRemain() <= 0) {
                     assetLoanRecordDO.setStatus("Destroyed");
                 }
                 break;
@@ -145,6 +149,8 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
             return null;
         }
         AssetBackRecordBO assetBackRecordBO = new AssetBackRecordBO();
+        AssetDO assetDO = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId());
+        String organizationName = organizationDORepo.findByOrganizationId(assetDO.getOrginazationId()).getOrganizationName();
         assetBackRecordBO.setAmount(assetBackRecordDO.getAmount());
         assetBackRecordBO.setAssetId(assetBackRecordDO.getAssetId());
         assetBackRecordBO.setAssetType(assetBackRecordDO.getAssetType());
@@ -154,6 +160,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         assetBackRecordBO.setRemark(assetBackRecordDO.getRemark());
         assetBackRecordBO.setType(assetBackRecordDO.getType());
         assetBackRecordBO.setUserId(assetBackRecordDO.getUserId());
+        assetBackRecordBO.setOrganizationName(organizationName);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         assetBackRecordBO.setBackTime(formatter.format(assetBackRecordDO.getGmtCreate()));

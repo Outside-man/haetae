@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -92,6 +91,40 @@ public class AssetBackRecordController {
                         .builder();
                 assetBackRecordBO.setAssetName(assetService.findAssetByAssetId(assetManagerRequest, context).getAssetName());
                 return RestResultUtil.buildSuccessResult(assetBackRecordBO, "归还物资成功");
+            }
+        });
+    }
+
+    /**
+     * 消耗品物资直接完结
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @PostMapping(value = "Comsumables")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<String> Comsumables(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "消耗品状态完结", request, new RestOperateCallBack<String>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request.getUserId(), "用户id不能为空");
+                AssertUtil.assertNotNull(request.getLoanRecordId(), "物资借用id不能为空");
+                AssertUtil.assertNotNull(request.getAssetId(), "物资id不能为空");
+            }
+
+            @Override
+            public Result<String> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AssetBackRecordManagerRequest assetBackRecordManagerRequest = AssetBackRecordManagerRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .withLoanRecoedId(request.getLoanRecordId())
+                        .withAssetId(request.getAssetId())
+                        .build();
+                AssetBackRecordBO assetBackRecordBO = assetBackRecordService.consume(assetBackRecordManagerRequest, context);
+                return RestResultUtil.buildSuccessResult("success", "物资状态完结状态成功");
             }
         });
     }

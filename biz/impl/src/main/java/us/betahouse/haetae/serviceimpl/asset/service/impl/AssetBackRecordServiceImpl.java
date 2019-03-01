@@ -43,21 +43,12 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     @Override
     @Transactional
     public AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context) {
-        AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-        String str = null;
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码无效");
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
-        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还记录码无效");
-
-        if(assetLoanRecordBO.getRemain() == 0){
-            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资已全部归还");
-            return null;
-        }
-        if (request.getAmount() > assetLoanRecordBO.getRemain()) {
-            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
-            return null;
-        }
+        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录不存在");
+        AssertUtil.assertNotNull(assetLoanRecordBO.getRemain() == 0 ? null : "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资已全部归还");
+        AssertUtil.assertNotNull(assetLoanRecordBO.getAmount() > assetLoanRecordBO.getRemain() ? null : "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
         return assetBackRecordBO;
@@ -65,9 +56,22 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
 
     @Override
     @Transactional
+    public AssetBackRecordBO consume(AssetBackRecordRequest request, OperateContext context) {
+        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
+        AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
+        request.setType("destroy");
+        request.setAssetType(assetBO.getAssetType());
+        request.setAmount(assetLoanRecordBO.getRemain());
+        AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
+        return assetBackRecordBO;
+    }
+
+
+    @Override
+    @Transactional
     public List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码无效");
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
         return assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
     }
 
