@@ -18,7 +18,6 @@ import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
-import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.text.SimpleDateFormat;

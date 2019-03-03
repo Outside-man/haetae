@@ -43,12 +43,12 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     @Override
     @Transactional
     public AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context) {
-        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
         AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录不存在");
-        AssertUtil.assertNotNull(assetLoanRecordBO.getRemain() == 0 ? null : "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资已全部归还");
-        AssertUtil.assertNotNull(assetLoanRecordBO.getAmount() > assetLoanRecordBO.getRemain() ? null : "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
+        AssetBO assetBO = assetManager.findAssetByAssetID(assetLoanRecordBO.getAssetId());
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
+        AssertUtil.assertTrue(assetLoanRecordBO.getRemain() != 0, "物资已全部归还");
+        AssertUtil.assertTrue(assetLoanRecordBO.getAmount() <= assetLoanRecordBO.getRemain(), "归还数量超出剩余未归还数量");
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
         if(assetBackRecordBO != null){
@@ -57,17 +57,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         return assetBackRecordBO;
     }
 
-    @Override
-    @Transactional
-    public AssetBackRecordBO consume(AssetBackRecordRequest request, OperateContext context) {
-        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
-        request.setType("destroy");
-        request.setAssetType(assetBO.getAssetType());
-        request.setAmount(assetLoanRecordBO.getRemain());
-        AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
-        return assetBackRecordBO;
-    }
+
 
 
     @Override

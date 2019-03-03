@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
@@ -71,17 +70,25 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetBackRecordBO.getLoanRecoedId());
         AssetBackRecordTypeEnum assetBackRecordTypeEnum = AssetBackRecordTypeEnum.getByCode(assetBackRecordBO.getType());
         AssertUtil.assertNotNull(assetBackRecordTypeEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资类型不正确");
-        AssertUtil.assertNotNull(assetLoanRecordDO.getStatus() == AssetLoanRecordStatusEnum.DESTROYED.getCode()
-                || assetLoanRecordDO.getStatus() == AssetLoanRecordStatusEnum.LOADED.getCode(), "物资已全部归还，无法再次提交归还请求");
+        AssertUtil.assertNotNull(assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.LOADED.getCode()) || assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.DESTROYED.getCode()), "物资已全部归还，无法再次提交归还请求");
         switch (assetBackRecordTypeEnum) {
             case BACK:
                 assetDO.setRemain(assetDO.getRemain() + assetBackRecordBO.getAmount());
                 if (assetDO.getRemain() > 0) {
+                    //修改物资实体类信息 变为可借
                     assetDO.setStatus(AssetStatusEnum.ASSET_LOAN.getCode());
                 }
+                //修改借用记录剩余需要归还的数量
                 assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
-                if (assetLoanRecordDO.getRemain() <= 0 && assetLoanRecordDO.getDistory() == 0) {
-                    assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.LOADED.getCode());
+                //如果剩余需要归还的数量==0 则表示物资归还完毕 分状态
+                //情况1：归还完毕但是有损坏的 设置物资借用状态为destroyed
+                //情况2：归还没有损坏的，设置物资借用状态为loaded
+                if (assetLoanRecordDO.getRemain() == 0) {
+                    if (assetLoanRecordDO.getDistory() == 0) {
+                        assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.LOADED.getCode());
+                    } else {
+                        assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.DESTROYED.getCode());
+                    }
                 }
                 break;
             case DESTROY:
@@ -91,28 +98,17 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
                 }
                 assetLoanRecordDO.setDistory(assetLoanRecordDO.getDistory() + assetBackRecordBO.getAmount());
                 assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
-                if (assetLoanRecordDO.getRemain() <= 0) {
+                if (assetLoanRecordDO.getRemain() == 0) {
                     assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.DESTROYED.getCode());
                 }
                 break;
             default:
-                break;
+                AssertUtil.assertTrue(null, "物资归还类型不存在");
         }
-
-        if (assetBackRecordBO.getRemark() != null) {
-            assetLoanRecordDO.setRemark(assetBackRecordBO.getRemark());
-        }
-
-        try {
-            assetDORepo.save(assetDO);
-            assetLoanDORepo.save(assetLoanRecordDO);
-            AssetBackRecordDO assetBackRecordDO = assetBackDORepo.save(convert(assetBackRecordBO));
-            return convert(assetBackRecordDO);
-        } catch (Exception e) {
-            //一个出错另一个会回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
-        return null;
+        assetLoanRecordDO.setRemark(assetBackRecordBO.getRemark());
+        assetLoanDORepo.save(assetLoanRecordDO);
+        assetDORepo.save(assetDO);
+        return convert(assetBackDORepo.save(convert(assetBackRecordBO)));
     }
 
     /**

@@ -15,11 +15,8 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.asset.request.AssetBackRecordRestRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetBackRecordManagerRequest;
-import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetBackRecordManagerRequestBuilder;
-import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
-import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -29,6 +26,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +46,8 @@ public class AssetBackRecordController {
     private AssetBackRecordService assetBackRecordService;
 
     /**
-     * 归还物资记录
+     * 创建归还物资记录
+     * 消耗品和耐用品用同一个接口
      *
      * @param request
      * @param httpServletRequest
@@ -62,8 +61,6 @@ public class AssetBackRecordController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资id不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量不能为空");
                 AssertUtil.assertNotNull(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录id不能为空");
                 AssertUtil.assertNotNull(request.getType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还类型不能为空");
@@ -90,48 +87,17 @@ public class AssetBackRecordController {
     }
 
     /**
-     * 消耗品物资直接完结
+     * 获取归还记录列表分情况
+     * 情况1：接收参数为物资id 返回该物资的所有归还列表
+     * 情况2:接收参数为userid 返回该用户的所有归还记录
+     * 情况3：接收参数为物资借用id，返回该条借用记录的所有归还记录集合
      *
      * @param request
      * @param httpServletRequest
      * @return
      */
     @CheckLogin
-    @PostMapping(value = "Comsumables")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<String> Comsumables(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "消耗品状态完结", request, new RestOperateCallBack<String>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request.getUserId(), "用户id不能为空");
-                AssertUtil.assertNotNull(request.getLoanRecordId(), "物资借用id不能为空");
-                AssertUtil.assertNotNull(request.getAssetId(), "物资id不能为空");
-            }
-
-            @Override
-            public Result<String> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetBackRecordManagerRequest assetBackRecordManagerRequest = AssetBackRecordManagerRequestBuilder.getInstance()
-                        .withUserId(request.getUserId())
-                        .withLoanRecoedId(request.getLoanRecordId())
-                        .withAssetId(request.getAssetId())
-                        .build();
-                AssetBackRecordBO assetBackRecordBO = assetBackRecordService.consume(assetBackRecordManagerRequest, context);
-                return RestResultUtil.buildSuccessResult("success", "物资状态完结状态成功");
-            }
-        });
-    }
-
-    /**
-     * 获取归还记录列表
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/byAssetId")
+    @GetMapping(value = "records")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetBackRecordBO>> getAssetBackRecordList(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
@@ -139,80 +105,30 @@ public class AssetBackRecordController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资id不能为空");
             }
 
             @Override
             public Result<List<AssetBackRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetBackRecordManagerRequest builder = AssetBackRecordManagerRequestBuilder.getInstance()
-                        .withAssetId(request.getAssetId())
-                        .build();
-                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetBackRecordByAssetId(builder, context), "获取列表成功");
+                AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
+                List<AssetBackRecordBO> assetBackRecordBOS= new ArrayList<>();
+                //情况3 传入借用记录id不为空
+                if(request.getLoanRecordId()!=null){
+                    builder.withLoanRecoedId(request.getLoanRecordId());
+                    assetBackRecordBOS=assetBackRecordService.findAssetBackRecordByLoanRecordId(builder.build(), context);
+                }else if(request.getAssetId()!=null){
+                    //情况1 传入物资id
+                    builder.withAssetId(request.getAssetId());
+                    assetBackRecordBOS=assetBackRecordService.findAllAssetBackRecordByAssetId(builder.build(), context);
+                }else{
+                    //情况3 默认获取用户的所有信息
+                    builder.withUserId(request.getUserId());
+                    assetBackRecordBOS=assetBackRecordService.findAllAssetBackRecordByUserId(builder.build(), context);
+                }
+                return RestResultUtil.buildSuccessResult(assetBackRecordBOS, "获取列表成功");
             }
         });
     }
 
-    /**
-     * 获取归还记录列表
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/byUserId")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetBackRecordBO>> getAssetBackRecordListByUserId(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
-
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-            }
-
-            @Override
-            public Result<List<AssetBackRecordBO>> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetBackRecordManagerRequest builder = AssetBackRecordManagerRequestBuilder.getInstance()
-                        .withUserId(request.getUserId())
-                        .build();
-                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAllAssetBackRecordByUserId(builder, context), "获取列表成功");
-            }
-        });
-    }
-
-    /**
-     * 获取归还记录列表
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/byLoanRecordId")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetBackRecordBO>> getAssetBackRecordListByLoanRecordId(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
-
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用id不能为空");
-            }
-
-            @Override
-            public Result<List<AssetBackRecordBO>> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetBackRecordManagerRequest builder = AssetBackRecordManagerRequestBuilder.getInstance()
-                        .withLoanRecoedId(request.getLoanRecordId())
-                        .build();
-                return RestResultUtil.buildSuccessResult(assetBackRecordService.findAssetBackRecordByLoanRecordId(builder, context), "获取列表成功");
-            }
-        });
-    }
 }

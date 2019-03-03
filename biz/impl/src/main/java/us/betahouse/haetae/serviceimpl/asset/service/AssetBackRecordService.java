@@ -24,17 +24,9 @@ public interface AssetBackRecordService {
      */
     AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context);
 
-    /**
-     * 消耗品直接完结记录
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    AssetBackRecordBO consume(AssetBackRecordRequest request, OperateContext context);
+
 
     /**
-     * 查询所有归还记录
      *
      * @param request
      * @param context
@@ -43,7 +35,6 @@ public interface AssetBackRecordService {
     List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context);
 
     /**
-     * 查询所有归还记录
      *
      * @param request
      * @param context
