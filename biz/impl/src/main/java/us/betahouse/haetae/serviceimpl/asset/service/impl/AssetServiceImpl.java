@@ -99,17 +99,15 @@ public class AssetServiceImpl implements AssetService {
     @Override
     //@VerifyPerm(permType = AssetPermType.ASSET_DELETE) 方便测试
     @Transactional(rollbackFor = Exception.class)
-    public Boolean delete(AssetManagerRequest request, OperateContext context) {
+    public void delete(AssetManagerRequest request, OperateContext context) {
         //删除物资信息和物资借用信息
         try {
             assetLoanRecordManager.delete(request.getAssetId());
             assetManager.delete(request.getAssetId());
-            return true;
         } catch (Exception e) {
             //一个出错另一个会回滚
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw new RuntimeException("删除失败");
         }
-        return false;
     }
 
     @Override

@@ -255,11 +255,8 @@ public class AssetController {
                         //鉴权的时候要用
                         .withUserId(request.getUserId())
                         .builder();
-                if(assetService.delete(builder, context)){
-                    return RestResultUtil.buildSuccessResult("删除物资成功");
-                }else {
-                    return RestResultUtil.buildSuccessResult("删除物资失败");
-                }
+                assetService.delete(builder, context);
+                return RestResultUtil.buildSuccessResult("删除物资成功");
             }
         });
     }

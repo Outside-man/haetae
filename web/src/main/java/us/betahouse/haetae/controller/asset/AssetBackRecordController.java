@@ -97,7 +97,7 @@ public class AssetBackRecordController {
      * @return
      */
     @CheckLogin
-    @GetMapping(value = "records")
+    @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetBackRecordBO>> getAssetBackRecordList(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {

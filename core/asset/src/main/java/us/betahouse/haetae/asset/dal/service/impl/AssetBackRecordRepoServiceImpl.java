@@ -5,9 +5,12 @@
 package us.betahouse.haetae.asset.dal.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
@@ -62,6 +65,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
      * @return
      */
     @Override
+    @Transactional
     public AssetBackRecordBO createAssetBackRecord(AssetBackRecordBO assetBackRecordBO) {
         if (StringUtils.isBlank(assetBackRecordBO.getBackRecoedId())) {
             assetBackRecordBO.setBackRecoedId(assetBizFactory.getAssetBackId());
@@ -105,10 +109,19 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
             default:
                 AssertUtil.assertTrue(null, "物资归还类型不存在");
         }
-        assetLoanRecordDO.setRemark(assetBackRecordBO.getRemark());
-        assetLoanDORepo.save(assetLoanRecordDO);
-        assetDORepo.save(assetDO);
-        return convert(assetBackDORepo.save(convert(assetBackRecordBO)));
+        if (assetBackRecordBO.getRemark() != null) {
+            assetLoanRecordDO.setRemark(assetBackRecordBO.getRemark());
+        }
+
+        try {
+            assetDORepo.save(assetDO);
+            assetLoanDORepo.save(assetLoanRecordDO);
+            AssetBackRecordDO assetBackRecordDO = assetBackDORepo.save(convert(assetBackRecordBO));
+            return convert(assetBackRecordDO);
+        } catch (Exception e) {
+            //抛出异常
+            throw new RuntimeException("归还物资失败");
+        }
     }
 
     /**
@@ -117,8 +130,8 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
      */
     @Override
     public List<AssetBackRecordBO> queryAssetBackRecordByUserId(String userId) {
-        List<AssetBackRecordDO> assetBcakRecordDOList = assetBackDORepo.findAllByUserId(userId);
-        return CollectionUtils.toStream(assetBcakRecordDOList)
+        List<AssetBackRecordDO> assetBackRecordDOList = assetBackDORepo.findAllByUserId(userId);
+        return CollectionUtils.toStream(assetBackRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
@@ -130,8 +143,8 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
      */
     @Override
     public List<AssetBackRecordBO> queryAssetBackRecordByAssetId(String assetId) {
-        List<AssetBackRecordDO> assetBcakRecordDOList = assetBackDORepo.findAllByAssetId(assetId);
-        return CollectionUtils.toStream(assetBcakRecordDOList)
+        List<AssetBackRecordDO> assetBackRecordDOList = assetBackDORepo.findAllByAssetId(assetId);
+        return CollectionUtils.toStream(assetBackRecordDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
@@ -160,6 +173,8 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         String organizationName = organizationDORepo.findByOrganizationId(assetDO.getOrginazationId()).getOrganizationName();
         assetBackRecordBO.setAmount(assetBackRecordDO.getAmount());
         assetBackRecordBO.setAssetId(assetBackRecordDO.getAssetId());
+        String assetName = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId()).getAssetName();
+        assetBackRecordBO.setAssetName(assetName);
         assetBackRecordBO.setAssetType(assetBackRecordDO.getAssetType());
         assetBackRecordBO.setBackRecoedId(assetBackRecordDO.getBackRecoedId());
         assetBackRecordBO.setExtInfo(JSON.parseObject(assetBackRecordDO.getExtInfo(), Map.class));
