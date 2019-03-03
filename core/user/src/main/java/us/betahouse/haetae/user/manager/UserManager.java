@@ -5,7 +5,6 @@
 package us.betahouse.haetae.user.manager;
 
 import us.betahouse.haetae.user.model.CommonUser;
-import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.request.UserManageRequest;
 
 

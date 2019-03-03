@@ -50,9 +50,6 @@ public class AssetLoanRecordController {
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
 
-    @Autowired
-    private UserInfoRepoService userInfoRepoService;
-
     /**
      * 创建借用记录
      *
@@ -87,7 +84,7 @@ public class AssetLoanRecordController {
                         .withAssetType(request.getAssetType())
                         .withRemark(request.getRemark())
                         //设置借用记录中状态为Loading (借出)
-                        .withStatus(AssetLoanRecordStatusEnum.ASSET_LOAN_RECORD_LOAN.getCode())
+                        .withStatus(AssetLoanRecordStatusEnum.LOAN.getCode())
                         .withExtInfo(request.getExtInfo())
                         .withAssetInfo(request.getAssetInfo())
                         .build();

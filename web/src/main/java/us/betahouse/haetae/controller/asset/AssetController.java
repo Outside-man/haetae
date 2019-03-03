@@ -60,7 +60,11 @@ public class AssetController {
     private AssetRepoService assetRepoService;
 
     /**
-     * 添加物资
+     * 创建物资
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
      */
     @CheckLogin
     @PostMapping
