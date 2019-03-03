@@ -15,9 +15,9 @@ import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
-import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
@@ -37,9 +37,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Autowired
     private AssetLoanDORepo assetLoanDORepo;
 
-    /**
-     * id工厂
-     */
     @Autowired
     private BizIdFactory assetBizFactory;
 
@@ -59,21 +56,15 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             assetLoanRecordBO.setLoanRecordId(assetBizFactory.getAssetLoadId());
         }
         AssetDO assetDO = assetDORepo.findByAssetId(assetLoanRecordBO.getAssetId());
-        int num = assetDO.getRemain() - assetLoanRecordBO.getAmount();
-        if (num >= 0) {
-            assetDO.setRemain(num);
-            if (assetDO.getRemain() == 0) {
-                if (assetDO.getDestroy() == assetDO.getAmount()) {
-                    assetDO.setStatus("allDestroy");
-                } else {
-                    assetDO.setStatus("notLoan");
-                }
-            }
-            assetDORepo.save(assetDO);
-        } else {
-            AssertUtil.assertNotNull(null, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用物资数量不能超过物资剩余数量");
+        //当前减去借用后剩余的物资数量
+        int nowRemainNumber = assetDO.getRemain() - assetLoanRecordBO.getAmount();
+        AssertUtil.assertTrue(nowRemainNumber >= 0, "借用物资数量不能超过物资剩余数量");
+        assetDO.setRemain(nowRemainNumber);
+        //物资状态为可借和不可借 如果剩余数量为0 则表示物资数量不足，改为不可借
+        if (assetDO.getRemain() == 0) {
+            assetDO.setStatus(AssetStatusEnum.ASSET_NOT_LOAN.getCode());
         }
-
+        assetDORepo.save(assetDO);
         return convert(assetLoanDORepo.save(convert(assetLoanRecordBO)));
     }
 
@@ -220,6 +211,8 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     }
 
     /**
+     *
+     * DO转BO BO添加学生部分信息
      * @param assetLoanRecordDO
      * @return
      */
@@ -229,7 +222,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = new AssetLoanRecordBO();
-        String assetName=assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
+        String assetName = assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
         assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecordId());
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
@@ -268,7 +261,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordDO.setStatus(assetLoanRecordBO.getStatus());
         assetLoanRecordDO.setExtInfo(JSON.toJSONString(assetLoanRecordBO.getExtInfo()));
         assetLoanRecordDO.setAssetInfo(assetLoanRecordBO.getAssetInfo());
-
         return assetLoanRecordDO;
     }
 

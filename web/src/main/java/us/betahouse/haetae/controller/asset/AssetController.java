@@ -39,7 +39,7 @@ import java.util.List;
  * @author guofan.cp
  * @version : AssetController.java 2019/01/23 9:06 guofan.cp
  */
-@CrossOrigin
+@CrossOrigin(origins = "http://119.23.188.92/")
 @RestController
 @RequestMapping(value = "/asset")
 public class AssetController {

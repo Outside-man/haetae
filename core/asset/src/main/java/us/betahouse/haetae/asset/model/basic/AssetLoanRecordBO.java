@@ -6,7 +6,6 @@ package us.betahouse.haetae.asset.model.basic;
 
 import us.betahouse.util.common.ToString;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +25,9 @@ public class AssetLoanRecordBO extends ToString {
      * 物资ID
      */
     private String assetId;
+    /**
+     * 物资名字
+     */
     private String assetName;
     /**
      * 物资类型
@@ -35,11 +37,14 @@ public class AssetLoanRecordBO extends ToString {
      * 用户ID
      */
     private String userId;
-    private String userName;
+    /**
+     * 借用者名字
+     */
+    private String realName;
     /**
      * 用户学号
      */
-    private String userNum;
+    private String stuId;
     /**
      * 物资归还状态
      */
@@ -142,20 +147,20 @@ public class AssetLoanRecordBO extends ToString {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getRealName() {
+        return realName;
     }
 
-    public String getUserNum() {
-        return userNum;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public void setUserNum(String userNum) {
-        this.userNum = userNum;
+    public String getStuId() {
+        return stuId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
     }
 
     public String getStatus() {
