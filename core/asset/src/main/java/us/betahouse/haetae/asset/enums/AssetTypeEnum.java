@@ -13,9 +13,9 @@ import org.apache.commons.lang.StringUtils;
  * @version : AssetTypeEnum.java 2019/01/24 8:56 guofan.cp
  */
 public enum AssetTypeEnum {
-    ASSET_CONSUME("consumable", "消耗品"),
+    ASSET_CONSUME("Consumable", "消耗品"),
 
-    ASSET_DURABLE("durable", "耐用品");
+    ASSET_DURABLE("Durable", "耐用品");
 
     private String code;
 

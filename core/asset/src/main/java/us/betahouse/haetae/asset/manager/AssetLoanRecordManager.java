@@ -70,4 +70,12 @@ public interface AssetLoanRecordManager {
      * @return
      */
     List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId);
+
+    /**
+     * 通过物资id删除物资借用记录
+     *
+     * @param assetId
+     * @return
+     */
+    void delete(String assetId);
 }
