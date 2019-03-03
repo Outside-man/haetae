@@ -47,9 +47,6 @@ public class AssetBackRecordController {
     @Autowired
     private AssetBackRecordService assetBackRecordService;
 
-    @Autowired
-    private AssetService assetService;
-
     /**
      * 归还物资记录
      *
@@ -85,7 +82,9 @@ public class AssetBackRecordController {
                         .withType(request.getType())
                         .withUserId(request.getUserId())
                         .build();
-                return RestResultUtil.buildSuccessResult(assetBackRecordService.create(assetBackRecordManagerRequest, context), "归还物资成功");
+                AssetBackRecordBO assetBackRecordBO = assetBackRecordService.create(assetBackRecordManagerRequest, context);
+                AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资失败");
+                return RestResultUtil.buildSuccessResult(assetBackRecordBO, "归还物资成功");
             }
         });
     }

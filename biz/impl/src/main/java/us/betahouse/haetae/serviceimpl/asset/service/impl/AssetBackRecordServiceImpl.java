@@ -51,7 +51,9 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         AssertUtil.assertNotNull(assetLoanRecordBO.getAmount() > assetLoanRecordBO.getRemain() ? null : "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
-        assetBackRecordBO.setAssetName(assetBO.getAssetName());
+        if(assetBackRecordBO != null){
+            assetBackRecordBO.setAssetName(assetBO.getAssetName());
+        }
         return assetBackRecordBO;
     }
 

@@ -107,7 +107,6 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
             assetDORepo.save(assetDO);
             assetLoanDORepo.save(assetLoanRecordDO);
             AssetBackRecordDO assetBackRecordDO = assetBackDORepo.save(convert(assetBackRecordBO));
-            
             return convert(assetBackRecordDO);
         } catch (Exception e) {
             //一个出错另一个会回滚
