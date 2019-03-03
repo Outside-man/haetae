@@ -70,7 +70,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         assetDO.setAssetName(assetBO.getAssetName());
         assetDO.setRemain(assetBO.getAssetRemain());
         assetDO.setAmount(assetBO.getAssetAmount());
-        assetDO.setGmtModified(new Date());
         return convert(assetDORepo.save(assetDO));
     }
 

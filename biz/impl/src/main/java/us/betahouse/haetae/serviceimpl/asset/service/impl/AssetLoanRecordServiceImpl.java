@@ -62,7 +62,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
                 return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
             case ASSET_DESTROY:
                 AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资耗尽");
-                return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
+                return assetLoanRecordManager.findDestroyRecordByAssetId(request.getAssetId());
             default:
                 break;
         }
