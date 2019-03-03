@@ -57,9 +57,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         }
         AssetDO assetDO = assetDORepo.findByAssetId(assetLoanRecordBO.getAssetId());
         //当前减去借用后剩余的物资数量
-        int nowRemainNumber = assetDO.getRemain() - assetLoanRecordBO.getAmount();
-        AssertUtil.assertTrue(nowRemainNumber >= 0, "借用物资数量不能超过物资剩余数量");
-        assetDO.setRemain(nowRemainNumber);
+        assetDO.setRemain(assetDO.getRemain() - assetLoanRecordBO.getAmount());
         //物资状态为可借和不可借 如果剩余数量为0 则表示物资数量不足，改为不可借
         if (assetDO.getRemain() == 0) {
             assetDO.setStatus(AssetStatusEnum.ASSET_NOT_LOAN.getCode());
@@ -92,10 +90,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             assetLoanRecordDO.setAssetInfo(assetLoanRecordDO1.getAssetInfo());
         }
         if (0 == assetLoanRecordDO.getRemain()) {
-            assetLoanRecordDO.setStatus("assetNotLoan");
+            assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.LOADED.getCode());
         }
         if (assetLoanRecordDO.getAmount() == assetLoanRecordDO.getDistory()) {
-            assetLoanRecordDO.setStatus("assetDistory");
+            assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.DESTROYED.getCode());
         }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));
@@ -222,7 +220,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = new AssetLoanRecordBO();
-        String assetName = assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
         assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecordId());
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
@@ -232,6 +229,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setUserId(assetLoanRecordDO.getUserId());
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
         assetLoanRecordBO.setRemark(assetLoanRecordDO.getRemark());
+        String assetName = assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
         assetLoanRecordBO.setAssetName(assetName);
         assetLoanRecordBO.setExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class));
         assetLoanRecordBO.setAssetInfo(assetLoanRecordDO.getAssetInfo());

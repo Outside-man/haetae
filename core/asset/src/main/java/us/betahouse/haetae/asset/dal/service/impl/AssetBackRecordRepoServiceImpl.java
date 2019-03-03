@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
@@ -17,6 +18,8 @@ import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
 import us.betahouse.haetae.asset.enums.AssetBackRecordTypeEnum;
+import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.util.enums.RestResultCode;
@@ -68,27 +71,28 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetBackRecordBO.getLoanRecoedId());
         AssetBackRecordTypeEnum assetBackRecordTypeEnum = AssetBackRecordTypeEnum.getByCode(assetBackRecordBO.getType());
         AssertUtil.assertNotNull(assetBackRecordTypeEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资类型不正确");
-        AssertUtil.assertNotNull(assetLoanRecordDO.getStatus() == "Destroy" || assetLoanRecordDO.getStatus() == "Loaded", "物资已全部归还，无法再次提交归还请求");
+        AssertUtil.assertNotNull(assetLoanRecordDO.getStatus() == AssetLoanRecordStatusEnum.DESTROYED.getCode()
+                || assetLoanRecordDO.getStatus() == AssetLoanRecordStatusEnum.LOADED.getCode(), "物资已全部归还，无法再次提交归还请求");
         switch (assetBackRecordTypeEnum) {
             case BACK:
                 assetDO.setRemain(assetDO.getRemain() + assetBackRecordBO.getAmount());
                 if (assetDO.getRemain() > 0) {
-                    assetDO.setStatus("canLoan");
+                    assetDO.setStatus(AssetStatusEnum.ASSET_LOAN.getCode());
                 }
                 assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
                 if (assetLoanRecordDO.getRemain() <= 0 && assetLoanRecordDO.getDistory() == 0) {
-                    assetLoanRecordDO.setStatus("Loaded");
+                    assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.LOADED.getCode());
                 }
                 break;
             case DESTROY:
                 assetDO.setDestroy(assetDO.getDestroy() + assetBackRecordBO.getAmount());
                 if (assetDO.getDestroy() >= assetDO.getAmount()) {
-                    assetDO.setStatus("notLoan");
+                    assetDO.setStatus(AssetStatusEnum.ASSET_NOT_LOAN.getCode());
                 }
                 assetLoanRecordDO.setDistory(assetLoanRecordDO.getDistory() + assetBackRecordBO.getAmount());
                 assetLoanRecordDO.setRemain(assetLoanRecordDO.getRemain() - assetBackRecordBO.getAmount());
                 if (assetLoanRecordDO.getRemain() <= 0) {
-                    assetLoanRecordDO.setStatus("Destroyed");
+                    assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.DESTROYED.getCode());
                 }
                 break;
             default:
@@ -99,9 +103,17 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
             assetLoanRecordDO.setRemark(assetBackRecordBO.getRemark());
         }
 
-        assetLoanDORepo.save(assetLoanRecordDO);
-        assetDORepo.save(assetDO);
-        return convert(assetBackDORepo.save(convert(assetBackRecordBO)));
+        try {
+            assetDORepo.save(assetDO);
+            assetLoanDORepo.save(assetLoanRecordDO);
+            AssetBackRecordDO assetBackRecordDO = assetBackDORepo.save(convert(assetBackRecordBO));
+            
+            return convert(assetBackRecordDO);
+        } catch (Exception e) {
+            //一个出错另一个会回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return null;
     }
 
     /**

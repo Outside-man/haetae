@@ -7,6 +7,7 @@ package us.betahouse.haetae.serviceimpl.asset.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
@@ -34,19 +35,13 @@ import java.util.List;
  * @version : AssetServiceImpl.java 2019/01/20 23:58 guofan.cp
  */
 @Service
-public class AssetServiceImpl implements AssetService  {
+public class AssetServiceImpl implements AssetService {
 
     @Autowired
     private AssetManager assetManager;
 
     @Autowired
     private OrganizationRepoService organizationRepoService;
-
-    @Autowired
-    private AssetBackDORepo assetBackDORepo;
-
-    @Autowired
-    private AssetLoanDORepo assetLoanDORepo;
 
     @Autowired
     private AssetDORepo assetDORepo;
@@ -104,10 +99,17 @@ public class AssetServiceImpl implements AssetService  {
     @Override
     //@VerifyPerm(permType = AssetPermType.ASSET_DELETE) 方便测试
     @Transactional(rollbackFor = Exception.class)
-    public void delete(AssetManagerRequest request, OperateContext context) {
+    public Boolean delete(AssetManagerRequest request, OperateContext context) {
         //删除物资信息和物资借用信息
-        assetLoanRecordManager.delete(request.getAssetId());
-        assetManager.delete(request.getAssetId());
+        try {
+            assetLoanRecordManager.delete(request.getAssetId());
+            assetManager.delete(request.getAssetId());
+            return true;
+        } catch (Exception e) {
+            //一个出错另一个会回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return false;
     }
 
     @Override

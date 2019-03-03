@@ -39,7 +39,7 @@ public interface AssetService {
      * @param request
      * @param context
      */
-    void delete(AssetManagerRequest request, OperateContext context);
+    Boolean delete(AssetManagerRequest request, OperateContext context);
 
     /**
      * @param request

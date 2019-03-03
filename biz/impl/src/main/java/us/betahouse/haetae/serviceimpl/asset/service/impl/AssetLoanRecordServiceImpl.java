@@ -18,10 +18,10 @@ import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -40,9 +40,6 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     private AssetLoanRecordManager assetLoanRecordManager;
 
     @Autowired
-    private UserRepoService userRepoService;
-
-    @Autowired
     private UserInfoRepoService userInfoRepoService;
 
     @Override
@@ -53,36 +50,42 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         //正则表达式来检验输入数量中是否有非法输入
         Boolean isNumber = Pattern.matches("[0-9]*", request.getAmount().toString());
         AssertUtil.assertTrue(isNumber, "输入物资的数量包含非法字符");
-        AssertUtil.assertTrue(request.getAmount() > assetBO.getAssetRemain(), "借用数量不能大于物资剩余数量");
-        AssertUtil.assertTrue(assetBO.getAssetStatus().equals(AssetStatusEnum.ASSET_LOAN), "物资不可借");
+        System.out.println(assetBO.getAssetRemain());
+        System.out.println(request.getAmount());
+        AssertUtil.assertTrue(request.getAmount() <= assetBO.getAssetRemain(), "借用数量不能大于物资剩余数量");
+        AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
+        AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
+        AssertUtil.assertTrue(assetBO.getAssetStatus().equals(AssetStatusEnum.ASSET_LOAN.getCode()), "物资不可借");
         request.setAssetType(assetBO.getAssetType());
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
         //借用记录返回添加用户学号和用户真实姓名
-        assetLoanRecordBO.setStuId(userRepoService.queryByUserId(request.getUserId()).getUserName());
+        assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
         assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         return assetLoanRecordBO;
     }
 
 
     @Override
+    @Transactional
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(AssetLoanRecordRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
         List<AssetLoanRecordBO> assetLoanRecordBOS=assetLoanRecordManager.findAllAssetLoanRecordByAssetId(request.getAssetId());
         assetLoanRecordBOS.forEach(assetLoanRecordBO -> {
-            assetLoanRecordBO.setStuId(userRepoService.queryByUserId(request.getUserId()).getUserName());
+            assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
             assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         });
         return assetLoanRecordBOS;
     }
 
     @Override
+    @Transactional
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByUserId(AssetLoanRecordRequest request, OperateContext context) {
-        List<AssetLoanRecordBO> assetLoanRecordBOS=assetLoanRecordManager.findAssetLoanRecordByUserId(request.getAssetId());
-        assetLoanRecordBOS.forEach(assetLoanRecordBO -> {
-            assetLoanRecordBO.setStuId(userRepoService.queryByUserId(request.getUserId()).getUserName());
+        List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordManager.findAssetLoanRecordByUserId(request.getUserId());
+        for (AssetLoanRecordBO assetLoanRecordBO : assetLoanRecordBOS) {
+            assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
             assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
-        });
+        }
         return assetLoanRecordBOS;
     }
 
