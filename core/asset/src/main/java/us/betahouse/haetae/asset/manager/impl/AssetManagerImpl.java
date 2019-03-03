@@ -51,22 +51,10 @@ public class AssetManagerImpl implements AssetManager {
                 .withAssetType(request.getAssetType())
                 .withAssetOrginnaztionId(request.getAssetOrganizationId())
                 .withAssetStatus(request.getAssetStatus())
+                .withAssetRemain(request.getAssetRemain())
+                .withAssetAmount(request.getAssetAmount())
+                .withAssetDestroy(request.getAssetDestroy())
                 .withAssetOrginnaztionName(request.getAssetOrganizationName());
-        if (request.getAssetRemain() != -1) {
-            assetBOBuilder.withAssetRemain(request.getAssetRemain());
-        } else {
-            assetBOBuilder.withAssetRemain(-1);
-        }
-        if (request.getAssetAmount() != -1) {
-            assetBOBuilder.withAssetAmount(request.getAssetAmount());
-        } else {
-            assetBOBuilder.withAssetAmount(-1);
-        }
-        if (request.getAssetDestroy() != -1) {
-            assetBOBuilder.withAssetDestroy(request.getAssetDestroy());
-        } else {
-            assetBOBuilder.withAssetDestroy(-1);
-        }
         return assetRepoService.updateAsset(assetBOBuilder.builder());
     }
 
@@ -76,9 +64,10 @@ public class AssetManagerImpl implements AssetManager {
     }
 
     @Override
-    public List<AssetBO> findAll(){
+    public List<AssetBO> findAll() {
         return assetRepoService.findAll();
     }
+
     /**
      * 查找物资
      *
@@ -91,7 +80,8 @@ public class AssetManagerImpl implements AssetManager {
     }
 
     /**
-+     * @param organizationId
+     * +     * @param organizationId
+     *
      * @return
      */
     @Override

@@ -52,10 +52,10 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
         switch (assetStatusEnum) {
-            case ASSET_ALLLOAN:
+            case ASSET_ALL_LOAN:
                 AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资全部借出");
                 return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
-            case ASSET_DISTORY:
+            case ASSET_DISTROY:
                 AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资耗尽");
                 return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
             default:

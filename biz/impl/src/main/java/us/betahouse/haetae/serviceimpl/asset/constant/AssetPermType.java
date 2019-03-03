@@ -23,4 +23,9 @@ public class AssetPermType {
      * 物资删除
      */
     public final static String ASSET_DELETE = "ASSET_DELETE";
+
+    /**
+     * 物资查阅
+     */
+    public final static String ASSET_SEEK = "ASSET_SEEK";
 }

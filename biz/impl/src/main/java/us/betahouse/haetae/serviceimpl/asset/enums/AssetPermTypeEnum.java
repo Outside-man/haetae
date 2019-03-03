@@ -17,7 +17,8 @@ public enum AssetPermTypeEnum implements PermType {
     //物资权限相关
     ASSET_CREATE(AssetPermType.ASSET_CREATE,"物资创建",true),
     ASSET_DELETE(AssetPermType.ASSET_DELETE,"物资删除",true),
-    ASSET_UPDATE(AssetPermType.ASSET_UPDATE,"物资更新",true);
+    ASSET_UPDATE(AssetPermType.ASSET_UPDATE,"物资更新",true),
+    ASSET_SEEK(AssetPermType.ASSET_SEEK,"物资查看",true);
 
     private String code;
 

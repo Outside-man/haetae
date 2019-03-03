@@ -21,9 +21,7 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -210,6 +208,15 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Override
     public List<AssetLoanRecordBO> queryAssetLoanRecordByName(String name) {
         return null;
+    }
+
+    /**
+     * @param assetId
+     * @return
+     */
+    @Override
+    public void delete(String assetId) {
+        assetLoanDORepo.deleteByAssetId(assetId);
     }
 
     /**

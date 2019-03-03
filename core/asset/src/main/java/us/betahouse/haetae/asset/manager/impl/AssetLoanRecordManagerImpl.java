@@ -105,4 +105,13 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
     public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryAssetLoanRecordByAssetId(assetId);
     }
+
+    /**
+     * @param assetId
+     * @return
+     */
+    @Override
+    public void delete(String assetId) {
+        assetLoanRecordRepoService.delete(assetId);
+    }
 }
