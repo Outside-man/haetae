@@ -59,7 +59,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
         //借用记录返回添加用户学号和用户真实姓名
         assetLoanRecordBO.setStuId(userRepoService.queryByUserId(request.getUserId()).getUserName());
-        assetLoanRecordBO.setRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+        assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         return assetLoanRecordBO;
     }
 
@@ -71,7 +71,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         List<AssetLoanRecordBO> assetLoanRecordBOS=assetLoanRecordManager.findAllAssetLoanRecordByAssetId(request.getAssetId());
         assetLoanRecordBOS.forEach(assetLoanRecordBO -> {
             assetLoanRecordBO.setStuId(userRepoService.queryByUserId(request.getUserId()).getUserName());
-            assetLoanRecordBO.setRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+            assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         });
         return assetLoanRecordBOS;
     }
@@ -81,7 +81,7 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         List<AssetLoanRecordBO> assetLoanRecordBOS=assetLoanRecordManager.findAssetLoanRecordByUserId(request.getAssetId());
         assetLoanRecordBOS.forEach(assetLoanRecordBO -> {
             assetLoanRecordBO.setStuId(userRepoService.queryByUserId(request.getUserId()).getUserName());
-            assetLoanRecordBO.setRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+            assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         });
         return assetLoanRecordBOS;
     }
@@ -90,6 +90,8 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
         AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借取记录不存在");
+        assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
+        assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         return assetLoanRecordBO;
     }
 }

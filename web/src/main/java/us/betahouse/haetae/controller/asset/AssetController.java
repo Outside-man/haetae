@@ -63,7 +63,7 @@ public class AssetController {
      * 添加物资
      */
     @CheckLogin
-    @PostMapping(value = "asset")
+    @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBO> addAsset(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "新增物资", request, new RestOperateCallBack<AssetBO>() {
@@ -119,7 +119,7 @@ public class AssetController {
      * @return
      */
     @CheckLogin
-    @PutMapping(value = "asset")
+    @PutMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBO> updateAsset(AssetRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "更新物资信息", request, new RestOperateCallBack<AssetBO>() {
@@ -158,7 +158,7 @@ public class AssetController {
      * @return
      */
     @CheckLogin
-    @GetMapping("asset")
+    @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBO> AssetStatus(AssetRestRequest restRequest, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "判断物资状态", restRequest, new RestOperateCallBack<AssetBO>() {
@@ -231,7 +231,7 @@ public class AssetController {
      * @param httpServletRequest
      * @return
      */
-    @DeleteMapping(value = "/asset")
+    @DeleteMapping
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<AssetBO> deleteAsset(AssetRestRequest request, HttpServletRequest httpServletRequest) {

@@ -25,6 +25,8 @@ import us.betahouse.util.validator.MultiValidator;
 
 import java.util.List;
 
+import static us.betahouse.haetae.user.dal.convert.EntityConverter.convert;
+
 
 /**
  * 用户管理器

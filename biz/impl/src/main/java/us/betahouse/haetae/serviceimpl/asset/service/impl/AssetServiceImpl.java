@@ -34,7 +34,7 @@ import java.util.List;
  * @version : AssetServiceImpl.java 2019/01/20 23:58 guofan.cp
  */
 @Service
-public class AssetServiceImpl implements AssetService {
+public class AssetServiceImpl implements AssetService  {
 
     @Autowired
     private AssetManager assetManager;

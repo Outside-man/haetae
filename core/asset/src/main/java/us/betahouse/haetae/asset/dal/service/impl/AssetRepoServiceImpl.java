@@ -22,7 +22,6 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -59,8 +58,8 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     }
 
     /**
-     *更新物资数据库表中物资的信息
-     *名字和剩余数量和总数和物资的状态
+     * 更新物资
+     *
      * @param assetBO
      * @return
      */
@@ -71,7 +70,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         assetDO.setAssetName(assetBO.getAssetName());
         assetDO.setRemain(assetBO.getAssetRemain());
         assetDO.setAmount(assetBO.getAssetAmount());
-        assetDO.setGmtModified(new Date());
         return convert(assetDORepo.save(assetDO));
     }
 

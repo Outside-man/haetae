@@ -50,6 +50,9 @@ public class AssetLoanRecordController {
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
 
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
+
     /**
      * 创建借用记录
      *

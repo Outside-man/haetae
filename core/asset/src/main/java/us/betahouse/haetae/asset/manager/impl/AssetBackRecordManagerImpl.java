@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.asset.builder.AssetBackRecordBOBulider;
 import us.betahouse.haetae.asset.dal.service.AssetBackRecordRepoService;
+import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.manager.AssetBackRecordManager;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.asset.request.AssetBackRecordRequest;
