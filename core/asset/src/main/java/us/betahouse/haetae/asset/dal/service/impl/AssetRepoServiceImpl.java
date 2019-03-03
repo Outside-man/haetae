@@ -138,18 +138,18 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         String assetStatusCode = null;
         //物资不存在
         if (assetDO == null) {
-            assetStatusCode = AssetStatusEnum.ASSET_NOTEXISTENCE.getCode();
+            assetStatusCode = AssetStatusEnum.ASSET_NOT_EXISTENCE.getCode();
             return assetStatusCode;
         }
         //物资不可借用状态分情况
         if (assetDO.getStatus().equals("notLoan")) {
             //暂无物资
             if (assetDO.getAmount() - assetDO.getDestroy() == 0) {
-                assetStatusCode = AssetStatusEnum.ASSET_TEMPNOTLOAN.getCode();
+                assetStatusCode = AssetStatusEnum.ASSET_TEMP_NOT_LOAN.getCode();
             }
             //全部借出
             else {
-                assetStatusCode = AssetStatusEnum.ASSET_ALLLOAN.getCode();
+                assetStatusCode = AssetStatusEnum.ASSET_ALL_LOAN.getCode();
             }
         }
         //物资可借用

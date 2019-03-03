@@ -51,6 +51,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         AssertUtil.assertNotNull(assetLoanRecordBO.getAmount() > assetLoanRecordBO.getRemain() ? null : "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
+        assetBackRecordBO.setAssetName(assetBO.getAssetName());
         return assetBackRecordBO;
     }
 
@@ -68,23 +69,37 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
 
 
     @Override
-    @Transactional
     public List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
-        return assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
+        for (AssetBackRecordBO assetBackRecordBO : assetBackRecordBOS) {
+            assetBackRecordBO.setAssetName(assetBO.getAssetName());
+        }
+        return assetBackRecordBOS;
     }
 
     @Override
-    @Transactional
     public List<AssetBackRecordBO> findAllAssetBackRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
-        return assetBackRecordManager.findAllAssetBackRecordByUserId(request.getUserId());
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByUserId(request.getAssetId());
+        if (assetBackRecordBOS != null) {
+            AssetBO assetBO = assetManager.findAssetByAssetID(assetBackRecordBOS.get(0).getAssetId());
+            for (AssetBackRecordBO assetBackRecordBO : assetBackRecordBOS) {
+                assetBackRecordBO.setAssetName(assetBO.getAssetName());
+            }
+        }
+
+        return assetBackRecordBOS;
     }
 
     @Override
     public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context) {
-        List<AssetBackRecordBO> assetBackRecordBO = assetBackRecordManager.findAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
-        AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "无对应归还记录");
-        return assetBackRecordBO;
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
+        AssertUtil.assertNotNull(assetBackRecordBOS, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "无对应归还记录");
+        AssetBO assetBO = assetManager.findAssetByAssetID(assetBackRecordBOS.get(0).getAssetId());
+        for (AssetBackRecordBO assetBackRecordBO : assetBackRecordBOS) {
+            assetBackRecordBO.setAssetName(assetBO.getAssetName());
+        }
+        return assetBackRecordBOS;
     }
 }

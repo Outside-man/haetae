@@ -159,10 +159,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             AssetLoanRecordStatusEnum assetLoanRecordStatusEnum = AssetLoanRecordStatusEnum
                     .getByCode(assetLoanRecordDOList.get(i).getStatus());
             switch (assetLoanRecordStatusEnum) {
-                case ASSET_LOAN_RECORD_LOAN:
+                case LOADED:
                     assetLoanRecordDOList.remove(i);
                     break;
-                case ASSET_LOAN_RECORD_NOTLOAN:
+                case LOAN:
                     assetLoanRecordDOList.remove(i);
                     break;
                 default:
@@ -187,10 +187,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             AssetLoanRecordStatusEnum assetLoanRecordStatusEnum = AssetLoanRecordStatusEnum
                     .getByCode(assetLoanRecordDOList.get(i).getStatus());
             switch (assetLoanRecordStatusEnum) {
-                case ASSET_LOAN_RECORD_LOAN:
+                case DESTROYED:
                     assetLoanRecordDOList.remove(i);
                     break;
-                case ASSET_LOAN_RECORD_DESTORY:
+                case LOADED:
                     assetLoanRecordDOList.remove(i);
                     break;
                 default:
