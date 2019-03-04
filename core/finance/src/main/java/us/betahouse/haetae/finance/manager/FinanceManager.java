@@ -9,6 +9,8 @@ import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.finance.request.FinanceRequest;
 
+import java.util.List;
+
 /**
  * @author MessiahJK
  * @version : FinanceManager.java 2019/02/22 0:39 MessiahJK
@@ -23,6 +25,14 @@ public interface FinanceManager {
      * @return
      */
     PageList<FinanceMessageBO> findMessage(FinanceRequest request);
+
+    /**
+     * 查询我的提交信息
+     *
+     * @param request
+     * @return
+     */
+    List<FinanceMessageBO> findMyMessage(FinanceRequest request);
 
     /**
      * 通过财务信息id查询财务信息实体

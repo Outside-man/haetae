@@ -16,8 +16,12 @@ import us.betahouse.haetae.finance.dal.service.FinanceMessageDORepoService;
 import us.betahouse.haetae.finance.idfactory.BizIdFactory;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.common.PageList;
+import us.betahouse.util.utils.CollectionUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author MessiahJK
@@ -52,10 +56,21 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
     public PageList<FinanceMessageBO> findByOrganizationIdAndTermAndStatus(String organizationId, String term, String status,Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
         if(status==null||"".equals(status)){
-            return new PageList<>(financeMessageDORepo.findAllByOrganizationIdAndTermContainsAndStatus(pageable, organizationId, term, status), this::convert);
-        }else{
             return new PageList<>(financeMessageDORepo.findAllByOrganizationIdContainsAndTermContainsAndStatusContains(pageable, organizationId, term, status), this::convert);
+        }else{
+            return new PageList<>(financeMessageDORepo.findAllByOrganizationIdAndTermContainsAndStatus(pageable, organizationId, term, status), this::convert);
         }
+    }
+
+    @Override
+    public List<FinanceMessageBO> findAllByOrganizationIdAndTermAndApplicantUserId(String organizationId, String term, String applicantUserId) {
+        System.out.println(organizationId);
+        System.out.println(term);
+        System.out.println(applicantUserId);
+        return CollectionUtils.toStream(financeMessageDORepo.findAllByOrganizationIdAndTermAndApplicantUserId(organizationId, term, applicantUserId))
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
     @Override

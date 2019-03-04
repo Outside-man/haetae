@@ -18,6 +18,7 @@ import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.finance.request.FinanceRequest;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author MessiahJK
@@ -35,6 +36,11 @@ public class FinanceManagerImpl implements FinanceManager {
     @Override
     public PageList<FinanceMessageBO> findMessage(FinanceRequest request) {
         return financeMessageDORepoService.findByOrganizationIdAndTermAndStatus(request.getOrganizationId(), request.getTerm(), request.getStatus(), request.getPage(), request.getLimit());
+    }
+
+    @Override
+    public List<FinanceMessageBO> findMyMessage(FinanceRequest request) {
+        return financeMessageDORepoService.findAllByOrganizationIdAndTermAndApplicantUserId(request.getOrganizationId(),request.getTerm(),request.getApplicantUserId());
     }
 
     @Override

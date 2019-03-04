@@ -9,14 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
-import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermExInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampImportTemplateEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
@@ -155,7 +157,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
         List<String> activityIds = new ArrayList<>();
         for (PermBO permBO : stampPerms) {
-            String activityId = permBO.fetchExtInfo(PermExInfokey.ACTIVITY_ID);
+            String activityId = permBO.fetchExtInfo(ActivityPermExInfoKey.ACTIVITY_ID);
             if (StringUtils.isNotBlank(activityId)) {
                 activityIds.add(activityId);
             }
@@ -165,13 +167,16 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<String> importStamp(String url) {
         String[][] csv = CsvUtil.getWithHeader(url);
-//        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
-//        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STUID.getDesc(), csv[0][1]);
-//        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][3]);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STU_ID.getDesc(), csv[0][1]);
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][3]);
         ActivityStampRequest request = new ActivityStampRequest();
-        ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[1][3]);
+        ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[1][2]);
+        activityBO.setState(ActivityStateEnum.RESTARTED.getCode());
+        activityRepoService.updateActivity(activityBO);
         request.setActivityId(activityBO.getActivityId());
         // 没有盖章成功的学号
         List<String> notStampStuIds = new ArrayList<>();
@@ -192,8 +197,10 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         //systemId
         request.setScannerUserId("201812010040554783180001201835");
         request.setStatus("ENABLE");
-        request.setTerm(TermUtil.getNowTerm());
+        request.setTerm(activityBO.getTerm());
         stampManager.batchStamp(request, new ArrayList<>(userIds));
+        activityBO.setState(ActivityStateEnum.FINISHED.getCode());
+        activityRepoService.updateActivity(activityBO);
         return notStampStuIds;
     }
 

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.manager.OrganizationManager;
 import us.betahouse.haetae.finance.enums.FinanceMessageTypeEnum;
-import us.betahouse.haetae.finance.enums.MoneyRecordTypeEnum;
 import us.betahouse.haetae.finance.manager.FinanceManager;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
@@ -19,12 +18,19 @@ import us.betahouse.haetae.finance.request.FinanceRequest;
 import us.betahouse.haetae.finance.request.builder.FinanceRequestBuilder;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
+import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
+import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.finance.request.FinanceManagerRequest;
 import us.betahouse.haetae.serviceimpl.finance.service.FinanceService;
-import us.betahouse.haetae.user.manager.UserManager;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author MessiahJK
@@ -70,6 +76,17 @@ public class FinanceServiceImpl implements FinanceService {
                 .build();
         return financeManager.findMessage(financeRequest);
     }
+
+    @Override
+    public List<FinanceMessageBO> findMyMessage(FinanceManagerRequest request, OperateContext context) {
+        FinanceRequest financeRequest=FinanceRequestBuilder.aFinanceRequest()
+                .withOrganizationId(request.getOrganizationId())
+                .withApplicantUserId(request.getUserId())
+                .withTerm(request.getTerm())
+                .build();
+        return financeManager.findMyMessage(financeRequest);
+    }
+
 
     @Override
     public FinanceMessageBO submitBudget(FinanceManagerRequest request, OperateContext context) {
@@ -134,5 +151,17 @@ public class FinanceServiceImpl implements FinanceService {
     @Override
     public void initFinanceMessageTotal(FinanceTotalBO financeTotalBO) {
         financeManager.initTotalMoney(financeTotalBO);
+    }
+
+    @Override
+    public Boolean checkPerm(FinanceManagerRequest request, OperateContext context) {
+        Map<String, PermBO> map = userBasicService.fetchUserPerms(request.getUserId());
+        AtomicReference<Boolean> result= new AtomicReference<>(false);
+        map.values().forEach(permBO ->{
+            if(request.getOrganizationId().equals(permBO.getExtInfo().get(FinancePermExInfoKey.ORGANIZATION_ID))){
+                result.set(true);
+            }
+        });
+        return result.get();
     }
 }

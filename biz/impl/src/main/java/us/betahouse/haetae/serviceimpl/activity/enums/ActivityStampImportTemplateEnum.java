@@ -10,7 +10,7 @@ package us.betahouse.haetae.serviceimpl.activity.enums;
  */
 public enum ActivityStampImportTemplateEnum {
     NAME("姓名"),
-    STUID("学号"),
+    STU_ID("学号"),
     SCANNER("扫码员学号"),
     ACTIVITY_NAME("活动名称");
 

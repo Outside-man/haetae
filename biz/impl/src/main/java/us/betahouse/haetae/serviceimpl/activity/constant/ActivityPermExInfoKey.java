@@ -8,9 +8,9 @@ package us.betahouse.haetae.serviceimpl.activity.constant;
  * 权限拓展字段
  *
  * @author MessiahJK
- * @version : PermExInfokey.java 2018/11/25 16:39 MessiahJK
+ * @version : ActivityPermExInfoKey.java 2018/11/25 16:39 MessiahJK
  */
-public class PermExInfokey {
+public class ActivityPermExInfoKey {
 
 
     /**

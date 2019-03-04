@@ -68,6 +68,11 @@ public class FinanceRequest extends BaseRequest {
      */
     private Integer limit;
 
+    /**
+     * 申请人userId
+     */
+    private String applicantUserId;
+
     public String getFinanceMessageId() {
         return financeMessageId;
     }
@@ -154,5 +159,13 @@ public class FinanceRequest extends BaseRequest {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public String getApplicantUserId() {
+        return applicantUserId;
+    }
+
+    public void setApplicantUserId(String applicantUserId) {
+        this.applicantUserId = applicantUserId;
     }
 }

@@ -28,6 +28,7 @@ public final class FinanceRequestBuilder {
     private String organizationId;
     private Integer page;
     private Integer limit;
+    private String applicantUserId;
 
     private FinanceRequestBuilder() {
     }
@@ -38,6 +39,11 @@ public final class FinanceRequestBuilder {
 
     public FinanceRequestBuilder withFinanceMessageId(String messageId){
         this.financeMessageId=messageId;
+        return this;
+    }
+
+    public FinanceRequestBuilder withApplicantUserId(String applicantUserId){
+        this.applicantUserId=applicantUserId;
         return this;
     }
 
@@ -116,6 +122,7 @@ public final class FinanceRequestBuilder {
         financeRequest.setOrganizationId(organizationId);
         financeRequest.setPage(page);
         financeRequest.setLimit(limit);
+        financeRequest.setApplicantUserId(applicantUserId);
         return financeRequest;
     }
 }

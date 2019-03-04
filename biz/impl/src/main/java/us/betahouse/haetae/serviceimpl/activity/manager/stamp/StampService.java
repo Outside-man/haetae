@@ -39,6 +39,7 @@ public interface StampService {
      *
      * @param request
      * @param userIds
+     * @param activityBO
      */
     void batchStamp(ActivityStampRequest request, List<String> userIds, ActivityBO activityBO);
 }

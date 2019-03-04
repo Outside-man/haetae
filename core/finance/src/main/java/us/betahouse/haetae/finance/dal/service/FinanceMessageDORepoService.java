@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
 import us.betahouse.haetae.finance.model.common.PageList;
 
+import java.util.List;
+
 /**
  * @author MessiahJK
  * @version : FinanceMessageDORepoService.java 2019/01/31 2:51 MessiahJK
@@ -43,7 +45,15 @@ public interface FinanceMessageDORepoService {
      */
     PageList<FinanceMessageBO> findByOrganizationIdAndTermAndStatus(String organizationId,String term,String status,Integer page, Integer limit);
 
-
+    /**
+     * 查询自己提交的财务记录
+     *
+     * @param organizationId
+     * @param term
+     * @param applicantUserId
+     * @return
+     */
+    List<FinanceMessageBO> findAllByOrganizationIdAndTermAndApplicantUserId(String organizationId,String term,String applicantUserId);
     /**
      * 通过财务信息id查询
      *

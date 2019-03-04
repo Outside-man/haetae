@@ -168,6 +168,13 @@ public interface PermRepoService {
     PermBO initPerm(PermBO permBO);
 
     /**
+     * 创建财务权限
+     *
+     * @param permBO
+     * @return
+     */
+    PermBO initFinancePerm(PermBO permBO);
+    /**
      * 获取有权限的所有用户 并按照创建顺序排序
      *
      * @param permId

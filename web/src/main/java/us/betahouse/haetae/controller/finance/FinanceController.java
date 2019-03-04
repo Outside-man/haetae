@@ -31,6 +31,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 财务接口
@@ -77,6 +78,7 @@ public class FinanceController {
                 FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
                         .aFinanceManagerRequest()
                         .withOrganizationId(request.getOrganizationId())
+                        .withUserId(request.getUserId())
                         .withStatus(request.getStatus())
                         .withTerm(request.getTerm())
                         .withPage(request.getPage())
@@ -86,7 +88,41 @@ public class FinanceController {
             }
         });
     }
+    /**
+     * 获取我的财务信息列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping("/myMessage")
+    @Log(loggerName = LoggerName.FINANCE_DIGEST)
+    public Result<List<FinanceMessageBO>> getMyMessage(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取我的财务信息列表", request, new RestOperateCallBack<List<FinanceMessageBO>>(){
 
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
+                AssertUtil.assertStringNotBlank(request.getTerm(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "学期不能为空");
+            }
+
+            @Override
+            public Result<List<FinanceMessageBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withOrganizationId(request.getOrganizationId())
+                        .withUserId(request.getUserId())
+                        .withTerm(request.getTerm())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.findMyMessage(financeManagerRequest,context),"我的财务信息列表获取成功");
+            }
+        });
+    }
     /**
      * 提交预算
      *
@@ -278,6 +314,39 @@ public class FinanceController {
                         .withTotalMoney(financeTotalBO.getTotalMoney())
                         .withTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget())
                         .build(),"获取总金额成功");
+            }
+        });
+    }
+
+    /**
+     * 验权
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping("/perm")
+    @Log(loggerName =LoggerName.FINANCE_DIGEST)
+    public Result<Boolean> checkPerm(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "验权", request, new RestOperateCallBack<Boolean>(){
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getOrganizationId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织id不能为空");
+            }
+
+            @Override
+            public Result<Boolean> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withOrganizationId(request.getOrganizationId())
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.checkPerm(financeManagerRequest, context),"获取验权信息成功");
             }
         });
     }

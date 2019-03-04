@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import us.betahouse.haetae.finance.dal.model.FinanceMessageDO;
 
+import java.util.List;
+
 /**
  * 财务信息查询
  *
@@ -46,4 +48,14 @@ public interface FinanceMessageDORepo extends JpaRepository<FinanceMessageDO,Lon
      * @return
      */
     FinanceMessageDO findByFinanceMessageId(String financeMessageId);
+
+    /**
+     * 查询自己上报的财务信息
+     *
+     * @param organizationId
+     * @param term
+     * @param applicantUserId
+     * @return
+     */
+    List<FinanceMessageDO> findAllByOrganizationIdAndTermAndApplicantUserId(String organizationId,String term,String applicantUserId);
 }

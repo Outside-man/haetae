@@ -11,6 +11,8 @@ import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.finance.request.FinanceManagerRequest;
 
+import java.util.List;
+
 /**
  * @author MessiahJK
  * @version : FinanceService.java 2019/02/22 0:20 MessiahJK
@@ -27,6 +29,14 @@ public interface FinanceService {
      */
     PageList<FinanceMessageBO> findMessage(FinanceManagerRequest request,OperateContext context);
 
+    /**
+     * 查询我的财务提交
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<FinanceMessageBO> findMyMessage(FinanceManagerRequest request,OperateContext context);
     /**
      * 提交预算
      *
@@ -78,4 +88,13 @@ public interface FinanceService {
      * @param financeTotalBO
      */
     void initFinanceMessageTotal(FinanceTotalBO financeTotalBO);
+
+    /**
+     * 财务验权
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    Boolean checkPerm(FinanceManagerRequest request,OperateContext context);
 }

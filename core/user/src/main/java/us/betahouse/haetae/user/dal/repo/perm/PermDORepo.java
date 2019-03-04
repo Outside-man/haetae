@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.dal.repo.perm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.PermDO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 import java.util.List;
 
@@ -50,4 +51,12 @@ public interface PermDORepo extends JpaRepository<PermDO, Long> {
      * @return
      */
     List<PermDO> findAllByPermTypeIn(List<String> permTypes);
+
+    /**
+     * 通过拓展信息查询
+     *
+     * @param exiInfo
+     * @return
+     */
+    PermDO findByExtInfo(String exiInfo);
 }

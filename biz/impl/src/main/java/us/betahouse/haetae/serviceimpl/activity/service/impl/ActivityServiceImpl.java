@@ -18,8 +18,8 @@ import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermExInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
-import us.betahouse.haetae.serviceimpl.activity.constant.PermExInfokey;
 import us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -99,7 +99,7 @@ public class ActivityServiceImpl implements ActivityService {
         // 创建权限
         PermBO permBO = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限").build();
         // 将活动id 冗余到权限拓展信息
-        permBO.putExtInfo(PermExInfokey.ACTIVITY_ID, activityBO.getActivityId());
+        permBO.putExtInfo(ActivityPermExInfoKey.ACTIVITY_ID, activityBO.getActivityId());
         // 构建请求
         PermManageRequest permManageRequest = new PermManageRequest();
         permManageRequest.setPermBO(permBO);

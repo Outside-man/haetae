@@ -43,7 +43,7 @@ public class ActivityRecordServiceTest {
     @Test
     public void importStamp() {
         //C:\Users\j10k\Documents\Tencent Files\1033161038\FileRecv\第一届课达杯手绘大赛-数据导入.csv
-        String url = "C:\\Users\\j10k\\Desktop\\2018 - 2019学年第一学期（周度月度）阳光之星C.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\校园活动（补充）1.csv";
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -54,7 +54,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\2018级新生体检-数据导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\志愿活动（第二反馈日）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -133,7 +133,7 @@ public class ActivityRecordServiceTest {
         csvWriter.writeRecord(headers);
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
         for (UserInfoBO userInfoBO : userInfoBOList) {
-            ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId());
+            ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId(),"2018A");
             System.out.println(activityRecordStatistics);
             Map<String, Integer> map = activityRecordStatistics.getStatistics();
             String[] content = new String[9];

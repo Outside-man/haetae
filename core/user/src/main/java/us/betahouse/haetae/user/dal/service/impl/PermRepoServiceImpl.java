@@ -424,6 +424,18 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    public PermBO initFinancePerm(PermBO permBO) {
+        PermDO permDO = permDORepo.findByExtInfo(EntityConverter.convert(permBO).getExtInfo());
+        if (permDO == null) {
+            if (StringUtils.isBlank(permBO.getPermId())) {
+                permBO.setPermId(userBizIdFactory.getPermId());
+            }
+            permDO = permDORepo.save(EntityConverter.convert(permBO));
+        }
+        return EntityConverter.convert(permDO);
+    }
+
+    @Override
     public List<UserPermRelationBO> getUserPermRelationsOrderByCreate(String permId) {
         return CollectionUtils.toStream(userPermRelationDORepo.findAllByPermIdOrderByGmtCreate(permId))
                 .filter(Objects::nonNull)
