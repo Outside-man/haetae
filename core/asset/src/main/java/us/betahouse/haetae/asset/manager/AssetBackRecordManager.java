@@ -42,5 +42,5 @@ public interface AssetBackRecordManager {
      * @param loanRecordId
      * @return
      */
-    List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(String loanRecordId);
+    List<AssetBackRecordBO> findAllAssetBackRecordByLoanRecordId(String loanRecordId);
 }

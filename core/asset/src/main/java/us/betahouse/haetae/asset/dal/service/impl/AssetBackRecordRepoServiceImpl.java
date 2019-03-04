@@ -5,12 +5,10 @@
 package us.betahouse.haetae.asset.dal.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
@@ -73,6 +71,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         AssetDO assetDO = assetDORepo.findByAssetId(assetBackRecordBO.getAssetId());
         AssetLoanRecordDO assetLoanRecordDO = assetLoanDORepo.findByLoanRecordId(assetBackRecordBO.getLoanRecoedId());
         AssetBackRecordTypeEnum assetBackRecordTypeEnum = AssetBackRecordTypeEnum.getByCode(assetBackRecordBO.getType());
+        AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
         AssertUtil.assertNotNull(assetBackRecordTypeEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资类型不正确");
         AssertUtil.assertNotNull(assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.LOADED.getCode()) || assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.DESTROYED.getCode()), "物资已全部归还，无法再次提交归还请求");
         switch (assetBackRecordTypeEnum) {
@@ -151,8 +150,8 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
     }
 
     @Override
-    public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(String loanRecordId) {
-        List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findByLoanRecoedId(loanRecordId);
+    public List<AssetBackRecordBO> findAllAssetBackRecordByLoanRecordId(String loanRecordId) {
+        List<AssetBackRecordDO> assetBackRecordDOS = assetBackDORepo.findAllByLoanRecordId(loanRecordId);
         return CollectionUtils.toStream(assetBackRecordDOS)
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -178,7 +177,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         assetBackRecordBO.setAssetType(assetBackRecordDO.getAssetType());
         assetBackRecordBO.setBackRecoedId(assetBackRecordDO.getBackRecoedId());
         assetBackRecordBO.setExtInfo(JSON.parseObject(assetBackRecordDO.getExtInfo(), Map.class));
-        assetBackRecordBO.setLoanRecoedId(assetBackRecordDO.getLoanRecoedId());
+        assetBackRecordBO.setLoanRecoedId(assetBackRecordDO.getLoanRecordId());
         assetBackRecordBO.setRemark(assetBackRecordDO.getRemark());
         assetBackRecordBO.setType(assetBackRecordDO.getType());
         assetBackRecordBO.setUserId(assetBackRecordDO.getUserId());
@@ -204,7 +203,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         assetBackRecordDO.setAssetType(assetBackRecordBO.getAssetType());
         assetBackRecordDO.setBackRecoedId(assetBackRecordBO.getBackRecoedId());
         assetBackRecordDO.setExtInfo(JSON.toJSONString(assetBackRecordBO.getExtInfo()));
-        assetBackRecordDO.setLoanRecoedId(assetBackRecordBO.getLoanRecoedId());
+        assetBackRecordDO.setLoanRecordId(assetBackRecordBO.getLoanRecoedId());
         assetBackRecordDO.setRemark(assetBackRecordBO.getRemark());
         assetBackRecordDO.setType(assetBackRecordBO.getType());
         assetBackRecordDO.setUserId(assetBackRecordBO.getUserId());

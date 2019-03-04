@@ -105,7 +105,7 @@ public class AssetLoanRecordController {
      * @return
      */
     @CheckLogin
-    @GetMapping
+    @GetMapping(value = "records")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetLoanRecordBO>> getAssetLoanRecordList(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {

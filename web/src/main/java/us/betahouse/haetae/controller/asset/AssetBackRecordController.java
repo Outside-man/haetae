@@ -35,7 +35,7 @@ import java.util.List;
  */
 @CrossOrigin(origins = "http://119.23.188.92/")
 @RestController
-@RequestMapping(value = "/assetBackRecord")
+@RequestMapping(value = "assetBackRecord")
 public class AssetBackRecordController {
     /**
      * 日志实体
@@ -62,8 +62,10 @@ public class AssetBackRecordController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量不能为空");
+                AssertUtil.assertTrue(request.getAmount() > 0, "归还数量不能为小于等于0");
                 AssertUtil.assertNotNull(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录id不能为空");
                 AssertUtil.assertNotNull(request.getType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还类型不能为空");
+                AssertUtil.assertNotNull(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
             }
 
             @Override
@@ -97,7 +99,7 @@ public class AssetBackRecordController {
      * @return
      */
     @CheckLogin
-    @GetMapping
+    @GetMapping(value = "records")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetBackRecordBO>> getAssetBackRecordList(AssetBackRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取归还记录列表", request, new RestOperateCallBack<List<AssetBackRecordBO>>() {
@@ -112,19 +114,19 @@ public class AssetBackRecordController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 AssetBackRecordManagerRequestBuilder builder = AssetBackRecordManagerRequestBuilder.getInstance();
-                List<AssetBackRecordBO> assetBackRecordBOS= new ArrayList<>();
+                List<AssetBackRecordBO> assetBackRecordBOS = new ArrayList<>();
                 //情况3 传入借用记录id不为空
-                if(request.getLoanRecordId()!=null){
+                if (request.getLoanRecordId() != null) {
                     builder.withLoanRecoedId(request.getLoanRecordId());
-                    assetBackRecordBOS=assetBackRecordService.findAssetBackRecordByLoanRecordId(builder.build(), context);
-                }else if(request.getAssetId()!=null){
+                    assetBackRecordBOS = assetBackRecordService.findAllAssetBackRecordByLoanRecordId(builder.build(), context);
+                } else if (request.getAssetId() != null) {
                     //情况1 传入物资id
                     builder.withAssetId(request.getAssetId());
-                    assetBackRecordBOS=assetBackRecordService.findAllAssetBackRecordByAssetId(builder.build(), context);
-                }else{
+                    assetBackRecordBOS = assetBackRecordService.findAllAssetBackRecordByAssetId(builder.build(), context);
+                } else {
                     //情况3 默认获取用户的所有信息
                     builder.withUserId(request.getUserId());
-                    assetBackRecordBOS=assetBackRecordService.findAllAssetBackRecordByUserId(builder.build(), context);
+                    assetBackRecordBOS = assetBackRecordService.findAllAssetBackRecordByUserId(builder.build(), context);
                 }
                 return RestResultUtil.buildSuccessResult(assetBackRecordBOS, "获取列表成功");
             }

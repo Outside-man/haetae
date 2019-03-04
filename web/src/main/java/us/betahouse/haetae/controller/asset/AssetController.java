@@ -89,8 +89,8 @@ public class AssetController {
                  * 通过组织名字查找组织id
                  */
                 OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
-                String organizationId = organizationBo.getOrganizationId();
                 AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
+                String organizationId = organizationBo.getOrganizationId();
                 AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())
                         .withAmount(Integer.valueOf(request.getAssetAmount()))
@@ -217,7 +217,8 @@ public class AssetController {
                         //鉴权的时候要用
                         .withUserId(request.getUserId());
                 List<AssetBO> assetBOS;
-                if (null == request.getOrganizationId()) {
+                //接收到组织id 查找该组织的所有物资
+                if (null != request.getOrganizationId()) {
                     builder.withOrginazationId(request.getOrganizationId());
                     assetBOS = assetService.queryAssetByOrganizationId(builder.builder(), context);
                 } else {

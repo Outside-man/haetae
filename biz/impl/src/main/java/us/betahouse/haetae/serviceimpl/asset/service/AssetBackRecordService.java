@@ -47,5 +47,5 @@ public interface AssetBackRecordService {
      * @param context
      * @return
      */
-    List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context);
+    List<AssetBackRecordBO> findAllAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context);
 }
