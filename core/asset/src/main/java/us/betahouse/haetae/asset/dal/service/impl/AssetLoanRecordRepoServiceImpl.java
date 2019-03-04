@@ -15,15 +15,12 @@ import us.betahouse.haetae.asset.dal.repo.AssetLoanDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
+import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.idfactory.BizIdFactory;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
-import us.betahouse.util.enums.RestResultCode;
-import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,9 +36,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Autowired
     private AssetLoanDORepo assetLoanDORepo;
 
-    /**
-     * id工厂
-     */
     @Autowired
     private BizIdFactory assetBizFactory;
 
@@ -61,21 +55,13 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             assetLoanRecordBO.setLoanRecordId(assetBizFactory.getAssetLoadId());
         }
         AssetDO assetDO = assetDORepo.findByAssetId(assetLoanRecordBO.getAssetId());
-        int num = assetDO.getRemain() - assetLoanRecordBO.getAmount();
-        if (num >= 0) {
-            assetDO.setRemain(num);
-            if (assetDO.getRemain() == 0) {
-                if (assetDO.getDestroy() == assetDO.getAmount()) {
-                    assetDO.setStatus("allDestroy");
-                } else {
-                    assetDO.setStatus("notLoan");
-                }
-            }
-            assetDORepo.save(assetDO);
-        } else {
-            AssertUtil.assertNotNull(null, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用物资数量不能超过物资剩余数量");
+        //当前减去借用后剩余的物资数量
+        assetDO.setRemain(assetDO.getRemain() - assetLoanRecordBO.getAmount());
+        //物资状态为可借和不可借 如果剩余数量为0 则表示物资数量不足，改为不可借
+        if (assetDO.getRemain() == 0) {
+            assetDO.setStatus(AssetStatusEnum.ASSET_NOT_LOAN.getCode());
         }
-
+        assetDORepo.save(assetDO);
         return convert(assetLoanDORepo.save(convert(assetLoanRecordBO)));
     }
 
@@ -103,10 +89,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             assetLoanRecordDO.setAssetInfo(assetLoanRecordDO1.getAssetInfo());
         }
         if (0 == assetLoanRecordDO.getRemain()) {
-            assetLoanRecordDO.setStatus("assetNotLoan");
+            assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.LOADED.getCode());
         }
         if (assetLoanRecordDO.getAmount() == assetLoanRecordDO.getDistory()) {
-            assetLoanRecordDO.setStatus("assetDistory");
+            assetLoanRecordDO.setStatus(AssetLoanRecordStatusEnum.DESTROYED.getCode());
         }
 
         return convert(assetLoanDORepo.save(assetLoanRecordDO));
@@ -159,10 +145,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             AssetLoanRecordStatusEnum assetLoanRecordStatusEnum = AssetLoanRecordStatusEnum
                     .getByCode(assetLoanRecordDOList.get(i).getStatus());
             switch (assetLoanRecordStatusEnum) {
-                case ASSET_LOAN_RECORD_LOAN:
+                case LOADED:
                     assetLoanRecordDOList.remove(i);
                     break;
-                case ASSET_LOAN_RECORD_NOTLOAN:
+                case LOAN:
                     assetLoanRecordDOList.remove(i);
                     break;
                 default:
@@ -187,10 +173,10 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             AssetLoanRecordStatusEnum assetLoanRecordStatusEnum = AssetLoanRecordStatusEnum
                     .getByCode(assetLoanRecordDOList.get(i).getStatus());
             switch (assetLoanRecordStatusEnum) {
-                case ASSET_LOAN_RECORD_LOAN:
+                case DESTROYED:
                     assetLoanRecordDOList.remove(i);
                     break;
-                case ASSET_LOAN_RECORD_DESTORY:
+                case LOADED:
                     assetLoanRecordDOList.remove(i);
                     break;
                 default:
@@ -213,6 +199,17 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     }
 
     /**
+     * @param assetId
+     * @return
+     */
+    @Override
+    public void delete(String assetId) {
+        assetLoanDORepo.deleteByAssetId(assetId);
+    }
+
+    /**
+     *
+     * DO转BO BO添加学生部分信息
      * @param assetLoanRecordDO
      * @return
      */
@@ -222,7 +219,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
             return null;
         }
         AssetLoanRecordBO assetLoanRecordBO = new AssetLoanRecordBO();
-        String assetName=assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
         assetLoanRecordBO.setLoanRecordId(assetLoanRecordDO.getLoanRecordId());
         assetLoanRecordBO.setAssetId(assetLoanRecordDO.getAssetId());
         assetLoanRecordBO.setAmount(assetLoanRecordDO.getAmount());
@@ -232,6 +228,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordBO.setUserId(assetLoanRecordDO.getUserId());
         assetLoanRecordBO.setStatus(assetLoanRecordDO.getStatus());
         assetLoanRecordBO.setRemark(assetLoanRecordDO.getRemark());
+        String assetName = assetRepoService.findByAssetId(assetLoanRecordDO.getAssetId()).getAssetName();
         assetLoanRecordBO.setAssetName(assetName);
         assetLoanRecordBO.setExtInfo(JSON.parseObject(assetLoanRecordDO.getExtInfo(), Map.class));
         assetLoanRecordBO.setAssetInfo(assetLoanRecordDO.getAssetInfo());
@@ -261,7 +258,6 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
         assetLoanRecordDO.setStatus(assetLoanRecordBO.getStatus());
         assetLoanRecordDO.setExtInfo(JSON.toJSONString(assetLoanRecordBO.getExtInfo()));
         assetLoanRecordDO.setAssetInfo(assetLoanRecordBO.getAssetInfo());
-
         return assetLoanRecordDO;
     }
 

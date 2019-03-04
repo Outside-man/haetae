@@ -66,40 +66,10 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     @Override
     public AssetBO updateAsset(AssetBO assetBO) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetBO.getAssetId());
-        AssetDO assetDO1 = convert(assetBO);
-        if (assetDO1.getAmount() != null && assetDO1.getAmount() != -1) {
-            assetDO.setAmount(assetDO1.getAmount());
-        }
-        if (assetDO1.getAssetName() != null) {
-            assetDO.setAssetName(assetDO1.getAssetName());
-        }
-        if (assetDO1.getDestroy() != null && assetDO1.getDestroy() != -1) {
-            assetDO.setDestroy(assetDO1.getDestroy());
-        }
-        if (assetDO1.getOrginazationId() != null) {
-            assetDO.setOrginazationId(assetDO1.getOrginazationId());
-        }
-        if (assetDO1.getRemain() != null && assetDO1.getRemain() != -1) {
-            if (assetDO1.getRemain() > assetDO.getAmount()) {
-                String a = null;
-                AssertUtil.assertNotNull(a, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资剩余数量不能大于物资数量");
-            }
-            assetDO.setRemain(assetDO1.getRemain());
-        }
-        if (assetDO1.getStatus() != null) {
-            assetDO.setStatus(assetDO1.getStatus());
-        }
-        if (assetDO1.getType() != null) {
-            assetDO.setType(assetDO1.getType());
-        }
-        if (assetDO.getRemain() == 0) {
-            if (assetDO.getDestroy() == assetDO.getAmount()) {
-                assetDO.setStatus("allDestroy");
-            } else {
-                assetDO.setStatus("notLoan");
-            }
-        }
-
+        assetDO.setStatus(assetBO.getAssetStatus());
+        assetDO.setAssetName(assetBO.getAssetName());
+        assetDO.setRemain(assetBO.getAssetRemain());
+        assetDO.setAmount(assetBO.getAssetAmount());
         return convert(assetDORepo.save(assetDO));
     }
 
@@ -138,18 +108,18 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         String assetStatusCode = null;
         //物资不存在
         if (assetDO == null) {
-            assetStatusCode = AssetStatusEnum.ASSET_NOTEXISTENCE.getCode();
+            assetStatusCode = AssetStatusEnum.ASSET_NOT_EXISTENCE.getCode();
             return assetStatusCode;
         }
         //物资不可借用状态分情况
-        if (assetDO.getStatus().equals("notLoan")) {
+        if (assetDO.getStatus().equals(AssetStatusEnum.ASSET_NOT_LOAN.getCode())) {
             //暂无物资
             if (assetDO.getAmount() - assetDO.getDestroy() == 0) {
-                assetStatusCode = AssetStatusEnum.ASSET_TEMPNOTLOAN.getCode();
+                assetStatusCode = AssetStatusEnum.ASSET_TEMPLATE_NOT_LOAN.getCode();
             }
             //全部借出
             else {
-                assetStatusCode = AssetStatusEnum.ASSET_ALLLOAN.getCode();
+                assetStatusCode = AssetStatusEnum.ASSET_ALL_LOAN.getCode();
             }
         }
         //物资可借用
@@ -168,6 +138,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     @Override
     public AssetBO findByAssetId(String assetId) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetId);
+        System.out.println(assetId);
         AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
         return convert(assetDO);
     }

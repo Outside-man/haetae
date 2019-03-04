@@ -26,6 +26,8 @@ import us.betahouse.util.validator.MultiValidator;
 import java.util.List;
 
 
+
+
 /**
  * 用户管理器
  *

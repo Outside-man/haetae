@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
-import us.betahouse.haetae.finance.dal.repo.FinanceTotalDORepo;
 import us.betahouse.haetae.finance.manager.FinanceManager;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
@@ -66,6 +65,7 @@ public class InitService {
         assetManagerPerm.add(AssetPermType.ASSET_CREATE);
         assetManagerPerm.add(AssetPermType.ASSET_UPDATE);
         assetManagerPerm.add(AssetPermType.ASSET_DELETE);
+        assetManagerPerm.add(AssetPermType.ASSET_SEEK);
     }
 
 

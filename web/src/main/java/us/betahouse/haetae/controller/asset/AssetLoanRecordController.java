@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import us.betahouse.haetae.asset.enums.AssetLoanRecordStatusEnum;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -17,10 +18,7 @@ import us.betahouse.haetae.model.asset.request.AssetLoanRecordRestRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetLoanRecordManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetLoanRecordManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
-import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -38,7 +36,7 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetLoanRecordController.java 2019/01/25 23:57 yiyuk.hxy
  */
-@CrossOrigin
+@CrossOrigin(origins = "http://119.23.188.92/")
 @RestController
 @RequestMapping(value = "/assetLoanRecord")
 public class AssetLoanRecordController {
@@ -47,91 +45,67 @@ public class AssetLoanRecordController {
      */
     private final Logger LOGGER = LoggerFactory.getLogger(AssetLoanRecordController.class);
 
-    @Autowired
-    private AssetService assetService;
+    private final int zero = 0;
 
     @Autowired
     private AssetLoanRecordService assetLoanRecordService;
 
-    @Autowired
-    private UserRepoService userRepoService;
-
-    @Autowired
-    private UserInfoRepoService userInfoRepoService;
-
     /**
-     * 添加借用物资信息
+     * 创建借用记录
      *
      * @param request
      * @param httpServletRequest
      * @return
      */
     @CheckLogin
-    @PostMapping(value = "/create")
+    @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetLoanRecordBO>> add(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
+    public Result<AssetLoanRecordBO> createLoanRecordService(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "借用物资", request, new RestOperateCallBack<AssetLoanRecordBO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不能为空");
+                AssertUtil.assertNotNull(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户ID不能为空");
+                AssertUtil.assertStringNotBlank(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能为空");
-                AssertUtil.assertNotNull(request.getAmount() <= 0? null:"1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能小于等于0");
+                AssertUtil.assertTrue(request.getAmount() > 0, "借用数量不能小于等于0");
             }
+
             @Override
-            public Result<List<AssetLoanRecordBO>> execute() {
+            public Result<AssetLoanRecordBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
-                if (request.getLoanRecordId() == null) {//create
-                    //AssertUtil.assertNotNull(assetRepoService.findByAssetId(request.getAssetId()).getAssetRemain() < request.getAmount() ? "1": null, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借物资数量大于该物资剩余数量");
-                    AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
-                            .withUserId(request.getUserId())
-                            .withAmount(request.getAmount())
-                            .withRemain(request.getAmount())
-                            .withDistory(0)
-                            .withAssetId(request.getAssetId())
-                            .withAssetType(request.getAssetType())
-                            .withRemark(request.getRemark())
-                            .withStatus("Loading")
-                            .withExtInfo(request.getExtInfo())
-                            .withAssetInfo(request.getAssetInfo())
-                            .build();
-                    assetLoanRecordBOS = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
-                } else {    //update
-                    AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
-                            .withLoanRecordId(request.getLoanRecordId())
-                            .withRemain(request.getRemain())
-                            .withDistory(request.getDistory())
-                            .withAssetId(request.getAssetId())
-                            .withRemark(request.getRemark())
-                            .withExtInfo(request.getExtInfo())
-                            .withAssetInfo(request.getAssetInfo())
-                            .build();
-                    AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.update(assetLoanRecordManagerRequest, context);
-                    assetLoanRecordBOS.add(assetLoanRecordBO);
-                }
-                if (assetLoanRecordBOS != null && assetLoanRecordBOS.size() == 1) {
-                    assetLoanRecordBOS.get(0).setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
-                    assetLoanRecordBOS.get(0).setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
-                    return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用/更新物资成功");
-                } else {
-                    return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "借用物资失败");
-                }
+                AssetLoanRecordManagerRequest assetLoanRecordManagerRequest = AssetLoanRecordManagerRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .withAmount(request.getAmount())
+                        .withRemain(request.getAmount())
+                        .withDistory(zero)
+                        .withAssetId(request.getAssetId())
+                        .withAssetType(request.getAssetType())
+                        .withRemark(request.getRemark())
+                        //设置借用记录中状态为Loading (借出)
+                        .withStatus(AssetLoanRecordStatusEnum.LOAN.getCode())
+                        .withExtInfo(request.getExtInfo())
+                        .withAssetInfo(request.getAssetInfo())
+                        .build();
+                AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.create(assetLoanRecordManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "物资借用成功");
             }
         });
     }
 
     /**
-     * 获取列表
+     * 两个获取借用记录列表合并 物资借用记录详细信息列表合并
+     * 情况1:通过物资id来获取该物资借用列表
+     * 情况2:通过用户id来获取物资借用列表
+     * 情况3:通过物资借用id来获取该条物资借用信息
      *
      * @param request
      * @param httpServletRequest
      * @return
      */
     @CheckLogin
-    @GetMapping(value = "/getByAssetId")
+    @GetMapping(value = "records")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<AssetLoanRecordBO>> getAssetLoanRecordList(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
@@ -139,90 +113,32 @@ public class AssetLoanRecordController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                AssertUtil.assertNotNull(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资不存在");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户ID不能为空");
             }
 
             @Override
             public Result<List<AssetLoanRecordBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
-                        .withAssetId(request.getAssetId())
-                        .build();
-                List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder, context);
-                for(int i = 0; i < assetLoanRecordBOS.size(); ++i){
-                    assetLoanRecordBOS.get(i).setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
-                    assetLoanRecordBOS.get(i).setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+                AssetLoanRecordManagerRequestBuilder builder = AssetLoanRecordManagerRequestBuilder.getInstance()
+                        .withUserId(request.getUserId());
+                List<AssetLoanRecordBO> assetLoanRecordBOS=new ArrayList<>();
+                //接收参数若有借用记录id则 查找该条记录详细信息
+                if (request.getLoanRecordId() != null) {
+                    builder.withLoanRecordId(request.getLoanRecordId());
+                    AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.findAssetLoanRecordByLoanRecordId(builder.build(), context);
+                    assetLoanRecordBOS.add(assetLoanRecordBO);
+                } else if (request.getAssetId() != null) {
+                    //接收参数若有物资id，则查询该物资的借用记录集合
+                    builder.withAssetId(request.getAssetId());
+                    assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByAssetId(builder.build(), context);
+                } else {
+                    //否则根据用户id找出该用户全部借用记录
+                    assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByUserId(builder.build(), context);
                 }
                 return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "获取借用列表成功");
             }
         });
     }
 
-    /**
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/getByUserId")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<AssetLoanRecordBO>> getAssetLoanRecordListByUserId(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用列表", request, new RestOperateCallBack<List<AssetLoanRecordBO>>() {
-
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-            }
-
-            @Override
-            public Result<List<AssetLoanRecordBO>> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
-                        .withUserId(request.getUserId())
-                        .build();
-                List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordService.findAllAssetLoanRecordByUserId(builder, context);
-                for(int i = 0; i < assetLoanRecordBOS.size(); ++i){
-                    assetLoanRecordBOS.get(i).setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
-                    assetLoanRecordBOS.get(i).setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
-                }
-                return RestResultUtil.buildSuccessResult(assetLoanRecordBOS, "获取借用列表成功");
-            }
-        });
-    }
-
-    /**
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/getByLoanRecordId")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AssetLoanRecordBO> getAssetLoanRecordListByLoanRecordId(AssetLoanRecordRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取借用记录", request, new RestOperateCallBack<AssetLoanRecordBO>() {
-
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "id不能为空");
-            }
-
-            @Override
-            public Result<AssetLoanRecordBO> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                AssetLoanRecordManagerRequest builder = AssetLoanRecordManagerRequestBuilder.getInstance()
-                        .withLoanRecordId(request.getLoanRecordId())
-                        .build();
-                AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordService.findAssetLoanRecordByLoanRecordId(builder, context);
-                assetLoanRecordBO.setUserNum(userRepoService.queryByUserId(request.getUserId()).getUserName());
-                assetLoanRecordBO.setUserName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
-                return RestResultUtil.buildSuccessResult(assetLoanRecordBO, "获取借用记录成功");
-            }
-        });
-    }
 }

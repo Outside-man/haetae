@@ -24,8 +24,9 @@ public interface AssetBackRecordService {
      */
     AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context);
 
+
+
     /**
-     * 查询所有归还记录
      *
      * @param request
      * @param context
@@ -34,7 +35,6 @@ public interface AssetBackRecordService {
     List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context);
 
     /**
-     * 查询所有归还记录
      *
      * @param request
      * @param context
@@ -47,5 +47,5 @@ public interface AssetBackRecordService {
      * @param context
      * @return
      */
-    List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context);
+    List<AssetBackRecordBO> findAllAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context);
 }

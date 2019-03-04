@@ -43,44 +43,43 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     @Override
     @Transactional
     public AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context) {
-        AssertUtil.assertStringNotBlank(request.getUserId(), "用户id不能为空");
-        String str = null;
-        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码无效");
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecoedId());
-        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还记录码无效");
-
-        if(assetLoanRecordBO.getRemain() == 0){
-            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资已全部归还");
-            return null;
-        }
-        if (request.getAmount() > assetLoanRecordBO.getRemain()) {
-            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量超出剩余未归还数量");
-            return null;
-        }
+        AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录不存在");
+        AssetBO assetBO = assetManager.findAssetByAssetID(assetLoanRecordBO.getAssetId());
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
+        AssertUtil.assertTrue(assetLoanRecordBO.getRemain() != 0, "物资已全部归还");
+        AssertUtil.assertTrue(request.getAmount() <= assetLoanRecordBO.getRemain(), "归还数量超出剩余未归还数量");
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
         return assetBackRecordBO;
     }
 
+
+
+
     @Override
-    @Transactional
     public List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
-        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(),"物资码无效");
-        return assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
+        return assetBackRecordBOS;
     }
 
     @Override
-    @Transactional
     public List<AssetBackRecordBO> findAllAssetBackRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
-        return assetBackRecordManager.findAllAssetBackRecordByUserId(request.getUserId());
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByUserId(request.getAssetId());
+        return assetBackRecordBOS;
     }
 
     @Override
-    public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context) {
-        List<AssetBackRecordBO> assetBackRecordBO = assetBackRecordManager.findAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
-        AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "无对应归还记录");
-        return assetBackRecordBO;
+    public List<AssetBackRecordBO> findAllAssetBackRecordByLoanRecordId(AssetBackRecordRequest request, OperateContext context) {
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByLoanRecordId(request.getLoanRecoedId());
+        AssertUtil.assertNotNull(assetBackRecordBOS, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录ID不存在");
+        AssertUtil.assertTrue(assetBackRecordBOS.size()!=0,"无归还记录记录");
+        AssetBO assetBO = assetManager.findAssetByAssetID(assetBackRecordBOS.get(0).getAssetId());
+        for (AssetBackRecordBO assetBackRecordBO : assetBackRecordBOS) {
+            assetBackRecordBO.setAssetName(assetBO.getAssetName());
+        }
+        return assetBackRecordBOS;
     }
 }

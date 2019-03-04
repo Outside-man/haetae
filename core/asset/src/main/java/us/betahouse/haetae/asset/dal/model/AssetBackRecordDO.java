@@ -42,7 +42,7 @@ public class AssetBackRecordDO extends BaseDO {
      * 物资借取记录ID
      */
     @Column(name = "loan_record_id", length = 32, updatable = false)
-    private String loanRecoedId;
+    private String loanRecordId;
     /**
      * 借取人ID
      */
@@ -92,12 +92,12 @@ public class AssetBackRecordDO extends BaseDO {
         this.assetType = assetType;
     }
 
-    public String getLoanRecoedId() {
-        return loanRecoedId;
+    public String getLoanRecordId() {
+        return loanRecordId;
     }
 
-    public void setLoanRecoedId(String loanRecoedId) {
-        this.loanRecoedId = loanRecoedId;
+    public void setLoanRecordId(String loanRecordId) {
+        this.loanRecordId = loanRecordId;
     }
 
     public String getUserId() {

@@ -6,6 +6,7 @@ package us.betahouse.haetae.asset.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.asset.builder.AssetLoanRecordBOBulider;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
@@ -50,7 +51,7 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
      */
     @Override
     public AssetLoanRecordBO update(AssetLoanRecordRequest request) {
-        AssetLoanRecordBOBulider bulider = AssetLoanRecordBOBulider.getInstance()
+        AssetLoanRecordBOBulider builder = AssetLoanRecordBOBulider.getInstance()
                 .withLoanRecoedId(request.getLoanRecordId())
                 .withAssetId(request.getAssetId())
                 .withAssetType(request.getAssetType())
@@ -62,7 +63,7 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
                 .withExtInfo(request.getExtInfo())
                 .withAssetInfo(request.getAssetInfo())
                 .withDistory(request.getDistory());
-        return assetLoanRecordRepoService.updateAssetLoanRecord(bulider.build());
+        return assetLoanRecordRepoService.updateAssetLoanRecord(builder.build());
     }
 
     @Override
@@ -93,7 +94,7 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
      * @return
      */
     @Override
-    public List<AssetLoanRecordBO> findDistoryRecordByAssetId(String assetId) {
+    public List<AssetLoanRecordBO> findDestroyRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryDistoryRecordByAssetId(assetId);
     }
 
@@ -104,5 +105,14 @@ public class AssetLoanRecordManagerImpl implements AssetLoanRecordManager {
     @Override
     public List<AssetLoanRecordBO> findAssetLoanRecordByAssetId(String assetId) {
         return assetLoanRecordRepoService.queryAssetLoanRecordByAssetId(assetId);
+    }
+
+    /**
+     * @param assetId
+     * @return
+     */
+    @Override
+    public void delete(String assetId) {
+        assetLoanRecordRepoService.delete(assetId);
     }
 }

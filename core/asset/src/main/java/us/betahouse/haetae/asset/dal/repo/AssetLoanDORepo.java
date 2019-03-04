@@ -46,5 +46,10 @@ public interface AssetLoanDORepo extends JpaRepository<AssetLoanRecordDO, Long> 
      * @return
      */
     List<AssetLoanRecordDO> findAllRecordByAssetId(String assetId);
-    
+
+    /**
+     * @param assetId
+     * @return
+     */
+    void deleteByAssetId(String assetId);
 }

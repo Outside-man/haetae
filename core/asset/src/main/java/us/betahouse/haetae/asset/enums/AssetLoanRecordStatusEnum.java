@@ -11,9 +11,9 @@ import org.apache.commons.lang.StringUtils;
  * @version : AssetLoanRecordStatusEnum.java 2019/02/03 14:26 yiyuk.hxy
  */
 public enum AssetLoanRecordStatusEnum {
-    ASSET_LOAN_RECORD_LOAN("Loading", "借出状态"),
-    ASSET_LOAN_RECORD_NOTLOAN("Loaded", "全部归还"),
-    ASSET_LOAN_RECORD_DESTORY("Destroyed", "全部归还但有损坏");
+    LOAN("Loading", "借出状态"),
+    LOADED("Loaded", "全部归还"),
+    DESTROYED("Destroyed", "全部归还但有损坏");
 
     private String code;
     private String desc;

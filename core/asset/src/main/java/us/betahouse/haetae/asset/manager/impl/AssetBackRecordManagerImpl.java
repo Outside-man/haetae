@@ -66,7 +66,7 @@ public class AssetBackRecordManagerImpl implements AssetBackRecordManager {
      * @return
      */
     @Override
-    public List<AssetBackRecordBO> findAssetBackRecordByLoanRecordId(String loanRecordId) {
-        return assetBackRecordRepoService.findAssetBackRecordByLoanRecordId(loanRecordId);
+    public List<AssetBackRecordBO> findAllAssetBackRecordByLoanRecordId(String loanRecordId) {
+        return assetBackRecordRepoService.findAllAssetBackRecordByLoanRecordId(loanRecordId);
     }
 }

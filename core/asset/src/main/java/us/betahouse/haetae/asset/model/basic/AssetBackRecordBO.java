@@ -47,8 +47,18 @@ public class AssetBackRecordBO extends ToString {
      * 备注，用于报损时
      */
     private String remark;
+    /**
+     * 物资名字
+     */
     private String assetName;
+    /**
+     * 物资归还时间
+     */
     private String backTime;
+    /**
+     * 物资归属组织
+     */
+    private String OrganizationName;
     private Map<String, String> extInfo = new HashMap<>();
 
     public String fetchExtInfo(String key) {
@@ -149,6 +159,14 @@ public class AssetBackRecordBO extends ToString {
         this.backTime = backTime;
     }
 
+    public String getOrganizationName() {
+        return OrganizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        OrganizationName = organizationName;
+    }
+
     public Map<String, String> getExtInfo() {
         return extInfo;
     }
@@ -156,4 +174,5 @@ public class AssetBackRecordBO extends ToString {
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
+
 }

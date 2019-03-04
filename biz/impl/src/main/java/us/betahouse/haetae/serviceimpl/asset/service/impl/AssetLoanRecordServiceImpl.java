@@ -17,6 +17,7 @@ import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetLoanRecordRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetLoanRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
@@ -38,58 +39,62 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     @Autowired
     private AssetLoanRecordManager assetLoanRecordManager;
 
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
+
     @Override
     @Transactional
-    public List<AssetLoanRecordBO> create(AssetLoanRecordRequest request, OperateContext context) {
-        String str = null;
+    public AssetLoanRecordBO create(AssetLoanRecordRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
+        //正则表达式来检验输入数量中是否有非法输入
         Boolean isNumber = Pattern.matches("[0-9]*", request.getAmount().toString());
-        AssertUtil.assertNotNull(!isNumber? null: "1", RestResultCode.ILLEGAL_PARAMETERS.getCode(), "输入物资的数量包含非法字符");
-        if (request.getAmount() > assetBO.getAssetRemain()) {
-            AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用数量不能大于物资剩余数量");
-        }
+        AssertUtil.assertTrue(isNumber, "输入物资的数量包含非法字符");
+        System.out.println(assetBO.getAssetRemain());
+        System.out.println(request.getAmount());
+        AssertUtil.assertTrue(request.getAmount() <= assetBO.getAssetRemain(), "借用数量不能大于物资剩余数量");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");
-        switch (assetStatusEnum) {
-            case ASSET_ALLLOAN:
-                AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资全部借出");
-                return assetLoanRecordManager.findAssetLoanRecordByAssetId(request.getAssetId());
-            case ASSET_DISTORY:
-                AssertUtil.assertNotNull(str, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资耗尽");
-                return assetLoanRecordManager.findDistoryRecordByAssetId(request.getAssetId());
-            default:
-                break;
-        }
+        AssertUtil.assertTrue(assetBO.getAssetStatus().equals(AssetStatusEnum.ASSET_LOAN.getCode()), "物资不可借");
         request.setAssetType(assetBO.getAssetType());
-        List<AssetLoanRecordBO> assetLoanRecordBOS = new ArrayList<AssetLoanRecordBO>();
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.create(request);
-        assetLoanRecordBOS.add(assetLoanRecordBO);
+        //借用记录返回添加用户学号和用户真实姓名
+        assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
+        assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+        return assetLoanRecordBO;
+    }
+
+
+    @Override
+    @Transactional
+    public List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(AssetLoanRecordRequest request, OperateContext context) {
+        AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
+        AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
+        List<AssetLoanRecordBO> assetLoanRecordBOS=assetLoanRecordManager.findAllAssetLoanRecordByAssetId(request.getAssetId());
+        assetLoanRecordBOS.forEach(assetLoanRecordBO -> {
+            assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
+            assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+        });
         return assetLoanRecordBOS;
     }
 
     @Override
     @Transactional
-    public AssetLoanRecordBO update(AssetLoanRecordRequest request, OperateContext context) {
-        return assetLoanRecordManager.update(request);
-    }
-
-    @Override
-    @Transactional
-    public List<AssetLoanRecordBO> findAllAssetLoanRecordByAssetId(AssetLoanRecordRequest request, OperateContext context) {
-        return assetLoanRecordManager.findAllAssetLoanRecordByAssetId(request.getAssetId());
-    }
-
-    @Override
-    @Transactional
     public List<AssetLoanRecordBO> findAllAssetLoanRecordByUserId(AssetLoanRecordRequest request, OperateContext context) {
-        return assetLoanRecordManager.findAssetLoanRecordByUserId(request.getUserId());
+        List<AssetLoanRecordBO> assetLoanRecordBOS = assetLoanRecordManager.findAssetLoanRecordByUserId(request.getUserId());
+        for (AssetLoanRecordBO assetLoanRecordBO : assetLoanRecordBOS) {
+            assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
+            assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+        }
+        return assetLoanRecordBOS;
     }
 
     @Override
     public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
         AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借取记录不存在");
+        assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
+        assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
         return assetLoanRecordBO;
     }
 }

@@ -5,7 +5,6 @@
 package us.betahouse.haetae.serviceimpl.asset.service;
 
 import us.betahouse.haetae.asset.model.basic.AssetBO;
-import us.betahouse.haetae.asset.model.basic.AssetRecordBO;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -43,7 +42,6 @@ public interface AssetService {
     void delete(AssetManagerRequest request, OperateContext context);
 
     /**
-     *
      * @param request
      * @param context
      * @return
@@ -58,15 +56,6 @@ public interface AssetService {
      * @return
      */
     AssetBO findAssetByAssetId(AssetManagerRequest request, OperateContext context);
-
-    /**
-     * 判断物资id 返回记录结果集
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    List<AssetRecordBO> findRecodByAssetStatus(AssetManagerRequest request, OperateContext context);
 
     /**
      * 查询组织物资
