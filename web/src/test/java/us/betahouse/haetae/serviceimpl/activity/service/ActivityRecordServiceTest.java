@@ -12,7 +12,9 @@ import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.serviceimpl.activity.constant.GradesConstant;
+import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
+import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
@@ -39,11 +41,13 @@ public class ActivityRecordServiceTest {
     private ActivityDORepo activityDORepo;
     @Autowired
     private BizIdFactory activityBizFactory;
+    @Autowired
+    private StampManager stampManager;
 
     @Test
     public void importStamp() {
         //C:\Users\j10k\Documents\Tencent Files\1033161038\FileRecv\第一届课达杯手绘大赛-数据导入.csv
-        String url = "C:\\Users\\j10k\\Desktop\\校园活动（补充）1.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\校园活动（第四日）.csv";
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -53,8 +57,26 @@ public class ActivityRecordServiceTest {
     }
 
     @Test
+    public void importVolunteerWork(){
+        String url = "C:\\Users\\j10k\\Desktop\\义工活动（第四日）.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        for (int i = 1; i < csv.length; i++) {
+            ActivityStampRequest request=new ActivityStampRequest();
+            request.setActivityId("201812032305164919790210012018");
+            request.setScannerUserId("201812010040554783180001201835");
+            request.setVolunteerWorkName(csv[i][2]);
+            request.setTime(Double.valueOf(csv[i][3]));
+            request.setStatus("ENABLE");
+            request.setTerm(TermUtil.getNowTerm());
+            List<String> stuIdList=new ArrayList<>();
+            stuIdList.add(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
+            request.setStuIds(stuIdList);
+            stampManager.batchStamp(request, stuIdList);
+        }
+    }
+    @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\志愿活动（第二反馈日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\志愿活动（第四日）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -71,20 +93,20 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importPracticeActivity() {
-        String url = "C:\\Users\\j10k\\Desktop\\竞赛抵暑期社会实践人员补充名单.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\社会实践（第四日）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
             activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
             System.out.println(csv[i][4]);
-            activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[i][4]).getActivityId());
-            activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][2]).getUserId());
+            activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[i][2]).getActivityId());
+            activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             activityRecordDO.setScannerUserId("201812010040554783180001201835");
             activityRecordDO.setTime(0);
             activityRecordDO.setType("practiceActivity");
             activityRecordDO.setStatus("ENABLE");
             activityRecordDO.setTerm(TermUtil.getNowTerm());
-            switch (csv[i][7]) {
+            switch (csv[i][6]) {
                 case "优秀":
                     activityRecordDO.setGrades(GradesConstant.EXCELLENT);
                     break;

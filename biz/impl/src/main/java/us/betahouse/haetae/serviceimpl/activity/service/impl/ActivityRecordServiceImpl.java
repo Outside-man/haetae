@@ -172,35 +172,30 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         String[][] csv = CsvUtil.getWithHeader(url);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STU_ID.getDesc(), csv[0][1]);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][3]);
-        ActivityStampRequest request = new ActivityStampRequest();
-        ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[1][2]);
-        activityBO.setState(ActivityStateEnum.RESTARTED.getCode());
-        activityRepoService.updateActivity(activityBO);
-        request.setActivityId(activityBO.getActivityId());
-        // 没有盖章成功的学号
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][2]);
         List<String> notStampStuIds = new ArrayList<>();
-        List<String> stuIds = new ArrayList<>();
-        for (int i = 1; i < csv.length; i++) {
-            stuIds.add(csv[i][1]);
-        }
-        // 盖章的userIds
-        Set<String> userIds = new HashSet<>();
-        for (String stuId : stuIds) {
+
+        for(int i=1;i<csv.length;i++){
+            ActivityStampRequest request = new ActivityStampRequest();
+            ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[i][2]);
+            activityBO.setState(ActivityStateEnum.RESTARTED.getCode());
+            activityRepoService.updateActivity(activityBO);
+            request.setActivityId(activityBO.getActivityId());
+            String stuId=csv[i][1];
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
             if (userInfoBO == null) {
                 notStampStuIds.add(stuId);
-            } else {
-                userIds.add(userInfoBO.getUserId());
+                continue;
             }
+            request.setScannerUserId("201812010040554783180001201835");
+            request.setStatus("ENABLE");
+            request.setTerm(activityBO.getTerm());
+            List<String> inList=new ArrayList<>();
+            inList.add(stuId);
+            stampManager.batchStamp(request, inList);
+            activityBO.setState(ActivityStateEnum.FINISHED.getCode());
+            activityRepoService.updateActivity(activityBO);
         }
-        //systemId
-        request.setScannerUserId("201812010040554783180001201835");
-        request.setStatus("ENABLE");
-        request.setTerm(activityBO.getTerm());
-        stampManager.batchStamp(request, new ArrayList<>(userIds));
-        activityBO.setState(ActivityStateEnum.FINISHED.getCode());
-        activityRepoService.updateActivity(activityBO);
         return notStampStuIds;
     }
 
