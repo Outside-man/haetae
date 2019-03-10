@@ -98,13 +98,8 @@ public class AssetServiceImpl implements AssetService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(AssetManagerRequest request, OperateContext context) {
         //删除物资信息和物资借用信息
-        try {
-            assetLoanRecordManager.delete(request.getAssetId());
-            assetManager.delete(request.getAssetId());
-        } catch (Exception e) {
-            //一个出错另一个会回滚
-            throw new RuntimeException("删除失败");
-        }
+        assetLoanRecordManager.delete(request.getAssetId());
+        assetManager.delete(request.getAssetId());
     }
 
     @Override

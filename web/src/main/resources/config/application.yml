@@ -9,13 +9,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/haetae?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
 #    username: root
-#    password: root
-    url: jdbc:mysql://47.92.109.27:3306/haetae?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
+#    password: 123456
+    url: jdbc:mysql://119.23.188.92:3306/haetae?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
     username: root
-    password: hziee_2018@mysql
-#    url: jdbc:mysql://119.23.188.92:3306/haetae?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
-#    username: root
-#    password: mysql@961008
+    password: mysql@961008
   jpa:
     hibernate:
       ddl-auto: update

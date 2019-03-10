@@ -33,7 +33,7 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetBackRecordController.java 2019/02/12 17:53 yiyuk.hxy
  */
-@CrossOrigin(origins = "http://119.23.188.92/")
+@CrossOrigin
 @RestController
 @RequestMapping(value = "assetBackRecord")
 public class AssetBackRecordController {

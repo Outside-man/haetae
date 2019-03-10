@@ -36,7 +36,7 @@ import java.util.List;
  * @author yiyuk.hxy
  * @version : AssetLoanRecordController.java 2019/01/25 23:57 yiyuk.hxy
  */
-@CrossOrigin(origins = "http://119.23.188.92/")
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/assetLoanRecord")
 public class AssetLoanRecordController {

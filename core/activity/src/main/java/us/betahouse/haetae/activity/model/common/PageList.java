@@ -5,6 +5,7 @@
 package us.betahouse.haetae.activity.model.common;
 
 import org.springframework.data.domain.Page;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
  * @author MessiahJK
  * @version : PageList.java 2019/01/16 10:51 MessiahJK
  */
-public class PageList<E>{
+public class PageList<E> {
 
     /**
      * 总数据
@@ -59,7 +60,7 @@ public class PageList<E>{
     private List<E> content;
 
     @SuppressWarnings("unchecked")
-    private void init(Page<?> page,Function convert) {
+    private void init(Page<?> page, Function convert) {
         this.totalElements = page.getTotalElements();
         this.totalPages = page.getTotalPages();
         this.size = page.getSize();
@@ -67,11 +68,12 @@ public class PageList<E>{
         this.numberOfElements = page.getNumberOfElements();
         this.first = page.isFirst();
         this.end = page.isLast();
-        this.content= (List<E>) toStream(page.getContent())
+        this.content = (List<E>) toStream(page.getContent())
                 .filter(Objects::nonNull)
                 .map(convert)
                 .collect(Collectors.toList());
     }
+
     @SuppressWarnings("unchecked")
     private void init(Page<?> page) {
         this.totalElements = page.getTotalElements();
@@ -81,10 +83,11 @@ public class PageList<E>{
         this.numberOfElements = page.getNumberOfElements();
         this.first = page.isFirst();
         this.end = page.isLast();
-        this.content= (List<E>) page.getContent();
+        this.content = (List<E>) page.getContent();
     }
+
     @SuppressWarnings("unchecked")
-    private void init(PageList pageList,Function convert){
+    private void init(PageList pageList, Function convert) {
         this.totalElements = pageList.getTotalElements();
         this.totalPages = pageList.getTotalPages();
         this.size = pageList.getSize();
@@ -92,19 +95,20 @@ public class PageList<E>{
         this.numberOfElements = pageList.getNumberOfElements();
         this.first = pageList.isFirst();
         this.end = pageList.isEnd();
-        this.content= (List<E>) toStream(pageList.getContent())
+        this.content = (List<E>) toStream(pageList.getContent())
                 .filter(Objects::nonNull)
                 .map(convert)
                 .collect(Collectors.toList());
     }
+
     /**
      * Page<V> ->PageList<T>
      *
-     * @param page org.springframework.data.domain.page jpa分页类
+     * @param page    org.springframework.data.domain.page jpa分页类
      * @param convert 类型转换函数
      */
     public PageList(Page<?> page, Function convert) {
-        this.init(page,convert);
+        this.init(page, convert);
     }
 
     /**
@@ -112,7 +116,7 @@ public class PageList<E>{
      *
      * @param page org.springframework.data.domain.page jpa分页类
      */
-    public PageList(Page<?> page){
+    public PageList(Page<?> page) {
         this.init(page);
     }
 
@@ -122,8 +126,8 @@ public class PageList<E>{
      * @param pageList
      * @param convert
      */
-    public PageList(PageList pageList,Function convert){
-        this.init(pageList,convert);
+    public PageList(PageList pageList, Function convert) {
+        this.init(pageList, convert);
     }
 
 
@@ -164,7 +168,7 @@ public class PageList<E>{
      * 转换stream 如果为空 返回空流 避免npe
      *
      * @param collection 集合
-     * @param <T> 类型
+     * @param <T>        类型
      * @return 流
      */
     public static <T> Stream<T> toStream(Collection<T> collection) {
