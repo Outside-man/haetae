@@ -124,6 +124,7 @@ public class AssetBackRecordRestRequest extends RestRequest {
         return extInfo;
     }
 
+    @Override
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }

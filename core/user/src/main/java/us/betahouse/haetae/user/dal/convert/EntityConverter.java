@@ -3,12 +3,15 @@
   CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.dal.convert;
+import java.util.Date;
 
 import com.alibaba.fastjson.JSON;
+import us.betahouse.haetae.user.dal.model.MajorDO;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.model.perm.PermDO;
 import us.betahouse.haetae.user.dal.model.perm.RoleDO;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
+import us.betahouse.haetae.user.model.basic.MajorBO;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
@@ -191,5 +194,22 @@ final public class EntityConverter {
         userDO.setLastLoginDate(userBO.getLastLoginDate());
         userDO.setSessionId(userBO.getSessionId());
         return userDO;
+    }
+
+    public static MajorDO convert(MajorBO majorBO){
+        MajorDO majorDO= new MajorDO();
+        majorDO.setMajorId(majorBO.getMajorId());
+        majorDO.setMajorName(majorBO.getMajorName());
+        majorDO.setExtInfo(JSON.toJSONString(majorBO.getExtInfo()));
+        return majorDO;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static MajorBO convert(MajorDO majorDO){
+        MajorBO majorBO= new MajorBO();
+        majorBO.setMajorId(majorDO.getMajorId());
+        majorBO.setMajorName(majorDO.getMajorName());
+        majorBO.setExtInfo(JSON.parseObject(majorDO.getExtInfo(),Map.class));
+        return majorBO;
     }
 }

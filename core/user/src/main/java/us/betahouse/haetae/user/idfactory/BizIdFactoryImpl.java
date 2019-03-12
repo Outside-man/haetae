@@ -145,6 +145,23 @@ public class BizIdFactoryImpl implements BizIdFactory {
         return builder.toString();
     }
 
+    @Override
+    public String getMajorId() {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-22 随机数 6位随机数
+        builder.append(getRandNum(6));
+        // 22-26 业务码 4位业务码
+        builder.append(IdTypeEnum.MAJOR_ID.getBizNum());
+        // 26-30 业务自定义码
+        builder.append(DateUtil.getYear(now));
+        // 30-32 随机 2位
+        builder.append(getRandNum(2));
+        return builder.toString();
+    }
+
     /**
      * 获取指定长度的随机数，不足向左补0
      *

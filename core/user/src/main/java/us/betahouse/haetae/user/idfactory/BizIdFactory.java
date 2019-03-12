@@ -68,4 +68,11 @@ public interface BizIdFactory {
      * @return
      */
     String getUserInfoId(String userId);
+
+    /**
+     * 生成专业信息id
+     *
+     * @return
+     */
+    String getMajorId();
 }

@@ -16,16 +16,19 @@ import java.util.List;
  */
 public interface UserInfoRepoService {
 
+
     /**
      * 绑定用户信息
      *
-     * @return
+     * @param userId 用户id
+     * @param userInfoBO
      */
     void bindUserInfo(String userId, UserInfoBO userInfoBO);
 
     /**
      * 通过用户id查询用户信息
      *
+     * @param userId
      * @return
      */
     UserInfoBO queryUserInfoByUserId(String userId);
@@ -33,6 +36,7 @@ public interface UserInfoRepoService {
     /**
      * 通过学号查询用户信息
      *
+     * @param stuId
      * @return
      */
     UserInfoBO queryUserInfoByStuId(String stuId);
@@ -54,6 +58,11 @@ public interface UserInfoRepoService {
      */
     List<UserInfoBO> batchQueryByUserIds(List<String> userIds);
 
+    /**
+     * 查询所有用户信息
+     *
+     * @return
+     */
     List<UserInfoBO> queryAllUser();
 
 }

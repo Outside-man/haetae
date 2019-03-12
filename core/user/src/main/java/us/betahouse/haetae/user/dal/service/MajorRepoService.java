@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
+import us.betahouse.haetae.user.model.basic.MajorBO;
+
 /**
  * 专业仓储服务
  *
@@ -12,4 +14,10 @@ package us.betahouse.haetae.user.dal.service;
  */
 public interface MajorRepoService {
 
+    /**
+     * 创建专业实体
+     *
+     * @param majorBO
+     */
+    void create(MajorBO majorBO);
 }

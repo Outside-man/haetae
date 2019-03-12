@@ -16,4 +16,14 @@ import us.betahouse.haetae.user.dal.model.MajorDO;
  */
 @Repository
 public interface MajorDORepo extends JpaRepository<MajorDO, Long> {
+
+    /**
+     * 通过专业id查询专业实体
+     *
+     * @param majorId
+     * @return
+     */
+    MajorDO findByMajorId(String majorId);
+
+
 }

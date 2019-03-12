@@ -176,6 +176,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         List<String> notStampStuIds = new ArrayList<>();
 
         for(int i=1;i<csv.length;i++){
+            if(StringUtils.isBlank(csv[i][0])){
+                break;
+            }
             ActivityStampRequest request = new ActivityStampRequest();
             ActivityBO activityBO = activityRepoService.queryActivityByActivityName(csv[i][2]);
             activityBO.setState(ActivityStateEnum.RESTARTED.getCode());

@@ -46,8 +46,8 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importStamp() {
-        //C:\Users\j10k\Documents\Tencent Files\1033161038\FileRecv\第一届课达杯手绘大赛-数据导入.csv
-        String url = "C:\\Users\\j10k\\Desktop\\校园活动（第四日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2018-2019学年第一学期迎新.csv";
+
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -58,7 +58,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importVolunteerWork(){
-        String url = "C:\\Users\\j10k\\Desktop\\义工活动（第四日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\义工活动（第五日）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -76,12 +76,14 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\志愿活动（第四日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\志愿活动（第五日）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
             activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
-            activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[1][3]).getActivityId());
+            System.out.println(csv[i][3]);
+            System.out.println(activityDORepo.findByActivityName(csv[i][3]));
+            activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[i][3]).getActivityId());
             activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             activityRecordDO.setScannerUserId("201812010040554783180001201835");
             activityRecordDO.setTime((int)(Double.valueOf(csv[i][2])*10));
@@ -93,7 +95,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importPracticeActivity() {
-        String url = "C:\\Users\\j10k\\Desktop\\社会实践（第四日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019寒假社会实践.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();

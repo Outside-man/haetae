@@ -34,7 +34,7 @@ public class MajorDO extends BaseDO {
      * 专业名称
      */
     @Column(name = "major_name", length = 64)
-    private String marjorName;
+    private String majorName;
 
     /**
      * 年级
@@ -56,12 +56,12 @@ public class MajorDO extends BaseDO {
         this.majorId = majorId;
     }
 
-    public String getMarjorName() {
-        return marjorName;
+    public String getMajorName() {
+        return majorName;
     }
 
-    public void setMarjorName(String marjorName) {
-        this.marjorName = marjorName;
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
     }
 
     public String getGrade() {
