@@ -67,6 +67,7 @@ public interface FinanceManager {
     FinanceTotalBO getTotalMoney(FinanceRequest request);
 
 
+    FinanceMessageBO changeFinanceMessage(FinanceMessageBO financeMessageBO);
 
     /**
      * 创建财务信息 预算

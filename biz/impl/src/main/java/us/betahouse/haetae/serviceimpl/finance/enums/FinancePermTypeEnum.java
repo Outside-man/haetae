@@ -15,8 +15,9 @@ public enum FinancePermTypeEnum  implements PermType {
     /**
      * 财务管理
      */
-    FINANCE_MANAGE("FINANCE_MANAGER","财务管理",true);
+    FINANCE_MANAGE("FINANCE_MANAGER","财务管理",true),
 
+    FINANCE_BAN("FINANCE_BAN","财务黑名单",true);
     /**
      * 编码
      */

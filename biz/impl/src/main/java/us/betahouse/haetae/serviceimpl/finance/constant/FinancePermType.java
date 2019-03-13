@@ -13,6 +13,10 @@ public class FinancePermType {
     /**
      * 活动管理
      */
-    public final static String FINANCE_MANAGE="FINANCE_MANAGE";
+    public final static String FINANCE_MANAGER="FINANCE_MANAGER";
 
+    /**
+     * 黑名单
+     */
+    public final static String FINANCE_BAN="FINANCE_BAN";
 }

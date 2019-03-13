@@ -64,9 +64,6 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
 
     @Override
     public List<FinanceMessageBO> findAllByOrganizationIdAndTermAndApplicantUserId(String organizationId, String term, String applicantUserId) {
-        System.out.println(organizationId);
-        System.out.println(term);
-        System.out.println(applicantUserId);
         return CollectionUtils.toStream(financeMessageDORepo.findAllByOrganizationIdAndTermAndApplicantUserId(organizationId, term, applicantUserId))
                 .filter(Objects::nonNull)
                 .map(this::convert)
@@ -155,7 +152,6 @@ public class FinanceMessageDORepoServiceImpl implements FinanceMessageDORepoServ
         financeMessageBO.setAuditorName(financeMessageDO.getAuditorName());
         financeMessageBO.setFinishTime(financeMessageDO.getFinishTime());
         financeMessageBO.setRemark(financeMessageDO.getRemark());
-        System.out.println(financeMessageDO.getExinfo());
         financeMessageBO.setExInfo(JSON.parseObject(financeMessageDO.getExinfo(),Map.class));
         financeMessageBO.setGmtCreate(financeMessageDO.getGmtCreate());
         financeMessageBO.setGmtModified(financeMessageDO.getGmtModified());

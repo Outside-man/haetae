@@ -58,7 +58,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importVolunteerWork(){
-        String url = "C:\\Users\\j10k\\Desktop\\义工活动（第五日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\义工活动.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();

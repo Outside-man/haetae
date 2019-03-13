@@ -101,6 +101,10 @@ public class InitService {
                     .withExtInfo(map);
             initPermMap.put(permType.getCode(), permRepoService.initFinancePerm(permBuilder.build()).getPermId());
         }
+        permBuilder.withPermType(FinancePermTypeEnum.FINANCE_BAN.getCode())
+                .withPermName(FinancePermTypeEnum.FINANCE_BAN.getDesc())
+                .withExtInfo(new HashMap<>(0));
+        initPermMap.put(FinancePermTypeEnum.FINANCE_BAN.getCode(),permRepoService.initPerm(permBuilder.build()).getPermId());
         // 初始化角色
         Map<String, String> initRoleMap = new HashMap<>(16);
         RoleBOBuilder roleBOBuilder = RoleBOBuilder.getInstance();

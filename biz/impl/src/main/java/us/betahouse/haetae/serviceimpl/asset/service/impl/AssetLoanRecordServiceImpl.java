@@ -50,8 +50,6 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         //正则表达式来检验输入数量中是否有非法输入
         Boolean isNumber = Pattern.matches("[0-9]*", request.getAmount().toString());
         AssertUtil.assertTrue(isNumber, "输入物资的数量包含非法字符");
-        System.out.println(assetBO.getAssetRemain());
-        System.out.println(request.getAmount());
         AssertUtil.assertTrue(request.getAmount() <= assetBO.getAssetRemain(), "借用数量不能大于物资剩余数量");
         AssetStatusEnum assetStatusEnum = AssetStatusEnum.getByCode(assetBO.getAssetStatus());
         AssertUtil.assertNotNull(assetStatusEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资状态错误");

@@ -19,6 +19,7 @@ import us.betahouse.haetae.finance.request.builder.FinanceRequestBuilder;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
+import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermType;
 import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.finance.request.FinanceManagerRequest;
 import us.betahouse.haetae.serviceimpl.finance.service.FinanceService;
@@ -27,6 +28,7 @@ import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +107,26 @@ public class FinanceServiceImpl implements FinanceService {
     }
 
     @Override
+    public FinanceMessageBO changeBudget(FinanceManagerRequest request, OperateContext context) {
+        FinanceMessageBO financeMessageBO=financeManager.findMessageByFinanceMessageId(request.getFinanceMessageId());
+        AssertUtil.assertNotNull(financeMessageBO, "无法获取财务信息实体");
+        AssertUtil.assertEquals(financeMessageBO.getStatus(),FinanceMessageTypeEnum.UNAUDITED.getCode(),"状态信息错误" );
+        if(StringUtils.isNotBlank(request.getFinanceName())){
+            financeMessageBO.setFinanceName(request.getFinanceName());
+        }
+        if(StringUtils.isNotBlank(request.getFinanceInfo())){
+            financeMessageBO.setFinanceInfo(request.getFinanceInfo());
+        }
+        if(StringUtils.isNotBlank(request.getRemark())){
+            financeMessageBO.setRemark(request.getRemark());
+        }
+        if(request.getBudget()!=null&&request.getBudget().compareTo(BigDecimal.ZERO)>0){
+            financeMessageBO.setBudget(request.getBudget());
+        }
+        return null;
+    }
+
+    @Override
     public FinanceMessageBO audite(FinanceManagerRequest request, OperateContext context) {
         if(request.getAudite()){
             return financeManager.changeStatus(request.getFinanceMessageId(), FinanceMessageTypeEnum.AUDITED.getCode());
@@ -158,10 +180,23 @@ public class FinanceServiceImpl implements FinanceService {
         Map<String, PermBO> map = userBasicService.fetchUserPerms(request.getUserId());
         AtomicReference<Boolean> result= new AtomicReference<>(false);
         map.values().forEach(permBO ->{
-            if(request.getOrganizationId().equals(permBO.getExtInfo().get(FinancePermExInfoKey.ORGANIZATION_ID))){
+            if(request.getOrganizationId().equals(permBO.getExtInfo().get(FinancePermExInfoKey.ORGANIZATION_ID))&&permBO.getPermType().equals(FinancePermType.FINANCE_MANAGER)){
                 result.set(true);
             }
         });
         return result.get();
     }
+
+    @Override
+    public Boolean checkBan(FinanceManagerRequest request, OperateContext context) {
+        Map<String, PermBO> map = userBasicService.fetchUserPerms(request.getUserId());
+        AtomicReference<Boolean> result= new AtomicReference<>(false);
+        map.values().forEach(permBO ->{
+            if(permBO.getPermType().equals(FinancePermType.FINANCE_BAN)){
+                result.set(true);
+            }
+        });
+        return result.get();
+    }
+
 }

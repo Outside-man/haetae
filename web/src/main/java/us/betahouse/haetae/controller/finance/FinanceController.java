@@ -165,6 +165,44 @@ public class FinanceController {
     }
 
     /**
+     * 修改预算
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @PutMapping("/budget")
+    @Log(loggerName =LoggerName.FINANCE_DIGEST)
+    public Result<FinanceMessageBO> changeBudget(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "提交预算", request, new RestOperateCallBack<FinanceMessageBO>(){
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getFinanceMessageId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "财务信息id不能为空");
+            }
+
+            @Override
+            public Result<FinanceMessageBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withFinanceMessageId(request.getFinanceMessageId())
+                        .withFinanceName(request.getFinanceName())
+                        .withFinanceInfo(request.getFinanceInfo())
+                        .withRemark(request.getRemark())
+                        .withBudget(request.getBudget())
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.changeBudget(financeManagerRequest, context),"预算提交成功");
+            }
+        });
+    }
+
+    /**
      * 审核
      *
      * @param request
@@ -351,4 +389,34 @@ public class FinanceController {
         });
     }
 
+    /**
+     * 验权
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping("/ban")
+    @Log(loggerName =LoggerName.FINANCE_DIGEST)
+    public Result<Boolean> checkBan(FinanceRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "验权-是否禁止", request, new RestOperateCallBack<Boolean>(){
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<Boolean> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                FinanceManagerRequest financeManagerRequest=FinanceManagerRequestBuilder
+                        .aFinanceManagerRequest()
+                        .withUserId(request.getUserId())
+                        .build();
+                return RestResultUtil.buildSuccessResult(financeService.checkBan(financeManagerRequest, context),"获取验权信息成功");
+            }
+        });
+    }
 }

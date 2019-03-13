@@ -46,6 +46,15 @@ public interface FinanceService {
      */
     FinanceMessageBO submitBudget(FinanceManagerRequest request,OperateContext context);
 
+
+    /**
+     * 提交预算
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    FinanceMessageBO changeBudget(FinanceManagerRequest request,OperateContext context);
     /**
      * 审核
      *
@@ -97,4 +106,13 @@ public interface FinanceService {
      * @return
      */
     Boolean checkPerm(FinanceManagerRequest request,OperateContext context);
+
+    /**
+     * 财务黑名单验权
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    Boolean checkBan(FinanceManagerRequest request,OperateContext context);
 }

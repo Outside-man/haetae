@@ -57,7 +57,6 @@ public class FinanceManagerImpl implements FinanceManager {
             FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
             financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget().subtract(financeMessageBO.getBudget()));
             financeTotalDORepoService.update(financeTotalBO);
-            System.out.println(financeMessageBO);
             return financeMessageDORepoService.update(financeMessageBO);
         }else if(status.equals(FinanceMessageTypeEnum.AUDITED_FAIL.getCode())){
             return financeMessageDORepoService.update(financeMessageBO);
@@ -71,8 +70,6 @@ public class FinanceManagerImpl implements FinanceManager {
         financeMessageBO.setFinishTime(new Date());
 
         FinanceTotalBO financeTotalBO=financeTotalDORepoService.findByOrganizationId(financeMessageBO.getOrganizationId());
-        System.out.println(financeTotalBO);
-        System.out.println(financeMessageBO);
         financeTotalBO.setTotalMoneyIncludeBudget(financeTotalBO.getTotalMoneyIncludeBudget().add(financeMessageBO.getBudget()).subtract(financeMessageBO.getTrueMoney()));
         financeTotalBO.setTotalMoney(financeTotalBO.getTotalMoney().subtract(financeMessageBO.getTrueMoney()));
         financeTotalDORepoService.update(financeTotalBO);
@@ -83,6 +80,11 @@ public class FinanceManagerImpl implements FinanceManager {
     @Override
     public FinanceTotalBO getTotalMoney(FinanceRequest request) {
         return financeTotalDORepoService.findByOrganizationId(request.getOrganizationId());
+    }
+
+    @Override
+    public FinanceMessageBO changeFinanceMessage(FinanceMessageBO financeMessageBO) {
+        return financeMessageDORepoService.update(financeMessageBO);
     }
 
     @Override
