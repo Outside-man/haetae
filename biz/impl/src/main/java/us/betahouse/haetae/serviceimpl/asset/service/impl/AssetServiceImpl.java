@@ -16,9 +16,11 @@ import us.betahouse.haetae.asset.enums.AssetTypeEnum;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.asset.manager.AssetManager;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
+import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
@@ -47,7 +49,7 @@ public class AssetServiceImpl implements AssetService {
     private AssetLoanRecordManager assetLoanRecordManager;
 
     @Override
-    //@VerifyPerm(permType = AssetPermType.ASSET_CREATE) 方便测试
+    @VerifyPerm(permType = AssetPermType.ASSET_CREATE)
     @Transactional(rollbackFor = Exception.class)
     public AssetBO create(AssetManagerRequest request, OperateContext context) {
         AssetTypeEnum assetTypeEnum = AssetTypeEnum.getByCode(request.getAssetType());
@@ -71,7 +73,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    //@VerifyPerm(permType = AssetPermType.ASSET_UPDATE) 方便测试
+    @VerifyPerm(permType = AssetPermType.ASSET_UPDATE)
     @Transactional(rollbackFor = Exception.class)
     public AssetBO update(AssetManagerRequest request, OperateContext context) {
         //对接收物资剩余数量进行判断
@@ -94,7 +96,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    //@VerifyPerm(permType = AssetPermType.ASSET_DELETE) 方便测试
+    @VerifyPerm(permType = AssetPermType.ASSET_DELETE)
     @Transactional(rollbackFor = Exception.class)
     public void delete(AssetManagerRequest request, OperateContext context) {
         //删除物资信息和物资借用信息
@@ -103,7 +105,7 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-//    @VerifyPerm(permType = AssetPermType.ASSET_SEEK) 方便测试
+    @VerifyPerm(permType = AssetPermType.ASSET_SEEK)
     public List<AssetBO> findAllAsset(AssetManagerRequest request, OperateContext context) {
         return assetManager.findAll();
     }
@@ -117,7 +119,7 @@ public class AssetServiceImpl implements AssetService {
 
 
     @Override
-//    @VerifyPerm(permType = AssetPermType.ASSET_SEEK) 权限查看所有物资
+    @VerifyPerm(permType = AssetPermType.ASSET_SEEK)
     public List<AssetBO> queryAssetByOrganizationId(AssetManagerRequest request, OperateContext context) {
         return assetManager.queryAssetByOrganizationId(request.getAssetOrganizationId());
     }
