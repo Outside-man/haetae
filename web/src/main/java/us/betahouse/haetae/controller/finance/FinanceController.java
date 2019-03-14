@@ -197,7 +197,7 @@ public class FinanceController {
                         .withBudget(request.getBudget())
                         .withUserId(request.getUserId())
                         .build();
-                return RestResultUtil.buildSuccessResult(financeService.changeBudget(financeManagerRequest, context),"预算提交成功");
+                return RestResultUtil.buildSuccessResult(financeService.changeBudget(financeManagerRequest, context),"预算修改成功");
             }
         });
     }

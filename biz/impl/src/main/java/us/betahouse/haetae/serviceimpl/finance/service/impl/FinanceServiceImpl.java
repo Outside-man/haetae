@@ -123,7 +123,7 @@ public class FinanceServiceImpl implements FinanceService {
         if(request.getBudget()!=null&&request.getBudget().compareTo(BigDecimal.ZERO)>0){
             financeMessageBO.setBudget(request.getBudget());
         }
-        return null;
+        return financeManager.changeFinanceMessage(financeMessageBO);
     }
 
     @Override
