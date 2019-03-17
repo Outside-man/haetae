@@ -144,7 +144,9 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         ActivityRecordDO activityRecordDO=activityRecordDORepo.findByActivityRecordId(activityRecordId);
         ActivityRecordBO activityRecordBO=convert(activityRecordDO);
         activityRecordBO.setScannerName(scannerName);
-        return convert(activityRecordDORepo.save(convert(activityRecordBO)));
+        // 将盖章员存入拓展字段
+        activityRecordDO.setExtInfo(JSON.toJSONString(activityRecordBO.getExtInfo()));
+        return convert(activityRecordDORepo.save(activityRecordDO));
     }
 
     /**

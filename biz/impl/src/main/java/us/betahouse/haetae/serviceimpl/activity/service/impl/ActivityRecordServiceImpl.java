@@ -130,8 +130,8 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance();
         for (ActivityRecordBO record : activityRecords) {
             if(StringUtils.isBlank(record.getScannerName())){
-                String scannerName=userInfoRepoService.queryUserInfoByUserId(record.getUserId()).getRealName();
-                activityRecordManager.updateScannerName(record.getActivityId(), scannerName);
+                String scannerName=userInfoRepoService.queryUserInfoByUserId(record.getScannerUserId()).getRealName();
+                activityRecordManager.updateScannerName(record.getActivityRecordId(), scannerName);
                 record.setScannerName(scannerName);
             }
             stampBuilder.withActivityBO(activityMap.get(record.getActivityId()))
