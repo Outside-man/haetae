@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.utils.EncryptUtil;
 
 
 @RunWith(SpringRunner.class)
@@ -27,8 +28,8 @@ public class UserRepoServiceTest {
 
     @Test
     public void updateUser() {
-        UserBO userBO = buildUserBO();
-        userBO.setPassword("cccc");
+        UserBO userBO = userRepoService.queryByUserName("17911224");
+        userBO.setPassword(EncryptUtil.encryptPassword("Hziee17911224", userBO.getSalt()));
         userRepoService.updateUserByUserId(userBO);
         System.out.println(userBO);
     }
