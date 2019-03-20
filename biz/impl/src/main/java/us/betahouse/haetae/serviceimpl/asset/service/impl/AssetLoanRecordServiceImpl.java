@@ -21,7 +21,6 @@ import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -91,8 +90,11 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
     public AssetLoanRecordBO findAssetLoanRecordByLoanRecordId(AssetLoanRecordRequest request, OperateContext context) {
         AssetLoanRecordBO assetLoanRecordBO = assetLoanRecordManager.findAssetLoanRecordByLoanRecordId(request.getLoanRecordId());
         AssertUtil.assertNotNull(assetLoanRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借取记录不存在");
-        assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
-        assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+        //获取用户ID
+        String userId=assetLoanRecordBO.getUserId();
+        //这边是查找物资借用人的id 不是登陆用户的id
+        assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(userId).getStuId());
+        assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(userId).getRealName());
         return assetLoanRecordBO;
     }
 }

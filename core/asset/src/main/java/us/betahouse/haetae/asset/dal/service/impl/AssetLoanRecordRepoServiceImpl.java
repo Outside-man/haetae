@@ -45,6 +45,7 @@ public class AssetLoanRecordRepoServiceImpl implements AssetLoanRecordRepoServic
     @Autowired
     private AssetRepoService assetRepoService;
 
+
     /**
      * @param assetLoanRecordBO
      * @return
