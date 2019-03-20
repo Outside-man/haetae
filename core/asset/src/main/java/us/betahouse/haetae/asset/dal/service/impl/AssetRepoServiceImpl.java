@@ -138,7 +138,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     @Override
     public AssetBO findByAssetId(String assetId) {
         AssetDO assetDO = assetDORepo.findByAssetId(assetId);
-        System.out.println(assetId);
         AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
         return convert(assetDO);
     }

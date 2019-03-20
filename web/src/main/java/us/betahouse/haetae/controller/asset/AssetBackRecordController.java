@@ -76,7 +76,6 @@ public class AssetBackRecordController {
                 AssetBackRecordManagerRequest assetBackRecordManagerRequest = AssetBackRecordManagerRequestBuilder.getInstance()
                         .withAssetId(request.getAssetId())
                         .withAmount(request.getAmount())
-                        .withExtInfo(request.getExtInfo())
                         .withLoanRecoedId(request.getLoanRecordId())
                         .withRemark(request.getRemark())
                         .withType(request.getType())

@@ -69,8 +69,9 @@ public class AssetLoanRecordServiceImpl implements AssetLoanRecordService {
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
         List<AssetLoanRecordBO> assetLoanRecordBOS=assetLoanRecordManager.findAllAssetLoanRecordByAssetId(request.getAssetId());
         assetLoanRecordBOS.forEach(assetLoanRecordBO -> {
-            assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getStuId());
-            assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(request.getUserId()).getRealName());
+            String userId=assetLoanRecordBO.getUserId();
+            assetLoanRecordBO.setStuId(userInfoRepoService.queryUserInfoByUserId(userId).getStuId());
+            assetLoanRecordBO.setUserRealName(userInfoRepoService.queryUserInfoByUserId(userId).getRealName());
         });
         return assetLoanRecordBOS;
     }
