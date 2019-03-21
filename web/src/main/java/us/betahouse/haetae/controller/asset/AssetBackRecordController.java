@@ -48,7 +48,7 @@ public class AssetBackRecordController {
     /**
      * 创建归还物资记录
      * 消耗品和耐用品用同一个接口
-     * 消耗品归还类型为归还和报损 使用这个接口
+     * 消耗品归还类型为归还和报损
      * 耐用品归还类型为归还和消耗
      * @param request
      * @param httpServletRequest

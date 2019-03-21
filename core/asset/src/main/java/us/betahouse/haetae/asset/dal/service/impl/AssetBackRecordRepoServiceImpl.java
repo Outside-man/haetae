@@ -73,7 +73,8 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         AssetBackRecordTypeEnum assetBackRecordTypeEnum = AssetBackRecordTypeEnum.getByCode(assetBackRecordBO.getType());
         AssertUtil.assertNotNull(assetDO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
         AssertUtil.assertNotNull(assetBackRecordTypeEnum, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资类型不正确");
-        AssertUtil.assertNotNull(assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.LOADED.getCode()) || assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.DESTROYED.getCode()), "物资已全部归还，无法再次提交归还请求");
+        //当物资状态为loaded或者为destroyed时候执行
+        AssertUtil.assertTrue(!(assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.LOADED.getCode()) || assetLoanRecordDO.getStatus().equals(AssetLoanRecordStatusEnum.DESTROYED.getCode())), "物资已全部归还，无法再次提交归还请求");
         switch (assetBackRecordTypeEnum) {
             case BACK:
                 assetDO.setRemain(assetDO.getRemain() + assetBackRecordBO.getAmount());
