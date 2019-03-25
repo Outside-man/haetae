@@ -31,6 +31,44 @@ public class BizIdFactoryImpl implements BizIdFactory {
     private final static Random random = new Random();
 
 
+    @Override
+    public String getOrganizationId() {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-22 随机数 6位随机数
+        builder.append(getRandNum(6));
+        // 22-26 业务码 4位业务码
+        builder.append(IdTypeEnum.ORGANIZATION_ID.getBizNum());
+        // 26-30 业务自定义码
+        builder.append(DateUtil.getYear(now));
+        // 30-32 随机 2位
+        builder.append(getRandNum(2));
+        return builder.toString();
+    }
+
+    @Override
+    public String getOrganiationMemberId(String organizationId, String memberId) {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-22 随机数 6位随机数
+        builder.append(getRandNum(6));
+        // 22-26 业务码 4位业务码
+        builder.append(IdTypeEnum.ORGANIZATION_MEMBER_ID.getBizNum());
+        // 26-28 organization 后2位
+        builder.append(getLengthString(organizationId,2));
+        // 28-30 userId 后2位
+        builder.append(getLengthString(memberId,2));
+        // 30-32 随机 2位
+        builder.append(getRandNum(2));
+        return builder.toString();
+    }
+
+
+
     /**
      * 获取指定长度的随机数，不足向左补0
      *
@@ -46,7 +84,7 @@ public class BizIdFactoryImpl implements BizIdFactory {
     }
 
     /**
-     * 获取指定长度字符串，不足向左补0
+     * 从右侧获取指定长度字符串，不足向左补0
      *
      * @param str
      * @param length
@@ -75,22 +113,5 @@ public class BizIdFactoryImpl implements BizIdFactory {
             sb.append("0");
         }
         return sb.toString();
-    }
-
-    @Override
-    public String getOrganizationId() {
-        StringBuilder builder = new StringBuilder(32);
-        Date now = new Date();
-        // 1-16 系统时间 16位
-        builder.append(DateUtil.getShortDatesStr(now));
-        // 16-22 随机数 6位随机数
-        builder.append(getRandNum(6));
-        // 22-26 业务码 4位业务码
-//        builder.append(IdTypeEnum.USER_ID.getBizNum());
-        // 26-30 业务自定义码
-        builder.append(DateUtil.getYear(now));
-        // 30-32 随机 2位
-        builder.append(getRandNum(2));
-        return builder.toString();
     }
 }

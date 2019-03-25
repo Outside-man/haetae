@@ -15,4 +15,6 @@ public interface BizIdFactory {
 
     String getOrganizationId();
 
+    String getOrganiationMemberId(String organizationId, String memberId);
+
 }

@@ -16,4 +16,11 @@ import us.betahouse.haetae.organization.dal.model.OrganizationDO;
  */
 @Repository
 public interface OrganizationRepo extends JpaRepository<OrganizationDO, Long> {
+
+    /**
+     * 查询组织id
+     * @param organizationId
+     * @return
+     */
+    OrganizationDO findByorganizationId(String organizationId);
 }

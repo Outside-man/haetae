@@ -12,6 +12,10 @@ package us.betahouse.haetae.organization.idfactory;
  */
 public enum IdTypeEnum {
 
+    ORGANIZATION_ID("0011", "组织id"),
+
+    ORGANIZATION_MEMBER_ID("0012", "组织成员关系id"),
+
     ;
     /**
      * 业务id

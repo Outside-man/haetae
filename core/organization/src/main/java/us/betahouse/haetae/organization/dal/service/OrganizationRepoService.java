@@ -6,6 +6,8 @@ package us.betahouse.haetae.organization.dal.service;
 
 import us.betahouse.haetae.organization.model.OrganizationBO;
 
+import java.util.List;
+
 /**
  * 组织仓储服务
  *
@@ -30,4 +32,19 @@ public interface OrganizationRepoService {
      * @return
      */
     OrganizationBO modify(String organizationId, OrganizationBO organizationBO);
+
+    /**
+     * 获取全部组织
+     *
+     * @return
+     */
+    List<OrganizationBO> queryAllOrganization();
+
+    /**
+     * 通过id获取组织
+     *
+     * @param organizationId
+     * @return
+     */
+    OrganizationBO queryByOrganizationId(String organizationId);
 }

@@ -103,7 +103,7 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
         }
 
         // 特殊逻辑 拓展信息为null 时认为是主动清空
-        if (newUserInfoDO.getExtInfo() == null) {
+        if (userInfoBO.getExtInfo() == null) {
             userInfoDO.setExtInfo(JSON.toJSONString(new HashMap<>()));
         } else if (!userInfoBO.getExtInfo().isEmpty()) {
             // 只有当拓展信息不为空时才会更新
