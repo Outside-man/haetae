@@ -22,5 +22,5 @@ public interface OrganizationRepo extends JpaRepository<OrganizationDO, Long> {
      * @param organizationId
      * @return
      */
-    OrganizationDO findByorganizationId(String organizationId);
+    OrganizationDO findByOrganizationId(String organizationId);
 }

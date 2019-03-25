@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.organization.dal.convert.EntityConverter;
 import us.betahouse.haetae.organization.dal.model.OrganizationMemberDO;
 import us.betahouse.haetae.organization.dal.repo.OrganizationMemberRepo;
@@ -27,6 +28,7 @@ import java.util.HashMap;
  * @author dango.yxm
  * @version : OrganizationMemberRepoServiceImpl.java 2019/03/25 15:42 dango.yxm
  */
+@Service
 public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepoService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(OrganizationRepoServiceImpl.class);
@@ -55,7 +57,7 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
         }
         // 未加入组织 则创建关系
         if (StringUtils.isBlank(memberBO.getOrganizationMemberId())) {
-            memberBO.setOrganizationMemberId(organizationBizIdFactory.getOrganiationMemberId(organizationId, memberId));
+            memberBO.setOrganizationMemberId(organizationBizIdFactory.getOrganizationMemberId(organizationId, memberId));
         }
         organizationMemberRepo.save(EntityConverter.convert(memberBO));
     }

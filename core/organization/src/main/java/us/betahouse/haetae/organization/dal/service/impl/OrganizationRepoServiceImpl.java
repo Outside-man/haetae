@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.organization.dal.convert.EntityConverter;
 import us.betahouse.haetae.organization.dal.model.OrganizationDO;
 import us.betahouse.haetae.organization.dal.repo.OrganizationRepo;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @author dango.yxm
  * @version : OrganizationRepoServiceImpl.java 2019/03/25 14:36 dango.yxm
  */
+@Service
 public class OrganizationRepoServiceImpl implements OrganizationRepoService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(OrganizationRepoServiceImpl.class);
@@ -51,7 +53,7 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
 
     @Override
     public OrganizationBO modify(String organizationId, OrganizationBO organizationBO) {
-        OrganizationDO organizationDO = organizationRepo.findByorganizationId(organizationId);
+        OrganizationDO organizationDO = organizationRepo.findByOrganizationId(organizationId);
         if (organizationDO == null) {
             LoggerUtil.error(LOGGER, "更新的组织不存在 organizationId={0}", organizationId);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的组织不存在");
@@ -84,6 +86,6 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
 
     @Override
     public OrganizationBO queryByOrganizationId(String organizationId) {
-        return EntityConverter.convert(organizationRepo.findByorganizationId(organizationId));
+        return EntityConverter.convert(organizationRepo.findByOrganizationId(organizationId));
     }
 }

@@ -5,6 +5,7 @@
 package us.betahouse.haetae.organization.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.organization.dal.model.OrganizationMemberDO;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author dango.yxm
  * @version : OrganizationMemberRepo.java 2019/03/25 10:44 dango.yxm
  */
+@Repository
 public interface OrganizationMemberRepo extends JpaRepository<OrganizationMemberDO, Long> {
 
     /**

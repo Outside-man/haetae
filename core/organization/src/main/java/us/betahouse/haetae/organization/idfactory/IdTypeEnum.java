@@ -16,6 +16,7 @@ public enum IdTypeEnum {
 
     ORGANIZATION_MEMBER_ID("0012", "组织成员关系id"),
 
+    ORGANIZATION_RELATION_ID("0013", "组织关系id")
     ;
     /**
      * 业务id

@@ -40,7 +40,7 @@ public class OrganizationDO extends BaseDO {
     /**
      * 组织类型
      */
-    @Column(name = "organization_type", nullable = false)
+    @Column(name = "organization_type")
     private String organizationType;
 
     /**

@@ -13,8 +13,29 @@ package us.betahouse.haetae.organization.idfactory;
  */
 public interface BizIdFactory {
 
+    /**
+     * 生成组织id
+     *
+     * @return
+     */
     String getOrganizationId();
 
-    String getOrganiationMemberId(String organizationId, String memberId);
+    /**
+     * 生成组织成员id
+     *
+     * @param organizationId
+     * @param memberId
+     * @return
+     */
+    String getOrganizationMemberId(String organizationId, String memberId);
+
+    /**
+     * 生成组织关系id
+     *
+     * @param primaryOrganizationId
+     * @param subOrganizationId
+     * @return
+     */
+    String getOrganizationRelation(String primaryOrganizationId, String subOrganizationId);
 
 }
