@@ -2,51 +2,39 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.organization.dal.model;
+package us.betahouse.haetae.organization.model;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import us.betahouse.util.common.ToString;
 
-import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 组织关系实体
+ * 组织关系模型
  *
  * @author dango.yxm
- * @version : OrganizationDO.java 2019/03/25 10:19 dango.yxm
+ * @version : OrganizationRelationBO.java 2019/03/25 13:32 dango.yxm
  */
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "organization_relation",
-        indexes = {
-                @Index(name = "uk_organization_relation_id", columnList = "organization_relation_id", unique = true)
-        })
-public class OrganizationRelationDO extends BaseDO {
+public class OrganizationRelationBO extends ToString {
 
-    private static final long serialVersionUID = -4039081925324693824L;
+    private static final long serialVersionUID = 8405655697545480593L;
 
     /**
      * 组织关系id
      */
-    @Column(name = "organization_relation_id", nullable = false)
     private String organizationRelationId;
 
     /**
      * 主组织id
      */
-    @Column(name = "primary_organization_id", nullable = false)
     private String primaryOrganizationId;
 
     /**
      * 子组织id
      */
-    @Column(name = "sub_organization_id", nullable = false)
     private String subOrganizationId;
 
-    /**
-     * 拓展信息
-     */
-    @Column(length = 2000)
-    private String extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public String getOrganizationRelationId() {
         return organizationRelationId;
@@ -72,11 +60,11 @@ public class OrganizationRelationDO extends BaseDO {
         this.subOrganizationId = subOrganizationId;
     }
 
-    public String getExtInfo() {
+    public Map<String, String> getExtInfo() {
         return extInfo;
     }
 
-    public void setExtInfo(String extInfo) {
+    public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
 }

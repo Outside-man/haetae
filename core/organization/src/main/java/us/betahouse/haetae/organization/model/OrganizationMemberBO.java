@@ -2,65 +2,49 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.organization.dal.model;
+package us.betahouse.haetae.organization.model;
 
+import us.betahouse.util.common.ToString;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 组织成员关系实体
+ * 组织成员模型
  *
  * @author dango.yxm
- * @version : OrganizationMemberDO.java 2019/03/25 10:28 dango.yxm
+ * @version : OrganizationMemberBO.java 2019/03/25 13:30 dango.yxm
  */
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "organization_member",
-        indexes = {
-                @Index(name = "uk_organization_member_id", columnList = "organization_member_id", unique = true),
-                @Index(name = "uk_organization_id_member_id", columnList = "organization_id, member_id", unique = true)
-        })
-public class OrganizationMemberDO extends BaseDO {
+public class OrganizationMemberBO extends ToString {
 
-    private static final long serialVersionUID = 3671533761726508679L;
+    private static final long serialVersionUID = 4211389080370687090L;
 
     /**
-     * 组织成员关系id
+     * 组织成员id
      */
-    @Column(name = "organization_member_id", nullable = false)
     private String organizationMemberId;
 
     /**
      * 组织id
      */
-    @Column(name = "organization_id", nullable = false)
     private String organizationId;
 
     /**
      * 成员id
      */
-    @Column(name = "member_id", nullable = false)
     private String memberId;
 
     /**
      * 成员类型
      */
-    @Column(name = "member_type", nullable = false)
     private String memberType;
 
     /**
      * 成员描述
      */
-    @Column(name = "member_description")
     private String memberDescription;
 
-    /**
-     * 拓展信息
-     */
-    @Column(length = 2000)
-    private String extInfo;
+    private Map<String, String> extInfo = new HashMap<>();
 
     public String getOrganizationMemberId() {
         return organizationMemberId;
@@ -102,11 +86,11 @@ public class OrganizationMemberDO extends BaseDO {
         this.memberDescription = memberDescription;
     }
 
-    public String getExtInfo() {
+    public Map<String, String> getExtInfo() {
         return extInfo;
     }
 
-    public void setExtInfo(String extInfo) {
+    public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
 }

@@ -13,4 +13,6 @@ package us.betahouse.haetae.organization.idfactory;
  */
 public interface BizIdFactory {
 
+    String getOrganizationId();
+
 }

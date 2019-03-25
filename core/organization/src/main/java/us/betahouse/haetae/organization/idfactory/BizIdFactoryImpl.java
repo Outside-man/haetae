@@ -6,6 +6,9 @@ package us.betahouse.haetae.organization.idfactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import us.betahouse.util.utils.DateUtil;
+
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -72,5 +75,22 @@ public class BizIdFactoryImpl implements BizIdFactory {
             sb.append("0");
         }
         return sb.toString();
+    }
+
+    @Override
+    public String getOrganizationId() {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        // 1-16 系统时间 16位
+        builder.append(DateUtil.getShortDatesStr(now));
+        // 16-22 随机数 6位随机数
+        builder.append(getRandNum(6));
+        // 22-26 业务码 4位业务码
+//        builder.append(IdTypeEnum.USER_ID.getBizNum());
+        // 26-30 业务自定义码
+        builder.append(DateUtil.getYear(now));
+        // 30-32 随机 2位
+        builder.append(getRandNum(2));
+        return builder.toString();
     }
 }
