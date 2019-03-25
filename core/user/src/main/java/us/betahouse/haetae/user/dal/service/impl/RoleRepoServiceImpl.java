@@ -132,7 +132,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             UserRoleRelationBO relation = new UserRoleRelationBO();
             relation.setRoleId(roleDO.getRoleId());
             relation.setUserId(userId);
-            // 通过 idfactory 工厂构建关联id
+            // 通过 id 工厂构建关联id
             relation.setUserRoleId(userBizIdFactory.getRoleUserRelationId(roleDO.getRoleId(), userId));
             relations.add(RelationConverter.convert(relation));
         }

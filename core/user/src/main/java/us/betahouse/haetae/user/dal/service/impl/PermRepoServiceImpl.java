@@ -166,7 +166,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             RolePermRelationBO relation = new RolePermRelationBO();
             relation.setPermId(permDO.getPermId());
             relation.setRoleId(roleId);
-            // 通过 idfactory 工厂构建关联id
+            // 通过 id 工厂构建关联id
             relation.setRolePermId(userBizIdFactory.getRoleUserRelationId(roleId, permDO.getPermId()));
             relations.add(RelationConverter.convert(relation));
         }
