@@ -62,7 +62,7 @@ web     | util biz core | web交互层
 
 
 ### 2.2 业务码使用情况
-业务码是在生成唯一32位id时，22-26位的4位业务码
+业务码是在生成唯一32位id时，4位表示业务的标识码
 
 #### user 模块
 id      | desc              | id     | desc
@@ -82,7 +82,7 @@ id      | desc              | id     | desc
 id      | desc                   | id     | desc
 ----    | ----                   | ----   | ----
 2001    | asset                  | 2002   | asset loan record
-2003    | asset back record      |        |
+2003    | asset back record
 
 #### finance 模块
 id      | desc            | id     | desc
