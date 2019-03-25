@@ -17,7 +17,7 @@ public class FinanceTotalBO extends ToString {
 
     private static final long serialVersionUID = 549634770587637634L;
     /**
-     * id
+     * idfactory
      */
     private Long id;
 

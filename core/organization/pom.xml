@@ -10,29 +10,40 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>haetae-service-impl</artifactId>
+    <artifactId>haetae-organization</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+
         <dependency>
             <groupId>us.betahouse</groupId>
-            <artifactId>haetae-user</artifactId>
+            <artifactId>util</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-activity</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-asset</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-finance</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
         </dependency>
+
+        <!--jsr 303-->
         <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-organization</artifactId>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <!-- hibernate validator-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
 

@@ -20,7 +20,7 @@ public class FinanceMessageBO extends ToString {
     private static final long serialVersionUID = 192982016691118523L;
 
     /**
-     * id
+     * idfactory
      */
     private Long id;
 
