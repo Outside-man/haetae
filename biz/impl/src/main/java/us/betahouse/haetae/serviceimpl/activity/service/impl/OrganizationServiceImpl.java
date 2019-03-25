@@ -6,7 +6,6 @@ package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -19,11 +18,14 @@ import java.util.List;
  */
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationRepoService organizationRepoService;
 
     @Override
     public List<OrganizationBO> findAll(OperateContext context) {
-        return organizationRepoService.queryAllOrganization();
+//        return organizationRepoService.queryAllOrganization();
+        return null;
     }
 }

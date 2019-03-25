@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
@@ -40,8 +39,9 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationRepoService organizationRepoService;
 
     /**
      * 创建物资
@@ -160,8 +160,8 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         if (assetDO == null) {
             return null;
         }
-        OrganizationBO organizationBo = organizationRepoService.queryOrganizationByOrganizationId(assetDO.getOrginazationId());
-        String organizationName = organizationBo.getOrganizationName();
+//        OrganizationBO organizationBo = organizationRepoService.queryOrganizationByOrganizationId(assetDO.getOrginazationId());
+//        String organizationName = organizationBo.getOrganizationName();
         AssetBO assetBO = new AssetBO();
         assetBO.setAssetId(assetDO.getAssetId());
         assetBO.setAssetAmount(assetDO.getAmount());
@@ -173,7 +173,7 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         assetBO.setAssetType(assetDO.getType());
         assetBO.setCreate(assetDO.getGmtCreate());
         assetBO.setModified(assetDO.getGmtModified());
-        assetBO.setAssetOrganizationName(organizationName);
+//        assetBO.setAssetOrganizationName(organizationName);
         //assetBO.setExtInfo(JSON.parseObject(assetDO.getExtInfo(), Map.class));
         return assetBO;
     }

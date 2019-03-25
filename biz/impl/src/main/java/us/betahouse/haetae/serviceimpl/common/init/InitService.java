@@ -7,7 +7,6 @@ package us.betahouse.haetae.serviceimpl.common.init;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.finance.manager.FinanceManager;
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
@@ -44,8 +43,9 @@ public class InitService {
     @Autowired
     private RoleRepoService roleRepoService;
 
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationRepoService organizationRepoService;
 
     @Autowired
     private FinanceManager financeManager;
@@ -91,38 +91,38 @@ public class InitService {
             }
         }
             //财务权限
-        List<OrganizationBO> organizationBOList=organizationRepoService.queryAllOrganization();
-        for(OrganizationBO organizationBO:organizationBOList){
-            PermType permType=FinancePermTypeEnum.FINANCE_MANAGE;
-            Map<String,String> map= new HashMap<>(16);
-            map.put(FinancePermExInfoKey.ORGANIZATION_ID, organizationBO.getOrganizationId());
-            permBuilder.withPermType(permType.getCode())
-                    .withPermName(permType.getDesc())
-                    .withExtInfo(map);
-            initPermMap.put(permType.getCode(), permRepoService.initFinancePerm(permBuilder.build()).getPermId());
-        }
-        permBuilder.withPermType(FinancePermTypeEnum.FINANCE_BAN.getCode())
-                .withPermName(FinancePermTypeEnum.FINANCE_BAN.getDesc())
-                .withExtInfo(new HashMap<>(0));
-        initPermMap.put(FinancePermTypeEnum.FINANCE_BAN.getCode(),permRepoService.initPerm(permBuilder.build()).getPermId());
+//        List<OrganizationBO> organizationBOList=organizationRepoService.queryAllOrganization();
+//        for(OrganizationBO organizationBO:organizationBOList){
+//            PermType permType=FinancePermTypeEnum.FINANCE_MANAGE;
+//            Map<String,String> map= new HashMap<>(16);
+//            map.put(FinancePermExInfoKey.ORGANIZATION_ID, organizationBO.getOrganizationId());
+//            permBuilder.withPermType(permType.getCode())
+//                    .withPermName(permType.getDesc())
+//                    .withExtInfo(map);
+//            initPermMap.put(permType.getCode(), permRepoService.initFinancePerm(permBuilder.build()).getPermId());
+//        }
+//        permBuilder.withPermType(FinancePermTypeEnum.FINANCE_BAN.getCode())
+//                .withPermName(FinancePermTypeEnum.FINANCE_BAN.getDesc())
+//                .withExtInfo(new HashMap<>(0));
+//        initPermMap.put(FinancePermTypeEnum.FINANCE_BAN.getCode(),permRepoService.initPerm(permBuilder.build()).getPermId());
         // 初始化角色
         Map<String, String> initRoleMap = new HashMap<>(16);
         RoleBOBuilder roleBOBuilder = RoleBOBuilder.getInstance();
-        for (RoleCode roleCode : UserRoleCode.values()) {
-            roleBOBuilder.withRoleCode(roleCode.getCode())
-                    .withRoleName(roleCode.getDesc());
-            RoleBO role = roleRepoService.initRole(roleBOBuilder.build());
-            intRoleBindPerm(role, initPermMap);
-        }
+//        for (RoleCode roleCode : UserRoleCode.values()) {
+//            roleBOBuilder.withRoleCode(roleCode.getCode())
+//                    .withRoleName(roleCode.getDesc());
+//            RoleBO role = roleRepoService.initRole(roleBOBuilder.build());
+//            intRoleBindPerm(role, initPermMap);
+//        }
         //初始化财务统计
-        for(OrganizationBO organizationBO:organizationBOList){
-            FinanceTotalBO financeTotalBO=new FinanceTotalBO();
-            financeTotalBO.setOrganizationId(organizationBO.getOrganizationId());
-            financeTotalBO.setOrganizationName(organizationBO.getOrganizationName());
-            financeTotalBO.setTotalMoney(BigDecimal.ZERO);
-            financeTotalBO.setTotalMoneyIncludeBudget(BigDecimal.ZERO);
-            financeManager.initTotalMoney(financeTotalBO);
-        }
+//        for(OrganizationBO organizationBO:organizationBOList){
+//            FinanceTotalBO financeTotalBO=new FinanceTotalBO();
+//            financeTotalBO.setOrganizationId(organizationBO.getOrganizationId());
+//            financeTotalBO.setOrganizationName(organizationBO.getOrganizationName());
+//            financeTotalBO.setTotalMoney(BigDecimal.ZERO);
+//            financeTotalBO.setTotalMoneyIncludeBudget(BigDecimal.ZERO);
+//            financeManager.initTotalMoney(financeTotalBO);
+//        }
     }
 
 

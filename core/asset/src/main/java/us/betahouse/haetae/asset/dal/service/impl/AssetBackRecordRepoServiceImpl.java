@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.activity.dal.repo.OrganizationDORepo;
 import us.betahouse.haetae.asset.dal.model.AssetBackRecordDO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.model.AssetLoanRecordDO;
@@ -53,8 +52,9 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
     @Autowired
     private AssetLoanDORepo assetLoanDORepo;
 
-    @Autowired
-    private OrganizationDORepo organizationDORepo;
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationDORepo organizationDORepo;
 
     /**
      * 归还物资
@@ -170,7 +170,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         }
         AssetBackRecordBO assetBackRecordBO = new AssetBackRecordBO();
         AssetDO assetDO = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId());
-        String organizationName = organizationDORepo.findByOrganizationId(assetDO.getOrginazationId()).getOrganizationName();
+//        String organizationName = organizationDORepo.findByOrganizationId(assetDO.getOrginazationId()).getOrganizationName();
         assetBackRecordBO.setAmount(assetBackRecordDO.getAmount());
         assetBackRecordBO.setAssetId(assetBackRecordDO.getAssetId());
         String assetName = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId()).getAssetName();
@@ -182,7 +182,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         assetBackRecordBO.setRemark(assetBackRecordDO.getRemark());
         assetBackRecordBO.setType(assetBackRecordDO.getType());
         assetBackRecordBO.setUserId(assetBackRecordDO.getUserId());
-        assetBackRecordBO.setOrganizationName(organizationName);
+//        assetBackRecordBO.setOrganizationName(organizationName);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         assetBackRecordBO.setBackTime(formatter.format(assetBackRecordDO.getGmtCreate()));

@@ -49,7 +49,7 @@ public class FinanceController {
 
 
     @Autowired
-    FinanceService financeService;
+    private FinanceService financeService;
 
     /**
      * 获取财务信息列表

@@ -7,7 +7,6 @@ package us.betahouse.haetae.serviceimpl.finance.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.activity.manager.OrganizationManager;
 import us.betahouse.haetae.finance.enums.FinanceMessageTypeEnum;
 import us.betahouse.haetae.finance.manager.FinanceManager;
 import us.betahouse.haetae.finance.model.basic.FinanceMessageBO;
@@ -20,7 +19,6 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermType;
-import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.finance.request.FinanceManagerRequest;
 import us.betahouse.haetae.serviceimpl.finance.service.FinanceService;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -29,7 +27,6 @@ import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -45,8 +42,10 @@ public class FinanceServiceImpl implements FinanceService {
     private FinanceManager financeManager;
     @Autowired
     private UserBasicService userBasicService;
-    @Autowired
-    private OrganizationManager organizationManager;
+
+    // TODO @dango.yxm
+//    @Autowired
+//    private OrganizationManager organizationManager;
 
     @Override
     public PageList<FinanceMessageBO> findMessage(FinanceManagerRequest request, OperateContext context) {
@@ -97,7 +96,7 @@ public class FinanceServiceImpl implements FinanceService {
                 .withApplicantUserId(request.getUserId())
                 .withApplicantName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
                 .withOrganizationId(request.getOrganizationId())
-                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())
+//                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())
                 .withFinanceName(request.getFinanceName())
                 .withFinanceInfo(request.getFinanceInfo())
                 .withBudget(request.getBudget())
@@ -152,7 +151,7 @@ public class FinanceServiceImpl implements FinanceService {
                 .withAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
                 .withAuditorUserId(request.getUserId())
                 .withOrganizationId(request.getOrganizationId())
-                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())
+//                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())
                 .withFinanceName(request.getFinanceName())
                 .withFinanceInfo(request.getFinanceInfo())
                 .withTrueMoney(request.getTrueMoney())

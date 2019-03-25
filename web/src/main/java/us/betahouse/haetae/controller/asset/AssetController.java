@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetStatusEnum;
@@ -53,8 +52,9 @@ public class AssetController {
     @Autowired
     private AssetService assetService;
 
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationRepoService organizationRepoService;
 
     @Autowired
     private AssetRepoService assetRepoService;
@@ -88,14 +88,14 @@ public class AssetController {
                 /**
                  * 通过组织名字查找组织id
                  */
-                OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
-                AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
-                String organizationId = organizationBo.getOrganizationId();
+//                OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
+//                AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
+//                String organizationId = organizationBo.getOrganizationId();
                 AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())
                         .withAmount(Integer.valueOf(request.getAssetAmount()))
                         //组织id在上面获得
-                        .withOrginazationId(organizationId)
+//                        .withOrginazationId(organizationId)
                         //鉴权的时候要用
                         .withUserId(request.getUserId())
                         .withType(request.getAssetType())

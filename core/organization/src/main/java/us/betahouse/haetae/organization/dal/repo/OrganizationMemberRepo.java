@@ -26,7 +26,7 @@ public interface OrganizationMemberRepo extends JpaRepository<OrganizationMember
      * @param memberId
      * @return
      */
-    OrganizationMemberDO findByOrganizationAndMemberId(String organizationId, String memberId);
+    OrganizationMemberDO findByOrganizationIdAndMemberId(String organizationId, String memberId);
 
     /**
      * 通过组织成员id获取
@@ -42,6 +42,6 @@ public interface OrganizationMemberRepo extends JpaRepository<OrganizationMember
      * @param organizationId
      * @param memberId
      */
-    void deleteByOrganizationAndMemberId(String organizationId, String memberId);
+    void deleteByOrganizationIdAndMemberId(String organizationId, String memberId);
 
 }

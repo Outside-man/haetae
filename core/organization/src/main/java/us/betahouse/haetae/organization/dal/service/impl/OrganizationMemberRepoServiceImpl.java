@@ -50,7 +50,7 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
         AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");
         AssertUtil.assertStringNotBlank(memberId, "成员id不能为空");
 
-        OrganizationMemberDO memberDO = organizationMemberRepo.findByOrganizationAndMemberId(organizationId, memberId);
+        OrganizationMemberDO memberDO = organizationMemberRepo.findByOrganizationIdAndMemberId(organizationId, memberId);
         if (memberDO != null) {
             LoggerUtil.warn(LOGGER, "重复加入组织 memberDO={0}", memberDO);
             return;
@@ -67,14 +67,14 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
         AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");
         AssertUtil.assertStringNotBlank(memberId, "成员id不能为空");
 
-        OrganizationMemberDO memberDO = organizationMemberRepo.findByOrganizationAndMemberId(organizationId, memberId);
+        OrganizationMemberDO memberDO = organizationMemberRepo.findByOrganizationIdAndMemberId(organizationId, memberId);
         if (memberDO == null) {
             LoggerUtil.warn(LOGGER, "未加入组织 organizationId={0} memberId={1}", organizationId, memberId);
             return;
         }
 
         // 在组织内 则删除关系
-        organizationMemberRepo.deleteByOrganizationAndMemberId(organizationId, memberId);
+        organizationMemberRepo.deleteByOrganizationIdAndMemberId(organizationId, memberId);
 
     }
 
@@ -92,7 +92,7 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
             String memberId = memberBO.getMemberId();
             AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");
             AssertUtil.assertStringNotBlank(memberId, "成员id不能为空");
-            memberDO = organizationMemberRepo.findByOrganizationAndMemberId(organizationId, memberId);
+            memberDO = organizationMemberRepo.findByOrganizationIdAndMemberId(organizationId, memberId);
             AssertUtil.assertNotNull(memberDO, "组织成员关系不存在");
         }
         // 修改逻辑

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
@@ -79,8 +78,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityOperateManager activityOperateManager;
 
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationRepoService organizationRepoService;
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
@@ -90,8 +90,8 @@ public class ActivityServiceImpl implements ActivityService {
         AssertUtil.assertNotNull(activityType, "该活动类型不存在");
 
         AssertUtil.assertStringNotBlank(request.getOrganizationMessage(), "活动主办组织信息不能为空");
-        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getOrganizationMessage());
-        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在, {0}", request.getOrganizationMessage()));
+//        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getOrganizationMessage());
+//        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在, {0}", request.getOrganizationMessage()));
 
 
         // 创建活动

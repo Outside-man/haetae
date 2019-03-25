@@ -7,7 +7,6 @@ package us.betahouse.haetae.serviceimpl.asset.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
@@ -39,8 +38,9 @@ public class AssetServiceImpl implements AssetService {
     @Autowired
     private AssetManager assetManager;
 
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+    // TODO @dango.yxm 使用新模块
+//    @Autowired
+//    private OrganizationRepoService organizationRepoService;
 
     @Autowired
     private AssetDORepo assetDORepo;
@@ -56,8 +56,8 @@ public class AssetServiceImpl implements AssetService {
         AssertUtil.assertNotNull(assetTypeEnum, "物资类型不存在");
         AssertUtil.assertStringNotBlank(request.getAssetName(), "物资名字不能为空");
         AssertUtil.assertStringNotBlank(request.getAssetOrganizationName(), "物资归属组织不能为空");
-        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
-        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在,{0}", request.getAssetOrganizationName()));
+//        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getAssetOrganizationName());
+//        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在,{0}", request.getAssetOrganizationName()));
         AssertUtil.assertStringNotBlank(request.getAssetType(), "物资类型不能为空");
         //判断物资类型是否合理并进行转换 接收参数为中文转英文状态
         if (request.getAssetType().equals(AssetTypeEnum.ASSET_CONSUME.getDesc())) {
