@@ -18,6 +18,7 @@ import us.betahouse.haetae.organization.idfactory.BizIdFactory;
 import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
+import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
@@ -45,6 +46,10 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
 
     @Override
     public OrganizationBO create(OrganizationBO organizationBO) {
+        AssertUtil.assertStringNotBlank(organizationBO.getOrganizationName(), "组织名称不能为空");
+        OrganizationDO organizationDO = organizationRepo.findByOrganizationName(organizationBO.getOrganizationName());
+        AssertUtil.assertNull(organizationDO, "组织已存在");
+
         if (StringUtils.isBlank(organizationBO.getOrganizationId())) {
             organizationBO.setOrganizationId(organizationBizIdFactory.getOrganizationId());
         }

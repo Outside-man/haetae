@@ -22,4 +22,11 @@ public interface OrganizationManager {
      * @return
      */
     OrganizationBO createOrganization(OrganizationManageRequest request);
+
+    /**
+     * 管理成员
+     *
+     * @param request
+     */
+    void manageMember(OrganizationManageRequest request);
 }

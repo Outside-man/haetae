@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.organization.request;
 
+import us.betahouse.haetae.organization.enums.MemberType;
+
 /**
  * 组织管理请求
  *
@@ -13,6 +15,11 @@ package us.betahouse.haetae.organization.request;
 public class OrganizationManageRequest extends BaseRequest {
 
     private static final long serialVersionUID = -7616105484671271586L;
+
+    /**
+     * 组织id
+     */
+    private String organizationId;
 
     /**
      * 组织名称
@@ -25,12 +32,17 @@ public class OrganizationManageRequest extends BaseRequest {
     private String organizationType;
 
     /**
-     * 主管id
+     * 成员id
      */
-    private String prinipalId;
+    private String memberId;
 
     /**
-     * 主管称呼
+     * 成员类型
+     */
+    private MemberType memberType;
+
+    /**
+     * 成员称呼
      */
     private String memberDesc;
 
@@ -38,6 +50,14 @@ public class OrganizationManageRequest extends BaseRequest {
      * 主组织id
      */
     private String primaryOrganizationId;
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
 
     public String getOrganizationName() {
         return organizationName;
@@ -55,12 +75,20 @@ public class OrganizationManageRequest extends BaseRequest {
         this.organizationType = organizationType;
     }
 
-    public String getPrinipalId() {
-        return prinipalId;
+    public String getMemberId() {
+        return memberId;
     }
 
-    public void setPrinipalId(String prinipalId) {
-        this.prinipalId = prinipalId;
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public MemberType getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(MemberType memberType) {
+        this.memberType = memberType;
     }
 
     public String getMemberDesc() {

@@ -18,9 +18,13 @@ import us.betahouse.haetae.organization.dal.service.OrganizationMemberRepoServic
 import us.betahouse.haetae.organization.idfactory.BizIdFactory;
 import us.betahouse.haetae.organization.model.OrganizationMemberBO;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 组织成员仓储服务实现
@@ -110,5 +114,27 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
             memberDO.setExtInfo(newMemberDO.getExtInfo());
         }
         return EntityConverter.convert(organizationMemberRepo.save(memberDO));
+    }
+
+    @Override
+    public List<OrganizationMemberBO> queryMembers(String organizationId, String memberType) {
+        if (StringUtils.isBlank(memberType)) {
+            // 不指定类型 返回全部
+            return CollectionUtils.toStream(organizationMemberRepo.findAllByOrganizationId(organizationId))
+                    .filter(Objects::nonNull)
+                    .map(EntityConverter::convert)
+                    .collect(Collectors.toList());
+        } else {
+            // 返回指定类型人员
+            return CollectionUtils.toStream(organizationMemberRepo.findAllByOrganizationIdAndMemberType(organizationId, memberType))
+                    .filter(Objects::nonNull)
+                    .map(EntityConverter::convert)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public OrganizationMemberBO queryMember(String organizationId, String memberId) {
+        return EntityConverter.convert(organizationMemberRepo.findByOrganizationIdAndMemberId(organizationId, memberId));
     }
 }

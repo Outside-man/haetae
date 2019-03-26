@@ -19,8 +19,18 @@ public interface OrganizationRepo extends JpaRepository<OrganizationDO, Long> {
 
     /**
      * 查询组织id
+     *
      * @param organizationId
      * @return
      */
     OrganizationDO findByOrganizationId(String organizationId);
+
+    /**
+     * 查询组织名称
+     *
+     * @param organizationName
+     * @return
+     */
+    OrganizationDO findByOrganizationName(String organizationName);
+
 }
