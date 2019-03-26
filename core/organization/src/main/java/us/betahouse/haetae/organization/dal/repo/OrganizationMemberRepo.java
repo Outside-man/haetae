@@ -60,4 +60,13 @@ public interface OrganizationMemberRepo extends JpaRepository<OrganizationMember
      * @return
      */
     List<OrganizationMemberDO> findAllByOrganizationIdAndMemberType(String organizationId, String memberType);
+
+    /**
+     * 查询成员组织关系
+     *
+     * @param memberId
+     * @return
+     */
+    List<OrganizationMemberDO> findAllByMemberId(String memberId);
+
 }

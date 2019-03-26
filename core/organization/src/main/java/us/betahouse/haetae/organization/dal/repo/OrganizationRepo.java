@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.organization.dal.model.OrganizationDO;
 
+import java.util.List;
+
 /**
  * 组织仓储
  *
@@ -32,5 +34,13 @@ public interface OrganizationRepo extends JpaRepository<OrganizationDO, Long> {
      * @return
      */
     OrganizationDO findByOrganizationName(String organizationName);
+
+    /**
+     * 查询存在的组织
+     *
+     * @param organizationIds
+     * @return
+     */
+    List<OrganizationDO> findAllByOrganizationIdIn(List<String> organizationIds);
 
 }

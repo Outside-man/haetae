@@ -24,6 +24,8 @@ import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 组织管理器实现
@@ -57,6 +59,7 @@ public class OrganizationManagerImpl implements OrganizationManager {
         organizationBO.setOrganizationName(request.getOrganizationName());
         organizationBO.setOrganizationType(request.getOrganizationType());
         organizationBO = organizationRepoService.create(organizationBO);
+        request.setOrganizationId(organizationBO.getOrganizationId());
 
         // 创建主组织关系
         if (StringUtils.isNotBlank(request.getPrimaryOrganizationId())) {
@@ -86,6 +89,15 @@ public class OrganizationManagerImpl implements OrganizationManager {
             // 成员和管理员直接操作就行
             saveMember(parseMember(request));
         }
+    }
+
+    @Override
+    public List<OrganizationBO> queryOrganizationByMemberId(String memberId) {
+        List<String> organizationIds = CollectionUtils.toStream(organizationMemberRepoService.queryOrganizations(memberId))
+                .filter(Objects::nonNull)
+                .map(OrganizationMemberBO::getOrganizationId)
+                .collect(Collectors.toList());
+        return organizationRepoService.queryByOrganizationIds(organizationIds);
     }
 
     /**

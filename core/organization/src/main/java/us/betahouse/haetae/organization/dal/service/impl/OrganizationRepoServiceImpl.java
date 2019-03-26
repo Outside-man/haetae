@@ -57,10 +57,10 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
     }
 
     @Override
-    public OrganizationBO modify(String organizationId, OrganizationBO organizationBO) {
-        OrganizationDO organizationDO = organizationRepo.findByOrganizationId(organizationId);
+    public OrganizationBO modify(OrganizationBO organizationBO) {
+        OrganizationDO organizationDO = organizationRepo.findByOrganizationId(organizationBO.getOrganizationId());
         if (organizationDO == null) {
-            LoggerUtil.error(LOGGER, "更新的组织不存在 organizationId={0}", organizationId);
+            LoggerUtil.error(LOGGER, "更新的组织不存在 organizationId={0}", organizationBO.getOrganizationId());
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的组织不存在");
         }
 
@@ -92,6 +92,14 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
     @Override
     public OrganizationBO queryByOrganizationId(String organizationId) {
         return EntityConverter.convert(organizationRepo.findByOrganizationId(organizationId));
+    }
+
+    @Override
+    public List<OrganizationBO> queryByOrganizationIds(List<String> organizationId) {
+        return CollectionUtils.toStream(organizationRepo.findAllByOrganizationIdIn(organizationId))
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert)
+                .collect(Collectors.toList());
     }
 
     @Override

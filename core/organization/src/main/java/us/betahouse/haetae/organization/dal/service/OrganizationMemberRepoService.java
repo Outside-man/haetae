@@ -58,5 +58,11 @@ public interface OrganizationMemberRepoService {
      */
     OrganizationMemberBO queryMember(String organizationId, String memberId);
 
-
+    /**
+     * 查询成员组织
+     *
+     * @param memberId
+     * @return
+     */
+    List<OrganizationMemberBO> queryOrganizations(String memberId);
 }

@@ -27,11 +27,10 @@ public interface OrganizationRepoService {
     /**
      * 组织修改
      *
-     * @param organizationId
      * @param organizationBO
      * @return
      */
-    OrganizationBO modify(String organizationId, OrganizationBO organizationBO);
+    OrganizationBO modify(OrganizationBO organizationBO);
 
     /**
      * 获取全部组织
@@ -47,6 +46,14 @@ public interface OrganizationRepoService {
      * @return
      */
     OrganizationBO queryByOrganizationId(String organizationId);
+
+    /**
+     * 查询组织
+     *
+     * @param organizationId
+     * @return
+     */
+    List<OrganizationBO> queryByOrganizationIds(List<String> organizationId);
 
     /**
      * 查询组织 通过组织名称

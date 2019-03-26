@@ -137,4 +137,12 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
     public OrganizationMemberBO queryMember(String organizationId, String memberId) {
         return EntityConverter.convert(organizationMemberRepo.findByOrganizationIdAndMemberId(organizationId, memberId));
     }
+
+    @Override
+    public List<OrganizationMemberBO> queryOrganizations(String memberId) {
+        return CollectionUtils.toStream(organizationMemberRepo.findAllByMemberId(memberId))
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert)
+                .collect(Collectors.toList());
+    }
 }
