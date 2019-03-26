@@ -31,13 +31,6 @@ public interface BizIdFactory {
     String getActivityRecordId();
 
     /**
-     * 生成组织id
-     *
-     * @return
-     */
-    String getOrganizationId();
-
-    /**
      * 生成履历id
      *
      * @return

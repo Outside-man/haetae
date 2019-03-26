@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.model.AssetDO;
 import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;

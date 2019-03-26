@@ -15,6 +15,8 @@ import us.betahouse.haetae.finance.model.basic.builder.FinanceMessageBOBuilder;
 import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.finance.request.FinanceRequest;
 import us.betahouse.haetae.finance.request.builder.FinanceRequestBuilder;
+import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.organization.manager.OrganizationManager;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
@@ -43,9 +45,8 @@ public class FinanceServiceImpl implements FinanceService {
     @Autowired
     private UserBasicService userBasicService;
 
-    // TODO @dango.yxm
-//    @Autowired
-//    private OrganizationManager organizationManager;
+    @Autowired
+    private OrganizationRepoService organizationRepoService;
 
     @Override
     public PageList<FinanceMessageBO> findMessage(FinanceManagerRequest request, OperateContext context) {
@@ -96,7 +97,7 @@ public class FinanceServiceImpl implements FinanceService {
                 .withApplicantUserId(request.getUserId())
                 .withApplicantName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
                 .withOrganizationId(request.getOrganizationId())
-//                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())
+                .withOrganizationName(organizationRepoService.queryByOrganizationId(request.getOrganizationId()).getOrganizationName())
                 .withFinanceName(request.getFinanceName())
                 .withFinanceInfo(request.getFinanceInfo())
                 .withBudget(request.getBudget())

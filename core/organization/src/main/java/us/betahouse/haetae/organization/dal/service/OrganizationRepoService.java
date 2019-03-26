@@ -47,4 +47,12 @@ public interface OrganizationRepoService {
      * @return
      */
     OrganizationBO queryByOrganizationId(String organizationId);
+
+    /**
+     * 查询组织 通过组织名称
+     *
+     * @param organizationName
+     * @return
+     */
+    OrganizationBO queryByOrganizationName(String organizationName);
 }

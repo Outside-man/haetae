@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.asset.dal.service.AssetRepoService;
 import us.betahouse.haetae.asset.enums.AssetStatusEnum;
 import us.betahouse.haetae.asset.model.basic.AssetBO;
@@ -17,6 +16,8 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.asset.request.AssetRestRequest;
+import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.asset.request.AssetManagerRequest;
 import us.betahouse.haetae.serviceimpl.asset.request.builder.AssetManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetService;
@@ -52,9 +53,8 @@ public class AssetController {
     @Autowired
     private AssetService assetService;
 
-    // TODO @dango.yxm 使用新模块
-//    @Autowired
-//    private OrganizationRepoService organizationRepoService;
+    @Autowired
+    private OrganizationRepoService organizationRepoService;
 
     @Autowired
     private AssetRepoService assetRepoService;
@@ -88,15 +88,15 @@ public class AssetController {
                 /**
                  * 通过组织名字查找组织id
                  */
-//                OrganizationBO organizationBo = organizationRepoService.queryOrganizationByName(request.getOrganizationName());
-//                AssertUtil.assertNotNull(organizationBo, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
-//                String organizationId = organizationBo.getOrganizationId();
+                OrganizationBO organizationBO = organizationRepoService.queryByOrganizationName(request.getOrganizationName());
+                AssertUtil.assertNotNull(organizationBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资归属组织不存在");
+                String organizationId = organizationBO.getOrganizationId();
                 AssetManagerRequest assetManagerRequest = AssetManagerRequestBuilder.getInstance()
                         .withAssetName(request.getAssetName())
                         .withAmount(Integer.valueOf(request.getAssetAmount()))
-                        //组织id在上面获得
-//                        .withOrginazationId(organizationId)
-                        //鉴权的时候要用
+                        // 组织id在上面获得
+                        .withOrginazationId(organizationId)
+                        // 鉴权的时候要用
                         .withUserId(request.getUserId())
                         .withType(request.getAssetType())
                         .withAssetOrganizationName(request.getOrganizationName())

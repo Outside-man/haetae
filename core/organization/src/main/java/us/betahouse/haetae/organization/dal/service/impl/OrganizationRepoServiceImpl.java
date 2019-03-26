@@ -93,4 +93,9 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
     public OrganizationBO queryByOrganizationId(String organizationId) {
         return EntityConverter.convert(organizationRepo.findByOrganizationId(organizationId));
     }
+
+    @Override
+    public OrganizationBO queryByOrganizationName(String organizationName) {
+        return EntityConverter.convert(organizationRepo.findByOrganizationName(organizationName));
+    }
 }

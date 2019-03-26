@@ -2,7 +2,7 @@
   betahouse.us
   CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.model.activity.request;
+package us.betahouse.haetae.model.organization;
 
 import us.betahouse.haetae.common.RestRequest;
 

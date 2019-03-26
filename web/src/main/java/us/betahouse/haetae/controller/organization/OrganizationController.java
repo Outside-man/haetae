@@ -2,7 +2,7 @@
   betahouse.us
   CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.controller.activity;
+package us.betahouse.haetae.controller.organization;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,27 +10,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
-import us.betahouse.haetae.model.activity.request.OrganizationRestRequest;
+import us.betahouse.haetae.converter.OrganizationVOConverter;
+import us.betahouse.haetae.model.organization.OrganizationRestRequest;
+import us.betahouse.haetae.model.organization.OrganizationVO;
 import us.betahouse.haetae.serviceimpl.activity.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
-import us.betahouse.util.dictionary.ChineseUtil;
-import us.betahouse.util.dictionary.PinyinUtils;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 组织接口
@@ -47,13 +48,13 @@ public class OrganizationController {
     private final Logger LOGGER = LoggerFactory.getLogger(OrganizationController.class);
 
     @Autowired
-    OrganizationService organizationService;
+    private OrganizationService organizationService;
 
     @CheckLogin
     @GetMapping("/all")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<OrganizationBO>> getAllOrganization(OrganizationRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取组织列表", request, new RestOperateCallBack<List<OrganizationBO>>() {
+    public Result<List<OrganizationVO>> getAllOrganization(OrganizationRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取组织列表", request, new RestOperateCallBack<List<OrganizationVO>>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
@@ -61,20 +62,15 @@ public class OrganizationController {
             }
 
             @Override
-            public Result<List<OrganizationBO>> execute() {
+            public Result<List<OrganizationVO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<OrganizationBO> organizationBOList = organizationService.findAll(context);
-                for(OrganizationBO organizationBO:organizationBOList){
-                        organizationBO.setFirstAlpha(PinyinUtils.getFirstAlpha(organizationBO.getOrganizationName()));
-                }
-                Collections.sort(organizationBOList, new Comparator<OrganizationBO>() {
-                    @Override
-                    public int compare(OrganizationBO o1, OrganizationBO o2) {
-                        return o1.getFirstAlpha().charAt(0)-o2.getFirstAlpha().charAt(0);
-                    }
-                });
-                return RestResultUtil.buildSuccessResult(organizationBOList, "获取组织列表成功");
+                List<OrganizationVO> organizationVOList = CollectionUtils.toStream(organizationService.findAll(context))
+                        .filter(Objects::nonNull)
+                        .map(OrganizationVOConverter::convert)
+                        .sorted(Comparator.comparingInt(o -> o.getFirstAlpha().charAt(0)))
+                        .collect(Collectors.toList());
+                return RestResultUtil.buildSuccessResult(organizationVOList, "获取组织列表成功");
             }
         });
     }

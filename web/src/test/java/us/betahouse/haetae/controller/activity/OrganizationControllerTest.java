@@ -11,36 +11,32 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.activity.model.basic.OrganizationBO;
+import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.util.dictionary.PinyinUtils;
 
-import java.net.URLEncoder;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrganizationControllerTest {
 
     @Autowired
-    OrganizationService organizationService;
+    private OrganizationService organizationService;
 
     @Test
     public void test(){
         List<OrganizationBO> organizationBOList = organizationService.findAll(new OperateContext());
         for(OrganizationBO organizationBO:organizationBOList){
             try {
-//                String gbk=URLEncoder.encode(organizationBO.getOrganizationName(),"GBK");
+//                String gbk= URLEncoder.encode(organizationBO.getOrganizationName(),"GBK");
 //                organizationBO.setFirstAlpha(PinyinUtils.getSortLetters(getCnASCII(organizationBO.getOrganizationName())));
 //                System.out.println(CharsetUtil.getEncoding(gbk));
 //                break;
-                String cnStr=organizationBO.getOrganizationName();
-                System.out.println(getPingYin(cnStr));
-                System.out.println(getPinYinHeadChar(cnStr));
-                System.out.println(getCnASCII(cnStr));
+//                String cnStr=organizationBO.getOrganizationName();
+//                System.out.println(getPingYin(cnStr));
+//                System.out.println(getPinYinHeadChar(cnStr));
+//                System.out.println(getCnASCII(cnStr));
                 break;
 //                System.out.println(getCnASCII(organizationBO.getOrganizationName()));
             }catch (Exception e){
