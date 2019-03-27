@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.asset.dal.repo.AssetDORepo;
 import us.betahouse.haetae.asset.manager.AssetBackRecordManager;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
 import us.betahouse.haetae.asset.manager.AssetManager;
@@ -16,6 +17,7 @@ import us.betahouse.haetae.asset.model.basic.AssetBO;
 import us.betahouse.haetae.asset.model.basic.AssetBackRecordBO;
 import us.betahouse.haetae.asset.model.basic.AssetLoanRecordBO;
 import us.betahouse.haetae.asset.request.AssetBackRecordRequest;
+import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.serviceimpl.asset.service.AssetBackRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.util.enums.RestResultCode;
@@ -40,6 +42,12 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
     @Autowired
     private AssetBackRecordManager assetBackRecordManager;
 
+    @Autowired
+    private AssetDORepo assetDORepo;
+
+    @Autowired
+    private OrganizationRepoService organizationRepoService;
+
     @Override
     @Transactional
     public AssetBackRecordBO create(AssetBackRecordRequest request, OperateContext context) {
@@ -51,6 +59,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         AssertUtil.assertTrue(request.getAmount() <= assetLoanRecordBO.getRemain(), "归还数量超出剩余未归还数量");
         request.setAssetType(assetBO.getAssetType());
         AssetBackRecordBO assetBackRecordBO = assetBackRecordManager.create(request);
+        addOrganizationName(assetBackRecordBO);
         return assetBackRecordBO;
     }
 
@@ -59,12 +68,14 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码无效");
         List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByAssetId(request.getAssetId());
+        assetBackRecordBOS.forEach(this::addOrganizationName);
         return assetBackRecordBOS;
     }
 
     @Override
     public List<AssetBackRecordBO> findAllAssetBackRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
         List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByUserId(request.getUserId());
+        assetBackRecordBOS.forEach(this::addOrganizationName);
         return assetBackRecordBOS;
     }
 
@@ -77,6 +88,15 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         for (AssetBackRecordBO assetBackRecordBO : assetBackRecordBOS) {
             assetBackRecordBO.setAssetName(assetBO.getAssetName());
         }
+        assetBackRecordBOS.forEach(this::addOrganizationName);
         return assetBackRecordBOS;
+    }
+
+    //归还记录实体添加物资归属组织
+    void addOrganizationName(AssetBackRecordBO assetBackRecordBO) {
+        String assetId = assetBackRecordBO.getAssetId();
+        String organizationId=assetDORepo.findByAssetId(assetId).getOrginazationId();
+        String organizationName = organizationRepoService.queryByOrganizationId(organizationId).getOrganizationName();
+        assetBackRecordBO.setOrganizationName(organizationName);
     }
 }

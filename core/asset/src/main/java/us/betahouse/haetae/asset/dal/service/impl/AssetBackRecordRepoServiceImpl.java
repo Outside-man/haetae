@@ -52,10 +52,6 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
     @Autowired
     private AssetLoanDORepo assetLoanDORepo;
 
-    // TODO @dango.yxm 使用新模块
-//    @Autowired
-//    private OrganizationDORepo organizationDORepo;
-
     /**
      * 归还物资
      *
@@ -170,7 +166,6 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         }
         AssetBackRecordBO assetBackRecordBO = new AssetBackRecordBO();
         AssetDO assetDO = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId());
-//        String organizationName = organizationDORepo.findByOrganizationId(assetDO.getOrginazationId()).getOrganizationName();
         assetBackRecordBO.setAmount(assetBackRecordDO.getAmount());
         assetBackRecordBO.setAssetId(assetBackRecordDO.getAssetId());
         String assetName = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId()).getAssetName();
@@ -182,7 +177,6 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         assetBackRecordBO.setRemark(assetBackRecordDO.getRemark());
         assetBackRecordBO.setType(assetBackRecordDO.getType());
         assetBackRecordBO.setUserId(assetBackRecordDO.getUserId());
-//        assetBackRecordBO.setOrganizationName(organizationName);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         assetBackRecordBO.setBackTime(formatter.format(assetBackRecordDO.getGmtCreate()));
