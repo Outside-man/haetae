@@ -45,6 +45,13 @@ public interface OrganizationMemberRepo extends JpaRepository<OrganizationMember
     void deleteByOrganizationIdAndMemberId(String organizationId, String memberId);
 
     /**
+     * 删除所有组织成员
+     *
+     * @param organizationId
+     */
+    void deleteByOrganizationId(String organizationId);
+
+    /**
      * 查询组织内成员
      *
      * @param organizationId

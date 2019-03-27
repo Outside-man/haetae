@@ -20,17 +20,24 @@ public class OrganizationManageServiceTest {
     public void create(){
         OrganizationRequest request = new OrganizationRequest();
         request.setStuId("15905631");
-        request.setOrganizationName("beta2");
+        request.setOrganizationName("beta");
         organizationManageService.create(request);
     }
 
     @Test
     public void memberManage(){
         OrganizationRequest request = new OrganizationRequest();
-        request.setOrganizationId("201903271536139789940011201976");
-        request.setStuId("15905631");
+        request.setOrganizationId("201903271603313910560011201916");
+        request.setStuId("15905626");
         request.setMemberType(MemberType.PRINCIPAL);
         organizationManageService.memberManage(request);
+    }
+
+    @Test
+    public void disband(){
+        OrganizationRequest request = new OrganizationRequest();
+        request.setOrganizationId("201903271603313910560011201916");
+        organizationManageService.disband(request);
     }
 
 }

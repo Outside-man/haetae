@@ -347,6 +347,12 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    public void deletePerm(String permId) {
+        AssertUtil.assertStringNotBlank(permId, "权限id不能为空");
+        permDORepo.deleteByPermId(permId);
+    }
+
+    @Override
     public boolean verifyUserPermRelationByPermId(String userId, List<String> permIds) {
         // 获取权限信息
         List<PermDO> perms = permDORepo.findAllByPermIdIn(permIds);

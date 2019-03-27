@@ -29,4 +29,11 @@ public interface OrganizationManageService {
      * @param request
      */
     void memberManage(OrganizationRequest request);
+
+    /**
+     * 解散组织
+     *
+     * @param request
+     */
+    void disband(OrganizationRequest request);
 }

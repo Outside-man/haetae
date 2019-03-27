@@ -57,6 +57,12 @@ public class OrganizationRepoServiceImpl implements OrganizationRepoService {
     }
 
     @Override
+    public void disband(String organizationId) {
+        AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");
+        organizationRepo.deleteByOrganizationId(organizationId);
+    }
+
+    @Override
     public OrganizationBO modify(OrganizationBO organizationBO) {
         OrganizationDO organizationDO = organizationRepo.findByOrganizationId(organizationBO.getOrganizationId());
         if (organizationDO == null) {

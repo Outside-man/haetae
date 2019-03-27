@@ -25,4 +25,17 @@ public interface OrganizationRelationRepo extends JpaRepository<OrganizationRela
      * @return
      */
     OrganizationRelationDO findByPrimaryOrganizationIdAndSubOrganizationId(String primaryOrganizationId, String subOrganizationId);
+
+    /**
+     * 解除相关组织关系
+     *
+     * @param primaryOrganizationId
+     */
+    void deleteByPrimaryOrganizationId(String primaryOrganizationId);
+
+    /**
+     * 删除相关组织关系
+     * @param subOrganizationId
+     */
+    void deleteBySubOrganizationId(String subOrganizationId);
 }

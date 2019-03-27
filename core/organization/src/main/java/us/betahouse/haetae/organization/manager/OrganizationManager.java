@@ -26,6 +26,14 @@ public interface OrganizationManager {
     OrganizationBO createOrganization(OrganizationManageRequest request);
 
     /**
+     * 解散组织
+     *
+     * @param request
+     * @return
+     */
+    void disbandOrganization(OrganizationManageRequest request);
+
+    /**
      * 管理成员
      *
      * @param request

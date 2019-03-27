@@ -18,6 +18,7 @@ import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermExI
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
 import us.betahouse.haetae.serviceimpl.organization.service.OrganizationManageService;
+import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
 import us.betahouse.haetae.user.manager.UserManager;
@@ -52,6 +53,9 @@ public class OrganizationManageServiceImpl implements OrganizationManageService 
 
     @Autowired
     private PermManager permManager;
+
+    @Autowired
+    private PermRepoService permRepoService;
 
     @Autowired
     private UserManager userManager;
@@ -153,5 +157,26 @@ public class OrganizationManageServiceImpl implements OrganizationManageService 
         }
         // 处理成员表
         organizationManager.manageMember(request);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void disband(OrganizationRequest request) {
+        // 验证组织
+        OrganizationBO organizationBO = organizationRepoService.queryByOrganizationId(request.getOrganizationId());
+        AssertUtil.assertNotNull(organizationBO, "组织不存在");
+
+        // 组织对应权限id
+        String orgMemberManagePermId = organizationBO.fetchExtInfo(OrganizationExtInfoKey.ORG_MEMBER_MANAGE_PERM);
+        String orgMemberTypeManagePermId = organizationBO.fetchExtInfo(OrganizationExtInfoKey.ORG_MEMBER_TYPE_MANAGE_PERM);
+
+        // 跟所有人解绑权限
+        permManager.detachAllUsers(orgMemberManagePermId);
+        permManager.detachAllUsers(orgMemberTypeManagePermId);
+        // 删除权限
+        permRepoService.deletePerm(orgMemberManagePermId);
+        permRepoService.deletePerm(orgMemberTypeManagePermId);
+        // 删除组织
+        organizationManager.disbandOrganization(request);
     }
 }

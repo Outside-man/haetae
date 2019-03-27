@@ -76,6 +76,20 @@ public class OrganizationManagerImpl implements OrganizationManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public void disbandOrganization(OrganizationManageRequest request) {
+        OrganizationBO organizationBO = organizationRepoService.queryByOrganizationId(request.getOrganizationId());
+        if (organizationBO != null) {
+            // 解除所有成员关系
+            organizationMemberRepoService.disband(organizationBO.getOrganizationId());
+            // 解除所有相关组织关系
+            organizationRelationRepoService.disband(organizationBO.getOrganizationId());
+            // 删除组织
+            organizationRepoService.disband(organizationBO.getOrganizationId());
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void manageMember(OrganizationManageRequest request) {
         if (request.getMemberType() == MemberType.PRINCIPAL) {
             // 如果是主管变更 需要涉及特殊逻辑

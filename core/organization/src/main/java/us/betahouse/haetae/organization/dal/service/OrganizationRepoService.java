@@ -25,6 +25,14 @@ public interface OrganizationRepoService {
     OrganizationBO create(OrganizationBO organizationBO);
 
     /**
+     * 删除组织
+     *
+     * @param organizationId
+     * @return
+     */
+    void disband(String organizationId);
+
+    /**
      * 组织修改
      *
      * @param organizationBO

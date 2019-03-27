@@ -7,6 +7,7 @@ package us.betahouse.haetae.organization.dal.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.organization.dal.convert.EntityConverter;
 import us.betahouse.haetae.organization.dal.model.OrganizationRelationDO;
 import us.betahouse.haetae.organization.dal.repo.OrganizationRelationRepo;
@@ -57,5 +58,13 @@ public class OrganizationRelationRepoServiceImpl implements OrganizationRelation
             // 存在则删除
             organizationRelationRepo.delete(relationDO);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void disband(String organizationId) {
+        AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");
+        organizationRelationRepo.deleteByPrimaryOrganizationId(organizationId);
+        organizationRelationRepo.deleteBySubOrganizationId(organizationId);
     }
 }

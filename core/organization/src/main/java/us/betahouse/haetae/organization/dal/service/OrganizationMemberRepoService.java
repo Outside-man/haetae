@@ -73,4 +73,11 @@ public interface OrganizationMemberRepoService {
      * @return
      */
     List<OrganizationMemberBO> queryOrganizations(String memberId);
+
+    /**
+     * 解散组织
+     *
+     * @param organizationId
+     */
+    void disband(String organizationId);
 }

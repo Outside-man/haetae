@@ -43,4 +43,11 @@ public interface OrganizationRepo extends JpaRepository<OrganizationDO, Long> {
      */
     List<OrganizationDO> findAllByOrganizationIdIn(List<String> organizationIds);
 
+    /**
+     * 删除组织
+     *
+     * @param organizationId
+     */
+    void deleteByOrganizationId(String organizationId);
+
 }

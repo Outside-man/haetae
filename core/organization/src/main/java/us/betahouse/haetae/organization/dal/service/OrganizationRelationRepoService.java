@@ -30,4 +30,11 @@ public interface OrganizationRelationRepoService {
      * @return
      */
     void removeRelation(String primaryOrganizationId, String subOrganizationId);
+
+    /**
+     * 解除和所有组织关系
+     *
+     * @param organizationId
+     */
+    void disband(String organizationId);
 }

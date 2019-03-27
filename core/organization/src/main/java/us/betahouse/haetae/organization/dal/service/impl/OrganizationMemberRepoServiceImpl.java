@@ -170,4 +170,11 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
                 .map(EntityConverter::convert)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void disband(String organizationId) {
+        AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");
+        // 清除所有组织成员
+        organizationMemberRepo.deleteByOrganizationId(organizationId);
+    }
 }
