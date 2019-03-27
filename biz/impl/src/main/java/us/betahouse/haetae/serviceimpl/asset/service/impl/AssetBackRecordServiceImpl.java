@@ -54,9 +54,6 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
         return assetBackRecordBO;
     }
 
-
-
-
     @Override
     public List<AssetBackRecordBO> findAllAssetBackRecordByAssetId(AssetBackRecordRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
@@ -67,7 +64,7 @@ public class AssetBackRecordServiceImpl implements AssetBackRecordService {
 
     @Override
     public List<AssetBackRecordBO> findAllAssetBackRecordByUserId(AssetBackRecordRequest request, OperateContext context) {
-        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByUserId(request.getAssetId());
+        List<AssetBackRecordBO> assetBackRecordBOS = assetBackRecordManager.findAllAssetBackRecordByUserId(request.getUserId());
         return assetBackRecordBOS;
     }
 
