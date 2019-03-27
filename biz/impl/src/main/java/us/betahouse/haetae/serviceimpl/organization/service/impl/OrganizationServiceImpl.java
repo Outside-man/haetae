@@ -17,7 +17,7 @@ import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationExtInfo
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermExInfoKey;
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
-import us.betahouse.haetae.serviceimpl.organization.service.OrganizationManageService;
+import us.betahouse.haetae.serviceimpl.organization.service.OrganizationService;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
@@ -37,10 +37,10 @@ import java.util.Collections;
  * 组织管理服务实现
  *
  * @author dango.yxm
- * @version : OrganizationManageServiceImpl.java 2019/03/26 22:49 dango.yxm
+ * @version : OrganizationServiceImpl.java 2019/03/26 22:49 dango.yxm
  */
 @Service
-public class OrganizationManageServiceImpl implements OrganizationManageService {
+public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     private OrganizationManager organizationManager;
@@ -67,7 +67,7 @@ public class OrganizationManageServiceImpl implements OrganizationManageService 
     @Transactional(rollbackFor = Exception.class)
     public OrganizationBO create(OrganizationRequest request) {
         // 学号转换成用户id
-        if (StringUtils.isNotBlank(request.getStuId())) {
+        if (StringUtils.isBlank(request.getMemberId()) && StringUtils.isNotBlank(request.getStuId())) {
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(request.getStuId());
             AssertUtil.assertNotNull(userInfoBO, "组织指定主管用户不存在");
             request.setMemberId(userInfoBO.getUserId());
@@ -112,7 +112,8 @@ public class OrganizationManageServiceImpl implements OrganizationManageService 
     @Transactional(rollbackFor = Exception.class)
     public void memberManage(OrganizationRequest request) {
         // 验证用户
-        if (StringUtils.isNotBlank(request.getStuId())) {
+        if (StringUtils.isBlank(request.getMemberId())) {
+            AssertUtil.assertStringNotBlank(request.getStuId());
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(request.getStuId());
             AssertUtil.assertNotNull(userInfoBO, "用户不存在");
             request.setMemberId(userInfoBO.getUserId());
@@ -157,6 +158,39 @@ public class OrganizationManageServiceImpl implements OrganizationManageService 
         }
         // 处理成员表
         organizationManager.manageMember(request);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void removeMember(OrganizationRequest request) {
+        // 验证用户
+        if (StringUtils.isBlank(request.getMemberId())) {
+            AssertUtil.assertStringNotBlank(request.getStuId());
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(request.getStuId());
+            AssertUtil.assertNotNull(userInfoBO, "用户不存在");
+            request.setMemberId(userInfoBO.getUserId());
+        }
+
+        // 验证组织
+        OrganizationBO organizationBO = organizationRepoService.queryByOrganizationId(request.getOrganizationId());
+        AssertUtil.assertNotNull(organizationBO, "组织不存在");
+
+        // 组织对应权限id
+        String orgMemberManagePermId = organizationBO.fetchExtInfo(OrganizationExtInfoKey.ORG_MEMBER_MANAGE_PERM);
+        String orgMemberTypeManagePermId = organizationBO.fetchExtInfo(OrganizationExtInfoKey.ORG_MEMBER_TYPE_MANAGE_PERM);
+
+        OrganizationMemberBO member = organizationMemberRepoService.queryMember(request.getOrganizationId(), request.getMemberId());
+
+        // 成员存在
+        if (member != null) {
+            // 移除所有权限
+            UserManageRequest PermRequest = new UserManageRequest();
+            PermRequest.setPermIds(Arrays.asList(orgMemberManagePermId, orgMemberTypeManagePermId));
+            PermRequest.setUserId(member.getMemberId());
+            userManager.batchUnbindPerm(PermRequest);
+
+            organizationMemberRepoService.removeMember(request.getOrganizationId(), request.getMemberId());
+        }
     }
 
     @Override

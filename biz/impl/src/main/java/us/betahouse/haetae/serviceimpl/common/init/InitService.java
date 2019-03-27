@@ -11,6 +11,7 @@ import us.betahouse.haetae.finance.manager.FinanceManager;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.serviceimpl.organization.enums.OrganizationPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
 import us.betahouse.haetae.serviceimpl.asset.enums.AssetPermTypeEnum;
@@ -50,6 +51,8 @@ public class InitService {
 
     private final static List<String> assetManagerPerm = new ArrayList<>();
 
+    private final static List<String> organizationManagerPerm = new ArrayList<>();
+
     static {
         //活动
         activityManagerPerm.add(ActivityPermType.ACTIVITY_CREATE);
@@ -62,6 +65,10 @@ public class InitService {
         assetManagerPerm.add(AssetPermType.ASSET_UPDATE);
         assetManagerPerm.add(AssetPermType.ASSET_DELETE);
         assetManagerPerm.add(AssetPermType.ASSET_SEEK);
+        //组织
+        organizationManagerPerm.add(OrganizationPermType.ALL_ORG_MANAGE);
+        organizationManagerPerm.add(OrganizationPermType.ALL_ORG_MEMBER_MANAGE);
+        organizationManagerPerm.add(OrganizationPermType.ALL_ORG_RELATION_MANAGE);
     }
 
 
@@ -139,18 +146,21 @@ public class InitService {
         // 初始化 活动管理员权限
         if (StringUtils.equals(role.getRoleCode(), UserRoleCode.ACTIVITY_MANAGER.getCode())) {
             Set<String> permIds = new HashSet<>();
-            activityManagerPerm.forEach(activityPermType -> {
-                permIds.add(initPermMap.get(activityPermType));
-            });
+            activityManagerPerm.forEach(activityPermType -> permIds.add(initPermMap.get(activityPermType)));
             permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
         }
 
         //初始化 物资管理员权限
         if (StringUtils.equals(role.getRoleCode(), UserRoleCode.ASSET_MANAGER.getCode())) {
             Set<String> permIds = new HashSet<>();
-            assetManagerPerm.forEach(assetPermType -> {
-                permIds.add(initPermMap.get(assetPermType));
-            });
+            assetManagerPerm.forEach(assetPermType -> permIds.add(initPermMap.get(assetPermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
+
+        // 初始化 组织管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.ORGANIZATION_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            organizationManagerPerm.forEach(organizationPermType -> permIds.add(initPermMap.get(organizationPermType)));
             permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
         }
     }
