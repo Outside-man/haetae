@@ -38,11 +38,6 @@ public class OrganizationManagerImpl implements OrganizationManager {
 
     private final Logger LOGGER = LoggerFactory.getLogger(OrganizationManagerImpl.class);
 
-    private final int PRINCIPAL_TOTAL = 1;
-
-    private final int FIRST = 0;
-
-
     @Autowired
     private OrganizationRepoService organizationRepoService;
 
@@ -112,37 +107,30 @@ public class OrganizationManagerImpl implements OrganizationManager {
             LoggerUtil.warn(LOGGER, "组织不存在 OrganizationId={0}", request.getOrganizationId());
             throw new BetahouseException("组织不存在");
         }
-        List<OrganizationMemberBO> principals = organizationMemberRepoService.queryMembers(request.getOrganizationId(), MemberType.PRINCIPAL.getType());
-
+        // 获取主管
+        OrganizationMemberBO principal = organizationMemberRepoService.queryPrincipal(request.getOrganizationId());
         // 有主管时 需要将原来主管改成普通成员
-        if (!CollectionUtils.isEmpty(principals)) {
-            // 主管超出指定数量 认为系统存在异常
-            if (principals.size() > PRINCIPAL_TOTAL) {
-                LoggerUtil.error(LOGGER, "{0}组织主管超出限制, 组织id={1}, 主管人数={2}",
-                        organizationBO.getOrganizationName(), organizationBO.getOrganizationId(), principals.size());
-            }
+        if (principal != null) {
             // 已经是主管就不需要重复设置
-            for (OrganizationMemberBO memberBO : principals) {
-                if (StringUtils.equals(memberBO.getMemberId(), request.getMemberId())) {
-                    LoggerUtil.warn(LOGGER, "已是主管");
-                    return;
-                }
+            if (StringUtils.equals(principal.getMemberId(), request.getMemberId())) {
+                LoggerUtil.warn(LOGGER, "已是主管");
+                return;
             }
             // 未指定新称呼 沿用老称呼
             if (StringUtils.isBlank(request.getMemberDesc())) {
-                request.setMemberDesc(principals.get(FIRST).getMemberDescription());
+                request.setMemberDesc(principal.getMemberDescription());
             }
-            principals.forEach(principal -> {
-                principal.setMemberType(MemberType.MEMBER.getType());
-                principal.setMemberDescription(MemberType.MEMBER.getDesc());
-                organizationMemberRepoService.updateMember(principal);
-            });
+            // 原来主管改成普通成员
+            principal.setMemberType(MemberType.MEMBER.getType());
+            principal.setMemberDescription(MemberType.MEMBER.getDesc());
+            organizationMemberRepoService.updateMember(principal);
         }
         saveMember(parseMember(request));
     }
 
     /**
      * 保存成员关系  无则创  有则改
+     *
      * @param memberBO
      */
     private void saveMember(OrganizationMemberBO memberBO) {

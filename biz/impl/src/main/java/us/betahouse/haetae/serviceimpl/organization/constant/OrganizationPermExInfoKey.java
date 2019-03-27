@@ -2,7 +2,7 @@
   betahouse.us
   CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.serviceimpl.activity.constant.organization;
+package us.betahouse.haetae.serviceimpl.organization.constant;
 
 /**
  * 权限拓展字段

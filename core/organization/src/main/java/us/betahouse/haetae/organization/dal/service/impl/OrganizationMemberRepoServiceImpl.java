@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.organization.dal.convert.EntityConverter;
+import us.betahouse.haetae.organization.dal.model.OrganizationDO;
 import us.betahouse.haetae.organization.dal.model.OrganizationMemberDO;
 import us.betahouse.haetae.organization.dal.repo.OrganizationMemberRepo;
 import us.betahouse.haetae.organization.dal.repo.OrganizationRepo;
 import us.betahouse.haetae.organization.dal.service.OrganizationMemberRepoService;
+import us.betahouse.haetae.organization.enums.MemberType;
 import us.betahouse.haetae.organization.idfactory.BizIdFactory;
 import us.betahouse.haetae.organization.model.OrganizationMemberBO;
 import us.betahouse.util.utils.AssertUtil;
@@ -36,6 +38,14 @@ import java.util.stream.Collectors;
 public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepoService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(OrganizationRepoServiceImpl.class);
+
+    /**
+     * 主管总数
+     */
+    private final int PRINCIPAL_TOTAL = 1;
+
+    private final int FIRST = 0;
+
 
     @Autowired
     private OrganizationRepo organizationRepo;
@@ -131,6 +141,21 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
                     .map(EntityConverter::convert)
                     .collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public OrganizationMemberBO queryPrincipal(String organizationId) {
+        List<OrganizationMemberBO> principals = queryMembers(organizationId, MemberType.PRINCIPAL.getType());
+        if (CollectionUtils.isEmpty(principals)) {
+            return null;
+        }
+        // 如果主管数量超出则报警
+        if (principals.size() > PRINCIPAL_TOTAL) {
+            OrganizationDO organizationDO = organizationRepo.findByOrganizationId(organizationId);
+            LoggerUtil.error(LOGGER, "{0}组织主管超出限制, 组织id={1}, 主管人数={2}",
+                    organizationDO.getOrganizationName(), organizationDO.getOrganizationId(), principals.size());
+        }
+        return principals.get(FIRST);
     }
 
     @Override

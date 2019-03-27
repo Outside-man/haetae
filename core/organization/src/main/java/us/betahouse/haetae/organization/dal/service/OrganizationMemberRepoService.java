@@ -50,6 +50,14 @@ public interface OrganizationMemberRepoService {
     List<OrganizationMemberBO> queryMembers(String organizationId, String memberType);
 
     /**
+     * 查询主管
+     *
+     * @param organizationId
+     * @return
+     */
+    OrganizationMemberBO queryPrincipal(String organizationId);
+
+    /**
      * 查询成员
      *
      * @param organizationId

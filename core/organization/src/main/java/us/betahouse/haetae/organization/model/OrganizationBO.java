@@ -54,6 +54,7 @@ public class OrganizationBO extends ToString {
      *
      * @param key
      * @return
+     * @see us.betahouse.haetae.serviceimpl.organization.constant.OrganizationExtInfoKey
      */
     public String fetchExtInfo(String key) {
         if (extInfo == null) {

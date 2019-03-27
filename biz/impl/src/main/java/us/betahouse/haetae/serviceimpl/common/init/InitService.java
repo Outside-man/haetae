@@ -8,16 +8,12 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.manager.FinanceManager;
-import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
-import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
-import us.betahouse.haetae.serviceimpl.activity.enums.OrganizationPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.organization.enums.OrganizationPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
 import us.betahouse.haetae.serviceimpl.asset.enums.AssetPermTypeEnum;
-import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
-import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
@@ -27,7 +23,6 @@ import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.haetae.user.user.builder.RoleBOBuilder;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /**

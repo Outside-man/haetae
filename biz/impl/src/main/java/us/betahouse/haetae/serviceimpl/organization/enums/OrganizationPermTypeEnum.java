@@ -2,10 +2,10 @@
   betahouse.us
   CopyRight (c) 2012 - 2018
  */
-package us.betahouse.haetae.serviceimpl.activity.enums;
+package us.betahouse.haetae.serviceimpl.organization.enums;
 
 import org.apache.commons.lang.StringUtils;
-import us.betahouse.haetae.serviceimpl.activity.constant.organization.OrganizationPermType;
+import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.user.enums.PermType;
 
 /**
