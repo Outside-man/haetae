@@ -168,7 +168,7 @@ public class AssetBackRecordRepoServiceImpl implements AssetBackRecordRepoServic
         AssetDO assetDO = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId());
         assetBackRecordBO.setAmount(assetBackRecordDO.getAmount());
         assetBackRecordBO.setAssetId(assetBackRecordDO.getAssetId());
-        String assetName = assetDORepo.findByAssetId(assetBackRecordDO.getAssetId()).getAssetName();
+        String assetName = assetDO.getAssetName();
         assetBackRecordBO.setAssetName(assetName);
         assetBackRecordBO.setAssetType(assetBackRecordDO.getAssetType());
         assetBackRecordBO.setBackRecoedId(assetBackRecordDO.getBackRecoedId());
