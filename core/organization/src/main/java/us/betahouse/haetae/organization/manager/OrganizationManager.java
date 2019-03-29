@@ -47,4 +47,6 @@ public interface OrganizationManager {
      * @return
      */
     List<OrganizationBO> queryOrganizationByMemberId(String memberId);
+
+    List<OrganizationBO> queryAllOrganization();
 }

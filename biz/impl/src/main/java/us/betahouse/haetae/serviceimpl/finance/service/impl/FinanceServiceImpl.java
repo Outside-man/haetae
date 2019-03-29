@@ -180,7 +180,7 @@ public class FinanceServiceImpl implements FinanceService {
         Map<String, PermBO> map = userBasicService.fetchUserPerms(request.getUserId());
         AtomicReference<Boolean> result= new AtomicReference<>(false);
         map.values().forEach(permBO ->{
-            if(request.getOrganizationId().equals(permBO.getExtInfo().get(FinancePermExInfoKey.ORGANIZATION_ID))&&permBO.getPermType().equals(FinancePermType.FINANCE_MANAGER)){
+            if(request.getOrganizationId().equals(permBO.getExtInfo().get(FinancePermExInfoKey.FINANCE_ORGANIZATION_ID))&&permBO.getPermType().equals(FinancePermType.FINANCE_MANAGER)){
                 result.set(true);
             }
         });

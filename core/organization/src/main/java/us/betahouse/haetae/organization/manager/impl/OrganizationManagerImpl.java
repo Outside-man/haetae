@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.organization.dal.convert.EntityConverter;
 import us.betahouse.haetae.organization.dal.service.OrganizationMemberRepoService;
 import us.betahouse.haetae.organization.dal.service.OrganizationRelationRepoService;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
@@ -109,13 +110,20 @@ public class OrganizationManagerImpl implements OrganizationManager {
         return organizationRepoService.queryByOrganizationIds(organizationIds);
     }
 
+    @Override
+    public List<OrganizationBO> queryAllOrganization() {
+        return CollectionUtils.toStream(organizationRepoService.queryAllOrganization())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 主管变更 需要把原有主管变为成员
      *
      * @param request
      */
     @Transactional(rollbackFor = Exception.class)
-    private void changePrincipal(OrganizationManageRequest request) {
+    void changePrincipal(OrganizationManageRequest request) {
         OrganizationBO organizationBO = organizationRepoService.queryByOrganizationId(request.getOrganizationId());
         if (organizationBO == null) {
             LoggerUtil.warn(LOGGER, "组织不存在 OrganizationId={0}", request.getOrganizationId());

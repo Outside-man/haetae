@@ -8,9 +8,13 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.manager.FinanceManager;
-import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
+
+import us.betahouse.haetae.organization.manager.OrganizationManager;
+import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
+import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.serviceimpl.organization.enums.OrganizationPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
@@ -41,11 +45,13 @@ public class InitService {
     @Autowired
     private RoleRepoService roleRepoService;
 
-    @Autowired
-    private OrganizationRepoService organizationRepoService;
+
 
     @Autowired
     private FinanceManager financeManager;
+
+    @Autowired
+    private OrganizationManager organizationManager;
 
     private final static List<String> activityManagerPerm = new ArrayList<>();
 
@@ -97,20 +103,20 @@ public class InitService {
         }
 
         //财务权限 TODO @MessiahJK
-//        List<OrganizationBO> organizationBOList = organizationRepoService.queryAllOrganization();
-//        for (OrganizationBO organizationBO : organizationBOList) {
-//            PermType permType = FinancePermTypeEnum.FINANCE_MANAGE;
-//            Map<String, String> map = new HashMap<>(16);
-//            map.put(FinancePermExInfoKey.ORGANIZATION_ID, organizationBO.getOrganizationId());
-//            permBuilder.withPermType(permType.getCode())
-//                    .withPermName(permType.getDesc())
-//                    .withExtInfo(map);
-//            initPermMap.put(permType.getCode(), permRepoService.initFinancePerm(permBuilder.build()).getPermId());
-//        }
-//        permBuilder.withPermType(FinancePermTypeEnum.FINANCE_BAN.getCode())
-//                .withPermName(FinancePermTypeEnum.FINANCE_BAN.getDesc())
-//                .withExtInfo(new HashMap<>(0));
-//        initPermMap.put(FinancePermTypeEnum.FINANCE_BAN.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
+        List<OrganizationBO> organizationBOList = organizationManager.queryAllOrganization();
+        for (OrganizationBO organizationBO : organizationBOList) {
+            PermType permType = FinancePermTypeEnum.FINANCE_MANAGE;
+            Map<String, String> map = new HashMap<>(16);
+            map.put(FinancePermExInfoKey.FINANCE_ORGANIZATION_ID, organizationBO.getOrganizationId());
+            permBuilder.withPermType(permType.getCode())
+                    .withPermName(permType.getDesc())
+                    .withExtInfo(map);
+            initPermMap.put(permType.getCode(), permRepoService.initFinancePerm(permBuilder.build()).getPermId());
+        }
+        permBuilder.withPermType(FinancePermTypeEnum.FINANCE_BAN.getCode())
+                .withPermName(FinancePermTypeEnum.FINANCE_BAN.getDesc())
+                .withExtInfo(new HashMap<>(0));
+        initPermMap.put(FinancePermTypeEnum.FINANCE_BAN.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
 
         //组织权限
         for (PermType permType : OrganizationPermTypeEnum.values()) {

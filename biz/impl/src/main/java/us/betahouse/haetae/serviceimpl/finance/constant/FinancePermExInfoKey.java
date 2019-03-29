@@ -12,5 +12,5 @@ public class FinancePermExInfoKey {
     /**
      * 盖章权限对应活动
      */
-    public final static String ORGANIZATION_ID = "organizationId";
+    public final static String FINANCE_ORGANIZATION_ID = "financeOrganizationId";
 }
