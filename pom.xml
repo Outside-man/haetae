@@ -23,6 +23,7 @@
         <module>core/user</module>
         <module>core/activity</module>
         <module>core/asset</module>
+        <module>core/certificate</module>
         <module>core/finance</module>
         <module>core/organization</module>
         <module>biz/impl</module>
