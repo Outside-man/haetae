@@ -34,7 +34,10 @@
             <groupId>us.betahouse</groupId>
             <artifactId>haetae-activity</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>us.betahouse</groupId>
+            <artifactId>haetae-certificate</artifactId>
+        </dependency>
     </dependencies>
 
 
