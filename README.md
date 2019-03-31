@@ -41,6 +41,8 @@ Mysql
     |-- activity    (活动领域核心)
     |-- asset       (物资领域核心)
     |-- finance     (财务领域核心)
+    |-- organization(组织领域核心)
+    |-- certificate (证书领域核心)
 |-- web   (接口交互层)
 |-- util  (通用工具模块)
 ```
