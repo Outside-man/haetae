@@ -28,8 +28,6 @@ public class ActivityOperateManager {
         AssertUtil.assertNotNull(request);
         AssertUtil.assertStringNotBlank(request.getActivityId(), "操作活动id不能为空");
         AssertUtil.assertStringNotBlank(request.getVerifyUserId(), "操作员id不能为空");
-
-
         ActivityOperationEnum operation = ActivityOperationEnum.getByCode(request.getOperation());
         AssertUtil.assertNotNull(operation, "不是有效的操作指令");
         // 分发处理

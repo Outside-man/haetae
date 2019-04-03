@@ -14,15 +14,41 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum ActivityTypeEnum {
 
+    /**
+     * 校园活动
+     */
     SCHOOL_ACTIVITY("schoolActivity", "校园活动"),
 
+    /**
+     * 讲座活动
+     */
     LECTURE_ACTIVITY("lectureActivity", "讲座活动"),
 
+    /**
+     * 志愿活动
+     */
     VOLUNTEER_ACTIVITY("volunteerActivity", "志愿活动"),
 
+    /**
+     * 实践活动
+     */
     PRACTICE_ACTIVITY("practiceActivity", "实践活动"),
 
-    VOLUNTEER_WORK("volunteerWork", "义工"),;
+    /**
+     * 义工活动
+     */
+    VOLUNTEER_WORK("volunteerWork", "义工"),
+
+    /**
+     * 党员活动
+     */
+    PARTY_ACTIVITY("partyActivity","党员活动"),
+
+    /**
+     * 党员时间活动
+     */
+    PARTY_TIME_ACTIVITY("partyTimeActivity","党员时间活动"),
+    ;
 
     private String code;
 

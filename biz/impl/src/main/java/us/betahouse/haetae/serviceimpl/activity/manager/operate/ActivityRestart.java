@@ -58,6 +58,10 @@ public class ActivityRestart extends CommonActivityOperate {
                 return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
             case VOLUNTEER_WORK:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
+            case PARTY_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
+            case PARTY_TIME_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_RESTART);
             default:
                 LoggerUtil.error(LOGGER, "活动类型不存在 ，activityBO={0}", activityBO);
                 throw new BetahouseException(CommonResultCode.SYSTEM_ERROR, "活动类型不存在, 请尽快和管理员联系");

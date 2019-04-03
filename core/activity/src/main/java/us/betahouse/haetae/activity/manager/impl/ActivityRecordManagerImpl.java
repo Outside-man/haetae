@@ -109,4 +109,9 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     public ActivityRecordBO updateScannerName(String activityRecordId,String scannerName) {
         return activityRecordRepoService.updateScannerName(activityRecordId, scannerName);
     }
+
+    @Override
+    public List<ActivityRecordBO> findAll() {
+        return activityRecordRepoService.findAll();
+    }
 }

@@ -149,6 +149,14 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         return convert(activityRecordDORepo.save(activityRecordDO));
     }
 
+    @Override
+    public List<ActivityRecordBO> findAll() {
+        return  CollectionUtils.toStream(activityRecordDORepo.findAll())
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 活动记录DO2BO
      *

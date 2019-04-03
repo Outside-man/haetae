@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.finance.manager.FinanceManager;
 
+import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.organization.manager.OrganizationManager;
 import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
@@ -28,6 +29,7 @@ import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
 import us.betahouse.haetae.user.user.builder.RoleBOBuilder;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -102,7 +104,7 @@ public class InitService {
             }
         }
 
-        //财务权限 TODO @MessiahJK
+        //财务权限
         List<OrganizationBO> organizationBOList = organizationManager.queryAllOrganization();
         for (OrganizationBO organizationBO : organizationBOList) {
             PermType permType = FinancePermTypeEnum.FINANCE_MANAGE;
@@ -136,14 +138,14 @@ public class InitService {
             intRoleBindPerm(role, initPermMap);
         }
         // 初始化财务统计
-//        for (OrganizationBO organizationBO : organizationBOList) {
-//            FinanceTotalBO financeTotalBO = new FinanceTotalBO();
-//            financeTotalBO.setOrganizationId(organizationBO.getOrganizationId());
-//            financeTotalBO.setOrganizationName(organizationBO.getOrganizationName());
-//            financeTotalBO.setTotalMoney(BigDecimal.ZERO);
-//            financeTotalBO.setTotalMoneyIncludeBudget(BigDecimal.ZERO);
-//            financeManager.initTotalMoney(financeTotalBO);
-//        }
+        for (OrganizationBO organizationBO : organizationBOList) {
+            FinanceTotalBO financeTotalBO = new FinanceTotalBO();
+            financeTotalBO.setOrganizationId(organizationBO.getOrganizationId());
+            financeTotalBO.setOrganizationName(organizationBO.getOrganizationName());
+            financeTotalBO.setTotalMoney(BigDecimal.ZERO);
+            financeTotalBO.setTotalMoneyIncludeBudget(BigDecimal.ZERO);
+            financeManager.initTotalMoney(financeTotalBO);
+        }
     }
 
 

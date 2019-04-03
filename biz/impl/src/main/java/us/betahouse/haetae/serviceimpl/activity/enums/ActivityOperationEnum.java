@@ -14,12 +14,24 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum ActivityOperationEnum {
 
+    /**
+     * 取消
+     */
     CANCEL("cancel", "取消"),
 
+    /**
+     * 发布
+     */
     PUBLISH("publish", "发布"),
 
+    /**
+     * 结束
+     */
     FINISH("finish", "结束"),
 
+    /**
+     * 重启
+     */
     RESTART("restart", "重启"),;
 
     public static ActivityOperationEnum getByCode(String code) {

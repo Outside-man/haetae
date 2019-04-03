@@ -58,6 +58,10 @@ public class ActivityPublish extends CommonActivityOperate {
                 return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
             case VOLUNTEER_WORK:
                 return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
+            case PARTY_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
+            case PARTY_TIME_ACTIVITY:
+                return Collections.singletonList(ActivityPermType.ACTIVITY_PUBLISH);
             default:
                 LoggerUtil.error(LOGGER, "活动类型不存在 ，activityBO={0}", activityBO);
                 throw new BetahouseException(CommonResultCode.SYSTEM_ERROR, "活动类型不存在, 请尽快和管理员联系");
