@@ -2,7 +2,7 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
-package us.haetae.certificate.dal.model;
+package us.betahouse.haetae.certificate.dal.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -10,40 +10,41 @@ import java.util.Date;
 
 /**
  * @author guofan.cp
- * @version : CommonDO.java 2019/03/30 20:47 guofan.cp
- * <p>
- * 三个实体Do实体共同类
+ * @version : BaseCommonDO.java 2019/04/02 14:40 guofan.cp
+ * 证书实体类重复属性
  */
 @MappedSuperclass
-public abstract class CommonDO extends BaseDO {
+public abstract class BaseCommonDO extends BaseDO{
+
+    private static final long serialVersionUID = 2492097357227220647L;
 
     /**
      * 证书id
      */
-    @Column(name = "certificate_id",length = 32, nullable = false)
+    @Column(name = "certificate_id",nullable = false,length = 32)
     private String certificateId;
     /**
-     * 用户id
+     * 学生id
      */
-    @Column(name = "user_id",length = 32,nullable = false)
+    @Column(name = "user_id",nullable = false,length = 32)
     private String userId;
     /**
-     * 证书状态  审核通过/未审核
+     * 证书状态 审核通过 未审核
      */
-    @Column(name = "status",length = 20,nullable = false)
+    @Column(name = "status",nullable = false)
     private String status;
     /**
      * 证书发布时间
      */
-    @Column(name = "certificate_publish_time")
+    @Column(name = "certificate_publish_time",nullable = false)
     private Date certificatePublishTime;
     /**
-     * 技能分
+     * 德育分 左移2位
      */
-    @Column(name = "grade" ,length = 4)
+    @Column(name = "grade",length = 8)
     private int grade;
     /**
-     * 证书审核员id
+     * 审核员id
      */
     @Column(name = "confirm_user_id",length = 32)
     private String confirmUserId;

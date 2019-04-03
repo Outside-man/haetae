@@ -1,8 +1,8 @@
 /*
- * betahouse.us
- * CopyRight (c) 2012 - 2019
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
-package us.haetae.certificate.dal.model;
+package us.betahouse.haetae.certificate.dal.model;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,12 +15,15 @@ import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 /**
- * @author guofan.cp
- * @version : BaseDO.java 2019/03/30 9:47 guofan.cp
+ * 实体基础类
+ *
+ * @author MessiahJK
+ * @version : BaseDO.java 2018/11/17 1:30 MessiahJK
  */
 @MappedSuperclass
 public abstract class BaseDO extends ToString {
 
+    private static final long serialVersionUID = 4957516497718780160L;
 
     @Id
     @GeneratedValue
@@ -30,15 +33,21 @@ public abstract class BaseDO extends ToString {
      * 创建时间
      */
     @CreatedDate
-    @Column(name = "gmt_create",nullable = false)
+    @Column(name = "gmt_create", nullable = false)
     private Date gmtCreate;
 
     /**
-     *修改时间
+     * 修改时间
      */
     @LastModifiedDate
-    @Column(name = "gmt_modified",nullable = false)
-    private  Date gmtModified;
+    @Column(name = "gmt_modified", nullable = false)
+    private Date gmtModified;
+
+    /**
+     * 拓展信息
+     */
+    @Column(length = 2000)
+    private String extInfo;
 
     public Long getId() {
         return id;
@@ -62,5 +71,13 @@ public abstract class BaseDO extends ToString {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getExtInfo() {
+        return extInfo;
+    }
+
+    public void setExtInfo(String extInfo) {
+        this.extInfo = extInfo;
     }
 }
