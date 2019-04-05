@@ -28,7 +28,7 @@ public class QualificationsDO extends BaseCommonDO {
      * 证书名字
      */
     @Column(name = "certificate_name")
-    private String certificxateName;
+    private String certificateName;
     /**
      * 证书类型
      */
@@ -69,11 +69,11 @@ public class QualificationsDO extends BaseCommonDO {
         this.certificateNumber = certificateNumber;
     }
 
-    public String getCertificxateName() {
-        return certificxateName;
+    public String getCertificateName() {
+        return certificateName;
     }
 
-    public void setCertificxateName(String certificxateName) {
-        this.certificxateName = certificxateName;
+    public void setCertificateName(String certificateName) {
+        this.certificateName = certificateName;
     }
 }

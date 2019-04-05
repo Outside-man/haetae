@@ -14,39 +14,39 @@ import java.util.Date;
  * 证书实体类重复属性
  */
 @MappedSuperclass
-public abstract class BaseCommonDO extends BaseDO{
+public abstract class BaseCommonDO extends BaseDO {
 
     private static final long serialVersionUID = 2492097357227220647L;
 
     /**
      * 证书id
      */
-    @Column(name = "certificate_id",nullable = false,length = 32)
+    @Column(name = "certificate_id", nullable = false, length = 32)
     private String certificateId;
     /**
      * 学生id
      */
-    @Column(name = "user_id",nullable = false,length = 32)
+    @Column(name = "user_id", nullable = false, length = 32)
     private String userId;
     /**
      * 证书状态 审核通过 未审核
      */
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     private String status;
     /**
      * 证书发布时间
      */
-    @Column(name = "certificate_publish_time",nullable = false)
+    @Column(name = "certificate_publish_time", nullable = false)
     private Date certificatePublishTime;
     /**
      * 德育分 左移2位
      */
-    @Column(name = "grade",length = 8)
+    @Column(name = "grade", length = 8)
     private int grade;
     /**
      * 审核员id
      */
-    @Column(name = "confirm_user_id",length = 32)
+    @Column(name = "confirm_user_id", length = 32)
     private String confirmUserId;
 
     public String getCertificateId() {
