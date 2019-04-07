@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
  * @author guofan.cp
  * @version : CertificateRecordExtInfoKey.java 2019/04/05 8:26 guofan.cp
  */
-public enum CertificateRecordExtInfoKey {
+public enum CertificateExtInfoKey {
     /**
      * 证书详细信息
      */
@@ -35,11 +35,11 @@ public enum CertificateRecordExtInfoKey {
      */
     private final String desc;
 
-    public static CertificateRecordExtInfoKey getByCode(String code) {
+    public static CertificateExtInfoKey getByCode(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
         }
-        for (CertificateRecordExtInfoKey activityStateEnum : values()) {
+        for (CertificateExtInfoKey activityStateEnum : values()) {
             if (StringUtils.equals(activityStateEnum.getCode(), code)) {
                 return activityStateEnum;
             }
@@ -47,7 +47,7 @@ public enum CertificateRecordExtInfoKey {
         return null;
     }
 
-    CertificateRecordExtInfoKey(String code, String desc) {
+    CertificateExtInfoKey(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }

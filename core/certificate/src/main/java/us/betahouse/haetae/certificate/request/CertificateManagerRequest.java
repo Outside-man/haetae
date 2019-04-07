@@ -2,93 +2,109 @@
  * betahouse.us
  * CopyRight (c) 2012 - 2019
  */
-package us.betahouse.haetae.certificate.model.basic;
+package us.betahouse.haetae.certificate.request;
 
-import us.betahouse.util.common.ToString;
-
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 证书模型
- *
  * @author guofan.cp
- * @version : CertificateBO.java 2019/04/05 7:17 guofan.cp
+ * @version : CertificateManagerRequest.java 2019/04/06 17:23 guofan.cp
  */
-public class CertificateBO extends ToString {
+public class CertificateManagerRequest extends BaseRequest {
 
-    private static final long serialVersionUID = -7774528720038408095L;
+    private static final long serialVersionUID = 3492351300164953332L;
 
     /**
      * 证书id
      */
     private String certificateId;
+
     /**
      * 证书名字
      */
     private String certificateName;
+
     /**
      * 比赛名字
      */
     private String competitionName;
+
     /**
      * 用户id
      */
     private String userId;
+
     /**
      * 证书内部类型
      */
     private String type;
+
     /**
      * 证书类型
      */
     private String certificateType;
+
     /**
      * 证书组织
      */
     private String certificateOrganization;
+
     /**
      * 证书发布时间
      */
-    private Date certificatePublishTime;
+    private Long certificatePublishTime;
+
+    /**
+     * 证书详细信息
+     */
+    private String description;
+
     /**
      * 证书级别
      */
     private String rank;
-    /**
-     * 审核状态
-     */
-    private String status;
+
     /**
      * 证书有效截止时间
      */
-    private Date effectionTime;
+    private Long effectionTime;
+
     /**
      * 审核员id
      */
     private String confirmUserId;
+
     /**
      * 证书编号
      */
     private String certificateNumber;
+
     /**
      * 用户队员id
      */
     private List<String> workUserId;
+
     /**
      * 团队名称
      */
     private String teamName;
+
     /**
      * 指导老师
      */
     private List<Map<String, String>> teacher;
-    /**
-     * 额外拓展信息
-     */
-    private Map<String, String> extInfo = new HashMap<>();
+
+//    /**
+//     * 学科(教师类型)
+//     */
+//    private String subject;
+
+//    /**
+//     * 资格种类(教师类型)
+//     */
+//    private String teacherLevel;
+
 
     public String getCertificateId() {
         return certificateId;
@@ -138,12 +154,28 @@ public class CertificateBO extends ToString {
         this.certificateOrganization = certificateOrganization;
     }
 
-    public Date getCertificatePublishTime() {
+    public Long getCertificatePublishTime() {
         return certificatePublishTime;
     }
 
-    public void setCertificatePublishTime(Date certificatePublishTime) {
+    public void setCertificatePublishTime(Long certificatePublishTime) {
         this.certificatePublishTime = certificatePublishTime;
+    }
+
+    public String getCompetitionName() {
+        return competitionName;
+    }
+
+    public void setCompetitionName(String competitionName) {
+        this.competitionName = competitionName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getRank() {
@@ -154,11 +186,11 @@ public class CertificateBO extends ToString {
         this.rank = rank;
     }
 
-    public Date getEffectionTime() {
+    public Long getEffectionTime() {
         return effectionTime;
     }
 
-    public void setEffectionTime(Date effectionTime) {
+    public void setEffectionTime(Long effectionTime) {
         this.effectionTime = effectionTime;
     }
 
@@ -194,14 +226,6 @@ public class CertificateBO extends ToString {
         this.teamName = teamName;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public List<Map<String, String>> getTeacher() {
         return teacher;
     }
@@ -210,33 +234,20 @@ public class CertificateBO extends ToString {
         this.teacher = teacher;
     }
 
-    public String getCompetitionName() {
-        return competitionName;
-    }
+//    public String getSubject() {
+//        return subject;
+//    }
+//
+//    public void setSubject(String subject) {
+//        this.subject = subject;
+//    }
+//
+//    public String getTeacherLevel() {
+//        return teacherLevel;
+//    }
+//
+//    public void setTeacherLevel(String teacherLevel) {
+//        this.teacherLevel = teacherLevel;
+//    }
 
-    public void setCompetitionName(String competitionName) {
-        this.competitionName = competitionName;
-    }
-
-    public String fetchExtInfo(String key) {
-        if (extInfo == null) {
-            return null;
-        }
-        return extInfo.get(key);
-    }
-
-    public void putExtInfo(String key, String value) {
-        if (extInfo == null) {
-            extInfo = new HashMap<>();
-        }
-        extInfo.put(key, value);
-    }
-
-    public Map<String, String> getExtInfo() {
-        return extInfo;
-    }
-
-    public void setExtInfo(Map<String, String> extInfo) {
-        this.extInfo = extInfo;
-    }
 }

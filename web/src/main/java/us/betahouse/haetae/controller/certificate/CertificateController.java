@@ -12,25 +12,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
+import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.common.log.LoggerName;
-import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.certificate.request.CertificateRestRequest;
+import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateRequestBuilder;
+import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
+import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 证书接口
@@ -48,7 +47,14 @@ public class CertificateController {
     private final Logger LOGGER = LoggerFactory.getLogger(CertificateController.class);
 
     /**
-     * 创建证书
+     * 证书详细信息
+     */
+    private final String DESCRIPTION = "description";
+
+    @Autowired
+    private CertificateManagerService certificateManagerService;
+    /**
+     * 创建资格证书
      *
      * @param request
      * @param httpServletRequest
@@ -57,14 +63,17 @@ public class CertificateController {
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<CertificateBO> certificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        //post提交json数据
         return RestOperateTemplate.operate(LOGGER, "新增证书记录", request, new RestOperateCallBack<CertificateBO>() {
+
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getCertificateName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书名称不能为空");
                 AssertUtil.assertStringNotBlank(request.getCertificateType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不能为空");
                 AssertUtil.assertNotNull(request.getCertificatePublishTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书发布时间不能为空");
-                AssertUtil.assertNotNull(request.getDescription(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书详细信息不能为空");
+                //获取 Extinfo 中 description信息
+                AssertUtil.assertNotNull(request.getExtInfo().get(DESCRIPTION), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书详细信息不能为空");
                 boolean validateTime = new Date(request.getCertificatePublishTime()).before(new Date());
                 AssertUtil.assertTrue(validateTime, "发布时间必须早于当前时间");
             }
@@ -73,12 +82,24 @@ public class CertificateController {
             public Result<CertificateBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
+                        .withCertificateName(request.getCertificateName())
+                        .withCompetitionName(request.getCompetitionName())
+                        .withUserID(request.getUserId())
+                        .withCertificateOrganization(request.getCertificateOrganization())
+                        .withCertificatePublishTime(request.getCertificatePublishTime())
+                        .withCertificateType(request.getCertificateType())
+                        .withType(request.getType())
+                        .withRank(request.getRank())
+                        .withWorkUserId(request.getWorkUserId())
+                        .withEffectionTime(request.getEffectionTime())
+                        .withTeamName(request.getTeamName())
+                        .withTeacher(request.getTeacher())
+                        .withCertificateNumber(request.getCertificateNumber())
+                        .withExtInfo(request.getExtInfo());
+                return RestResultUtil.buildSuccessResult(certificateManagerService.create(builder.build(),context),"创建证书记录成功");
             }
         });
-//        System.out.println("certificateId"+request.getCertificateId());
-//        System.out.println("wirkUserid"+request.getWorkUserId());
-//        System.out.println("teacher"+request.getTeacher());
     }
     /**
      * 修改证书信息

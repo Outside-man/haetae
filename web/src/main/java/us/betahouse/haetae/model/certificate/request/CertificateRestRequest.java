@@ -3,6 +3,7 @@
  * CopyRight (c) 2012 - 2019
  */
 package us.betahouse.haetae.model.certificate.request;
+
 import us.betahouse.haetae.common.RestRequest;
 
 import java.util.List;
@@ -25,11 +26,15 @@ public class CertificateRestRequest extends RestRequest {
      */
     private String certificateName;
     /**
+     * 比赛名字
+     */
+    private String competitionName;
+    /**
      * 用户id
      */
     private String userId;
     /**
-     * 证书内部类型
+     * 证书细节类型
      */
     private String type;
     /**
@@ -44,10 +49,6 @@ public class CertificateRestRequest extends RestRequest {
      * 证书发布时间
      */
     private Long certificatePublishTime;
-    /**
-     * 证书详细信息
-     */
-    private String description;
     /**
      * 证书级别
      */
@@ -75,15 +76,7 @@ public class CertificateRestRequest extends RestRequest {
     /**
      * 指导老师
      */
-    private List<Map<String,String>> teacher;
-    /**
-     *  学科(教师类型)
-     */
-    private String subject;
-    /**
-     * 资格种类(教师类型)
-     */
-    private String teacherLevel;
+    private List<Map<String, String>> teacher;
 
     public String getCertificateId() {
         return certificateId;
@@ -143,14 +136,6 @@ public class CertificateRestRequest extends RestRequest {
         this.certificatePublishTime = certificatePublishTime;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getRank() {
         return rank;
     }
@@ -207,19 +192,11 @@ public class CertificateRestRequest extends RestRequest {
         this.teacher = teacher;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getCompetitionName() {
+        return competitionName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getTeacherLevel() {
-        return teacherLevel;
-    }
-
-    public void setTeacherLevel(String teacherLevel) {
-        this.teacherLevel = teacherLevel;
+    public void setCompetitionName(String competitionName) {
+        this.competitionName = competitionName;
     }
 }

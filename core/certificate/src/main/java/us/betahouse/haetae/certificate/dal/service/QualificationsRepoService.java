@@ -4,7 +4,7 @@
  */
 package us.betahouse.haetae.certificate.dal.service;
 
-import us.betahouse.haetae.certificate.model.basic.QualificationsBO;
+import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public interface QualificationsRepoService {
     /**
      * 创建资格证书
      *
-     * @param qualificationsBO
+     * @param certificateBO
      * @return
      */
-    QualificationsBO create(QualificationsBO qualificationsBO);
+    CertificateBO create(CertificateBO certificateBO);
 
     /**
      * 删除资格证书
@@ -35,18 +35,18 @@ public interface QualificationsRepoService {
     /**
      * 修改资格证书
      *
-     * @param qualificationsBO
+     * @param certificateBO
      * @return
      */
-    QualificationsBO modify(QualificationsBO qualificationsBO);
+    CertificateBO modify(CertificateBO certificateBO);
 
     /**
-     * 通过id获取资格证书详细信息
+     * 通过id获取竞赛证书详细信息
      *
      * @param certificateId
      * @return
      */
-    QualificationsBO queryByCertificateId(String certificateId);
+    CertificateBO queryByCertificateId(String certificateId);
 
     /**
      * 查询证书 通过用户id
@@ -54,7 +54,7 @@ public interface QualificationsRepoService {
      * @param userid
      * @return
      */
-    List<QualificationsBO> queryByUserid(String userid);
+    List<CertificateBO> queryByUserid(String userid);
 
     /**
      * 查找证书 通过证书名字
@@ -62,5 +62,5 @@ public interface QualificationsRepoService {
      * @param certificateName
      * @return
      */
-    List<QualificationsBO> queryByCertificateName(String certificateName);
+    List<CertificateBO> queryByCertificateName(String certificateName);
 }
