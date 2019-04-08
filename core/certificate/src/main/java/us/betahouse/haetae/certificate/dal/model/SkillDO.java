@@ -32,11 +32,11 @@ public class SkillDO extends BaseCommonDO {
     /**
      * 技能证书等级
      */
-    private String certificate_rank;
+    private String rank;
     /**
-     * 证书截止有效时间
+     * 证书到期时间
      */
-    private Date effectiveTime;
+    private Date expirationTime;
 
     /**
      * 证书编号
@@ -64,19 +64,19 @@ public class SkillDO extends BaseCommonDO {
         this.certificateName = certificateName;
     }
 
-    public String getCertificate_rank() {
-        return certificate_rank;
+    public String getRank() {
+        return rank;
     }
 
-    public void setCertificate_rank(String certificate_rank) {
-        this.certificate_rank = certificate_rank;
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
-    public Date getEffectiveTime() {
-        return effectiveTime;
+    public Date getExpirationTime() {
+        return expirationTime;
     }
 
-    public void setEffectiveTime(Date effectiveTime) {
-        this.effectiveTime = effectiveTime;
+    public void setExpirationTime(Date expirationTime) {
+        this.expirationTime = expirationTime;
     }
 }
