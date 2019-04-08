@@ -27,19 +27,12 @@
         <module>core/organization</module>
         <module>biz/impl</module>
         <module>web</module>
-        <module>core/organization</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
 
             <!-- 子模块 start -->
-            <!--工具类-->
-            <dependency>
-                <groupId>us.betahouse</groupId>
-                <artifactId>util</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
             <!--core 层-->
             <dependency>
                 <groupId>us.betahouse</groupId>

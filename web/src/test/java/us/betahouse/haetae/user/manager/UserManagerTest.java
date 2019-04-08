@@ -32,15 +32,15 @@ public class UserManagerTest {
 
     @Test
     public void createManager() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 35; i++) {
             CommonUser commonUser = userManager.create(genUserCreateRequest(i));
             System.out.println(commonUser);
             UserManageRequest request = new UserManageRequest();
             request.setUserId(commonUser.getUserId());
             request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
             userManager.batchBindRolByCode(request);
-            request.setRoleCode(UserRoleCode.NOT_STUDENT);
-            userManager.batchBindRolByCode(request);
+//            request.setRoleCode(UserRoleCode.NOT_STUDENT);
+//            userManager.batchBindRolByCode(request);
         }
     }
 
@@ -83,11 +83,11 @@ public class UserManagerTest {
         request.setRequestId(UUID.randomUUID().toString());
         UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
                 .withEnrollDate(new Date())
-                .withRealName("beta测试账号_全权限_" + index)
+                .withRealName("湖畔青年" + index)
                 .withSex("女")
-                .withStuId("0" + index);
+                .withStuId("00" + index);
         request.setUsername("beta" + index);
-        request.setPassword("a111111");
+        request.setPassword("Hziee00" + index);
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;
     }

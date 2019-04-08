@@ -52,7 +52,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\2018-2019学年第一学期迎新.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\校园活动-模板.csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
@@ -82,7 +82,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerWork(){
-        String url = "C:\\Users\\j10k\\Desktop\\义工活动.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\义工活动-模板.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -100,7 +100,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\志愿活动（第五日）.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\志愿活动.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -115,16 +115,16 @@ public class ActivityRecordServiceTest {
             activityRecordDO.setStatus("ENABLE");
             activityRecordDO.setTerm(TermUtil.getNowTerm());
             activityRecordDORepo.save(activityRecordDO);
+            System.out.println(i+" "+activityRecordDO);
         }
     }
     @Test
     public void importPracticeActivity() {
-        String url = "C:\\Users\\j10k\\Desktop\\2019寒假社会实践.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\社会实践-模板.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
             activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
-            System.out.println(csv[i][4]);
             activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[i][2]).getActivityId());
             activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             activityRecordDO.setScannerUserId("201812010040554783180001201835");

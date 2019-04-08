@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.organization.enums.MemberType;
+import us.betahouse.haetae.organization.request.OrganizationManageRequest;
 import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
+import us.betahouse.util.utils.CsvUtil;
 
 
 @RunWith(SpringRunner.class)
@@ -23,7 +25,17 @@ public class OrganizationServiceTest {
         request.setOrganizationName("beta");
         organizationService.create(request);
     }
-
+    @Test
+    public void createOrganizations(){
+        OrganizationRequest request = new OrganizationRequest();
+        String filepath = "C:\\Users\\j10k\\Desktop\\activity_organization.csv";
+        String[][] csv = CsvUtil.getWithoutHeader(filepath);
+        request.setStuId("system");
+        for (String[] aCsv : csv) {
+            request.setOrganizationName(aCsv[0]);
+            organizationService.create(request);
+        }
+    }
     @Test
     public void memberManage(){
         OrganizationRequest request = new OrganizationRequest();

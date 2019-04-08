@@ -176,6 +176,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         List<String> notStampStuIds = new ArrayList<>();
 
         for(int i=1;i<csv.length;i++){
+            System.out.println(i+" "+csv[i][0]);
             if(StringUtils.isBlank(csv[i][0])){
                 break;
             }
