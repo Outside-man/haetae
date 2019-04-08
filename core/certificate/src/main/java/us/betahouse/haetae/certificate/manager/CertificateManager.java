@@ -9,7 +9,7 @@ import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.certificate.request.CertificateManagerRequest;
 
 /**
- * 资格证书管理器
+ * 证书管理器
  *
  * @author guofan.cp
  * @version : QualificationsManger.java 2019/04/05 19:54 guofan.cp

@@ -54,7 +54,7 @@ public class BizIdFactoryImpl implements BizIdFactory {
         //16-22 6位系统随机数
         builder.append(getRandNum(6));
         //22-26位 业务自定义码
-        builder.append(idTypeEnum.COMPETITON_ID.getBizNum());
+        builder.append(idTypeEnum.COMPETITION_ID.getBizNum());
         //26-30 业务自定义码
         builder.append(DateUtil.getYear(now));
         //30-32 随机2位

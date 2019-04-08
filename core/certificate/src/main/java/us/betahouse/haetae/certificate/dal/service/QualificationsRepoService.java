@@ -51,10 +51,10 @@ public interface QualificationsRepoService {
     /**
      * 查询证书 通过用户id
      *
-     * @param userid
+     * @param userId
      * @return
      */
-    List<CertificateBO> queryByUserid(String userid);
+    List<CertificateBO> queryByUserId(String userId);
 
     /**
      * 查找证书 通过证书名字

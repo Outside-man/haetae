@@ -39,9 +39,13 @@ public enum CertificateTypeEnum {
      */
     TEACHER_QUALIFICATIONS("Teacher", "教师资格证书"),
     /**
+     * 资格证书(四六级)
+     */
+    BAND_4_6("band_4_6","四六级证书"),
+    /**
      * 竞赛证书(个人)
      */
-    PERSOMAL_COMPETITION("Personal", "个人竞赛"),
+    PERSONAL_COMPETITION("Personal", "个人竞赛"),
     /**
      * 竞赛证书(团队)
      */

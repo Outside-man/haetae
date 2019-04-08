@@ -16,7 +16,7 @@ public enum CertificateExtInfoKey {
     /**
      * 证书详细信息
      */
-    DESCRIPT("Descript", "详细描述"),
+    DESCRIPTION("Description", "详细描述"),
     /**
      * 教师资格
      */

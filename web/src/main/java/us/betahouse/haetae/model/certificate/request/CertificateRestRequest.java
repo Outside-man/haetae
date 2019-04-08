@@ -56,7 +56,7 @@ public class CertificateRestRequest extends RestRequest {
     /**
      * 证书有效截止时间
      */
-    private Long effectionTime;
+    private Long expirationTime;
     /**
      * 审核员id
      */
@@ -144,12 +144,12 @@ public class CertificateRestRequest extends RestRequest {
         this.rank = rank;
     }
 
-    public Long getEffectionTime() {
-        return effectionTime;
+    public Long getExpirationTime() {
+        return expirationTime;
     }
 
-    public void setEffectionTime(Long effectionTime) {
-        this.effectionTime = effectionTime;
+    public void setExpirationTime(Long expirationTime) {
+        this.expirationTime = expirationTime;
     }
 
     public String getConfirmUserId() {

@@ -47,7 +47,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setUserId(request.getUserId());
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
-        certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPT.getCode(), request.getDescription());
+        certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPTION.getCode(), request.getDescription());
         switch (typeEnum) {
             //国际资格证书  参数同普通证书相同
             case INTERNATIONAL_QUALIFICATIONS:
@@ -91,9 +91,9 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setType(request.getType());
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
-        certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPT.getCode(), request.getDescription());
+        certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPTION.getCode(), request.getDescription());
         switch (typeEnum) {
-            case PERSOMAL_COMPETITION: {
+            case PERSONAL_COMPETITION: {
                 certificateBO = competitionRepoService.create(certificateBO);
                 return certificateBO;
             }

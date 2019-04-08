@@ -62,7 +62,7 @@ final public class CertificateBOBuilder {
     /**
      * 证书有效截止时间
      */
-    private Date effectionTime;
+    private Date expirationTime;
     /**
      * 审核员id
      */
@@ -102,7 +102,7 @@ final public class CertificateBOBuilder {
         certificateBO.setCertificateNumber(certificateNumber);
         certificateBO.setCertificateOrganization(certificateOrganization);
         certificateBO.setCertificatePublishTime(certificatePublishTime);
-        certificateBO.setEffectionTime(effectionTime);
+        certificateBO.setExpirationTime(expirationTime);
         certificateBO.setCertificateType(certificateType);
         certificateBO.setConfirmUserId(confirmUserId);
         certificateBO.setWorkUserId(workUserId);
@@ -168,8 +168,8 @@ final public class CertificateBOBuilder {
         return this;
     }
 
-    public CertificateBOBuilder withEffectionTime(Date effectionTime) {
-        this.effectionTime = effectionTime;
+    public CertificateBOBuilder withExpirationTime(Date expirationTime) {
+        this.expirationTime = expirationTime;
         return this;
     }
 

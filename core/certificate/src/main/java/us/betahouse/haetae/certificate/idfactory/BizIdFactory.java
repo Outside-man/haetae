@@ -16,7 +16,7 @@ public interface BizIdFactory {
     String getCertificateId();
 
     /**
-     * @Description: 生成比赛证书id
+     * @Description: 生成竞赛证书id
      * @param:
      */
     String getCompetitionId();

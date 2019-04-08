@@ -64,7 +64,7 @@ public class CertificateBO extends ToString {
     /**
      * 证书有效截止时间
      */
-    private Date effectionTime;
+    private Date expirationTime;
     /**
      * 审核员id
      */
@@ -154,12 +154,16 @@ public class CertificateBO extends ToString {
         this.rank = rank;
     }
 
-    public Date getEffectionTime() {
-        return effectionTime;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setEffectionTime(Date effectionTime) {
-        this.effectionTime = effectionTime;
+    public Date getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(Date expirationTime) {
+        this.expirationTime = expirationTime;
     }
 
     public String getConfirmUserId() {

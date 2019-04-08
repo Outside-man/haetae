@@ -37,7 +37,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
-    public List<CertificateBO> queryByUserid(String userid) {
+    public List<CertificateBO> queryByUserId(String userId) {
         return null;
     }
 

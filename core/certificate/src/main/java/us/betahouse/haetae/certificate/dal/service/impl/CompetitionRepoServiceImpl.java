@@ -62,8 +62,8 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
             competitionDO.setCompetitionName(newCompetitionDO.getCompetitionName());
         }
         //等级
-        if (newCompetitionDO.getRank() != null) {
-            competitionDO.setRank(newCompetitionDO.getRank());
+        if (newCompetitionDO.getCertificate_rank() != null) {
+            competitionDO.setCertificate_rank(newCompetitionDO.getCertificate_rank());
         }
         //更新证书类型
         if (newCompetitionDO.getType() != null) {
@@ -106,8 +106,8 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     }
 
     @Override
-    public List<CertificateBO> queryByUserid(String userid) {
-        return CollectionUtils.toStream(competitionDORepo.findByUserId(userid))
+    public List<CertificateBO> queryByUserId(String userId) {
+        return CollectionUtils.toStream(competitionDORepo.findByUserId(userId))
                 .filter(Objects::isNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
@@ -138,7 +138,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .withCompetitionName(competitionDO.getCompetitionName())
                 .withType(competitionDO.getType())
                 .withCertificateType(CertificateTypeEnum.COMPETITION.getCode())
-                .withRank(competitionDO.getRank())
+                .withRank(competitionDO.getCertificate_rank())
                 .withCertificatePublishTime(competitionDO.getCertificatePublishTime())
                 .withTeamName(competitionDO.getTeamName())
                 .withStatus(competitionDO.getStatus())
@@ -161,7 +161,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         CompetitionDO competitionDO = new CompetitionDO();
         competitionDO.setCompetitionName(certificateBO.getCompetitionName());
         competitionDO.setType(certificateBO.getType());
-        competitionDO.setRank(certificateBO.getRank());
+        competitionDO.setCertificate_rank(certificateBO.getRank());
         competitionDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
         competitionDO.setTeamName(certificateBO.getTeamName());
         competitionDO.setStatus(certificateBO.getStatus());

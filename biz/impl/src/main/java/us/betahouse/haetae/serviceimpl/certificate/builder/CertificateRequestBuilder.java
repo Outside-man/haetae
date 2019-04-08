@@ -61,7 +61,7 @@ final public class CertificateRequestBuilder {
     /**
      * 证书有效截止时间
      */
-    private Long effectionTime;
+    private Long expirationTime;
     /**
      * 审核员id
      */
@@ -102,7 +102,7 @@ final public class CertificateRequestBuilder {
         request.setCertificateType(certificateType);
         request.setCompetitionName(competitionName);
         request.setConfirmUserId(confirmUserId);
-        request.setEffectionTime(effectionTime);
+        request.setExpirationTime(expirationTime);
         request.setExtInfo(extInfo);
         request.setRank(rank);
         request.setTeacher(teacher);
@@ -163,8 +163,8 @@ final public class CertificateRequestBuilder {
         return this;
     }
 
-    public CertificateRequestBuilder withEffectionTime(Long effectionTime) {
-        this.effectionTime = effectionTime;
+    public CertificateRequestBuilder withExpirationTime(Long expirationTime) {
+        this.expirationTime = expirationTime;
         return this;
     }
 

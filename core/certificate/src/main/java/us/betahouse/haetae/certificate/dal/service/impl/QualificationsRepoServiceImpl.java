@@ -104,8 +104,8 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     }
 
     @Override
-    public List<CertificateBO> queryByUserid(String userid) {
-        return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userid))
+    public List<CertificateBO> queryByUserId(String userId) {
+        return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
                 .filter(Objects::isNull)
                 .map(this::convert)
                 .collect(Collectors.toList());

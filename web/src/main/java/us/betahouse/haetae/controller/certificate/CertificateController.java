@@ -92,7 +92,7 @@ public class CertificateController {
                         .withType(request.getType())
                         .withRank(request.getRank())
                         .withWorkUserId(request.getWorkUserId())
-                        .withEffectionTime(request.getEffectionTime())
+                        .withExpirationTime(request.getExpirationTime())
                         .withTeamName(request.getTeamName())
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
