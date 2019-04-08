@@ -36,7 +36,7 @@ final public class EntityConverter {
         OrganizationBO organizationBO = new OrganizationBO();
         organizationBO.setOrganizationId(organizationDO.getOrganizationId());
         organizationBO.setOrganizationName(organizationDO.getOrganizationName());
-        organizationBO.setOrganizationType(organizationDO.getOrganizationName());
+        organizationBO.setOrganizationType(organizationDO.getOrganizationType());
         organizationBO.setExtInfo(JSON.parseObject(organizationDO.getExtInfo(), Map.class));
         return organizationBO;
     }
