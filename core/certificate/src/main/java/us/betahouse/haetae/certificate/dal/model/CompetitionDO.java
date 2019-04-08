@@ -35,15 +35,16 @@ public class CompetitionDO extends BaseCommonDO {
     @Column(name = "type", nullable = false, length = 32)
     private String type;
     /**
+     * 比赛等级
+     */
+    @Column(name = "certificate_rank", nullable = false, length = 32)
+    private String certificate_rank;
+    /**
      * 团队成员学号集合
      */
     @Column(name = "workers_user_id")
     private String workersUserId;
-    /**
-     * 比赛等级
-     */
-    @Column(name = "rank", nullable = false)
-    private String rank;
+
     /**
      * 队名
      */
@@ -54,6 +55,10 @@ public class CompetitionDO extends BaseCommonDO {
      */
     @Column(name = "teacher")
     private String teacher;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getCompetitionName() {
         return competitionName;
@@ -79,12 +84,12 @@ public class CompetitionDO extends BaseCommonDO {
         this.workersUserId = workersUserId;
     }
 
-    public String getRank() {
-        return rank;
+    public String getCertificate_rank() {
+        return certificate_rank;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setCertificate_rank(String certificate_rank) {
+        this.certificate_rank = certificate_rank;
     }
 
     public String getTeamName() {

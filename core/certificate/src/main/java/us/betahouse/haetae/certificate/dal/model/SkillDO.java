@@ -27,12 +27,12 @@ public class SkillDO extends BaseCommonDO {
     /**
      * 技能证书名字
      */
-    @Column(name = "certificate_name", nullable = false)
+    @Column(name = "certificate_name", nullable = false, length = 32)
     private String certificateName;
     /**
      * 技能证书等级
      */
-    private String rank;
+    private String certificate_rank;
     /**
      * 证书截止有效时间
      */
@@ -43,6 +43,10 @@ public class SkillDO extends BaseCommonDO {
      */
     @Column(name = "certificate_number")
     private String certificateNumber;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getCertificateNumber() {
         return certificateNumber;
@@ -60,12 +64,12 @@ public class SkillDO extends BaseCommonDO {
         this.certificateName = certificateName;
     }
 
-    public String getRank() {
-        return rank;
+    public String getCertificate_rank() {
+        return certificate_rank;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setCertificate_rank(String certificate_rank) {
+        this.certificate_rank = certificate_rank;
     }
 
     public Date getEffectiveTime() {
