@@ -54,6 +54,10 @@ public class OrganizationManagerImpl implements OrganizationManager {
         OrganizationBO organizationBO = new OrganizationBO();
         organizationBO.setOrganizationName(request.getOrganizationName());
         organizationBO.setOrganizationType(request.getOrganizationType());
+        //如果存在组织id则加入
+        if(StringUtils.isNotBlank(request.getOrganizationId())){
+            organizationBO.setOrganizationId(request.getOrganizationId());
+        }
         organizationBO = organizationRepoService.create(organizationBO);
         request.setOrganizationId(organizationBO.getOrganizationId());
 
