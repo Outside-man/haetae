@@ -46,11 +46,11 @@ public class UserManagerTest {
 
     @Test
     public void batchBindRole() {
-        List<String> userIds = Arrays.asList("201811302141542658920001201805", "201811302141587352590001201845", "201811302141390794090001201864", "201811302141437813470001201835", "201811302141304426900001201888");
+        List<String> userIds = Arrays.asList("201811302141304426900001201888");
         for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
-            request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
+            request.setRoleCode(UserRoleCode.ORGANIZATION_MANAGER);
             userManager.batchBindRolByCode(request);
         }
     }

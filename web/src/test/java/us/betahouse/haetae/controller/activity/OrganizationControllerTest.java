@@ -11,39 +11,34 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.activity.model.basic.OrganizationBO;
-import us.betahouse.haetae.serviceimpl.activity.service.OrganizationService;
-import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.util.dictionary.PinyinUtils;
+import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.organization.model.OrganizationBO;
 
-import java.net.URLEncoder;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrganizationControllerTest {
 
     @Autowired
-    OrganizationService organizationService;
+    private OrganizationRepoService organizationRepoService;
 
     @Test
-    public void test(){
-        List<OrganizationBO> organizationBOList = organizationService.findAll(new OperateContext());
-        for(OrganizationBO organizationBO:organizationBOList){
+    public void test() {
+        List<OrganizationBO> organizationBOList = organizationRepoService.queryAllOrganization();
+        for (OrganizationBO organizationBO : organizationBOList) {
             try {
-//                String gbk=URLEncoder.encode(organizationBO.getOrganizationName(),"GBK");
+//                String gbk= URLEncoder.encode(organizationBO.getOrganizationName(),"GBK");
 //                organizationBO.setFirstAlpha(PinyinUtils.getSortLetters(getCnASCII(organizationBO.getOrganizationName())));
 //                System.out.println(CharsetUtil.getEncoding(gbk));
 //                break;
-                String cnStr=organizationBO.getOrganizationName();
-                System.out.println(getPingYin(cnStr));
-                System.out.println(getPinYinHeadChar(cnStr));
-                System.out.println(getCnASCII(cnStr));
+//                String cnStr=organizationBO.getOrganizationName();
+//                System.out.println(getPingYin(cnStr));
+//                System.out.println(getPinYinHeadChar(cnStr));
+//                System.out.println(getCnASCII(cnStr));
                 break;
 //                System.out.println(getCnASCII(organizationBO.getOrganizationName()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -57,6 +52,7 @@ public class OrganizationControllerTest {
         }
         return strBuf.toString();
     }
+
     public static String getPingYin(String src) {
         char[] t1 = null;
         t1 = src.toCharArray();
@@ -102,36 +98,50 @@ public class OrganizationControllerTest {
                 convert += word;
             }
         }
-        convert=convert.toUpperCase();
+        convert = convert.toUpperCase();
         return convert;
     }
 
 }
 
 class CharsetUtil {
-    /** 7位ASCII字符，也叫作ISO646-US、Unicode字符集的基本拉丁块 */
+    /**
+     * 7位ASCII字符，也叫作ISO646-US、Unicode字符集的基本拉丁块
+     */
     public static final String US_ASCII = "US-ASCII";
 
-    /** ISO 拉丁字母表 No.1，也叫作 ISO-LATIN-1 */
+    /**
+     * ISO 拉丁字母表 No.1，也叫作 ISO-LATIN-1
+     */
     public static final String ISO_8859_1 = "ISO-8859-1";
 
-    /** 8 位 UCS 转换格式 */
+    /**
+     * 8 位 UCS 转换格式
+     */
     public static final String UTF_8 = "UTF-8";
 
-    /** 16 位 UCS 转换格式，Big Endian（最低地址存放高位字节）字节顺序 */
+    /**
+     * 16 位 UCS 转换格式，Big Endian（最低地址存放高位字节）字节顺序
+     */
     public static final String UTF_16BE = "UTF-16BE";
 
-    /** 16 位 UCS 转换格式，Little-endian（最高地址存放低位字节）字节顺序 */
+    /**
+     * 16 位 UCS 转换格式，Little-endian（最高地址存放低位字节）字节顺序
+     */
     public static final String UTF_16LE = "UTF-16LE";
 
-    /** 16 位 UCS 转换格式，字节顺序由可选的字节顺序标记来标识 */
+    /**
+     * 16 位 UCS 转换格式，字节顺序由可选的字节顺序标记来标识
+     */
     public static final String UTF_16 = "UTF-16";
 
-    /** 中文超大字符集 */
+    /**
+     * 中文超大字符集
+     */
     public static final String GBK = "GBK";
 
-    public static final String[] CHARSET = { "US-ASCII", "ISO-8859-1", "UTF-8", "UTF-16BE", "UTF-16LE", "UTF-16", "GBK",
-            "GB2312" };
+    public static final String[] CHARSET = {"US-ASCII", "ISO-8859-1", "UTF-8", "UTF-16BE", "UTF-16LE", "UTF-16", "GBK",
+            "GB2312"};
 
     public static String getEncoding(String str) {
         for (String encode : CHARSET) {
@@ -145,6 +155,7 @@ class CharsetUtil {
         }
         return "";
     }
+
     public static void main(String[] args) {
         System.out.println(getEncoding("你好"));
     }

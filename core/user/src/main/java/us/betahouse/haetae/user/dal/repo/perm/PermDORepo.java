@@ -59,4 +59,11 @@ public interface PermDORepo extends JpaRepository<PermDO, Long> {
      * @return
      */
     PermDO findByExtInfo(String exiInfo);
+
+    /**
+     * 删除权限
+     *
+     * @param permId
+     */
+    void deleteByPermId(String permId);
 }

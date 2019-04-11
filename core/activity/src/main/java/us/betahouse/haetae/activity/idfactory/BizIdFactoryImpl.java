@@ -55,21 +55,6 @@ public class BizIdFactoryImpl implements BizIdFactory {
     }
 
     @Override
-    public String getOrganizationId() {
-        StringBuilder builder = new StringBuilder(32);
-        Date now = new Date();
-        // 1-16 系统时间 16位
-        builder.append(DateUtil.getShortDatesStr(now));
-        // 16-24 随机数 8位随机数
-        builder.append(getRandNum(8));
-        // 24-28 业务码 4位业务码
-        builder.append(IdTypeEnum.Organization_ID.getBizNum());
-        // 28-32 业务自定义码
-        builder.append(DateUtil.getYear(now));
-        return builder.toString();
-    }
-
-    @Override
     public String getPositionRecordId() {
         StringBuilder builder = new StringBuilder(32);
         Date now = new Date();

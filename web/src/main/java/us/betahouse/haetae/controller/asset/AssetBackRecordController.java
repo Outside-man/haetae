@@ -48,7 +48,8 @@ public class AssetBackRecordController {
     /**
      * 创建归还物资记录
      * 消耗品和耐用品用同一个接口
-     *
+     * 消耗品归还类型为归还和报损
+     * 耐用品归还类型为归还和消耗
      * @param request
      * @param httpServletRequest
      * @return
@@ -62,7 +63,7 @@ public class AssetBackRecordController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertNotNull(request.getAmount(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还数量不能为空");
-                AssertUtil.assertTrue(request.getAmount() > 0, "归还数量不能为小于等于0");
+                AssertUtil.assertTrue(request.getAmount() > 0, "归还/报损数量不能为小于等于0");
                 AssertUtil.assertNotNull(request.getLoanRecordId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "借用记录id不能为空");
                 AssertUtil.assertNotNull(request.getType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还类型不能为空");
                 AssertUtil.assertNotNull(request.getAssetId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资ID不存在");
@@ -75,15 +76,14 @@ public class AssetBackRecordController {
                 AssetBackRecordManagerRequest assetBackRecordManagerRequest = AssetBackRecordManagerRequestBuilder.getInstance()
                         .withAssetId(request.getAssetId())
                         .withAmount(request.getAmount())
-                        .withExtInfo(request.getExtInfo())
                         .withLoanRecoedId(request.getLoanRecordId())
                         .withRemark(request.getRemark())
                         .withType(request.getType())
                         .withUserId(request.getUserId())
                         .build();
                 AssetBackRecordBO assetBackRecordBO = assetBackRecordService.create(assetBackRecordManagerRequest, context);
-                AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还物资失败");
-                return RestResultUtil.buildSuccessResult(assetBackRecordBO, "归还物资成功");
+                AssertUtil.assertNotNull(assetBackRecordBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "归还/报损物资失败");
+                return RestResultUtil.buildSuccessResult(assetBackRecordBO, "归还/报损物资成功");
             }
         });
     }

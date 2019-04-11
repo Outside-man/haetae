@@ -241,7 +241,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             UserPermRelationBO relation = new UserPermRelationBO();
             relation.setPermId(permDO.getPermId());
             relation.setUserId(userId);
-            // 通过 id 工厂构建关联id
+            // 通过 idfactory 工厂构建关联id
             relation.setUserPermId(userBizIdFactory.getUserPermRelationId(userId, permDO.getPermId()));
             relations.add(RelationConverter.convert(relation));
         }
@@ -303,7 +303,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             UserPermRelationBO relation = new UserPermRelationBO();
             relation.setPermId(permId);
             relation.setUserId(userDO.getUserId());
-            // 通过 id 工厂构建关联id
+            // 通过 idfactory 工厂构建关联id
             relation.setUserPermId(userBizIdFactory.getUserPermRelationId(permId, userDO.getUserId()));
             relations.add(RelationConverter.convert(relation));
         }
@@ -344,6 +344,12 @@ public class PermRepoServiceImpl implements PermRepoService {
         PermDO permDO = permDORepo.findByPermId(permId);
         AssertUtil.assertNotNull(permDO, "权限不存在");
         userPermRelationDORepo.deleteAllByPermId(permId);
+    }
+
+    @Override
+    public void deletePerm(String permId) {
+        AssertUtil.assertStringNotBlank(permId, "权限id不能为空");
+        permDORepo.deleteByPermId(permId);
     }
 
     @Override

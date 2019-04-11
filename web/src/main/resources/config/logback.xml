@@ -118,6 +118,18 @@
         </encoder>
     </appender>
 
+    <!-- core-organization 日志 -->
+    <appender name="CORE-ORGANIZATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log_dir}/sys/core-organization.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/sys/core-organization.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <!-- biz-service-impl 日志 -->
     <appender name="BIZ-SERVICE-IMPL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${log_dir}/sys/core-service-impl.log</File>
@@ -198,6 +210,12 @@
     <logger name="us.betahouse.haetae.finance" level="INFO">
         <appender-ref ref="COMMON-ERROR"/>
         <appender-ref ref="CORE-FINANCE"/>
+    </logger>
+
+    <!--财务模块-->
+    <logger name="us.betahouse.haetae.organization" level="INFO">
+        <appender-ref ref="COMMON-ERROR"/>
+        <appender-ref ref="CORE-ORGANIZATION"/>
     </logger>
 
     <!--业务实现模块-->

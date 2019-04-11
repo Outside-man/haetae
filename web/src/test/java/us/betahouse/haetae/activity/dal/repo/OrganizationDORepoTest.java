@@ -5,24 +5,23 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.activity.dal.model.OrganizationDO;
-import us.betahouse.haetae.activity.idfactory.BizIdFactory;
+import us.betahouse.haetae.organization.dal.model.OrganizationDO;
+import us.betahouse.haetae.organization.dal.repo.OrganizationRepo;
+import us.betahouse.haetae.organization.idfactory.BizIdFactory;
 import us.betahouse.util.utils.CsvUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrganizationDORepoTest {
 
     @Autowired
-    OrganizationDORepo organizationDORepo;
+    private OrganizationRepo organizationRepo;
 
     @Autowired
-    private BizIdFactory activityBizFactory;
+    private BizIdFactory organizationBizIdFactory;
 
     @Test
     public void importit() {
@@ -32,17 +31,17 @@ public class OrganizationDORepoTest {
         for (int i = 0; i < csv.length; i++) {
             OrganizationDO organizationDO = new OrganizationDO();
             organizationDO.setOrganizationName(csv[i][0]);
-            organizationDO.setOrganizationId(activityBizFactory.getOrganizationId());
+            organizationDO.setOrganizationId(organizationBizIdFactory.getOrganizationId());
             list.add(organizationDO);
         }
-        organizationDORepo.saveAll(list);
+        organizationRepo.saveAll(list);
     }
 
     @Test
     public void save() {
         OrganizationDO organizationDO = new OrganizationDO();
         organizationDO.setOrganizationName("团学办公室");
-        organizationDO.setOrganizationId(activityBizFactory.getOrganizationId());
-        organizationDORepo.save(organizationDO);
+        organizationDO.setOrganizationId(organizationBizIdFactory.getOrganizationId());
+        organizationRepo.save(organizationDO);
     }
 }

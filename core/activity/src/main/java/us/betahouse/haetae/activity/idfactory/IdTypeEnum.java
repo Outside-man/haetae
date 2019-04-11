@@ -22,10 +22,6 @@ public enum IdTypeEnum {
      */
     Activity_Record_ID("1002", "活动记录id"),
 
-    /**
-     * 组织id
-     */
-    Organization_ID("1003", "组织id"),
 
     /**
      * 履历id

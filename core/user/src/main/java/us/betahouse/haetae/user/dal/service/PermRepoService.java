@@ -122,6 +122,13 @@ public interface PermRepoService {
      */
     void detachAllUsers(String permId);
 
+    /**
+     * 删除权限
+     *
+     * @param permId
+     */
+    void deletePerm(String permId);
+
 
     /**
      * 获取用户对应权限
@@ -174,6 +181,7 @@ public interface PermRepoService {
      * @return
      */
     PermBO initFinancePerm(PermBO permBO);
+
     /**
      * 获取有权限的所有用户 并按照创建顺序排序
      *

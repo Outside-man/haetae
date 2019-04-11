@@ -26,14 +26,20 @@ public enum UserRoleCode implements RoleCode {
     ACTIVITY_STAMPER("ACTIVITY_STAMPER", "活动盖章员"),
 
     /**
-     *物资管理者 管理物资
+     * 物资管理者 管理物资
      */
     ASSET_MANAGER("ASSET_MANAGER", "物资管理员"),
 
     /**
+     * 组织管理员 管理所有组织相关
+     */
+    ORGANIZATION_MANAGER("ORGANIZATION_MANAGER", "组织管理员"),
+
+    /**
      * 非学生用户
      */
-    NOT_STUDENT("NOT_STUDENT", "非学生用户"),;
+    NOT_STUDENT("NOT_STUDENT", "非学生用户"),
+    ;
 
     public static UserRoleCode getByCode(String code) {
         if (StringUtils.isBlank(code)) {
