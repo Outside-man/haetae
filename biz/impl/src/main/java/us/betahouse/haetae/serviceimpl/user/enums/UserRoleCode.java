@@ -21,6 +21,26 @@ public enum UserRoleCode implements RoleCode {
     ACTIVITY_MANAGER("ACTIVITY_MANAGER", "活动管理员"),
 
     /**
+     * 党建活动管理员
+     */
+    PARTY_ACTIVITY_MANAGER("PARTY_ACTIVITY_MANAGER","党建活动管理员"),
+
+    /**
+     * 义工活动管理员
+     */
+    VOLUNTEER_WORK_MANAGER("VOLUNTEER_WORK_MANAGER","义工活动管理员"),
+
+    /**
+     * 志愿活动管理员
+     */
+    VOLUNTEER_ACTIVITY_MANAGER("VOLUNTEER_ACTIVITY_MANAGER","志愿活动管理员"),
+
+    /**
+     * 社会实践管理员
+     */
+    PRACTICE_ACTIVITY_MANAGER("PRACTICE_ACTIVITY_MANAGER","社会实践管理员"),
+
+    /**
      * 活动盖章员 盖章入口
      */
     ACTIVITY_STAMPER("ACTIVITY_STAMPER", "活动盖章员"),

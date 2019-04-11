@@ -32,7 +32,8 @@ public class OrganizationServiceTest {
         String[][] csv = CsvUtil.getWithoutHeader(filepath);
         request.setStuId("system");
         for (String[] aCsv : csv) {
-            request.setOrganizationName(aCsv[0]);
+            request.setOrganizationName(aCsv[1]);
+            request.setOrganizationId(aCsv[0]);
             organizationService.create(request);
         }
     }

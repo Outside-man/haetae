@@ -52,7 +52,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\校园活动-模板.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\4.7 数据导入.csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
@@ -82,7 +82,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerWork(){
-        String url = "C:\\Users\\j10k\\Desktop\\义工活动-模板.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\4.9 义工活动.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -183,7 +183,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\2018级新生体检-数据导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\4.7 数据导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {

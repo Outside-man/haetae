@@ -5,10 +5,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
+import us.betahouse.util.utils.CsvUtil;
 
 import java.util.*;
 
@@ -24,6 +27,9 @@ public class UserManagerTest {
 
     @Autowired
     private UserManager userManager;
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
+
 
     @Test
     public void create() {
@@ -32,25 +38,25 @@ public class UserManagerTest {
 
     @Test
     public void createManager() {
-        for (int i = 1; i <= 35; i++) {
+        for (int i = 1; i <= 9; i++) {
             CommonUser commonUser = userManager.create(genUserCreateRequest(i));
             System.out.println(commonUser);
             UserManageRequest request = new UserManageRequest();
             request.setUserId(commonUser.getUserId());
-            request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
-            userManager.batchBindRolByCode(request);
-//            request.setRoleCode(UserRoleCode.NOT_STUDENT);
+//            request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
 //            userManager.batchBindRolByCode(request);
+            request.setRoleCode(UserRoleCode.NOT_STUDENT);
+            userManager.batchBindRolByCode(request);
         }
     }
 
     @Test
     public void batchBindRole() {
-        List<String> userIds = Arrays.asList("201811302141304426900001201888");
+        List<String> userIds = Arrays.asList("201904120240229817800001201956");
         for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
-            request.setRoleCode(UserRoleCode.ORGANIZATION_MANAGER);
+            request.setRoleCode(UserRoleCode.PARTY_ACTIVITY_MANAGER);
             userManager.batchBindRolByCode(request);
         }
     }
@@ -62,6 +68,18 @@ public class UserManagerTest {
 
     @Test
     public void batchUnbindRole() {
+        List<String> userIds = new ArrayList<>();
+        List<String> roleIds= Arrays.asList("201811302151309605429200021130");
+        for(int i=1;i<=35;i++){
+            userIds.add(userInfoRepoService.queryUserInfoByStuId("00"+i).getUserId());
+        }
+        for (String userId : userIds) {
+            UserManageRequest request = new UserManageRequest();
+            request.setUserId(userId);
+            request.setRoleCode(UserRoleCode.ORGANIZATION_MANAGER);
+            request.setRoleIds(roleIds);
+            userManager.batchUnbindRole(request);
+        }
     }
 
     @Test
@@ -85,11 +103,31 @@ public class UserManagerTest {
                 .withEnrollDate(new Date())
                 .withRealName("湖畔青年" + index)
                 .withSex("女")
-                .withStuId("00" + index);
-        request.setUsername("beta" + index);
-        request.setPassword("Hziee00" + index);
+                .withStuId("Hziee" + index);
+        request.setUsername("Hziee" + index);
+        request.setPassword("a00000");
         request.setUserInfoBO(userInfoBOBuilder.build());
         return request;
     }
 
+    @Test
+    public void importUser(){
+        String csvs[][]=CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\学工工号.csv");
+        for(int i=1;i< csvs.length;i++){
+            UserManageRequest request = new UserManageRequest();
+            request.setRequestId(UUID.randomUUID().toString());
+            UserInfoBOBuilder userInfoBOBuilder = UserInfoBOBuilder.getInstance()
+                    .withEnrollDate(new Date())
+                    .withRealName(csvs[i][2])
+                    .withStuId(csvs[i][1]);
+            request.setUsername(csvs[i][1]);
+            request.setPassword("Hziee"+csvs[i][1]);
+            request.setUserInfoBO(userInfoBOBuilder.build());
+            CommonUser commonUser = userManager.create(request);
+            UserManageRequest request1 = new UserManageRequest();
+            request1.setUserId(commonUser.getUserId());
+            request1.setRoleCode(UserRoleCode.NOT_STUDENT);
+            userManager.batchBindRolByCode(request1);
+        }
+    }
 }
