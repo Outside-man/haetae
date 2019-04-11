@@ -62,10 +62,40 @@ web     | util biz core | web交互层
 4. biz 层依赖所有core模块，领域交际部分在biz模块写逻辑.
 5. web 层理论不会有任何业务逻辑，仅仅作为接口交互.
 
+
+### 2.2 业务码使用情况
+业务码是在生成唯一32位id时，4位表示业务的标识码
+
+#### user 模块
+id      | desc              | id     | desc
+----    | ----              | ----   | ----
+0001    | user              | 0002   | role
+0003    | user role relation| 0004   | perm
+0005    | role perm relation| 0006   | user perm relation
+0007    | user info         | 0008   | major
+
+#### activity 模块
+id      | desc              | id     | desc
+----    | ----              | ----   | ----
+1001    | activity          | 1002   | activity record
+1003    | organization      | 1004   | position record
+
+#### asset 模块
+id      | desc                   | id     | desc
+----    | ----                   | ----   | ----
+2001    | asset                  | 2002   | asset loan record
+2003    | asset back record
+
+#### finance 模块
+id      | desc            | id     | desc
+----    | ----            | ----   | ----
+3001    | finance message | 3002   | finance total
+
 <br/>
 <br/>
 
 ---
+
 
 
 
