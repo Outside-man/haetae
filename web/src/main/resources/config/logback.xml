@@ -3,8 +3,8 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <!-- 定义日志文件 输入位置 -->
     <property name="log_dir" value="${user.dir}/logs/haetae"/>
-    <!-- 日志最大的历史 30天 -->
-    <property name="maxHistory" value="30"/>
+    <!-- 日志最大的历史 120天 -->
+    <property name="maxHistory" value="120"/>
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
