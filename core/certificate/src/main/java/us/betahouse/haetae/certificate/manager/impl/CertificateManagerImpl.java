@@ -128,6 +128,48 @@ public class CertificateManagerImpl implements CertificateManager {
 
     @Override
     public CertificateBO modifyCompetition(CertificateManagerRequest request) {
-        return null;
+        String type = request.getType();
+        CertificateTypeEnum typeEnum = CertificateTypeEnum.getByCode(type);
+        CertificateBO certificateBO = new CertificateBO();
+        if (request.getTeacher() != null) {
+            //TODO 这边要验证一下 list<map<String,String>> 是否可以放进去
+            certificateBO.setTeacher(request.getTeacher());
+        }
+        certificateBO.setCertificateType(CertificateTypeEnum.COMPETITION.getCode());
+        certificateBO.setCompetitionName(request.getCompetitionName());
+        certificateBO.setRank(request.getRank());
+        certificateBO.setTeamName(request.getTeamName());
+        certificateBO.setUserId(request.getUserId());
+        certificateBO.setType(request.getType());
+        certificateBO.setCertificateOrganization(request.getCertificateOrganization());
+        certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
+        certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPTION.getCode(), request.getDescription());
+        switch (typeEnum) {
+            case PERSONAL_COMPETITION: {
+                certificateBO = competitionRepoService.modify(certificateBO);
+                return certificateBO;
+            }
+            case TEAM_COMPETITION: {
+                AssertUtil.assertNotNull(request.getWorkUserId(), "队友学号不能为空");
+                AssertUtil.assertTrue(request.getWorkUserId().size() <= 5, "队友人数不能超过五个人");
+                CertificateBO thisCertificate=new CertificateBO();
+                //TODO 返回单个BO  创建成员等多条记录(每个记录中)
+                for (String userid : request.getWorkUserId()) {
+                    if(competitionRepoService.queryByUserId(userid) == null){
+                        certificateBO.setUserId(userid);
+                        certificateBO.setCertificateId(null);
+                        competitionRepoService.create(certificateBO);
+                        if ( certificateBO.getUserId().equals(request.getUserId())) {
+                            thisCertificate=certificateBO;
+                        }
+                    }
+                }
+                //TODO 删掉原来存在而现在不存在的队友
+                return thisCertificate;
+            }
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS, "竞赛证书归属类别不存在");
+            }
+        }
     }
 }

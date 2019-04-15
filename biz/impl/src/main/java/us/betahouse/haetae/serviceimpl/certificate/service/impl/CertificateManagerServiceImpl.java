@@ -58,7 +58,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
                 AssertUtil.assertNotNull(request.getType(), "比赛类型不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
-                certificateBO=certificateManager.createCompetition(request);
+                certificateBO = certificateManager.createCompetition(request);
                 break;
             }
             //技能证书
@@ -75,6 +75,41 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
 
     @Override
     public CertificateBO update(CertificateRequest request, OperateContext context) {
-        return null;
+        String certificateType = request.getCertificateType();
+        CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
+        CertificateBO certificateBO = new CertificateBO();
+        //证书类型判断(三种)
+        switch (certificateTypeEnum) {
+            //资格证书
+            case QUALIFICATIONS: {
+                AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
+                AssertUtil.assertNotNull(request.getCertificateType(), "资格证书种类不能为空");
+                certificateBO = certificateManager.modifyQualifications(request);
+                break;
+            }
+            //竞赛证书
+            case COMPETITION: {
+                AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
+                AssertUtil.assertNotNull(request.getType(), "比赛类型不能为空");
+                AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
+                certificateBO = certificateManager.modifyCompetition(request);
+                break;
+            }
+            //技能证书
+            case SKILL: {
+                //TODO 技能证书修改
+                break;
+            }
+            //异常
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
+            }
+        }
+        return certificateBO;
+    }
+
+    @Override
+    public void delete(CertificateRequest request, OperateContext context) {
+
     }
 }

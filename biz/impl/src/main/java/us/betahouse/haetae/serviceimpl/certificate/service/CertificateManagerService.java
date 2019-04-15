@@ -30,6 +30,15 @@ public interface CertificateManagerService {
      * @param request
      * @return
      */
-    CertificateBO update(CertificateRequest request,OperateContext context);
+    CertificateBO update(CertificateRequest request, OperateContext context);
+
+    /**
+     * 删除证书记录
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    void delete(CertificateRequest request, OperateContext context);
 
 }
