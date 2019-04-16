@@ -25,12 +25,20 @@ public interface CertificateManager {
     CertificateBO createQualifications(CertificateManagerRequest request);
 
     /**
-     * 创建竞赛组织
+     * 创建竞赛证书
      *
      * @param request
      * @return
      */
     CertificateBO createCompetition(CertificateManagerRequest request);
+
+    /**
+     * 创建技能证书
+     *
+     * @param request
+     * @return
+     */
+    CertificateBO createSkill(CertificateManagerRequest request);
     /**
      * 更新资格证书
      *
@@ -46,4 +54,12 @@ public interface CertificateManager {
      * @return
      */
     CertificateBO modifyCompetition(CertificateManagerRequest request);
+
+    /**
+     * 更新技能证书
+     *
+     * @param request
+     * @return
+     */
+    CertificateBO modifySkill(CertificateManagerRequest request);
 }

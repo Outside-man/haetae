@@ -87,6 +87,10 @@ final public class CertificateBOBuilder {
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
+    /**
+     * 竞赛证书团队id
+     */
+    private String teamId;
 
     public static CertificateBOBuilder getInstance() {
         return new CertificateBOBuilder();
@@ -111,6 +115,7 @@ final public class CertificateBOBuilder {
         certificateBO.setStatus(status);
         certificateBO.setTeacher(teacher);
         certificateBO.setTeamName(teamName);
+        certificateBO.setTeamId(teamId);
         return certificateBO;
     }
 
@@ -204,6 +209,10 @@ final public class CertificateBOBuilder {
 
     public CertificateBOBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+        return this;
+    }
+    public CertificateBOBuilder withTeamID(String teamId){
+        this.teamId=teamId;
         return this;
     }
 }

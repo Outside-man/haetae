@@ -22,6 +22,12 @@ public interface BizIdFactory {
     String getCompetitionId();
 
     /**
+     * @Description: 生成竞赛证书团队id
+     * @param:
+     */
+    String getCompetitionTeamId();
+
+    /**
      * @Description: 生成技能证书id
      * @param:
      */

@@ -126,11 +126,11 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
      * @return
      */
     @SuppressWarnings("unchecked")
-    public  CertificateBO convert(QualificationsDO qualificationsDO) {
+    public CertificateBO convert(QualificationsDO qualificationsDO) {
         if (qualificationsDO == null) {
             return null;
         }
-        CertificateBOBuilder builder=CertificateBOBuilder.getInstance();
+        CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(qualificationsDO.getCertificateId())
                 .withCertificateName(qualificationsDO.getCertificateName())
                 .withCertificateOrganization(qualificationsDO.getCertificateOrganization())
@@ -149,11 +149,12 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
      * @param certificateBO
      * @return
      */
-    public  QualificationsDO convert(CertificateBO certificateBO) {
+    public QualificationsDO convert(CertificateBO certificateBO) {
         if (certificateBO == null) {
             return null;
         }
         QualificationsDO qualificationsDO = new QualificationsDO();
+        qualificationsDO.setUserId(certificateBO.getUserId());
         qualificationsDO.setCertificateId(certificateBO.getCertificateId());
         qualificationsDO.setCertificateName(certificateBO.getCertificateName());
         qualificationsDO.setCertificateNumber(certificateBO.getCertificateNumber());

@@ -41,15 +41,7 @@ public enum CertificateTypeEnum {
     /**
      * 资格证书(四六级)
      */
-    BAND_4_6("band_4_6","四六级证书"),
-    /**
-     * 竞赛证书(个人)
-     */
-    PERSONAL_COMPETITION("Personal", "个人竞赛"),
-    /**
-     * 竞赛证书(团队)
-     */
-    TEAM_COMPETITION("Team", "团队竞赛");
+    BAND_4_6("band_4_6","四六级证书");
     /**
      * 状态id
      */

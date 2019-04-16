@@ -96,6 +96,7 @@ final public class CertificateRequestBuilder {
         request.setRequestId(requestId);
         request.setCertificateId(certificateId);
         request.setCertificateName(certificateName);
+        request.setUserId(userId);
         request.setCertificateNumber(certificateNumber);
         request.setCertificateOrganization(certificateOrganization);
         request.setCertificatePublishTime(certificatePublishTime);
@@ -105,8 +106,10 @@ final public class CertificateRequestBuilder {
         request.setExpirationTime(expirationTime);
         request.setExtInfo(extInfo);
         request.setRank(rank);
+        request.setType(type);
         request.setTeacher(teacher);
         request.setTeamName(teamName);
+        request.setWorkUserId(workUserId);
         return request;
     }
 

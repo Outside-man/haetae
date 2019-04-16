@@ -48,21 +48,24 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         switch (certificateTypeEnum) {
             //资格证书
             case QUALIFICATIONS: {
+                AssertUtil.assertNotNull(request.getCertificateName(),"发行证书名字不能为空");
                 AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
-                AssertUtil.assertNotNull(request.getCertificateType(), "资格证书种类不能为空");
+                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
                 certificateBO = certificateManager.createQualifications(request);
                 break;
             }
             //竞赛证书
             case COMPETITION: {
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
-                AssertUtil.assertNotNull(request.getType(), "比赛类型不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
                 certificateBO = certificateManager.createCompetition(request);
                 break;
             }
             //技能证书
             case SKILL: {
+                AssertUtil.assertNotNull(request.getCertificateName(),"发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getRank(),"证书等级不能为空");
+               certificateBO=certificateManager.createSkill(request);
                 break;
             }
             //异常

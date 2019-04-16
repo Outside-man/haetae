@@ -114,6 +114,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         }
         SkillDO skillDO = new SkillDO();
         skillDO.setCertificateId(certificateBO.getCertificateId());
+        skillDO.setUserId(certificateBO.getUserId());
         skillDO.setCertificateName(certificateBO.getCertificateName());
         skillDO.setCertificateNumber(certificateBO.getCertificateNumber());
         skillDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());

@@ -63,6 +63,23 @@ public class BizIdFactoryImpl implements BizIdFactory {
     }
 
     @Override
+    public String getCompetitionTeamId() {
+        StringBuilder builder = new StringBuilder(32);
+        Date now = new Date();
+        //1-16位系统时间
+        builder.append(DateUtil.getShortDatesStr(now));
+        //16-22 6位系统随机数
+        builder.append(getRandNum(6));
+        //22-26位 业务自定义码
+        builder.append(idTypeEnum.COMPETITION_TEAMID.getBizNum());
+        //26-30 业务自定义码
+        builder.append(DateUtil.getYear(now));
+        //30-32 随机2位
+        builder.append(getRandNum(2));
+        return builder.toString();
+    }
+
+    @Override
     public String getSkillId() {
         StringBuilder builder = new StringBuilder(32);
         Date now = new Date();

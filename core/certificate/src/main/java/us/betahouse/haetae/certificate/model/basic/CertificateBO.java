@@ -82,6 +82,10 @@ public class CertificateBO extends ToString {
      */
     private String teamName;
     /**
+     * 团队id
+     */
+    private String teamId;
+    /**
      * 指导老师
      */
     private List<Map<String, String>> teacher;
@@ -242,5 +246,13 @@ public class CertificateBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 }

@@ -32,15 +32,22 @@ import java.util.stream.Collectors;
 @Service
 public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     private final Logger LOGGER = LoggerFactory.getLogger(CompetitionRepoServiceImpl.class);
+
     @Autowired
     private CompetitionDORepo competitionDORepo;
+
     @Autowired
     private BizIdFactory bizIdFactory;
 
     @Override
     public CertificateBO create(CertificateBO certificateBO) {
+        //设置证书id 各人唯一
         if (StringUtils.isBlank(certificateBO.getCertificateId())) {
             certificateBO.setCertificateId(bizIdFactory.getCompetitionId());
+        }
+        //团队id 团队唯一
+        if(StringUtils.isBlank(certificateBO.getTeamId())){
+            certificateBO.setTeamId(bizIdFactory.getCompetitionTeamId());
         }
         return convert(competitionDORepo.save(convert(certificateBO)));
     }
@@ -62,12 +69,8 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
             competitionDO.setCompetitionName(newCompetitionDO.getCompetitionName());
         }
         //等级
-        if (newCompetitionDO.getCertificate_rank() != null) {
-            competitionDO.setCertificate_rank(newCompetitionDO.getCertificate_rank());
-        }
-        //更新证书类型
-        if (newCompetitionDO.getType() != null) {
-            competitionDO.setType(newCompetitionDO.getType());
+        if (newCompetitionDO.getRank() != null) {
+            competitionDO.setRank(newCompetitionDO.getRank());
         }
         //更新证书发布时间
         if (newCompetitionDO.getCertificatePublishTime() != null) {
@@ -127,7 +130,6 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
      * @param competitionDO
      * @return
      */
-    //TODO 未验证list<Map<String,String>>转换
     @SuppressWarnings("unchecked")
     public CertificateBO convert(CompetitionDO competitionDO) {
         if (competitionDO == null) {
@@ -136,9 +138,9 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(competitionDO.getCertificateId())
                 .withCompetitionName(competitionDO.getCompetitionName())
-                .withType(competitionDO.getType())
                 .withCertificateType(CertificateTypeEnum.COMPETITION.getCode())
-                .withRank(competitionDO.getCertificate_rank())
+                .withRank(competitionDO.getRank())
+                .withTeamID(competitionDO.getTeamId())
                 .withCertificatePublishTime(competitionDO.getCertificatePublishTime())
                 .withTeamName(competitionDO.getTeamName())
                 .withStatus(competitionDO.getStatus())
@@ -160,10 +162,12 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         }
         CompetitionDO competitionDO = new CompetitionDO();
         competitionDO.setCompetitionName(certificateBO.getCompetitionName());
-        competitionDO.setType(certificateBO.getType());
-        competitionDO.setCertificate_rank(certificateBO.getRank());
+        competitionDO.setCertificateId(certificateBO.getCertificateId());
+        competitionDO.setUserId(certificateBO.getUserId());
+        competitionDO.setRank(certificateBO.getRank());
         competitionDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
         competitionDO.setTeamName(certificateBO.getTeamName());
+        competitionDO.setTeamId(certificateBO.getTeamId());
         competitionDO.setStatus(certificateBO.getStatus());
         competitionDO.setWorkersUserId(JSON.toJSONString(certificateBO.getWorkUserId()));
         competitionDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));

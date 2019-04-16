@@ -30,21 +30,15 @@ public class CompetitionDO extends BaseCommonDO {
     @Column(name = "competition_name", nullable = false, length = 200)
     private String competitionName;
     /**
-     * 比赛类型  个人或者团队
-     */
-    @Column(name = "type", nullable = false, length = 32)
-    private String type;
-    /**
-     * 比赛等级
-     */
-    @Column(name = "certificate_rank", nullable = false, length = 32)
-    private String certificate_rank;
-    /**
      * 团队成员学号集合
      */
     @Column(name = "workers_user_id")
     private String workersUserId;
-
+    /**
+     * 比赛等级
+     */
+    @Column(name = "rank", nullable = false)
+    private String rank;
     /**
      * 队名
      */
@@ -56,9 +50,11 @@ public class CompetitionDO extends BaseCommonDO {
     @Column(name = "teacher")
     private String teacher;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    /**
+     * 团队id
+     */
+    @Column(name="team_id",nullable = false,length = 32)
+    private String teamId;
 
     public String getCompetitionName() {
         return competitionName;
@@ -66,14 +62,6 @@ public class CompetitionDO extends BaseCommonDO {
 
     public void setCompetitionName(String competitionName) {
         this.competitionName = competitionName;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getWorkersUserId() {
@@ -84,12 +72,12 @@ public class CompetitionDO extends BaseCommonDO {
         this.workersUserId = workersUserId;
     }
 
-    public String getCertificate_rank() {
-        return certificate_rank;
+    public String getRank() {
+        return rank;
     }
 
-    public void setCertificate_rank(String certificate_rank) {
-        this.certificate_rank = certificate_rank;
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
     public String getTeamName() {
@@ -106,5 +94,13 @@ public class CompetitionDO extends BaseCommonDO {
 
     public void setTeacher(String teacher) {
         this.teacher = teacher;
+    }
+
+    public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 }

@@ -11,6 +11,7 @@ package us.betahouse.haetae.certificate.idfactory;
 public enum idTypeEnum {
     CERTIFICATE_ID("5001", "资格证书id"),
     COMPETITION_ID("5002", "竞赛证书id"),
+    COMPETITION_TEAMID("5012","竞赛团队id"),
     SKILL_ID("5003", "技能证书id");
     /**
      * @Description: 描述

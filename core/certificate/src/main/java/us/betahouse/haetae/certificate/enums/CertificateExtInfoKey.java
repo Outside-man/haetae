@@ -16,15 +16,15 @@ public enum CertificateExtInfoKey {
     /**
      * 证书详细信息
      */
-    DESCRIPTION("Description", "详细描述"),
+    DESCRIPTION("description", "详细描述"),
     /**
      * 教师资格
      */
-    TEACHER_LEVEL("TeacherLevel", "教师资格"),
+    TEACHER_LEVEL("teacherLevel", "教师资格"),
     /**
      * 学科教师类型
      */
-    TEACHER_SUBJECT("TeacherSubject", "教师学科");
+    TEACHER_SUBJECT("teacherSubject", "教师学科");
     /**
      * 状态id
      */
