@@ -95,16 +95,10 @@ public class CertificateManagerRequest extends BaseRequest {
      */
     private List<Map<String, String>> teacher;
 
-//    /**
-//     * 学科(教师类型)
-//     */
-//    private String subject;
-
-//    /**
-//     * 资格种类(教师类型)
-//     */
-//    private String teacherLevel;
-
+    /**
+     * 竞赛证书团队id
+     */
+    private  String teamId;
 
     public String getCertificateId() {
         return certificateId;
@@ -234,20 +228,11 @@ public class CertificateManagerRequest extends BaseRequest {
         this.teacher = teacher;
     }
 
-//    public String getSubject() {
-//        return subject;
-//    }
-//
-//    public void setSubject(String subject) {
-//        this.subject = subject;
-//    }
-//
-//    public String getTeacherLevel() {
-//        return teacherLevel;
-//    }
-//
-//    public void setTeacherLevel(String teacherLevel) {
-//        this.teacherLevel = teacherLevel;
-//    }
+    public String getTeamId() {
+        return teamId;
+    }
 
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
+    }
 }

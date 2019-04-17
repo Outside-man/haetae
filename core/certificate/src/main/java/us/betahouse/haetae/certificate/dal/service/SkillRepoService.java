@@ -32,6 +32,15 @@ public interface SkillRepoService {
     void delete(String certificateId);
 
     /**
+     * 根据用户id和证书id删除证书
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    void deleteByCertificateIdAndUserId(String certificateId, String userId);
+
+    /**
      * 修改技能证书
      *
      * @param certificateBO
@@ -62,4 +71,13 @@ public interface SkillRepoService {
      * @return
      */
     List<CertificateBO> queryByCertificateName(String certificateName);
+
+    /**
+     * 查找证书通过证书id和用户id
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId);
 }

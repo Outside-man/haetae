@@ -25,12 +25,20 @@ public interface CompetitionRepoService {
     CertificateBO create(CertificateBO certificateBO);
 
     /**
-     * 删除竞赛证书
+     * （id）删除竞赛证书
      *
      * @param certificateId
      * @return
      */
     void delete(String certificateId);
+
+    /**
+     * （teamId）删除竞赛证书
+     *
+     * @param teamId
+     * @return
+     */
+    void deleteAllByTeamId(String teamId);
 
     /**
      * 修改竞赛证书
@@ -63,4 +71,13 @@ public interface CompetitionRepoService {
      * @return
      */
     List<CertificateBO> queryByCompetitionName(String competitionName);
+
+    /**
+     * 查找证书 通过证书id和学生id
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId);
 }

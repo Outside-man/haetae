@@ -32,7 +32,7 @@ public interface CertificateService {
      * @param request
      * @return
      */
-    CertificateBO update(CertificateRequest request,OperateContext context);
+    CertificateBO update(CertificateRequest request, OperateContext context);
 
     /**
      * 删除证书记录
@@ -40,8 +40,16 @@ public interface CertificateService {
      * @param request
      * @return
      */
-    void delete(CertificateRequest request,OperateContext context);
+    void delete(CertificateRequest request, OperateContext context);
 
+    /**
+     * 查找证书通过证书id和用户id
+     *
+     * @param userId
+     * @param certificateId
+     * @return
+     */
+    CertificateBO findByUserIdAndCertificateId(String userId, String certificateId);
 
     /**
      * 证书记录通过类型和用户id
@@ -50,7 +58,7 @@ public interface CertificateService {
      * @param context
      * @return
      */
-    List<CertificateBO> findByUserIdAndCertificateName(CertificateRequest request,OperateContext context);
+    List<CertificateBO> findByUserIdAndCertificateName(CertificateRequest request, OperateContext context);
 
     /**
      * 证书记录通过类型和证书id
@@ -59,5 +67,5 @@ public interface CertificateService {
      * @param context
      * @return
      */
-    CertificateBO findByCertificateNameAndId(CertificateRequest request,OperateContext context);
+    CertificateBO findByCertificateNameAndId(CertificateRequest request, OperateContext context);
 }

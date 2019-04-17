@@ -44,6 +44,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         String certificateType = request.getCertificateType();
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
         CertificateBO certificateBO = new CertificateBO();
+        AssertUtil.assertNotNull(certificateTypeEnum,"证书类型不存在");
         //证书类型判断(三种)
         switch (certificateTypeEnum) {
             //资格证书
@@ -81,6 +82,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         String certificateType = request.getCertificateType();
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
         CertificateBO certificateBO = new CertificateBO();
+        AssertUtil.assertNotNull(certificateTypeEnum,"证书类型不存在");
         //证书类型判断(三种)
         switch (certificateTypeEnum) {
             //资格证书

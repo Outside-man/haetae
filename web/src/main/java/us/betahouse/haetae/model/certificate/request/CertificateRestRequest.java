@@ -77,6 +77,10 @@ public class CertificateRestRequest extends RestRequest {
      * 指导老师
      */
     private List<Map<String, String>> teacher;
+    /**
+     * 学科竞赛 团队id
+     */
+    private String teamId;
 
     public String getCertificateId() {
         return certificateId;
@@ -198,5 +202,13 @@ public class CertificateRestRequest extends RestRequest {
 
     public void setCompetitionName(String competitionName) {
         this.competitionName = competitionName;
+    }
+
+    public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 }

@@ -51,9 +51,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     }
 
     @Override
-    public void delete(String certificateId) {
-        qualificationsDORepo.deleteByCertificateId(certificateId);
+    public void deleteByCertificateIdAndUserId(String certificateId, String userId) {
+        qualificationsDORepo.deleteByCertificateIdAndUserId(certificateId,userId);
     }
+
 
     @Override
     public CertificateBO modify(CertificateBO certificateBO) {
@@ -117,6 +118,11 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .filter(Objects::isNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CertificateBO queryByUserIdAndCertificateId(String userId, String certificateId) {
+        return convert(qualificationsDORepo.findByCertificateIdAndUserId(certificateId,userId));
     }
 
     /**

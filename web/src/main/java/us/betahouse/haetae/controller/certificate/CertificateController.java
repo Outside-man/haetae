@@ -8,10 +8,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import us.betahouse.haetae.certificate.builder.CertificateBOBuilder;
 import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -21,6 +19,7 @@ import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.certificate.request.CertificateRestRequest;
 import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateRequestBuilder;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
+import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -54,6 +53,8 @@ public class CertificateController {
 
     @Autowired
     private CertificateManagerService certificateManagerService;
+    @Autowired
+    private CertificateService certificateService;
 
     /**
      * 创建资格证书
@@ -102,27 +103,77 @@ public class CertificateController {
             }
         });
     }
+
     /**
-     * 修改证书信息
+     * 修改证书信息  更新的话还要所有数据验证一遍 然后队友改了要批量操作 其他的话也没什么了 这边基本是啥都需要修改
      */
-//    @PostMapping
-//    @Log(loggerName = LoggerName.WEB_DIGEST)
-//    @CheckLogin
-//    public Result<CertificateBO> modifiyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
-//        return RestOperateTemplate.operate(LOGGER, "更改证书记录", request, new RestOperateCallBack<CertificateBO>() {
-//            @Override
-//            public void before(){
-//
-//            }
-//            @Override
-//            public Result<CertificateBO> execute() {
-//                return null;
-//            }
-//        });
-//    }
+    @PutMapping
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    @CheckLogin
+    public Result<CertificateBO> modifiyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "更改证书记录", request, new RestOperateCallBack<CertificateBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
+                AssertUtil.assertStringNotBlank(request.getCertificateType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不能为空");
+            }
+
+            @Override
+            public Result<CertificateBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
+                        .withCertificateId(request.getCertificateId())
+                        .withCertificateName(request.getCertificateName())
+                        .withCompetitionName(request.getCompetitionName())
+                        .withUserID(request.getUserId())
+                        .withCertificateOrganization(request.getCertificateOrganization())
+                        .withCertificatePublishTime(request.getCertificatePublishTime())
+                        .withCertificateType(request.getCertificateType())
+                        .withType(request.getType())
+                        .withRank(request.getRank())
+                        .withWorkUserId(request.getWorkUserId())
+                        .withExpirationTime(request.getExpirationTime())
+                        .withTeamName(request.getTeamName())
+                        .withTeacher(request.getTeacher())
+                        .withCertificateNumber(request.getCertificateNumber())
+                        .withExtInfo(request.getExtInfo());
+                return RestResultUtil.buildSuccessResult(certificateManagerService.update(builder.build(), context), "修改记录成功");
+            }
+        });
+    }
+
     /**
      * 删除证书
      */
+    @DeleteMapping
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result deleteCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "删除证书记录", request, new RestOperateCallBack<CertificateBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
+                AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
+                AssertUtil.assertNotNull(request.getUserId(), "学生id不能为空");
+            }
+
+            @Override
+            public Result<CertificateBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
+                        .withUserID(request.getUserId())
+                        .withCertificateId(request.getCertificateId())
+                        .withTeamId(request.getTeamId())
+                        .withCertificateName(request.getCertificateName());
+                        certificateService.delete(builder.build(),context);
+                return RestResultUtil.buildSuccessResult("删除记录成功");
+            }
+        });
+
+    }
     /**
      * 获取证书详细信息
      */
@@ -131,8 +182,5 @@ public class CertificateController {
      */
     /**
      * 盖章
-     */
-    /**
-     *
      */
 }

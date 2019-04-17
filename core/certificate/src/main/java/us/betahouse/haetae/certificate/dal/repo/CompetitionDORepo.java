@@ -32,6 +32,14 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
     List<CompetitionDO> findByUserId(String userId);
 
     /**
+     * 通过证书id和学生id获取证书
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    CompetitionDO findByCertificateIdAndUserId(String certificateId,String userId);
+    /**
      * 通过证书id删除证书
      *
      * @param certificateId
@@ -39,6 +47,13 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
      */
     void deleteByCertificateId(String certificateId);
 
+    /**
+     * 通过团队id 删除所有证书
+     *
+     * @param teamId
+     * @return
+     */
+    void deleteAllByTeamId(String teamId);
     /**
      * 通过竞赛名字获取该竞赛全部获奖记录
      *

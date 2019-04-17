@@ -23,6 +23,14 @@ public interface SkillDORepo extends JpaRepository<SkillDO, Long> {
     SkillDO findByCertificateId(String certificateId);
 
     /**
+     * 通过证书id和用户id查找证书
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    SkillDO findByCertificateIdAndUserId(String certificateId,String userId);
+    /**
      * 通过学生id获取全部技能证书
      *
      * @param userId
@@ -38,6 +46,7 @@ public interface SkillDORepo extends JpaRepository<SkillDO, Long> {
      */
     void deleteByCertificateId(String certificateId);
 
+    void deleteByCertificateIdAndUserId(String certificateId,String userId);
     /**
      * 通过证书名字 获取同名证书
      *

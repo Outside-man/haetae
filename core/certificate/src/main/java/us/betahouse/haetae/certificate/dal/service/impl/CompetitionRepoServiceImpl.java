@@ -58,6 +58,12 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     }
 
     @Override
+    public void deleteAllByTeamId(String teamId) {
+        competitionDORepo.deleteAllByTeamId(teamId);
+    }
+
+
+    @Override
     public CertificateBO modify(CertificateBO certificateBO) {
         CompetitionDO competitionDO = competitionDORepo.findByCertificateId(certificateBO.getCertificateId());
         if (competitionDO == null) {
@@ -122,6 +128,11 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .filter(Objects::isNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId) {
+        return convert(competitionDORepo.findByCertificateIdAndUserId(certificateId,userId));
     }
 
     /**

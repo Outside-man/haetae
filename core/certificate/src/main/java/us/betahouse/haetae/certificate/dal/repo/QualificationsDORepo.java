@@ -6,6 +6,7 @@ package us.betahouse.haetae.certificate.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import us.betahouse.haetae.certificate.dal.model.QualificationsDO;
+import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 
 import java.util.List;
 
@@ -31,12 +32,30 @@ public interface QualificationsDORepo extends JpaRepository<QualificationsDO, Lo
     List<QualificationsDO> findByUserId(String userId);
 
     /**
+     * 通过学生id和证书id查找证书
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    QualificationsDO findByCertificateIdAndUserId(String certificateId, String userId);
+
+    /**
      * 通过证书id删除证书
      *
      * @param certificateId
      * @return
      */
     void deleteByCertificateId(String certificateId);
+
+    /**
+     * 通过用户id和证书id删除证书
+     *
+     * @param certificateId
+     * @param userId
+     * @return
+     */
+    void deleteByCertificateIdAndUserId(String certificateId, String userId);
 
     /**
      * 通过证书名字 获取同名证书

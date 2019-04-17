@@ -53,6 +53,11 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
+    public void deleteByCertificateIdAndUserId(String certificateId, String userId) {
+        skillDORepo.deleteByCertificateIdAndUserId(certificateId,userId);
+    }
+
+    @Override
     public CertificateBO modify(CertificateBO certificateBO) {
         return null;
     }
@@ -76,6 +81,11 @@ public class SkillRepoServiceImpl implements SkillRepoService {
                 .filter(Objects::isNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId) {
+        return convert(skillDORepo.findByCertificateIdAndUserId(certificateId,userId));
     }
 
     /**

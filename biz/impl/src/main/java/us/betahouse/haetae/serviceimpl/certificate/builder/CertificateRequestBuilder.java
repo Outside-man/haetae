@@ -86,7 +86,10 @@ final public class CertificateRequestBuilder {
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
-
+    /**
+     * 竞赛证书团队id
+     */
+    private String teamId;
     public static CertificateRequestBuilder getInstance() {
         return new CertificateRequestBuilder();
     }
@@ -110,6 +113,7 @@ final public class CertificateRequestBuilder {
         request.setTeacher(teacher);
         request.setTeamName(teamName);
         request.setWorkUserId(workUserId);
+        request.setTeamId(teamId);
         return request;
     }
 
@@ -181,28 +185,29 @@ final public class CertificateRequestBuilder {
         return this;
     }
 
-
     public CertificateRequestBuilder withWorkUserId(List<String> workUserId) {
         this.workUserId = workUserId;
         return this;
     }
-
 
     public CertificateRequestBuilder withTeamName(String teamName) {
         this.teamName = teamName;
         return this;
     }
 
-
     public CertificateRequestBuilder withTeacher(List<Map<String, String>> teacher) {
         this.teacher = teacher;
         return this;
     }
 
-
     public CertificateRequestBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
         return this;
+    }
+
+    public CertificateRequestBuilder withTeamId(String teamId){
+        this.teamId=teamId;
+        return  this;
     }
 }
 
