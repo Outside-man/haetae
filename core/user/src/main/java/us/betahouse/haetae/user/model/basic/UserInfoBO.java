@@ -56,6 +56,10 @@ public class UserInfoBO extends ToString {
     private String classId;
 
     /**
+     * 年级
+     */
+    private String grade;
+    /**
      * 入学年份
      */
     private Date enrollDate;
@@ -135,5 +139,13 @@ public class UserInfoBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }

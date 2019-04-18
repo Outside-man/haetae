@@ -79,4 +79,6 @@ public class MajorDO extends BaseDO {
     public void setExtInfo(String extInfo) {
         this.extInfo = extInfo;
     }
+
+
 }

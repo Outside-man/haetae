@@ -101,7 +101,9 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
         if (newUserInfoDO.getStuId() != null) {
             userInfoDO.setStuId(newUserInfoDO.getStuId());
         }
-
+        if (newUserInfoDO.getGrade() != null) {
+            userInfoDO.setGrade(newUserInfoDO.getGrade());
+        }
         // 特殊逻辑 拓展信息为null 时认为是主动清空
         if (userInfoBO.getExtInfo() == null) {
             userInfoDO.setExtInfo(JSON.toJSONString(new HashMap<>()));

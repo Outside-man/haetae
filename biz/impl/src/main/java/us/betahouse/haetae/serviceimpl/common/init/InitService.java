@@ -157,7 +157,30 @@ public class InitService {
             activityManagerPerm.forEach(activityPermType -> permIds.add(initPermMap.get(activityPermType)));
             permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
         }
-
+        // 初始化 活动管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.PARTY_ACTIVITY_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            activityManagerPerm.forEach(activityPermType -> permIds.add(initPermMap.get(activityPermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
+        // 初始化 活动管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.PRACTICE_ACTIVITY_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            activityManagerPerm.forEach(activityPermType -> permIds.add(initPermMap.get(activityPermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
+        // 初始化 活动管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.VOLUNTEER_ACTIVITY_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            activityManagerPerm.forEach(activityPermType -> permIds.add(initPermMap.get(activityPermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
+        // 初始化 活动管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.VOLUNTEER_WORK_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            activityManagerPerm.forEach(activityPermType -> permIds.add(initPermMap.get(activityPermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
         //初始化 物资管理员权限
         if (StringUtils.equals(role.getRoleCode(), UserRoleCode.ASSET_MANAGER.getCode())) {
             Set<String> permIds = new HashSet<>();

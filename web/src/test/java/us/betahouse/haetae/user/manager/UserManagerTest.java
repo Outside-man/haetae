@@ -38,7 +38,7 @@ public class UserManagerTest {
 
     @Test
     public void createManager() {
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= 90; i++) {
             CommonUser commonUser = userManager.create(genUserCreateRequest(i));
             System.out.println(commonUser);
             UserManageRequest request = new UserManageRequest();
@@ -52,7 +52,7 @@ public class UserManagerTest {
 
     @Test
     public void batchBindRole() {
-        List<String> userIds = Arrays.asList("201904120240229817800001201956");
+        List<String> userIds =Arrays.asList((userInfoRepoService.queryUserInfoByStuId("16921120" ).getUserId()));
         for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
@@ -69,9 +69,9 @@ public class UserManagerTest {
     @Test
     public void batchUnbindRole() {
         List<String> userIds = new ArrayList<>();
-        List<String> roleIds= Arrays.asList("201811302151309605429200021130");
-        for(int i=1;i<=35;i++){
-            userIds.add(userInfoRepoService.queryUserInfoByStuId("00"+i).getUserId());
+        List<String> roleIds= Arrays.asList("201904120246124297527500020412");
+        for(int i=61;i<=65;i++){
+            userIds.add(userInfoRepoService.queryUserInfoByStuId("Hziee"+i).getUserId());
         }
         for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();

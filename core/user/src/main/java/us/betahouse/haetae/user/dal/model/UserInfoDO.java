@@ -72,6 +72,12 @@ public class UserInfoDO extends BaseDO {
     private String classId;
 
     /**
+     * 年级
+     */
+    @Column(name = "grade", length = 64)
+    private String grade;
+
+    /**
      * 入学时间
      */
     private Date enrollDate;
@@ -152,5 +158,13 @@ public class UserInfoDO extends BaseDO {
 
     public void setExtInfo(String extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }
