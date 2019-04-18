@@ -91,14 +91,14 @@ public class CertificateManagerRequest extends BaseRequest {
     private String teamName;
 
     /**
+     * 团队编号
+     */
+    private String teamId;
+
+    /**
      * 指导老师
      */
     private List<Map<String, String>> teacher;
-
-    /**
-     * 竞赛证书团队id
-     */
-    private  String teamId;
 
     public String getCertificateId() {
         return certificateId;
@@ -220,19 +220,19 @@ public class CertificateManagerRequest extends BaseRequest {
         this.teamName = teamName;
     }
 
-    public List<Map<String, String>> getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(List<Map<String, String>> teacher) {
-        this.teacher = teacher;
-    }
-
     public String getTeamId() {
         return teamId;
     }
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public List<Map<String, String>> getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(List<Map<String, String>> teacher) {
+        this.teacher = teacher;
     }
 }

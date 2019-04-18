@@ -37,7 +37,7 @@ public class CompetitionDO extends BaseCommonDO {
     /**
      * 比赛等级
      */
-    @Column(name = "rank", nullable = false)
+    @Column(name = "competition_rank", nullable = false)
     private String rank;
     /**
      * 队名

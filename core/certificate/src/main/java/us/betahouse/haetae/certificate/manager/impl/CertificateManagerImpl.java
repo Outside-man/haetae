@@ -22,6 +22,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -150,7 +151,60 @@ public class CertificateManagerImpl implements CertificateManager {
 
     @Override
     public CertificateBO modifyCompetition(CertificateManagerRequest request) {
-        return null;
+        CertificateBO certificateBO = new CertificateBO();
+        if (request.getTeacher() != null) {
+            certificateBO.setTeacher(request.getTeacher());
+        }
+        certificateBO.setCertificateType(CertificateTypeEnum.COMPETITION.getCode());
+        certificateBO.setCompetitionName(request.getCompetitionName());
+        certificateBO.setRank(request.getRank());
+        certificateBO.setTeamName(request.getTeamName());
+        certificateBO.setUserId(request.getUserId());
+        certificateBO.setCertificateOrganization(request.getCertificateOrganization());
+        certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
+        certificateBO.setWorkUserId(request.getWorkUserId());
+        //设置证书状态 待审核
+        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
+        //放入拓展信息
+        certificateBO = setExtInfos(certificateBO, request);
+        //当前用户是否是队员
+        boolean includeUserId = false;
+        AssertUtil.assertNotNull(request.getWorkUserId(), "队友学号不能为空");
+        //目前团队成员人数限制不能超过五个人,把自己的学号也要填进去 方便多条记录队友属性统一字段
+        AssertUtil.assertTrue(request.getWorkUserId().size() <= 5, "队友人数不能超过五个人");
+        CertificateBO thisCertificate = new CertificateBO();
+        //返回单个BO  创建成员等多条记录(每个记录中)
+        //删掉原来存在而现在不存在的队友
+        List<CertificateBO> certificateBOS = competitionRepoService.queryByTeamId(request.getTeamId());
+        for(CertificateBO certificateBO1 : certificateBOS){
+            boolean flat = false;
+            for(String userid:request.getWorkUserId()){
+                if(certificateBO1.getUserId().equals(userid)){
+                    flat = true;
+                    break;
+                }
+            }
+            if(!flat){
+                competitionRepoService.delete(certificateBO1.getCertificateId());
+            }
+        }
+        for (String userid : request.getWorkUserId()) {
+            if (competitionRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), userid) == null) {
+                certificateBO.setUserId(userid);
+                certificateBO.setCertificateId(null);
+                competitionRepoService.create(certificateBO);
+            } else {
+                certificateBO.setUserId(userid);
+                certificateBO.setCertificateId(request.getCertificateId());
+                competitionRepoService.modify(certificateBO);
+            }
+            if (certificateBO.getUserId().equals(request.getUserId())) {
+                thisCertificate = certificateBO;
+                includeUserId = true;
+            }
+        }
+        AssertUtil.assertTrue(includeUserId, "只能由队员创建记录");
+        return thisCertificate;
     }
 
     @Override

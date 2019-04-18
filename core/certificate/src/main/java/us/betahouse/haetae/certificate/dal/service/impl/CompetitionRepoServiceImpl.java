@@ -129,6 +129,13 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<CertificateBO> queryByTeamId(String teamId){
+        return CollectionUtils.toStream(competitionDORepo.findByTeamId(teamId))
+                .filter(Objects::isNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId) {

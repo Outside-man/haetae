@@ -61,4 +61,11 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
      * @return
      */
     List<CompetitionDO> findByCompetitionName(String competitionName);
+
+    /**
+     * 通过团队id获取证书记录
+     * @param teamId
+     * @return
+     */
+    List<CompetitionDO> findByTeamId(String teamId);
 }

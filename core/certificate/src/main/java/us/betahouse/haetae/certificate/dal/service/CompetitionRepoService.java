@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.certificate.dal.service;
 
+import us.betahouse.haetae.certificate.dal.model.CompetitionDO;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 
 import java.util.List;
@@ -71,6 +72,12 @@ public interface CompetitionRepoService {
      * @return
      */
     List<CertificateBO> queryByCompetitionName(String competitionName);
+    /**
+     * 通过团队id获取证书记录
+     * @param teamId
+     * @return
+     */
+    List<CertificateBO> queryByTeamId(String teamId);
 
     /**
      * 查找证书 通过证书id和学生id
