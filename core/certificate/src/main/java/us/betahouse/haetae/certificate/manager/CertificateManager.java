@@ -39,6 +39,7 @@ public interface CertificateManager {
      * @return
      */
     CertificateBO createSkill(CertificateManagerRequest request);
+
     /**
      * 更新资格证书
      *

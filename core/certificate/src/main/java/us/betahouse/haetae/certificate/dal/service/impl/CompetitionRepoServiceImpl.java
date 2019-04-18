@@ -46,7 +46,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
             certificateBO.setCertificateId(bizIdFactory.getCompetitionId());
         }
         //团队id 团队唯一
-        if(StringUtils.isBlank(certificateBO.getTeamId())){
+        if (StringUtils.isBlank(certificateBO.getTeamId())) {
             certificateBO.setTeamId(bizIdFactory.getCompetitionTeamId());
         }
         return convert(competitionDORepo.save(convert(certificateBO)));
@@ -129,8 +129,9 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
+
     @Override
-    public List<CertificateBO> queryByTeamId(String teamId){
+    public List<CertificateBO> queryByTeamId(String teamId) {
         return CollectionUtils.toStream(competitionDORepo.findByTeamId(teamId))
                 .filter(Objects::isNull)
                 .map(this::convert)
@@ -139,7 +140,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
 
     @Override
     public CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId) {
-        return convert(competitionDORepo.findByCertificateIdAndUserId(certificateId,userId));
+        return convert(competitionDORepo.findByCertificateIdAndUserId(certificateId, userId));
     }
 
     /**

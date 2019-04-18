@@ -30,7 +30,7 @@ public interface QualificationsRepoService {
      * @param certificateId
      * @return
      */
-    void deleteByCertificateIdAndUserId(String certificateId,String userId);
+    void deleteByCertificateIdAndUserId(String certificateId, String userId);
 
     /**
      * 修改资格证书
@@ -63,6 +63,7 @@ public interface QualificationsRepoService {
      * @return
      */
     List<CertificateBO> queryByCertificateName(String certificateName);
+
     /**
      * 查找证书通过证书id和用户id
      *
@@ -70,5 +71,5 @@ public interface QualificationsRepoService {
      * @param certificateId
      * @return
      */
-    CertificateBO queryByUserIdAndCertificateId(String userId,String certificateId);
+    CertificateBO queryByUserIdAndCertificateId(String userId, String certificateId);
 }

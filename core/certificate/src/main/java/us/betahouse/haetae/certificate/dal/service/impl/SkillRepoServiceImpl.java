@@ -54,7 +54,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
 
     @Override
     public void deleteByCertificateIdAndUserId(String certificateId, String userId) {
-        skillDORepo.deleteByCertificateIdAndUserId(certificateId,userId);
+        skillDORepo.deleteByCertificateIdAndUserId(certificateId, userId);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
 
     @Override
     public CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId) {
-        return convert(skillDORepo.findByCertificateIdAndUserId(certificateId,userId));
+        return convert(skillDORepo.findByCertificateIdAndUserId(certificateId, userId));
     }
 
     /**

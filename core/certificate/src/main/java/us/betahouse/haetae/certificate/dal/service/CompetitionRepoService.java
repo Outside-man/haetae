@@ -72,8 +72,10 @@ public interface CompetitionRepoService {
      * @return
      */
     List<CertificateBO> queryByCompetitionName(String competitionName);
+
     /**
      * 通过团队id获取证书记录
+     *
      * @param teamId
      * @return
      */

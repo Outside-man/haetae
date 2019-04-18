@@ -45,11 +45,10 @@ public interface CertificateService {
     /**
      * 查找证书通过证书id和用户id
      *
-     * @param userId
      * @param certificateId
      * @return
      */
-    CertificateBO findByUserIdAndCertificateId(String userId, String certificateId);
+    CertificateBO findByCertificateId(String certificateId);
 
     /**
      * 证书记录通过类型和用户id

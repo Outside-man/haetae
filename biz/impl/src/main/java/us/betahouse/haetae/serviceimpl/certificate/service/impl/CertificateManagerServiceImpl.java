@@ -44,12 +44,12 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         String certificateType = request.getCertificateType();
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
         CertificateBO certificateBO = new CertificateBO();
-        AssertUtil.assertNotNull(certificateTypeEnum,"证书类型不存在");
+        AssertUtil.assertNotNull(certificateTypeEnum, "证书类型不存在");
         //证书类型判断(三种)
         switch (certificateTypeEnum) {
             //资格证书
             case QUALIFICATIONS: {
-                AssertUtil.assertNotNull(request.getCertificateName(),"发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
                 AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
                 AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
                 certificateBO = certificateManager.createQualifications(request);
@@ -64,9 +64,9 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
             }
             //技能证书
             case SKILL: {
-                AssertUtil.assertNotNull(request.getCertificateName(),"发行证书名字不能为空");
-                AssertUtil.assertNotNull(request.getRank(),"证书等级不能为空");
-               certificateBO=certificateManager.createSkill(request);
+                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getRank(), "证书等级不能为空");
+                certificateBO = certificateManager.createSkill(request);
                 break;
             }
             //异常
@@ -82,7 +82,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         String certificateType = request.getCertificateType();
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
         CertificateBO certificateBO = new CertificateBO();
-        AssertUtil.assertNotNull(certificateTypeEnum,"证书类型不存在");
+        AssertUtil.assertNotNull(certificateTypeEnum, "证书类型不存在");
         //证书类型判断(三种)
         switch (certificateTypeEnum) {
             //资格证书

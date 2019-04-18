@@ -52,7 +52,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
 
     @Override
     public void deleteByCertificateIdAndUserId(String certificateId, String userId) {
-        qualificationsDORepo.deleteByCertificateIdAndUserId(certificateId,userId);
+        qualificationsDORepo.deleteByCertificateIdAndUserId(certificateId, userId);
     }
 
 
@@ -122,7 +122,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
 
     @Override
     public CertificateBO queryByUserIdAndCertificateId(String userId, String certificateId) {
-        return convert(qualificationsDORepo.findByCertificateIdAndUserId(certificateId,userId));
+        return convert(qualificationsDORepo.findByCertificateIdAndUserId(certificateId, userId));
     }
 
     /**

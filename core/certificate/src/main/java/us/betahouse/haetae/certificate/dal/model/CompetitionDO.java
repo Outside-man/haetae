@@ -53,7 +53,7 @@ public class CompetitionDO extends BaseCommonDO {
     /**
      * 团队id
      */
-    @Column(name="team_id",nullable = false,length = 32)
+    @Column(name = "team_id", nullable = false, length = 32)
     private String teamId;
 
     public String getCompetitionName() {

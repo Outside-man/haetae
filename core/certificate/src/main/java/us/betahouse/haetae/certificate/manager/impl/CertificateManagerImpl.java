@@ -176,15 +176,15 @@ public class CertificateManagerImpl implements CertificateManager {
         //返回单个BO  创建成员等多条记录(每个记录中)
         //删掉原来存在而现在不存在的队友
         List<CertificateBO> certificateBOS = competitionRepoService.queryByTeamId(request.getTeamId());
-        for(CertificateBO certificateBO1 : certificateBOS){
+        for (CertificateBO certificateBO1 : certificateBOS) {
             boolean flat = false;
-            for(String userid:request.getWorkUserId()){
-                if(certificateBO1.getUserId().equals(userid)){
+            for (String userid : request.getWorkUserId()) {
+                if (certificateBO1.getUserId().equals(userid)) {
                     flat = true;
                     break;
                 }
             }
-            if(!flat){
+            if (!flat) {
                 competitionRepoService.delete(certificateBO1.getCertificateId());
             }
         }

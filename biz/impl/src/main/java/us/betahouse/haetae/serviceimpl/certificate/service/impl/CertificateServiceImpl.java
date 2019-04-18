@@ -92,7 +92,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public CertificateBO findByUserIdAndCertificateId(String userId, String certificateId) {
+    public CertificateBO findByCertificateId(String certificateId) {
         return null;
     }
 
