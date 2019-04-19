@@ -43,12 +43,19 @@ public interface CertificateService {
     void delete(CertificateRequest request, OperateContext context);
 
     /**
-     * 查找证书通过证书id和用户id
+     * 查找证书通过证书id
      *
      * @param certificateId
      * @return
      */
     CertificateBO findByCertificateId(String certificateId);
+
+    /**
+     * 通过用户id查找证书
+     * @param userId
+     * @return
+     */
+    List<CertificateBO> findByUserId(String userId);
 
     /**
      * 证书记录通过证书名称和用户id

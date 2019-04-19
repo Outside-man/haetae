@@ -30,6 +30,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 证书接口
@@ -168,18 +169,50 @@ public class CertificateController {
                         .withCertificateId(request.getCertificateId())
                         .withTeamId(request.getTeamId())
                         .withCertificateName(request.getCertificateName());
-                        certificateService.delete(builder.build(),context);
+                certificateService.delete(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("删除记录成功");
             }
         });
+    }
 
+    /**
+     * 根据证书id获取证书详细信息
+     */
+    @GetMapping(value = "/byCertificateId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result byCertificateId(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据证书id获取证书记录", request, new RestOperateCallBack<CertificateBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
+            }
+
+            @Override
+            public Result<CertificateBO> execute() {
+                return RestResultUtil.buildSuccessResult(certificateService.findByCertificateId(request.getCertificateId()),"获取记录成功");
+            }
+        });
     }
     /**
-     * 获取证书详细信息
+     * 根据用户id获取多条证书记录
      */
-    /**
-     * 获取多条证书记录
-     */
+    @GetMapping(value = "/byUserId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result byUserId(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据用户id获取证书记录", request, new RestOperateCallBack<List<CertificateBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request.getUserId(), "用户id不能为空");
+            }
+
+            @Override
+            public Result<List<CertificateBO>> execute() {
+                return RestResultUtil.buildSuccessResult(certificateService.findByUserId(request.getUserId()),"获取记录成功");
+            }
+        });
+    }
     /**
      * 盖章
      */

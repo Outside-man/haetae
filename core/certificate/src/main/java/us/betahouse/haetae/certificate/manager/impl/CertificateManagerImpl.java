@@ -225,6 +225,20 @@ public class CertificateManagerImpl implements CertificateManager {
     }
 
     @Override
+    public List<CertificateBO> findByUserId(String userId) {
+        List<CertificateBO> certificateBOS = qualificationsRepoService.queryByUserId(userId);
+        List<CertificateBO> certificateBOS1 = competitionRepoService.queryByUserId(userId);
+        List<CertificateBO> certificateBOS2 = skillRepoService.queryByUserId(userId);
+        for (CertificateBO certificateBO : certificateBOS1){
+            certificateBOS.add(certificateBO);
+        }
+        for (CertificateBO certificateBO : certificateBOS2){
+            certificateBOS.add(certificateBO);
+        }
+        return certificateBOS;
+    }
+
+    @Override
     public List<CertificateBO> findByUserIdAndCertificateName(CertificateManagerRequest request) {
         List<CertificateBO> certificateBOS = qualificationsRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
         if(certificateBOS == null){

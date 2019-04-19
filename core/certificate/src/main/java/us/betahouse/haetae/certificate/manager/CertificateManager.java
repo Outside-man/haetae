@@ -75,6 +75,14 @@ public interface CertificateManager {
     CertificateBO findByCertificateId(String certificateId);
 
     /**
+     * 通过用户id查找证书
+     *
+     * @param userId
+     * @return
+     */
+    List<CertificateBO> findByUserId(String userId);
+
+    /**
      * 证书记录通过证书名称和用户id
      *
      * @param request

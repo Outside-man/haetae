@@ -100,6 +100,11 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
+    public List<CertificateBO> findByUserId(String userId) {
+        return certificateManager.findByUserId(userId);
+    }
+
+    @Override
     public List<CertificateBO> findByCertificateNameAndUserId(CertificateRequest request, OperateContext context) {
         return certificateManager.findByUserIdAndCertificateName(request);
     }
