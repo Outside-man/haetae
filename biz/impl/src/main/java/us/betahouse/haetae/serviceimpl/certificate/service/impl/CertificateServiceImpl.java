@@ -11,6 +11,7 @@ import us.betahouse.haetae.certificate.dal.service.CompetitionRepoService;
 import us.betahouse.haetae.certificate.dal.service.QualificationsRepoService;
 import us.betahouse.haetae.certificate.dal.service.SkillRepoService;
 import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
+import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
@@ -31,6 +32,8 @@ import java.util.List;
 @Service
 public class CertificateServiceImpl implements CertificateService {
 
+    @Autowired
+    private CertificateManager certificateManager;
     @Autowired
     private CertificateManagerService certificateManagerService;
     @Autowired
@@ -93,12 +96,12 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public CertificateBO findByCertificateId(String certificateId) {
-        return null;
+        return certificateManager.findByCertificateId(certificateId);
     }
 
     @Override
-    public List<CertificateBO> findByUserIdAndCertificateName(CertificateRequest request, OperateContext context) {
-        return null;
+    public List<CertificateBO> findByCertificateNameAndUserId(CertificateRequest request, OperateContext context) {
+        return certificateManager.findByUserIdAndCertificateName(request);
     }
 
     @Override

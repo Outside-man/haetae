@@ -56,4 +56,12 @@ public interface SkillDORepo extends JpaRepository<SkillDO, Long> {
      * @return
      */
     List<SkillDO> findByCertificateName(String certificateName);
+    /**
+     * 通过证书名字与用户id获取证书
+     *
+     * @param skillName
+     * @param userId
+     * @return
+     */
+    List<SkillDO> findByCertificateNameAndUserId(String skillName,String userId);
 }

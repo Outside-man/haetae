@@ -143,6 +143,14 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         return convert(competitionDORepo.findByCertificateIdAndUserId(certificateId, userId));
     }
 
+    @Override
+    public List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId) {
+        return CollectionUtils.toStream(competitionDORepo.findByCompetitionNameAndUserId(certificateName, userId))
+                .filter(Objects::isNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 竞赛证书DO2B0
      *

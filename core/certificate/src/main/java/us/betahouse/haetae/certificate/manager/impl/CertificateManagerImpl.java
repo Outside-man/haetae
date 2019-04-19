@@ -212,6 +212,30 @@ public class CertificateManagerImpl implements CertificateManager {
         return null;
     }
 
+    @Override
+    public CertificateBO findByCertificateId(String certificateId) {
+        CertificateBO certificateBO = qualificationsRepoService.queryByCertificateId(certificateId);
+        if(certificateBO == null){
+            certificateBO = competitionRepoService.queryByCertificateId(certificateId);
+        }
+        if(certificateBO == null){
+            certificateBO = skillRepoService.queryByCertificateId(certificateId);
+        }
+        return certificateBO;
+    }
+
+    @Override
+    public List<CertificateBO> findByUserIdAndCertificateName(CertificateManagerRequest request) {
+        List<CertificateBO> certificateBOS = qualificationsRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
+        if(certificateBOS == null){
+            certificateBOS = competitionRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
+        }
+        if(certificateBOS == null){
+            certificateBOS = skillRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
+        }
+        return certificateBOS;
+    }
+
     static CertificateBO setExtInfos(CertificateBO certificateBO, CertificateManagerRequest request) {
         //放入描述信息
         certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPTION.getCode(), request.getExtInfo().get(CertificateExtInfoKey.DESCRIPTION.getCode()));

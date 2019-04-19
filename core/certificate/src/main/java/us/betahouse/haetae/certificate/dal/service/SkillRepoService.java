@@ -80,4 +80,12 @@ public interface SkillRepoService {
      * @return
      */
     CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId);
+    /**
+     * 通过证书名字与用户id获取证书
+     *
+     * @param certificateName
+     * @param userId
+     * @return
+     */
+    List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId);
 }

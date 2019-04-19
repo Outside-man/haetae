@@ -41,7 +41,7 @@ public interface QualificationsRepoService {
     CertificateBO modify(CertificateBO certificateBO);
 
     /**
-     * 通过id获取竞赛证书详细信息
+     * 通过证书id获取竞赛证书详细信息
      *
      * @param certificateId
      * @return
@@ -72,4 +72,12 @@ public interface QualificationsRepoService {
      * @return
      */
     CertificateBO queryByUserIdAndCertificateId(String userId, String certificateId);
+    /**
+     * 通过证书名字与用户id获取证书
+     *
+     * @param certificateName
+     * @param userId
+     * @return
+     */
+    List<CertificateBO> queryByCertificateNameAndUserId(String certificateName,String userId);
 }

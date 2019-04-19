@@ -51,13 +51,13 @@ public interface CertificateService {
     CertificateBO findByCertificateId(String certificateId);
 
     /**
-     * 证书记录通过类型和用户id
+     * 证书记录通过证书名称和用户id
      *
      * @param request
      * @param context
      * @return
      */
-    List<CertificateBO> findByUserIdAndCertificateName(CertificateRequest request, OperateContext context);
+    List<CertificateBO> findByCertificateNameAndUserId(CertificateRequest request, OperateContext context);
 
     /**
      * 证书记录通过类型和证书id

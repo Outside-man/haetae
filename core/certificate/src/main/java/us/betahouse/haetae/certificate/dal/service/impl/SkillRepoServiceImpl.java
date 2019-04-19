@@ -88,6 +88,14 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         return convert(skillDORepo.findByCertificateIdAndUserId(certificateId, userId));
     }
 
+    @Override
+    public List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId) {
+        return CollectionUtils.toStream(skillDORepo.findByCertificateNameAndUserId(certificateName, userId))
+                .filter(Objects::isNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 资格证书DO2BO
      *

@@ -6,7 +6,6 @@ package us.betahouse.haetae.certificate.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import us.betahouse.haetae.certificate.dal.model.CompetitionDO;
-import us.betahouse.haetae.certificate.dal.model.QualificationsDO;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
     List<CompetitionDO> findByUserId(String userId);
 
     /**
-     * 通过证书id和学生id获取证书
+     * 通过证书id获取证书
      *
      * @param certificateId
      * @param userId
@@ -63,6 +62,14 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
      * @return
      */
     List<CompetitionDO> findByCompetitionName(String competitionName);
+    /**
+     * 通过证书名字与用户id获取证书
+     *
+     * @param competitionName
+     * @param userId
+     * @return
+     */
+    List<CompetitionDO> findByCompetitionNameAndUserId(String competitionName, String userId);
 
     /**
      * 通过团队id获取证书记录

@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.certificate.dal.service;
 
-import us.betahouse.haetae.certificate.dal.model.CompetitionDO;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public interface CompetitionRepoService {
     CertificateBO modify(CertificateBO certificateBO);
 
     /**
-     * 通过id获取资格证书详细信息
+     * 通过证书id获取证书详细信息
      *
      * @param certificateId
      * @return
@@ -58,7 +57,7 @@ public interface CompetitionRepoService {
     CertificateBO queryByCertificateId(String certificateId);
 
     /**
-     * 查询证书 通过用户id
+     * 通过用户id查询证书
      *
      * @param userId
      * @return
@@ -66,7 +65,7 @@ public interface CompetitionRepoService {
     List<CertificateBO> queryByUserId(String userId);
 
     /**
-     * 查找证书 通过证书名字
+     * 通过证书名字查找证书
      *
      * @param competitionName
      * @return
@@ -89,4 +88,12 @@ public interface CompetitionRepoService {
      * @return
      */
     CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId);
+    /**
+     * 通过证书名字与用户id获取证书
+     *
+     * @param certificateName
+     * @param userId
+     * @return
+     */
+    List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId);
 }

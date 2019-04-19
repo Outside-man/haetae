@@ -125,6 +125,14 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         return convert(qualificationsDORepo.findByCertificateIdAndUserId(certificateId, userId));
     }
 
+    @Override
+    public List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId) {
+        return CollectionUtils.toStream(qualificationsDORepo.findByCertificateNameAndUserId(certificateName, userId))
+                .filter(Objects::isNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 资格证书DO2BO
      *
