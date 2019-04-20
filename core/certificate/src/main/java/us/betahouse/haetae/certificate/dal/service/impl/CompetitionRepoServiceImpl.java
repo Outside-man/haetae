@@ -69,6 +69,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (competitionDO == null) {
             LoggerUtil.error(LOGGER, "更新竞赛证书不存在 certificate={0}", certificateBO.getCertificateId());
         }
+        System.out.println(convert(competitionDO).getStatus());
         CompetitionDO newCompetitionDO = convert(certificateBO);
         //更新名称
         if (newCompetitionDO.getCompetitionName() != null) {
@@ -94,13 +95,13 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (newCompetitionDO.getWorkersUserId() != null) {
             competitionDO.setWorkersUserId(newCompetitionDO.getWorkersUserId());
         }
-        //更新额外信息
-        if (newCompetitionDO.getExtInfo() != null) {
-            competitionDO.setExtInfo(newCompetitionDO.getExtInfo());
-        }
         //更新证书状态
         if (newCompetitionDO.getStatus() != null) {
             competitionDO.setStatus(newCompetitionDO.getStatus());
+        }
+        //更新额外信息
+        if (newCompetitionDO.getExtInfo() != null) {
+            competitionDO.setExtInfo(newCompetitionDO.getExtInfo());
         }
         //更新修改时间
         if (newCompetitionDO.getGmtModified() != null) {

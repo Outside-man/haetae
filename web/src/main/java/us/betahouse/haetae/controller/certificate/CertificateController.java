@@ -115,7 +115,7 @@ public class CertificateController {
      */
     @PutMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    @CheckLogin
+    //@CheckLogin
     public Result<CertificateBO> modifiyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "更改证书记录", request, new RestOperateCallBack<CertificateBO>() {
             @Override
@@ -215,7 +215,7 @@ public class CertificateController {
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<List<CertificateBO>> getCertificatesByUserId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "根据用户id来查找多条证书记录", request, new RestOperateCallBack<List<CertificateBO>>() {
+        return RestOperateTemplate.operate(LOGGER, "查找多条证书记录", request, new RestOperateCallBack<List<CertificateBO>>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");

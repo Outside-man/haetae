@@ -31,7 +31,7 @@ public abstract class BaseCommonDO extends BaseDO {
     /**
      * 证书状态 审核通过 未审核
      */
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, length = 32)
     private String status;
     /**
      * 证书发布时间

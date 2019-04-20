@@ -87,40 +87,38 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public CertificateBO update(CertificateRequest request, OperateContext context) {
-//        CertificateTypeEnum certificateTypeEnum=judgeCertificateType(request);
-//        CertificateBO certificateBO ;
-//        //证书类型判断(三种)
-//        switch (certificateTypeEnum) {
-//            //资格证书
-//            case QUALIFICATIONS: {
-//                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
-//                AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
-//                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
-//                certificateBO = certificateManager.modifyQualifications(request);
-//                break;
-//            }
-//            //竞赛证书
-//            case COMPETITION: {
-//                AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
-//                AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
-//                certificateBO = certificateManager.modifyCompetition(request);
-//                break;
-//            }
-//            //技能证书
-//            case SKILL: {
-//                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
-//                AssertUtil.assertNotNull(request.getRank(), "证书等级不能为空");
-//                certificateBO =certificateManager.modifySkill(request);
-//                break;
-//            }
-//            //异常
-//            default: {
-//                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
-//            }
-//        }
-//        return certificateBO;
-//        return certificateManagerService.update(request, context);
-        return null;
+        CertificateTypeEnum certificateTypeEnum=judgeCertificateType(request);
+        CertificateBO certificateBO ;
+        //证书类型判断(三种)
+        switch (certificateTypeEnum) {
+            //资格证书
+            case QUALIFICATIONS: {
+                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
+                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
+                certificateBO = certificateManager.modifyQualifications(request);
+                break;
+            }
+            //竞赛证书
+            case COMPETITION: {
+                AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
+                AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
+                certificateBO = certificateManager.modifyCompetition(request);
+                break;
+            }
+            //技能证书
+            case SKILL: {
+                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getRank(), "证书等级不能为空");
+                certificateBO =certificateManager.modifySkill(request);
+                break;
+            }
+            //异常
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
+            }
+        }
+        return certificateBO;
     }
 
     @Override

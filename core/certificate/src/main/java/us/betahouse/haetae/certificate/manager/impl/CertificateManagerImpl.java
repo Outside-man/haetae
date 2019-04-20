@@ -190,6 +190,7 @@ public class CertificateManagerImpl implements CertificateManager {
             if (competitionRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), userid) == null) {
                 certificateBO.setUserId(userid);
                 certificateBO.setCertificateId(null);
+                certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
                 competitionRepoService.create(certificateBO);
             } else {
                 certificateBO.setUserId(userid);
