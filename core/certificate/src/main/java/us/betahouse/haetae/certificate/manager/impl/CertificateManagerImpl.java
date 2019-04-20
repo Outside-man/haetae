@@ -163,8 +163,6 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setWorkUserId(request.getWorkUserId());
-        //设置证书状态 待审核
-        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //放入拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //当前用户是否是队员
@@ -215,10 +213,10 @@ public class CertificateManagerImpl implements CertificateManager {
     @Override
     public CertificateBO findByCertificateId(String certificateId) {
         CertificateBO certificateBO = qualificationsRepoService.queryByCertificateId(certificateId);
-        if(certificateBO == null){
+        if (certificateBO == null) {
             certificateBO = competitionRepoService.queryByCertificateId(certificateId);
         }
-        if(certificateBO == null){
+        if (certificateBO == null) {
             certificateBO = skillRepoService.queryByCertificateId(certificateId);
         }
         return certificateBO;
@@ -229,10 +227,10 @@ public class CertificateManagerImpl implements CertificateManager {
         List<CertificateBO> certificateBOS = qualificationsRepoService.queryByUserId(userId);
         List<CertificateBO> certificateBOS1 = competitionRepoService.queryByUserId(userId);
         List<CertificateBO> certificateBOS2 = skillRepoService.queryByUserId(userId);
-        for (CertificateBO certificateBO : certificateBOS1){
+        for (CertificateBO certificateBO : certificateBOS1) {
             certificateBOS.add(certificateBO);
         }
-        for (CertificateBO certificateBO : certificateBOS2){
+        for (CertificateBO certificateBO : certificateBOS2) {
             certificateBOS.add(certificateBO);
         }
         return certificateBOS;
@@ -241,10 +239,10 @@ public class CertificateManagerImpl implements CertificateManager {
     @Override
     public List<CertificateBO> findByUserIdAndCertificateName(CertificateManagerRequest request) {
         List<CertificateBO> certificateBOS = qualificationsRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
-        if(certificateBOS == null){
+        if (certificateBOS == null) {
             certificateBOS = competitionRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
         }
-        if(certificateBOS == null){
+        if (certificateBOS == null) {
             certificateBOS = skillRepoService.queryByCertificateNameAndUserId(request.getCertificateName(), request.getUserId());
         }
         return certificateBOS;

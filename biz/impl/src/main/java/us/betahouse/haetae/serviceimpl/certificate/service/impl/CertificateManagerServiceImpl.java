@@ -78,6 +78,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CertificateBO update(CertificateRequest request, OperateContext context) {
         String certificateType = request.getCertificateType();
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
@@ -102,7 +103,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
             }
             //技能证书
             case SKILL: {
-                //TODO 技能证书修改
+                certificateBO = certificateManager.modifySkill(request);
                 break;
             }
             //异常

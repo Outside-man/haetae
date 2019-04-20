@@ -18,7 +18,10 @@ import us.betahouse.haetae.certificate.dal.service.SkillRepoService;
 import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.certificate.idfactory.BizIdFactory;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -59,7 +62,37 @@ public class SkillRepoServiceImpl implements SkillRepoService {
 
     @Override
     public CertificateBO modify(CertificateBO certificateBO) {
-        return null;
+        SkillDO skillDO = skillDORepo.findByCertificateId(certificateBO.getCertificateId());
+        if (skillDO == null) {
+            LoggerUtil.error(LOGGER, "更新技能证书不存在 certificateId={0}", certificateBO.getCertificateId());
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新证书不存在");
+        }
+        SkillDO skillDO1 = convert(certificateBO);
+        if (skillDO1.getCertificateName() != null) {
+            skillDO.setCertificateName(skillDO1.getCertificateName());
+        }
+        if (skillDO1.getCertificateNumber() != null) {
+            skillDO.setCertificateNumber(skillDO1.getCertificateNumber());
+        }
+        if (skillDO1.getRank() != null) {
+            skillDO.setRank(skillDO1.getRank());
+        }
+        if (skillDO1.getCertificatePublishTime() != null) {
+            skillDO.setCertificatePublishTime(skillDO1.getCertificatePublishTime());
+        }
+        //更新额外信息
+        if (skillDO1.getExtInfo() != null) {
+            skillDO.setExtInfo(skillDO1.getExtInfo());
+        }
+        //更新证书状态
+        if (skillDO1.getStatus() != null) {
+            skillDO.setStatus(skillDO1.getStatus());
+        }
+        //更新修改时间
+        if (skillDO1.getGmtModified() != null) {
+            skillDO.setGmtModified(skillDO1.getGmtModified());
+        }
+        return convert(skillDORepo.save(skillDO));
     }
 
     @Override

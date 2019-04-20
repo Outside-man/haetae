@@ -190,10 +190,11 @@ public class CertificateController {
 
             @Override
             public Result<CertificateBO> execute() {
-                return RestResultUtil.buildSuccessResult(certificateService.findByCertificateId(request.getCertificateId()),"获取记录成功");
+                return RestResultUtil.buildSuccessResult(certificateService.findByCertificateId(request.getCertificateId()), "获取记录成功");
             }
         });
     }
+
     /**
      * 根据用户id获取多条证书记录
      */
@@ -209,7 +210,7 @@ public class CertificateController {
 
             @Override
             public Result<List<CertificateBO>> execute() {
-                return RestResultUtil.buildSuccessResult(certificateService.findByUserId(request.getUserId()),"获取记录成功");
+                return RestResultUtil.buildSuccessResult(certificateService.findByUserId(request.getUserId()), "获取记录成功");
             }
         });
     }
