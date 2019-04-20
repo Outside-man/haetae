@@ -15,6 +15,7 @@ import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
+import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
@@ -22,7 +23,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 /**
  * 证书管理器实现
- *
+ * 需要鉴权（管理员用户）
  * @author guofan.cp
  * @version : CertificateManagerServiceImpl.java 2019/04/06 8:26 guofan.cp
  */
@@ -37,6 +38,8 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     private SkillRepoService skillRepoServicel;
     @Autowired
     private CertificateManager certificateManager;
+    @Autowired
+    private CertificateService certificateService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -78,7 +81,6 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public CertificateBO update(CertificateRequest request, OperateContext context) {
         String certificateType = request.getCertificateType();
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
@@ -103,7 +105,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
             }
             //技能证书
             case SKILL: {
-                certificateBO = certificateManager.modifySkill(request);
+                //TODO 技能证书修改
                 break;
             }
             //异常
@@ -117,5 +119,10 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     @Override
     public void delete(CertificateRequest request, OperateContext context) {
 
+    }
+
+    @Override
+    public CertificateBO findByCertificateId(CertificateRequest request, OperateContext context) {
+        return null;
     }
 }

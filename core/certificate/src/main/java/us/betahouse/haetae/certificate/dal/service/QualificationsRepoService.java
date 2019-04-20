@@ -6,6 +6,7 @@ package us.betahouse.haetae.certificate.dal.service;
 
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

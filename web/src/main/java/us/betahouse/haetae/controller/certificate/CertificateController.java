@@ -29,6 +29,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,7 +107,11 @@ public class CertificateController {
     }
 
     /**
-     * 修改证书信息  更新的话还要所有数据验证一遍 然后队友改了要批量操作 其他的话也没什么了 这边基本是啥都需要修改
+     * 修改证书信息
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
      */
     @PutMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -140,7 +145,7 @@ public class CertificateController {
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
                         .withExtInfo(request.getExtInfo());
-                return RestResultUtil.buildSuccessResult(certificateManagerService.update(builder.build(), context), "修改记录成功");
+                return RestResultUtil.buildSuccessResult(certificateService.update(builder.build(), context), "修改记录成功");
             }
         });
     }
@@ -176,45 +181,56 @@ public class CertificateController {
     }
 
     /**
-     * 根据证书id获取证书详细信息
+     * 获取证书详细信息
      */
-    @GetMapping(value = "/byCertificateId")
+    @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result byCertificateId(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "根据证书id获取证书记录", request, new RestOperateCallBack<CertificateBO>() {
-
+    public Result<CertificateBO> getCertificateBycertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据证书id获取该证书详细信息", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
+                AssertUtil.assertNotNull(request, "请求体不能为空");
                 AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
+                AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
             }
 
             @Override
             public Result<CertificateBO> execute() {
-                return RestResultUtil.buildSuccessResult(certificateService.findByCertificateId(request.getCertificateId()), "获取记录成功");
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateBO certificateBO;
+                CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
+                        .withCertificateId(request.getCertificateId())
+                        .withUserID(request.getUserId());
+                certificateBO = certificateService.findByCertificateTypeAndId(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(certificateBO, "获取详细记录信息成功");
             }
         });
     }
 
     /**
-     * 根据用户id获取多条证书记录
+     * 获取多条证书记录
      */
-    @GetMapping(value = "/byUserId")
+    @GetMapping(value = "certificates")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result byUserId(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "根据用户id获取证书记录", request, new RestOperateCallBack<List<CertificateBO>>() {
-
+    @CheckLogin
+    public Result<List<CertificateBO>> getCertificatesByUserId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据用户id来查找多条证书记录", request, new RestOperateCallBack<List<CertificateBO>>() {
             @Override
             public void before() {
-                AssertUtil.assertNotNull(request.getUserId(), "用户id不能为空");
+                AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
             }
 
             @Override
             public Result<List<CertificateBO>> execute() {
-                return RestResultUtil.buildSuccessResult(certificateService.findByUserId(request.getUserId()), "获取记录成功");
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
+                        .withUserID(request.getUserId())
+                        .withCertificateType(request.getCertificateType());
+                List<CertificateBO> certificateBOS = certificateService.findAllByCertificateTypeAndUserId(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(certificateBOS, "获取用户单类证书成功");
             }
         });
     }
-    /**
-     * 盖章
-     */
 }

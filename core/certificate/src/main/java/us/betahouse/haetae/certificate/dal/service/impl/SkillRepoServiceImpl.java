@@ -67,30 +67,38 @@ public class SkillRepoServiceImpl implements SkillRepoService {
             LoggerUtil.error(LOGGER, "更新技能证书不存在 certificateId={0}", certificateBO.getCertificateId());
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新证书不存在");
         }
-        SkillDO skillDO1 = convert(certificateBO);
-        if (skillDO1.getCertificateName() != null) {
-            skillDO.setCertificateName(skillDO1.getCertificateName());
+        SkillDO newSkillDO = convert(certificateBO);
+        //更新名称
+        if (newSkillDO.getCertificateName() != null) {
+            skillDO.setCertificateName(newSkillDO.getCertificateName());
         }
-        if (skillDO1.getCertificateNumber() != null) {
-            skillDO.setCertificateNumber(skillDO1.getCertificateNumber());
+        //更新证书等级
+        if(newSkillDO.getRank()!=null){
+            skillDO.setRank(newSkillDO.getRank());
         }
-        if (skillDO1.getRank() != null) {
-            skillDO.setRank(skillDO1.getRank());
+        //有效时间
+        if (newSkillDO.getExpirationTime() != null) {
+            skillDO.setExpirationTime(newSkillDO.getCertificatePublishTime());
         }
-        if (skillDO1.getCertificatePublishTime() != null) {
-            skillDO.setCertificatePublishTime(skillDO1.getCertificatePublishTime());
+        //更新证书编号
+        if (newSkillDO.getCertificateNumber() != null) {
+            skillDO.setCertificateNumber(newSkillDO.getCertificateNumber());
+        }
+        //更新证书发布时间
+        if (newSkillDO.getCertificatePublishTime() != null) {
+            skillDO.setCertificatePublishTime(newSkillDO.getCertificatePublishTime());
         }
         //更新额外信息
-        if (skillDO1.getExtInfo() != null) {
-            skillDO.setExtInfo(skillDO1.getExtInfo());
+        if (newSkillDO.getExtInfo() != null) {
+            skillDO.setExtInfo(newSkillDO.getExtInfo());
         }
         //更新证书状态
-        if (skillDO1.getStatus() != null) {
-            skillDO.setStatus(skillDO1.getStatus());
+        if (newSkillDO.getStatus() != null) {
+            skillDO.setStatus(newSkillDO.getStatus());
         }
         //更新修改时间
-        if (skillDO1.getGmtModified() != null) {
-            skillDO.setGmtModified(skillDO1.getGmtModified());
+        if (newSkillDO.getGmtModified() != null) {
+            skillDO.setGmtModified(newSkillDO.getGmtModified());
         }
         return convert(skillDORepo.save(skillDO));
     }
