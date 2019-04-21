@@ -23,6 +23,7 @@ import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -97,9 +98,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
             skillDO.setStatus(newSkillDO.getStatus());
         }
         //更新修改时间
-        if (newSkillDO.getGmtModified() != null) {
-            skillDO.setGmtModified(newSkillDO.getGmtModified());
-        }
+        skillDO.setGmtModified(new Date());
         return convert(skillDORepo.save(skillDO));
     }
 

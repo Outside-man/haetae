@@ -20,6 +20,7 @@ import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -69,7 +70,6 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (competitionDO == null) {
             LoggerUtil.error(LOGGER, "更新竞赛证书不存在 certificate={0}", certificateBO.getCertificateId());
         }
-        System.out.println(convert(competitionDO).getStatus());
         CompetitionDO newCompetitionDO = convert(certificateBO);
         //更新名称
         if (newCompetitionDO.getCompetitionName() != null) {
@@ -104,9 +104,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
             competitionDO.setExtInfo(newCompetitionDO.getExtInfo());
         }
         //更新修改时间
-        if (newCompetitionDO.getGmtModified() != null) {
-            competitionDO.setGmtModified(newCompetitionDO.getGmtModified());
-        }
+        competitionDO.setGmtModified(new Date());
         return convert(competitionDORepo.save(competitionDO));
     }
 

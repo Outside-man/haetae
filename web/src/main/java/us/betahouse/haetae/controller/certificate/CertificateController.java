@@ -101,7 +101,7 @@ public class CertificateController {
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
                         .withExtInfo(request.getExtInfo());
-                return RestResultUtil.buildSuccessResult(certificateManagerService.create(builder.build(), context), "创建证书记录成功");
+                return RestResultUtil.buildSuccessResult(certificateService.create(builder.build(), context), "创建证书记录成功");
             }
         });
     }
@@ -120,9 +120,13 @@ public class CertificateController {
         return RestOperateTemplate.operate(LOGGER, "更改证书记录", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
                 AssertUtil.assertStringNotBlank(request.getCertificateType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不能为空");
+                AssertUtil.assertNotNull(request.getCertificatePublishTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书发布时间不能为空");
+                //获取 Extinfo 中 description信息
+                AssertUtil.assertNotNull(request.getExtInfo().get(DESCRIPTION), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书详细信息不能为空");
+                boolean validateTime = new Date(request.getCertificatePublishTime()).before(new Date());
+                AssertUtil.assertTrue(validateTime, "证书发布时间必须早于当前时间");
             }
 
             @Override
@@ -170,10 +174,9 @@ public class CertificateController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
-                        .withUserID(request.getUserId())
                         .withCertificateId(request.getCertificateId())
                         .withTeamId(request.getTeamId())
-                        .withCertificateName(request.getCertificateName());
+                        .withCertificateType(request.getCertificateType());
                 certificateService.delete(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("删除记录成功");
             }

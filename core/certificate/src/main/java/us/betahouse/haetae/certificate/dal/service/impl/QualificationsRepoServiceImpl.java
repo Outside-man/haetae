@@ -23,6 +23,7 @@ import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -93,9 +94,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
             qualificationsDO.setStatus(newQualificationDO.getStatus());
         }
         //更新修改时间
-        if (newQualificationDO.getGmtModified() != null) {
-            qualificationsDO.setGmtModified(newQualificationDO.getGmtModified());
-        }
+        qualificationsDO.setGmtModified(new Date());
         return convert(qualificationsDORepo.save(qualificationsDO));
     }
 

@@ -151,64 +151,93 @@ public class CertificateManagerImpl implements CertificateManager {
 
     @Override
     public CertificateBO modifyCompetition(CertificateManagerRequest request) {
+        AssertUtil.assertNotNull(request.getWorkUserId(), "学号字段不能为空");
+        //目前团队成员人数限制不能超过五个人,把自己的学号也要填进去 方便多条记录队友属性统一字段
+        AssertUtil.assertTrue(request.getWorkUserId().size() <= 5, "队友人数不能超过五个人");
+        //修改证书信息 传入参数 全部修改 然后队友如果改变 新队友复制一份 旧队友删除
         CertificateBO certificateBO = new CertificateBO();
         if (request.getTeacher() != null) {
             certificateBO.setTeacher(request.getTeacher());
         }
-        certificateBO.setCertificateType(CertificateTypeEnum.COMPETITION.getCode());
         certificateBO.setCompetitionName(request.getCompetitionName());
         certificateBO.setRank(request.getRank());
         certificateBO.setTeamName(request.getTeamName());
-        certificateBO.setUserId(request.getUserId());
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setWorkUserId(request.getWorkUserId());
+        certificateBO.setTeamId(request.getTeamId());
+        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //放入拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //当前用户是否是队员
         boolean includeUserId = false;
-        AssertUtil.assertNotNull(request.getWorkUserId(), "队友学号不能为空");
-        //目前团队成员人数限制不能超过五个人,把自己的学号也要填进去 方便多条记录队友属性统一字段
-        AssertUtil.assertTrue(request.getWorkUserId().size() <= 5, "队友人数不能超过五个人");
+        //缺少队员的id信息
+        String newUserId="";
         CertificateBO thisCertificate = new CertificateBO();
-        //返回单个BO  创建成员等多条记录(每个记录中)
-        //删掉原来存在而现在不存在的队友
+        //获取原来竞赛团队的证书信息
         List<CertificateBO> certificateBOS = competitionRepoService.queryByTeamId(request.getTeamId());
+        //遍历每个竞赛证书 将传入队友id逐个与证书id进行比对 少则删 缺则创
         for (CertificateBO certificateBO1 : certificateBOS) {
             boolean flat = false;
+            //证书记录用户id和 传入参数用户id 一对多比较
             for (String userid : request.getWorkUserId()) {
                 if (certificateBO1.getUserId().equals(userid)) {
                     flat = true;
                     break;
                 }
+                newUserId=userid;
             }
+            //队友id和证书用户id 未匹配删除   创建新用户记录
             if (!flat) {
+                //删除旧记录
                 competitionRepoService.delete(certificateBO1.getCertificateId());
-            }
-        }
-        for (String userid : request.getWorkUserId()) {
-            if (competitionRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), userid) == null) {
-                certificateBO.setUserId(userid);
+                //添加新记录  添加学号
+                certificateBO.setUserId(newUserId);
                 certificateBO.setCertificateId(null);
-                certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
                 competitionRepoService.create(certificateBO);
-            } else {
-                certificateBO.setUserId(userid);
-                certificateBO.setCertificateId(request.getCertificateId());
+            }
+            //更新老记录
+            else{
+                certificateBO.setCertificateId(certificateBO1.getCertificateId());
+                //用户userid与certificate绑定不修改
                 competitionRepoService.modify(certificateBO);
             }
+        }
+//        for (String userid : request.getWorkUserId()) {
+//            if (competitionRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), userid) == null) {
+//                certificateBO.setUserId(userid);
+//                certificateBO.setCertificateId(null);
+//                certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
+//                competitionRepoService.create(certificateBO);
+//            } else {
+//                certificateBO.setUserId(userid);
+//                certificateBO.setCertificateId(request.getCertificateId());
+//                competitionRepoService.modify(certificateBO);
+//            }
+//            if (certificateBO.getUserId().equals(request.getUserId())) {
+//                thisCertificate = certificateBO;
+//                includeUserId = true;
+//            }
+//        }
+        //返回该用户证书记录
+        for(String userid:request.getWorkUserId()){
             if (certificateBO.getUserId().equals(request.getUserId())) {
                 thisCertificate = certificateBO;
                 includeUserId = true;
             }
         }
-        AssertUtil.assertTrue(includeUserId, "只能由队员创建记录");
+        AssertUtil.assertTrue(includeUserId, "只能由竞赛成员创建记录");
         return thisCertificate;
     }
 
     @Override
     public CertificateBO modifySkill(CertificateManagerRequest request) {
-        return null;
+        CertificateBO certificateBO=new CertificateBO();
+        certificateBO.setCertificateId(request.getUserId());
+        certificateBO.setCertificateNumber(request.getCertificateNumber());
+        certificateBO.setCertificateNumber(request.getCertificateNumber());
+        skillRepoService.modify(certificateBO);
+        return certificateBO;
     }
 
     @Override

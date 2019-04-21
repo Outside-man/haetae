@@ -32,7 +32,7 @@ public class SkillDO extends BaseCommonDO {
     /**
      * 技能证书等级
      */
-    @Column(name = "certificate_rank", nullable = false, length = 32)
+    @Column(name = "certificate_rank", nullable = false)
     private String rank;
     /**
      * 证书到期时间
