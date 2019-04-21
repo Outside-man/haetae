@@ -86,8 +86,7 @@ public class CertificateServiceImpl implements CertificateService {
                 }
                 request.setWorkUserId(userIds);
                 certificateBO = certificateManager.createCompetition(request);
-                System.out.println("cp"+certificateBO.toString());
-                AssertUtil.assertNotNull(certificateBO,"BO为空");
+                AssertUtil.assertNotNull(certificateBO, "BO为空");
                 competitionUserIdCovert(certificateBO);
                 break;
             }
@@ -144,13 +143,14 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateBO;
     }
 
-
-    //TODO 后台
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deletebyStudent(CertificateRequest request, OperateContext context) {
         //证书类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         //证书存在异常抛出
         CertificateBO certificateBO = judgeIsExit(request);
+        //证书过审异常抛出
         judgeState(certificateBO);
         delete(request, context);
     }
@@ -165,15 +165,11 @@ public class CertificateServiceImpl implements CertificateService {
         switch (certificateTypeEnum) {
             //资格证书
             case QUALIFICATIONS: {
-                //证书状态判断 过审异常抛出
-//                judgeState(certificateBO);
                 qualificationsRepoService.deleteByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
                 break;
             }
             //竞赛证书
             case COMPETITION: {
-                //证书状态判断 过审异常抛出
-//                judgeState(certificateBO);
                 //判断接受参数获取团队id  和获取证书记录团队id是否相同
                 AssertUtil.assertTrue(certificateBO.getTeamId().equals(request.getTeamId()), "竞赛团队id不存在");
                 competitionRepoService.deleteAllByTeamId(request.getTeamId());
@@ -181,8 +177,6 @@ public class CertificateServiceImpl implements CertificateService {
             }
             //技能证书
             case SKILL: {
-                //证书状态判断 过审异常抛出
-//                judgeState(certificateBO);
                 skillRepoService.deleteByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
                 break;
             }
@@ -227,14 +221,14 @@ public class CertificateServiceImpl implements CertificateService {
             }
             //竞赛证书
             case COMPETITION: {
-                certificateBOS = competitionRepoService.queryByUserId(request.getCertificateId());
+                certificateBOS = competitionRepoService.queryByUserId(request.getUserId());
                 competitionUserIdCovert(certificateBOS);
                 break;
             }
             //技能证书
             case SKILL: {
                 //同资格证书
-                certificateBOS = skillRepoService.queryByUserId(request.getCertificateId());
+                certificateBOS = skillRepoService.queryByUserId(request.getUserId());
                 break;
             }
             //异常
@@ -289,7 +283,6 @@ public class CertificateServiceImpl implements CertificateService {
             //竞赛证书
             case COMPETITION: {
                 certificateBO = competitionRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
-                competitionUserIdCovert(certificateBO);
                 break;
             }
             //技能证书
@@ -321,16 +314,17 @@ public class CertificateServiceImpl implements CertificateService {
             userIds.add(userInfoBO.getStuId());
         }
         certificateBO.setWorkUserId(userIds);
-        return  certificateBO;
+        return certificateBO;
     }
+
     /**
      * 转换器 竞赛证书userid 转stuid
      *
      * @param certificateBOS
      * @return
      */
-    private List<CertificateBO> competitionUserIdCovert(List<CertificateBO> certificateBOS){
-        return  CollectionUtils.toStream(certificateBOS)
+    private List<CertificateBO> competitionUserIdCovert(List<CertificateBO> certificateBOS) {
+        return CollectionUtils.toStream(certificateBOS)
                 .filter(Objects::nonNull)
                 .map(this::competitionUserIdCovert)
                 .collect(Collectors.toList());

@@ -37,7 +37,7 @@ public interface SkillDORepo extends JpaRepository<SkillDO, Long> {
      * @param userId
      * @return
      */
-    List<SkillDO> findByUserId(String userId);
+    List<SkillDO> findAllByUserId(String userId);
 
     /**
      * 通过证书id删除证书

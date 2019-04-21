@@ -116,7 +116,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     @Override
     public List<CertificateBO> queryByUserId(String userId) {
         return CollectionUtils.toStream(competitionDORepo.findByUserId(userId))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -124,7 +124,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     @Override
     public List<CertificateBO> queryByCompetitionName(String competitionName) {
         return CollectionUtils.toStream(competitionDORepo.findByCompetitionName(competitionName))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -132,7 +132,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     @Override
     public List<CertificateBO> queryByTeamId(String teamId) {
         return CollectionUtils.toStream(competitionDORepo.findByTeamId(teamId))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -145,7 +145,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     @Override
     public List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId) {
         return CollectionUtils.toStream(competitionDORepo.findByCompetitionNameAndUserId(certificateName, userId))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }

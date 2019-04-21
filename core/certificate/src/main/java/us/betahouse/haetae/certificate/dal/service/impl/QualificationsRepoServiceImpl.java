@@ -106,7 +106,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     @Override
     public List<CertificateBO> queryByUserId(String userId) {
         return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -114,7 +114,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     @Override
     public List<CertificateBO> queryByCertificateName(String certificateName) {
         return CollectionUtils.toStream(qualificationsDORepo.findByCertificateName(certificateName))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -127,7 +127,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     @Override
     public List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId) {
         return CollectionUtils.toStream(qualificationsDORepo.findByCertificateNameAndUserId(certificateName, userId))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }

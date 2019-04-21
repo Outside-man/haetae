@@ -35,8 +35,18 @@ public interface CertificateService {
      */
     CertificateBO update(CertificateRequest request, OperateContext context);
 
+
     /**
-     * 删除证书记录
+     * 删除证书记录（学生端） 需判断证书状态
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    void deletebyStudent(CertificateRequest request, OperateContext context);
+
+    /**
+     * 删除证书记录（后台管理端）无需判断证书状态
      *
      * @param request
      * @return

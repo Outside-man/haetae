@@ -117,7 +117,7 @@ public class CertificateController {
      */
     @PutMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    //@CheckLogin
+    @CheckLogin
     public Result<CertificateBO> modifiyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "更改证书记录", request, new RestOperateCallBack<CertificateBO>() {
             @Override
@@ -161,14 +161,14 @@ public class CertificateController {
      */
     @DeleteMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result deleteCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+    @CheckLogin
+    public Result deleteCertificate( CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "删除证书记录", request, new RestOperateCallBack<CertificateBO>() {
 
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
                 AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
-                AssertUtil.assertNotNull(request.getUserId(), "学生id不能为空");
             }
 
             @Override
@@ -178,8 +178,9 @@ public class CertificateController {
                 CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
                         .withCertificateId(request.getCertificateId())
                         .withTeamId(request.getTeamId())
+                        .withUserID(request.getUserId())
                         .withCertificateType(request.getCertificateType());
-                certificateService.delete(builder.build(), context);
+                certificateService.deletebyStudent(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("删除记录成功");
             }
         });
@@ -190,13 +191,13 @@ public class CertificateController {
      */
     @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
+    @CheckLogin
     public Result<CertificateBO> getCertificateBycertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "根据证书id获取该证书详细信息", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, "请求体不能为空");
                 AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
-                AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
             }
 
             @Override
@@ -204,10 +205,7 @@ public class CertificateController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 CertificateBO certificateBO;
-                CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
-                        .withCertificateId(request.getCertificateId())
-                        .withUserID(request.getUserId());
-                certificateBO = certificateService.findByCertificateTypeAndId(builder.build(), context);
+                certificateBO = certificateService.findByCertificateId(request.getCertificateId());
                 return RestResultUtil.buildSuccessResult(certificateBO, "获取详细记录信息成功");
             }
         });

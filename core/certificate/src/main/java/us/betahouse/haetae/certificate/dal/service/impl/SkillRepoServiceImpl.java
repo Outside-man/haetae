@@ -109,8 +109,8 @@ public class SkillRepoServiceImpl implements SkillRepoService {
 
     @Override
     public List<CertificateBO> queryByUserId(String userId) {
-        return CollectionUtils.toStream(skillDORepo.findByUserId(userId))
-                .filter(Objects::isNull)
+        return CollectionUtils.toStream(skillDORepo.findAllByUserId(userId))
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -118,7 +118,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     @Override
     public List<CertificateBO> queryByCertificateName(String certificateName) {
         return CollectionUtils.toStream(skillDORepo.findByCertificateName(certificateName))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -131,7 +131,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     @Override
     public List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId) {
         return CollectionUtils.toStream(skillDORepo.findByCertificateNameAndUserId(certificateName, userId))
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
