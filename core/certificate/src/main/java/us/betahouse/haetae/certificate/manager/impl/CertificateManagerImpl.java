@@ -235,7 +235,7 @@ public class CertificateManagerImpl implements CertificateManager {
         CertificateBO certificateBO=new CertificateBO();
         certificateBO.setCertificateId(request.getUserId());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
-        certificateBO.setCertificateNumber(request.getCertificateNumber());
+
         skillRepoService.modify(certificateBO);
         return certificateBO;
     }

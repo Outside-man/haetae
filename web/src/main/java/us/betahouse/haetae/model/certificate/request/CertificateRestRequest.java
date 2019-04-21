@@ -30,10 +30,6 @@ public class CertificateRestRequest extends RestRequest {
      */
     private String competitionName;
     /**
-     * 用户id
-     */
-    private String userId;
-    /**
      * 证书细节类型
      */
     private String type;
@@ -96,16 +92,6 @@ public class CertificateRestRequest extends RestRequest {
 
     public void setCertificateName(String certificateName) {
         this.certificateName = certificateName;
-    }
-
-    @Override
-    public String getUserId() {
-        return userId;
-    }
-
-    @Override
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getType() {

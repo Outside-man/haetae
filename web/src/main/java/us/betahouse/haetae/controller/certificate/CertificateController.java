@@ -67,6 +67,7 @@ public class CertificateController {
      */
     @PostMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
+    @CheckLogin
     public Result<CertificateBO> createCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         //post提交json数据
         return RestOperateTemplate.operate(LOGGER, "新增证书记录", request, new RestOperateCallBack<CertificateBO>() {
@@ -74,6 +75,7 @@ public class CertificateController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertNotNull(request.getUserId(),"用户id不能为空");
                 AssertUtil.assertStringNotBlank(request.getCertificateType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不能为空");
                 AssertUtil.assertNotNull(request.getCertificatePublishTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书发布时间不能为空");
                 //获取 Extinfo 中 description信息
