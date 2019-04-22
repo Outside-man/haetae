@@ -48,7 +48,7 @@ public class UserInfoBO extends ToString {
     /**
      * 专业号
      */
-    private String majorId;
+    private String major;
 
     /**
      * 班级号
@@ -109,12 +109,12 @@ public class UserInfoBO extends ToString {
         this.sex = sex;
     }
 
-    public String getMajorId() {
-        return majorId;
+    public String getMajor() {
+        return major;
     }
 
-    public void setMajorId(String majorId) {
-        this.majorId = majorId;
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public String getClassId() {

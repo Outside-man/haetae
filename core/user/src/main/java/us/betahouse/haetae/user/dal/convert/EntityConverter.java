@@ -120,7 +120,7 @@ final public class EntityConverter {
         userInfoBO.setStuId(userInfoDO.getStuId());
         userInfoBO.setRealName(userInfoDO.getRealName());
         userInfoBO.setSex(userInfoDO.getSex());
-        userInfoBO.setMajorId(userInfoDO.getMajorId());
+        userInfoBO.setMajor(userInfoDO.getMajorId());
         userInfoBO.setGrade(userInfoDO.getGrade());
         userInfoBO.setClassId(userInfoDO.getClassId());
         userInfoBO.setEnrollDate(userInfoDO.getEnrollDate());
@@ -144,7 +144,7 @@ final public class EntityConverter {
         userInfoDO.setStuId(userInfoBO.getStuId());
         userInfoDO.setRealName(userInfoBO.getRealName());
         userInfoDO.setSex(userInfoBO.getSex());
-        userInfoDO.setMajorId(userInfoBO.getMajorId());
+        userInfoDO.setMajorId(userInfoBO.getMajor());
         userInfoDO.setClassId(userInfoBO.getClassId());
         userInfoDO.setGrade(userInfoBO.getGrade());
         userInfoDO.setEnrollDate(userInfoBO.getEnrollDate());

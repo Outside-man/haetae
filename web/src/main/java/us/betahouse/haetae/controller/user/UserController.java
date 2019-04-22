@@ -21,6 +21,8 @@ import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -236,6 +238,48 @@ public class UserController {
 
                 userService.modifyUser(commonUserRequest, context);
                 return RestResultUtil.buildSuccessResult("密码修改成功");
+            }
+        });
+    }
+
+
+    /**
+     * 修改班级、年级、专业
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PutMapping(value = "/message")
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<UserVO> modifyMessage(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "修改班级、年级、专业", null, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(request.getGrade(), "年级不能为空");
+                AssertUtil.assertNotNull(request.getClassId(), "班级不能为空");
+                AssertUtil.assertNotNull(request.getMajor(), "专业不能为空");
+            }
+
+            @Override
+            public Result<UserVO> execute() {
+                UserInfoBO userInfoBO=new UserInfoBO();
+                userInfoBO.setGrade(request.getGrade());
+                userInfoBO.setClassId(request.getClassId());
+                userInfoBO.setMajor(request.getMajor());
+                userInfoBO.setUserId(request.getUserId());
+                CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
+                        .withUserInfoBO(userInfoBO)
+                        .withUserId(request.getUserId());
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                CommonUserRequest commonUserRequest = builder.build();
+                userService.modifyUserMajorAndClassAndGrade(commonUserRequest, context);
+                return RestResultUtil.buildSuccessResult("信息登记成功");
             }
         });
     }

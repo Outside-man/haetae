@@ -183,7 +183,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\4.14 数据导入2.0.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\4.21数据导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {

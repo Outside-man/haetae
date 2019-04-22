@@ -25,6 +25,7 @@ public interface UserService {
      * 注册用户信息
      *
      * @param request
+     * @param context
      * @return
      */
     CommonUser register(CommonUserRequest request, OperateContext context);
@@ -34,6 +35,7 @@ public interface UserService {
      * 登陆
      *
      * @param request
+     * @param context
      * @return
      */
     CommonUser login(CommonUserRequest request, OperateContext context);
@@ -42,6 +44,7 @@ public interface UserService {
      * 登陆 by token
      *
      * @param request
+     * @param context
      * @return
      */
     CommonUser fetchUser(CommonUserRequest request, OperateContext context);
@@ -50,6 +53,7 @@ public interface UserService {
      * 登出
      *
      * @param request
+     * @param context
      * @return
      */
     void logout(CommonUserRequest request, OperateContext context);
@@ -87,5 +91,7 @@ public interface UserService {
      * @param context
      */
     void modifyUser(CommonUserRequest request, OperateContext context);
+
+    void modifyUserMajorAndClassAndGrade(CommonUserRequest request, OperateContext context);
 }
 

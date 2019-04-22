@@ -61,7 +61,7 @@ final public class UserInfoBOBuilder {
         UserInfoBO userInfoBO = new UserInfoBO();
         userInfoBO.setClassId(classId);
         userInfoBO.setEnrollDate(enrollDate);
-        userInfoBO.setMajorId(majorId);
+        userInfoBO.setMajor(majorId);
         userInfoBO.setRealName(realName);
         userInfoBO.setSex(sex);
         userInfoBO.setStuId(stuId);

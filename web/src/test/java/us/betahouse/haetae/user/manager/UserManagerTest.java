@@ -52,11 +52,14 @@ public class UserManagerTest {
 
     @Test
     public void batchBindRole() {
-        List<String> userIds =Arrays.asList((userInfoRepoService.queryUserInfoByStuId("16921120" ).getUserId()));
+        //List<String> userIds =Arrays.asList((userInfoRepoService.queryUserInfoByStuId("17922236" ).getUserId()));
+        //201811302141390794090001201864
+        List<String> userIds =Arrays.asList("201812032211299963730001201815");
         for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
-            request.setRoleCode(UserRoleCode.PARTY_ACTIVITY_MANAGER);
+            request.setRoleCode(UserRoleCode.VOLUNTEER_WORK_MANAGER);
+
             userManager.batchBindRolByCode(request);
         }
     }
@@ -68,15 +71,12 @@ public class UserManagerTest {
 
     @Test
     public void batchUnbindRole() {
-        List<String> userIds = new ArrayList<>();
-        List<String> roleIds= Arrays.asList("201904120246124297527500020412");
-        for(int i=61;i<=65;i++){
-            userIds.add(userInfoRepoService.queryUserInfoByStuId("Hziee"+i).getUserId());
-        }
+        List<String> userIds = Arrays.asList("201811302141437813470001201835");
+        List<String> roleIds= Arrays.asList("201811302151309605429200021130");
+
         for (String userId : userIds) {
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
-            request.setRoleCode(UserRoleCode.ORGANIZATION_MANAGER);
             request.setRoleIds(roleIds);
             userManager.batchUnbindRole(request);
         }

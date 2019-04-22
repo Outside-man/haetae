@@ -42,6 +42,21 @@ public class UserRequest extends RestRequest {
      */
     private String code;
 
+    /**
+     * 专业号
+     */
+    private String major;
+
+    /**
+     * 班级号
+     */
+    private String classId;
+
+    /**
+     * 年级
+     */
+    private String grade;
+
     public String getUsername() {
         return username;
     }
@@ -80,5 +95,29 @@ public class UserRequest extends RestRequest {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }

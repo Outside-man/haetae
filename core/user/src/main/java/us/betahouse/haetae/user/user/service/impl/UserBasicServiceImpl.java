@@ -141,7 +141,7 @@ public class UserBasicServiceImpl implements UserBasicService {
     @Override
     public void modifyMajorAndClassAndGrade(String userId, String major, String classId, String grade) {
         UserInfoBO userInfoBO=new UserInfoBO();
-        userInfoBO.setMajorId(major);
+        userInfoBO.setMajor(major);
         userInfoBO.setClassId(classId);
         userInfoBO.setGrade(grade);
         userInfoRepoService.modifyUserInfoByUserId(userId, userInfoBO);
