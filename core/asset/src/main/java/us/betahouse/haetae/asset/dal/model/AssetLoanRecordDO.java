@@ -76,7 +76,7 @@ public class AssetLoanRecordDO extends BaseDO {
     /**
      * 报损数量
      */
-    @Column(name = "distory",length = 10)
+    @Column(name = "distory", length = 10)
     private Integer distory;
     /**
      * 备注，用于描述报损情况

@@ -10,8 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>haetae-asset</artifactId>
-
+    <artifactId>haetae-certificate</artifactId>
     <dependencies>
 
         <dependency>
@@ -39,6 +38,5 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
-
 
 </project>

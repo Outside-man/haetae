@@ -23,9 +23,11 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 物资业务实现
@@ -48,6 +50,7 @@ public class AssetServiceImpl implements AssetService {
     @Autowired
     private AssetLoanRecordManager assetLoanRecordManager;
 
+
     @Override
     @VerifyPerm(permType = AssetPermType.ASSET_CREATE)
     @Transactional(rollbackFor = Exception.class)
@@ -69,6 +72,8 @@ public class AssetServiceImpl implements AssetService {
         }
         //创建物资
         AssetBO assetBO = assetManager.create(request);
+        //设置物资归属组织名字
+        assetBO.setAssetOrganizationName(request.getAssetOrganizationName());
         return assetBO;
     }
 
@@ -92,6 +97,7 @@ public class AssetServiceImpl implements AssetService {
             request.setAssetStatus(AssetStatusEnum.ASSET_NOT_LOAN.getCode());
         }
         AssetBO assetBO = assetManager.update(request);
+        addOrganizationName(assetBO);
         return assetBO;
     }
 
@@ -107,13 +113,16 @@ public class AssetServiceImpl implements AssetService {
     @Override
     @VerifyPerm(permType = AssetPermType.ASSET_SEEK)
     public List<AssetBO> findAllAsset(AssetManagerRequest request, OperateContext context) {
-        return assetManager.findAll();
+        List<AssetBO> assetBOList = assetManager.findAll();
+        assetBOList.forEach(this::addOrganizationName);
+        return assetBOList;
     }
 
     @Override
     public AssetBO findAssetByAssetId(AssetManagerRequest request, OperateContext context) {
         AssetBO assetBO = assetManager.findAssetByAssetID(request.getAssetId());
         AssertUtil.assertNotNull(assetBO, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "物资码不存在");
+        addOrganizationName(assetBO);
         return assetBO;
     }
 
@@ -121,6 +130,15 @@ public class AssetServiceImpl implements AssetService {
     @Override
     @VerifyPerm(permType = AssetPermType.ASSET_SEEK)
     public List<AssetBO> queryAssetByOrganizationId(AssetManagerRequest request, OperateContext context) {
-        return assetManager.queryAssetByOrganizationId(request.getAssetOrganizationId());
+        List<AssetBO> assetBOList = assetManager.queryAssetByOrganizationId(request.getAssetOrganizationId());
+        assetBOList.forEach(this::addOrganizationName);
+        return assetBOList;
+    }
+
+    //物资添加归属组织名字
+    void addOrganizationName(AssetBO assetBO) {
+        String organizationId = assetBO.getAssetOrganizationId();
+        String organizationName = organizationRepoService.queryByOrganizationId(organizationId).getOrganizationName();
+        assetBO.setAssetOrganizationName(organizationName);
     }
 }
