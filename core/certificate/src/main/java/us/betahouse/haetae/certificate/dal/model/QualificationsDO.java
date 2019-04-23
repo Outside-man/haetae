@@ -16,7 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "qualifications_certificate_record",
+@Table(name = "certificate_qualifications_record",
         indexes = {
                 @Index(name = "uk_certificate_id", columnList = "certificate_id", unique = true)
         })
