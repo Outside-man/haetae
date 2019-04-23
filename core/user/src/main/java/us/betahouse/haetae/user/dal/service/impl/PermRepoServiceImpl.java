@@ -191,7 +191,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         if (permDOList.size() != permIds.size()) {
             LoggerUtil.warn(LOGGER, "解绑的权限id不存在 permIds={0}, permDOList={1}", permIds, permDOList);
         }
-        rolePermRelationDORepo.deleteAllByRoleIdAndPermIdIn(roleId, permIds);
+        rolePermRelationDORepo.deleteByRoleIdAndPermIdIn(roleId, permIds);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             UserPermRelationBO relation = new UserPermRelationBO();
             relation.setPermId(permDO.getPermId());
             relation.setUserId(userId);
-            // 通过 id 工厂构建关联id
+            // 通过 idfactory 工厂构建关联id
             relation.setUserPermId(userBizIdFactory.getUserPermRelationId(userId, permDO.getPermId()));
             relations.add(RelationConverter.convert(relation));
         }
@@ -252,6 +252,7 @@ public class PermRepoServiceImpl implements PermRepoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void userUnbindPerms(String userId, List<String> permIds) {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
@@ -266,7 +267,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的权限id不存在");
         }
 
-        userPermRelationDORepo.deleteAllByUserIdAndPermIdIn(userId, permIds);
+        userPermRelationDORepo.deleteByUserIdAndPermIdIn(userId, permIds);
 
     }
 
@@ -303,7 +304,7 @@ public class PermRepoServiceImpl implements PermRepoService {
             UserPermRelationBO relation = new UserPermRelationBO();
             relation.setPermId(permId);
             relation.setUserId(userDO.getUserId());
-            // 通过 id 工厂构建关联id
+            // 通过 idfactory 工厂构建关联id
             relation.setUserPermId(userBizIdFactory.getUserPermRelationId(permId, userDO.getUserId()));
             relations.add(RelationConverter.convert(relation));
         }
@@ -325,7 +326,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         if (userDOList.size() != userIds.size()) {
             LoggerUtil.error(LOGGER, "绑定的用户id不存在 userIds={0}, userList={1}", userIds, userDOList);
         }
-        userPermRelationDORepo.deleteAllByPermIdAndUserIdIn(permId, userIds);
+        userPermRelationDORepo.deleteByPermIdAndUserIdIn(permId, userIds);
     }
 
     @Override
@@ -334,7 +335,7 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 获取权限信息
         PermDO permDO = permDORepo.findByPermId(permId);
         AssertUtil.assertNotNull(permDO, "权限不存在");
-        rolePermRelationDORepo.deleteAllByPermId(permId);
+        rolePermRelationDORepo.deleteByPermId(permId);
     }
 
     @Override
@@ -343,7 +344,13 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 获取权限信息
         PermDO permDO = permDORepo.findByPermId(permId);
         AssertUtil.assertNotNull(permDO, "权限不存在");
-        userPermRelationDORepo.deleteAllByPermId(permId);
+        userPermRelationDORepo.deleteByPermId(permId);
+    }
+
+    @Override
+    public void deletePerm(String permId) {
+        AssertUtil.assertStringNotBlank(permId, "权限id不能为空");
+        permDORepo.deleteByPermId(permId);
     }
 
     @Override

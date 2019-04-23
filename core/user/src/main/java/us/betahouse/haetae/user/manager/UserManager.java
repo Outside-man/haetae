@@ -58,4 +58,5 @@ public interface UserManager {
      * @param request
      */
     void batchUnbindPerm(UserManageRequest request);
+
 }

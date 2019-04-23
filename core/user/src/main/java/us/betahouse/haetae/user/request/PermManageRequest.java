@@ -33,7 +33,7 @@ public class PermManageRequest extends BaseRequest {
 
 
     /**
-     * 绑定的权限ids
+     * 绑定的角色ids
      */
     private List<String> roleIds = new ArrayList<>();
 

@@ -78,4 +78,6 @@ public interface ActivityRecordManager {
      * @return
      */
     ActivityRecordBO updateScannerName(String activityRecordId,String scannerName);
+
+    List<ActivityRecordBO> findAll();
 }

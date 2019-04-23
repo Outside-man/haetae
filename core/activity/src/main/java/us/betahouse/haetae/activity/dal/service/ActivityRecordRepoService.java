@@ -92,4 +92,11 @@ public interface ActivityRecordRepoService {
      * @return
      */
     ActivityRecordBO updateScannerName(String activityRecordId,String scannerName);
+
+    /**
+     * 查询所有记录
+     *
+     * @return
+     */
+    List<ActivityRecordBO> findAll();
 }

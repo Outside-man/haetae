@@ -41,14 +41,14 @@ public interface RolePermRelationDORepo extends JpaRepository<RolePermRelationDO
      * @param role
      * @param permIds
      */
-    void deleteAllByRoleIdAndPermIdIn(String role, List<String> permIds);
+    void deleteByRoleIdAndPermIdIn(String role, List<String> permIds);
 
     /**
      * 解除权限的全部角色上的绑定
      *
      * @param permId
      */
-    void deleteAllByPermId(String permId);
+    void deleteByPermId(String permId);
 
     /**
      * 获取角色对应的权限

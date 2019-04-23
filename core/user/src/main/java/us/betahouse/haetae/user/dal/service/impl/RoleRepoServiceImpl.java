@@ -151,6 +151,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void userUnbindRoles(String userId, List<String> roleIds) {
         // 获取用户信息
         UserDO userDO = userDORepo.findByUserId(userId);
@@ -164,7 +165,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             LoggerUtil.error(LOGGER, "解绑的角色id不存在 roleIds={0}, roleList={1}", roleIds, roleDOList);
         }
 
-        userRoleRelationDORepo.deleteAllByUserIdAndRoleIdIn(userId, roleIds);
+        userRoleRelationDORepo.deleteByUserIdAndRoleIdIn(userId, roleIds);
     }
 
     @Override
@@ -210,7 +211,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             UserRoleRelationBO relation = new UserRoleRelationBO();
             relation.setRoleId(roleId);
             relation.setUserId(userDO.getUserId());
-            // 通过 id 工厂构建关联id
+            // 通过 idfactory 工厂构建关联id
             relation.setUserRoleId(userBizIdFactory.getRoleUserRelationId(roleId, userDO.getUserId()));
             relations.add(RelationConverter.convert(relation));
         }
@@ -221,6 +222,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void usersUnbindRole(List<String> userIds, String roleId) {
         RoleDO roleDO = roleDORepo.findByRoleId(roleId);
         AssertUtil.assertNotNull(roleDO, "角色不存在");
@@ -230,7 +232,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
             LoggerUtil.error(LOGGER, "绑定的用户id不存在 userIds={0}, userList={1}", userIds, userDOList);
         }
         // 解绑
-        userRoleRelationDORepo.deleteAllByRoleIdAndUserIdIn(roleId, userIds);
+        userRoleRelationDORepo.deleteByRoleIdAndUserIdIn(roleId, userIds);
     }
 
     @Override
@@ -238,7 +240,7 @@ public class RoleRepoServiceImpl implements RoleRepoService {
     public void detachAllUser(String roleId) {
         RoleDO roleDO = roleDORepo.findByRoleId(roleId);
         AssertUtil.assertNotNull(roleDO, "角色不存在");
-        userRoleRelationDORepo.deleteAllByRoleId(roleId);
+        userRoleRelationDORepo.deleteByRoleId(roleId);
     }
 
     @Override

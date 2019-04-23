@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
-import us.betahouse.haetae.activity.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
-import us.betahouse.haetae.activity.model.basic.OrganizationBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
+import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
+import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermExInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
@@ -90,7 +90,7 @@ public class ActivityServiceImpl implements ActivityService {
         AssertUtil.assertNotNull(activityType, "该活动类型不存在");
 
         AssertUtil.assertStringNotBlank(request.getOrganizationMessage(), "活动主办组织信息不能为空");
-        OrganizationBO organizationBO = organizationRepoService.queryOrganizationByName(request.getOrganizationMessage());
+        OrganizationBO organizationBO = organizationRepoService.queryByOrganizationName(request.getOrganizationMessage());
         AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在, {0}", request.getOrganizationMessage()));
 
 

@@ -3,8 +3,6 @@
   CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.dal.convert;
-import java.util.Date;
-
 import com.alibaba.fastjson.JSON;
 import us.betahouse.haetae.user.dal.model.MajorDO;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
@@ -123,6 +121,7 @@ final public class EntityConverter {
         userInfoBO.setRealName(userInfoDO.getRealName());
         userInfoBO.setSex(userInfoDO.getSex());
         userInfoBO.setMajorId(userInfoDO.getMajorId());
+        userInfoBO.setGrade(userInfoDO.getGrade());
         userInfoBO.setClassId(userInfoDO.getClassId());
         userInfoBO.setEnrollDate(userInfoDO.getEnrollDate());
         userInfoBO.setExtInfo(JSON.parseObject(userInfoDO.getExtInfo(), Map.class));
@@ -147,6 +146,7 @@ final public class EntityConverter {
         userInfoDO.setSex(userInfoBO.getSex());
         userInfoDO.setMajorId(userInfoBO.getMajorId());
         userInfoDO.setClassId(userInfoBO.getClassId());
+        userInfoDO.setGrade(userInfoBO.getGrade());
         userInfoDO.setEnrollDate(userInfoBO.getEnrollDate());
         userInfoDO.setExtInfo(JSON.toJSONString(userInfoBO.getExtInfo()));
         return userInfoDO;

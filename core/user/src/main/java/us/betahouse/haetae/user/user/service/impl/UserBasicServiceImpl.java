@@ -15,6 +15,7 @@ import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
@@ -135,6 +136,15 @@ public class UserBasicServiceImpl implements UserBasicService {
         userBO.setSalt(UUID.randomUUID().toString());
         userBO.setPassword(EncryptUtil.encryptPassword(password, userBO.getSalt()));
         userRepoService.updateUserByUserId(userBO);
+    }
+
+    @Override
+    public void modifyMajorAndClassAndGrade(String userId, String major, String classId, String grade) {
+        UserInfoBO userInfoBO=new UserInfoBO();
+        userInfoBO.setMajorId(major);
+        userInfoBO.setClassId(classId);
+        userInfoBO.setGrade(grade);
+        userInfoRepoService.modifyUserInfoByUserId(userId, userInfoBO);
     }
 
     @Override

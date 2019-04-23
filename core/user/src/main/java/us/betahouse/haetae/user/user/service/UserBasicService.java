@@ -78,6 +78,15 @@ public interface UserBasicService {
     void modifyPassword(String userId, String password);
 
     /**
+     * 修改用户专业班级年级
+     *
+     * @param userId
+     * @param major
+     * @param classId
+     * @param grade
+     */
+    void modifyMajorAndClassAndGrade(String userId,String major,String classId,String grade);
+    /**
      * 修改用户信息
      *
      * @param basicUser

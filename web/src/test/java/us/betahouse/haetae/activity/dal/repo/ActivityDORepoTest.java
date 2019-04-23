@@ -1,6 +1,5 @@
 package us.betahouse.haetae.activity.dal.repo;
 
-import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
-import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -22,8 +20,6 @@ import us.betahouse.util.utils.CsvUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

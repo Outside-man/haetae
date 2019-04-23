@@ -22,22 +22,17 @@
         <module>util</module>
         <module>core/user</module>
         <module>core/activity</module>
-        <module>biz/impl</module>
-        <module>web</module>
         <module>core/asset</module>
         <module>core/finance</module>
+        <module>core/organization</module>
+        <module>biz/impl</module>
+        <module>web</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
 
             <!-- 子模块 start -->
-            <!--工具类-->
-            <dependency>
-                <groupId>us.betahouse</groupId>
-                <artifactId>util</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
             <!--core 层-->
             <dependency>
                 <groupId>us.betahouse</groupId>
@@ -57,6 +52,11 @@
             <dependency>
                 <groupId>us.betahouse</groupId>
                 <artifactId>haetae-finance</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-organization</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!--biz 层-->

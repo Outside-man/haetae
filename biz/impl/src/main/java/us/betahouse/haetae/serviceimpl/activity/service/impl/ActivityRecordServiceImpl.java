@@ -111,7 +111,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
                 .map(ActivityRecordBO::getActivityId).collect(Collectors.toSet());
 
         // 活动map
-        Map<String, ActivityBO> activityMap = new HashMap<>();
+        Map<String, ActivityBO> activityMap = new HashMap<>(16);
         for (String activityId : activityIds) {
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityId);
             if (activityBO == null) {
@@ -176,6 +176,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         List<String> notStampStuIds = new ArrayList<>();
 
         for(int i=1;i<csv.length;i++){
+            System.out.println(i+" "+csv[i][0]);
             if(StringUtils.isBlank(csv[i][0])){
                 break;
             }
@@ -194,7 +195,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
             request.setStatus("ENABLE");
             request.setTerm(activityBO.getTerm());
             List<String> inList=new ArrayList<>();
-            inList.add(stuId);
+            inList.add(userInfoBO.getUserId());
             stampManager.batchStamp(request, inList);
             activityBO.setState(ActivityStateEnum.FINISHED.getCode());
             activityRepoService.updateActivity(activityBO);
