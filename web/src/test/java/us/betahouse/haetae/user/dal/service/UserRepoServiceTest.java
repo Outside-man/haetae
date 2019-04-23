@@ -28,8 +28,8 @@ public class UserRepoServiceTest {
 
     @Test
     public void updateUser() {
-        UserBO userBO = userRepoService.queryByUserName("17911224");
-        userBO.setPassword(EncryptUtil.encryptPassword("Hziee17911224", userBO.getSalt()));
+        UserBO userBO = userRepoService.queryByUserName("189090132");
+        userBO.setPassword(EncryptUtil.encryptPassword("Hziee189090132", userBO.getSalt()));
         userRepoService.updateUserByUserId(userBO);
         System.out.println(userBO);
     }
