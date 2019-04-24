@@ -20,10 +20,7 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 资格证书管理器实现
@@ -146,19 +143,32 @@ public class CertificateManagerImpl implements CertificateManager {
 
     @Override
     public CertificateBO modifyQualifications(CertificateManagerRequest request) {
-        return null;
+        //类型再判断一次吧 然后拓展信息再判断一次
+        CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(request.getType());
+        AssertUtil.assertNotNull(certificateTypeEnum, "证书类型不存在");
+        if (certificateTypeEnum == CertificateTypeEnum.TEACHER_QUALIFICATIONS) {
+            AssertUtil.assertNotNull(request.getExtInfo().get(CertificateExtInfoKey.TEACHER_LEVEL.getCode()), "教师资格等地不能为空");
+            AssertUtil.assertNotNull(request.getExtInfo().get(CertificateExtInfoKey.TEACHER_SUBJECT.getCode()), "教师资格学科不能为空");
+        }
+        CertificateBO certificateBO = new CertificateBO();
+        certificateBO.setCertificateId(request.getCertificateId());
+        certificateBO.setType(request.getType());
+        certificateBO.setCertificateName(request.getCertificateName());
+        certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
+        certificateBO.setCertificateOrganization(request.getCertificateOrganization());
+        certificateBO = setExtInfos(certificateBO, request);
+        certificateBO = qualificationsRepoService.modify(certificateBO);
+        return certificateBO;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CertificateBO modifyCompetition(CertificateManagerRequest request) {
         AssertUtil.assertNotNull(request.getWorkUserId(), "学号字段不能为空");
         //目前团队成员人数限制不能超过五个人,把自己的学号也要填进去 方便多条记录队友属性统一字段
         AssertUtil.assertTrue(request.getWorkUserId().size() <= 5, "队友人数不能超过五个人");
         //修改证书信息 传入参数 全部修改 然后队友如果改变 新队友复制一份 旧队友删除
         CertificateBO certificateBO = new CertificateBO();
-        if (request.getTeacher() != null) {
-            certificateBO.setTeacher(request.getTeacher());
-        }
         certificateBO.setCompetitionName(request.getCompetitionName());
         certificateBO.setRank(request.getRank());
         certificateBO.setTeamName(request.getTeamName());
@@ -166,77 +176,66 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setWorkUserId(request.getWorkUserId());
         certificateBO.setTeamId(request.getTeamId());
-        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //放入拓展信息
         certificateBO = setExtInfos(certificateBO, request);
-        //当前用户是否是队员
-        boolean includeUserId = false;
-        //缺少队员的id信息
-        String newUserId="";
-        CertificateBO thisCertificate = new CertificateBO();
+        //放入指导老师信息
+        if (request.getTeacher() != null) {
+            certificateBO.setTeacher(request.getTeacher());
+        }
         //获取原来竞赛团队的证书信息
         List<CertificateBO> certificateBOS = competitionRepoService.queryByTeamId(request.getTeamId());
-        //遍历每个竞赛证书 将传入队友id逐个与证书id进行比对 少则删 缺则创
-        for (CertificateBO certificateBO1 : certificateBOS) {
-            boolean flat = false;
-            //证书记录用户id和 传入参数用户id 一对多比较
-            for (String userid : request.getWorkUserId()) {
-                if (certificateBO1.getUserId().equals(userid)) {
-                    flat = true;
-                    break;
-                }
-                newUserId=userid;
-            }
-            //队友id和证书用户id 未匹配删除   创建新用户记录
-            if (!flat) {
-                //删除旧记录
-                competitionRepoService.delete(certificateBO1.getCertificateId());
-                //添加新记录  添加学号
-                certificateBO.setUserId(newUserId);
-                certificateBO.setCertificateId(null);
-                competitionRepoService.create(certificateBO);
-            }
-            //更新老记录
-            else{
-                certificateBO.setCertificateId(certificateBO1.getCertificateId());
-                //用户userid与certificate绑定不修改
-                competitionRepoService.modify(certificateBO);
-            }
+        //旧团队成员id信息
+        List<String> oldUserId = new ArrayList<>();
+        certificateBOS.forEach(certificateBO1 -> {
+            oldUserId.add(certificateBO1.getUserId());
+        });
+        List<String> remainUserId = new ArrayList<>(oldUserId);
+        //新团队成员id信息
+        List<String> newUserId = new ArrayList<>(request.getWorkUserId());
+        List<String> newUserId1 = new ArrayList<>(request.getWorkUserId());
+        //新成员id信息（添加） newUserdId 中保存的是创建的新成员userid
+        newUserId.removeAll(oldUserId);
+        //旧成员id信息 （删除）
+        oldUserId.removeAll(newUserId1);
+        //旧成员id信息 （更改）
+        remainUserId.removeAll(oldUserId);
+        //获取旧版用户证书BO
+        CertificateBO oldCertificateBO = competitionRepoService.queryByCertificateId(request.getCertificateId());
+        //更新成员
+        for (int i = 0; i < remainUserId.size(); i++) {
+            //获取更新证书id
+            String certificateId = competitionRepoService.queryByUserIdAndTeamId(remainUserId.get(i), request.getTeamId()).getCertificateId();
+            certificateBO.setCertificateId(certificateId);
+            competitionRepoService.modify(certificateBO);
         }
-//        for (String userid : request.getWorkUserId()) {
-//            if (competitionRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), userid) == null) {
-//                certificateBO.setUserId(userid);
-//                certificateBO.setCertificateId(null);
-//                certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
-//                competitionRepoService.create(certificateBO);
-//            } else {
-//                certificateBO.setUserId(userid);
-//                certificateBO.setCertificateId(request.getCertificateId());
-//                competitionRepoService.modify(certificateBO);
-//            }
-//            if (certificateBO.getUserId().equals(request.getUserId())) {
-//                thisCertificate = certificateBO;
-//                includeUserId = true;
-//            }
-//        }
-        //返回该用户证书记录
-        for(String userid:request.getWorkUserId()){
-            if (certificateBO.getUserId().equals(request.getUserId())) {
-                thisCertificate = certificateBO;
-                includeUserId = true;
-            }
+        //删除成员
+        System.out.println("删除成员个数"+oldUserId.size());
+        for (int i = 0; i < oldUserId.size(); i++) {
+            String certificateId = competitionRepoService.queryByUserIdAndTeamId(oldUserId.get(i), request.getTeamId()).getCertificateId();
+            competitionRepoService.delete(certificateId);
         }
-        AssertUtil.assertTrue(includeUserId, "只能由竞赛成员创建记录");
-        return thisCertificate;
+        //添加成员
+        for (int i = 0; i < newUserId.size(); i++) {
+            certificateBO.setUserId(newUserId.get(i));
+            certificateBO.setCertificateId(null);
+            certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
+            competitionRepoService.create(certificateBO);
+        }
+        return certificateBO;
     }
 
     @Override
     public CertificateBO modifySkill(CertificateManagerRequest request) {
-        CertificateBO certificateBO=new CertificateBO();
-        certificateBO.setCertificateId(request.getUserId());
+        CertificateBO certificateBO = new CertificateBO();
+        certificateBO.setCertificateId(request.getCertificateId());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
-
-        skillRepoService.modify(certificateBO);
+        certificateBO.setCertificateName(request.getCertificateName());
+        certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
+        certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
+        certificateBO.setRank(request.getRank());
+        //设置拓展信息
+        certificateBO = setExtInfos(certificateBO, request);
+        certificateBO = skillRepoService.modify(certificateBO);
         return certificateBO;
     }
 

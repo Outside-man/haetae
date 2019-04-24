@@ -150,6 +150,11 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public CertificateBO queryByUserIdAndTeamId(String userId, String teamId) {
+        return convert(competitionDORepo.findByUserIdAndTeamId(userId,teamId));
+    }
+
     /**
      * 竞赛证书DO2B0
      *
@@ -170,6 +175,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .withCertificatePublishTime(competitionDO.getCertificatePublishTime())
                 .withTeamName(competitionDO.getTeamName())
                 .withStatus(competitionDO.getStatus())
+                .withUserID(competitionDO.getUserId())
                 .withWorkUserId(JSON.parseObject(competitionDO.getWorkersUserId(), List.class))
                 .withExtInfo(JSON.parseObject(competitionDO.getExtInfo(), Map.class))
                 .withTeacher(JSON.parseObject(competitionDO.getTeacher(), List.class));

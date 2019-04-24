@@ -124,7 +124,18 @@ public class CertificateServiceImpl implements CertificateService {
             case COMPETITION: {
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
+                AssertUtil.assertNotNull(request.getTeamId(), "团队比赛id不能为空");
+                System.out.println("cp+biz" + request.getWorkUserId());
+                //stuid转userid
+                List<String> userIds = new ArrayList<>();
+                request.getWorkUserId().forEach(stuId -> {
+                    UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
+                    AssertUtil.assertNotNull(userInfoBO, "队员id不存在");
+                    userIds.add(userInfoBO.getUserId());
+                });
+                request.setWorkUserId(userIds);
                 certificateBO = certificateManager.modifyCompetition(request);
+                //显示 userid转stuid
                 competitionUserIdCovert(certificateBO);
                 break;
             }

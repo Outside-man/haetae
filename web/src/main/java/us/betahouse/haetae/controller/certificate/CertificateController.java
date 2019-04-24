@@ -148,6 +148,7 @@ public class CertificateController {
                         .withWorkUserId(request.getWorkUserId())
                         .withExpirationTime(request.getExpirationTime())
                         .withTeamName(request.getTeamName())
+                        .withTeamId(request.getTeamId())
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
                         .withExtInfo(request.getExtInfo());

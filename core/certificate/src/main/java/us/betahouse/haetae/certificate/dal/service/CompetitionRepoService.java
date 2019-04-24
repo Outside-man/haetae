@@ -88,6 +88,7 @@ public interface CompetitionRepoService {
      * @return
      */
     CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId);
+
     /**
      * 通过证书名字与用户id获取证书
      *
@@ -96,4 +97,13 @@ public interface CompetitionRepoService {
      * @return
      */
     List<CertificateBO> queryByCertificateNameAndUserId(String certificateName, String userId);
+
+    /**
+     * 通过userId和teamId获取证书
+     *
+     * @param userId
+     * @param teamId
+     * @return
+     */
+    CertificateBO queryByUserIdAndTeamId(String userId, String teamId);
 }

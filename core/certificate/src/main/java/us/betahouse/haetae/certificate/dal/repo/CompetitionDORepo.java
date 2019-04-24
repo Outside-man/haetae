@@ -40,6 +40,14 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
     CompetitionDO findByCertificateIdAndUserId(String certificateId, String userId);
 
     /**
+     * 通过userId和团队id获取证书
+     *
+     * @param userId
+     * @param teamId
+     * @return
+     */
+    CompetitionDO findByUserIdAndTeamId(String userId,String teamId);
+    /**
      * 通过证书id删除证书
      *
      * @param certificateId
@@ -78,4 +86,6 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
      * @return
      */
     List<CompetitionDO> findByTeamId(String teamId);
+
+
 }
