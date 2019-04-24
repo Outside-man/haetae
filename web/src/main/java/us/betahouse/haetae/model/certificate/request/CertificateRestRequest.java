@@ -77,6 +77,14 @@ public class CertificateRestRequest extends RestRequest {
      * 学科竞赛 团队id
      */
     private String teamId;
+    /**
+     * 成绩
+     */
+    private String certificateGrade;
+    /**
+     * 准考证
+     */
+    private String certificateTicket;
 
     public String getCertificateId() {
         return certificateId;
@@ -196,5 +204,21 @@ public class CertificateRestRequest extends RestRequest {
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public String getCertificateGrade() {
+        return certificateGrade;
+    }
+
+    public void setCertificateGrade(String certificateGrade) {
+        this.certificateGrade = certificateGrade;
+    }
+
+    public String getCertificateTicket() {
+        return certificateTicket;
+    }
+
+    public void setCertificateTicket(String certificateTicket) {
+        this.certificateTicket = certificateTicket;
     }
 }

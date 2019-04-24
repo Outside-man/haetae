@@ -93,6 +93,13 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getStatus() != null) {
             qualificationsDO.setStatus(newQualificationDO.getStatus());
         }
+        //更新证书成绩
+        if (newQualificationDO.getCertificateGrade() != null) {
+            qualificationsDO.setCertificateGrade(newQualificationDO.getCertificateGrade());
+        }
+        if (newQualificationDO.getCertificateTicket() != null) {
+            certificateBO.setCertificateTicket(newQualificationDO.getCertificateTicket());
+        }
         //更新修改时间
         qualificationsDO.setGmtModified(new Date());
         return convert(qualificationsDORepo.save(qualificationsDO));
@@ -146,12 +153,15 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(qualificationsDO.getCertificateId())
                 .withCertificateName(qualificationsDO.getCertificateName())
+                .withUserID(qualificationsDO.getUserId())
                 .withCertificateOrganization(qualificationsDO.getCertificateOrganization())
                 .withCertificatePublishTime(qualificationsDO.getCertificatePublishTime())
                 .withCertificateType(CertificateTypeEnum.QUALIFICATIONS.getCode())
                 .withCertificateNumber(qualificationsDO.getCertificateNumber())
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
+                .withCertificateGrade(qualificationsDO.getCertificateGrade())
+                .withCertificateTicket(qualificationsDO.getCertificateTicket())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
         return builder.build();
     }
@@ -175,6 +185,8 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
         qualificationsDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         qualificationsDO.setType(certificateBO.getType());
+        qualificationsDO.setCertificateGrade(certificateBO.getCertificateGrade());
+        qualificationsDO.setCertificateTicket(certificateBO.getCertificateTicket());
         qualificationsDO.setStatus(certificateBO.getStatus());
         return qualificationsDO;
     }

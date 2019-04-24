@@ -86,6 +86,14 @@ public class CertificateBO extends ToString {
      */
     private String teamId;
     /**
+     * 成绩
+     */
+    private String certificateGrade;
+    /**
+     * 准考证
+     */
+    private String certificateTicket;
+    /**
      * 指导老师
      */
     private List<Map<String, String>> teacher;
@@ -254,5 +262,21 @@ public class CertificateBO extends ToString {
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public String getCertificateGrade() {
+        return certificateGrade;
+    }
+
+    public void setCertificateGrade(String certificateGrade) {
+        this.certificateGrade = certificateGrade;
+    }
+
+    public String getCertificateTicket() {
+        return certificateTicket;
+    }
+
+    public void setCertificateTicket(String certificateTicket) {
+        this.certificateTicket = certificateTicket;
     }
 }

@@ -71,6 +71,9 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
             LoggerUtil.error(LOGGER, "更新竞赛证书不存在 certificate={0}", certificateBO.getCertificateId());
         }
         CompetitionDO newCompetitionDO = convert(certificateBO);
+        if (newCompetitionDO.getCertificateId() != null) {
+            competitionDO.setCertificateId(newCompetitionDO.getCertificateId());
+        }
         //更新名称
         if (newCompetitionDO.getCompetitionName() != null) {
             competitionDO.setCompetitionName(newCompetitionDO.getCompetitionName());
@@ -95,13 +98,13 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (newCompetitionDO.getWorkersUserId() != null) {
             competitionDO.setWorkersUserId(newCompetitionDO.getWorkersUserId());
         }
-        //更新证书状态
-        if (newCompetitionDO.getStatus() != null) {
-            competitionDO.setStatus(newCompetitionDO.getStatus());
-        }
         //更新额外信息
         if (newCompetitionDO.getExtInfo() != null) {
             competitionDO.setExtInfo(newCompetitionDO.getExtInfo());
+        }
+        //更新证书状态
+        if (newCompetitionDO.getStatus() != null) {
+            competitionDO.setStatus(newCompetitionDO.getStatus());
         }
         //更新修改时间
         competitionDO.setGmtModified(new Date());
@@ -140,6 +143,11 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     @Override
     public CertificateBO queryByCertificateIdAndUserId(String certificateId, String userId) {
         return convert(competitionDORepo.findByCertificateIdAndUserId(certificateId, userId));
+    }
+
+    @Override
+    public CertificateBO queryByTeamIdAndUserId(String teamId, String userId) {
+        return convert(competitionDORepo.findByUserIdAndTeamId(userId, teamId));
     }
 
     @Override

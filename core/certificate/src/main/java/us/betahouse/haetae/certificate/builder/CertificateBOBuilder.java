@@ -91,6 +91,14 @@ final public class CertificateBOBuilder {
      * 竞赛证书团队id
      */
     private String teamId;
+    /**
+     * 成绩
+     */
+    private String certificateGrade;
+    /**
+     * 准考证
+     */
+    private String certificateTicket;
 
     public static CertificateBOBuilder getInstance() {
         return new CertificateBOBuilder();
@@ -116,6 +124,8 @@ final public class CertificateBOBuilder {
         certificateBO.setTeacher(teacher);
         certificateBO.setTeamName(teamName);
         certificateBO.setTeamId(teamId);
+        certificateBO.setCertificateGrade(certificateGrade);
+        certificateBO.setCertificateTicket(certificateTicket);
         return certificateBO;
     }
 
@@ -138,10 +148,11 @@ final public class CertificateBOBuilder {
         return this;
     }
 
-    public CertificateBOBuilder withStatus(String status){
-        this.status=status;
+    public CertificateBOBuilder withStatus(String status) {
+        this.status = status;
         return this;
     }
+
     public CertificateBOBuilder withUserID(String userId) {
         this.userId = userId;
         return this;
@@ -211,8 +222,19 @@ final public class CertificateBOBuilder {
         this.extInfo = extInfo;
         return this;
     }
-    public CertificateBOBuilder withTeamID(String teamId){
-        this.teamId=teamId;
+
+    public CertificateBOBuilder withTeamID(String teamId) {
+        this.teamId = teamId;
+        return this;
+    }
+
+    public CertificateBOBuilder withCertificateGrade(String certificateGrade) {
+        this.certificateGrade = certificateGrade;
+        return this;
+    }
+
+    public CertificateBOBuilder withCertificateTicket(String certificateTicket) {
+        this.certificateTicket = certificateTicket;
         return this;
     }
 }

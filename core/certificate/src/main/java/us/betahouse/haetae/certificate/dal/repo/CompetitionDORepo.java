@@ -86,6 +86,4 @@ public interface CompetitionDORepo extends JpaRepository<CompetitionDO, Long> {
      * @return
      */
     List<CompetitionDO> findByTeamId(String teamId);
-
-
 }

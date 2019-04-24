@@ -39,9 +39,13 @@ public enum CertificateTypeEnum {
      */
     TEACHER_QUALIFICATIONS("Teacher", "教师资格证书"),
     /**
-     * 资格证书(四六级)
+     * 资格证书(四级)
      */
-    BAND_4_6("band_4_6","四六级证书");
+    CET_4("CET_4","四级证书"),
+    /**
+     * 资格证书(六级)
+     */
+    CET_6("CET_6","六级证书");;
     /**
      * 状态id
      */

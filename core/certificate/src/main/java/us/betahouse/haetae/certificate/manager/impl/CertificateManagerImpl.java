@@ -75,6 +75,16 @@ public class CertificateManagerImpl implements CertificateManager {
                 certificateBO = qualificationsRepoService.create(certificateBO);
                 return certificateBO;
             }
+            case CET_4:
+            case CET_6:{
+                AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
+                certificateBO.setCertificateGrade(request.getCertificateGrade());
+                if(request.getCertificateTicket() != null){
+                    certificateBO.setCertificateTicket(request.getCertificateTicket());
+                }
+                certificateBO = qualificationsRepoService.create(certificateBO);
+                return certificateBO;
+            }
             //异常
             default: {
                 throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS, "资格证书归属类别不存在");
@@ -146,10 +156,6 @@ public class CertificateManagerImpl implements CertificateManager {
         //类型再判断一次吧 然后拓展信息再判断一次
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(request.getType());
         AssertUtil.assertNotNull(certificateTypeEnum, "证书类型不存在");
-        if (certificateTypeEnum == CertificateTypeEnum.TEACHER_QUALIFICATIONS) {
-            AssertUtil.assertNotNull(request.getExtInfo().get(CertificateExtInfoKey.TEACHER_LEVEL.getCode()), "教师资格等地不能为空");
-            AssertUtil.assertNotNull(request.getExtInfo().get(CertificateExtInfoKey.TEACHER_SUBJECT.getCode()), "教师资格学科不能为空");
-        }
         CertificateBO certificateBO = new CertificateBO();
         certificateBO.setCertificateId(request.getCertificateId());
         certificateBO.setType(request.getType());
@@ -157,8 +163,36 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO = setExtInfos(certificateBO, request);
-        certificateBO = qualificationsRepoService.modify(certificateBO);
-        return certificateBO;
+        switch (certificateTypeEnum) {
+            //国际资格证书  参数同普通证书相同
+            case INTERNATIONAL_QUALIFICATIONS:
+                //普通资格证书
+            case NORMAL_QUALIFICATIONS: {
+                certificateBO = qualificationsRepoService.modify(certificateBO);
+                return certificateBO;
+            }
+            //教师资格证书
+            case TEACHER_QUALIFICATIONS: {
+                AssertUtil.assertNotNull(request.getExtInfo().get(CertificateExtInfoKey.TEACHER_LEVEL.getCode()), "教师资格证,学科不能为空");
+                AssertUtil.assertNotNull(request.getExtInfo().get(CertificateExtInfoKey.TEACHER_SUBJECT.getCode()), "教师资格证,教师等级不能为空");
+                //教师资格证书额外属性添加教师资格等级/学科
+                certificateBO.putExtInfo(CertificateExtInfoKey.TEACHER_LEVEL.getCode(), request.getExtInfo().get(CertificateExtInfoKey.TEACHER_LEVEL.getCode()));
+                certificateBO.putExtInfo(CertificateExtInfoKey.TEACHER_SUBJECT.getCode(), request.getExtInfo().get(CertificateExtInfoKey.TEACHER_SUBJECT.getCode()));
+                certificateBO = qualificationsRepoService.modify(certificateBO);
+                return certificateBO;
+            }
+            case CET_4:
+            case CET_6: {
+                AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
+                certificateBO.setCertificateGrade(request.getCertificateGrade());
+                certificateBO = qualificationsRepoService.modify(certificateBO);
+                return certificateBO;
+            }
+            //异常
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS, "资格证书归属类别不存在");
+            }
+        }
     }
 
     @Override

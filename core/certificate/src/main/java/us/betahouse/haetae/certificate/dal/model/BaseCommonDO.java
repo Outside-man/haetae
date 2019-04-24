@@ -49,6 +49,10 @@ public abstract class BaseCommonDO extends BaseDO {
     @Column(name = "confirm_user_id", length = 32)
     private String confirmUserId;
 
+    /**
+     * 准考证号
+     */
+
     public String getCertificateId() {
         return certificateId;
     }

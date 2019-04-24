@@ -94,7 +94,14 @@ public class CertificateManagerRequest extends BaseRequest {
      * 团队编号
      */
     private String teamId;
-
+    /**
+     * 成绩
+     */
+    private String certificateGrade;
+    /**
+     * 准考证
+     */
+    private String certificateTicket;
     /**
      * 指导老师
      */
@@ -234,5 +241,21 @@ public class CertificateManagerRequest extends BaseRequest {
 
     public void setTeacher(List<Map<String, String>> teacher) {
         this.teacher = teacher;
+    }
+
+    public String getCertificateGrade() {
+        return certificateGrade;
+    }
+
+    public void setCertificateGrade(String certificateGrade) {
+        this.certificateGrade = certificateGrade;
+    }
+
+    public String getCertificateTicket() {
+        return certificateTicket;
+    }
+
+    public void setCertificateTicket(String certificateTicket) {
+        this.certificateTicket = certificateTicket;
     }
 }
