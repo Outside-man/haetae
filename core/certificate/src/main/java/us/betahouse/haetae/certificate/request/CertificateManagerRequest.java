@@ -99,10 +99,6 @@ public class CertificateManagerRequest extends BaseRequest {
      */
     private String certificateGrade;
     /**
-     * 准考证
-     */
-    private String certificateTicket;
-    /**
      * 指导老师
      */
     private List<Map<String, String>> teacher;
@@ -249,13 +245,5 @@ public class CertificateManagerRequest extends BaseRequest {
 
     public void setCertificateGrade(String certificateGrade) {
         this.certificateGrade = certificateGrade;
-    }
-
-    public String getCertificateTicket() {
-        return certificateTicket;
-    }
-
-    public void setCertificateTicket(String certificateTicket) {
-        this.certificateTicket = certificateTicket;
     }
 }

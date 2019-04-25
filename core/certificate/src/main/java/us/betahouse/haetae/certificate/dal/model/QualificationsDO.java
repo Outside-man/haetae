@@ -50,12 +50,6 @@ public class QualificationsDO extends BaseCommonDO {
     @Column(name = "certificate_grade", length = 3)
     private String certificateGrade;
 
-    /**
-     * 准考证
-     */
-    @Column(name = "certificate_ticket", length = 40)
-    private String certificateTicket;
-
     public String getType() {
         return type;
     }
@@ -94,13 +88,5 @@ public class QualificationsDO extends BaseCommonDO {
 
     public void setCertificateGrade(String certificateGrade) {
         this.certificateGrade = certificateGrade;
-    }
-
-    public String getCertificateTicket() {
-        return certificateTicket;
-    }
-
-    public void setCertificateTicket(String certificateTicket) {
-        this.certificateTicket = certificateTicket;
     }
 }

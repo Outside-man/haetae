@@ -79,9 +79,6 @@ public class CertificateManagerImpl implements CertificateManager {
             case CET_6:{
                 AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
                 certificateBO.setCertificateGrade(request.getCertificateGrade());
-                if(request.getCertificateTicket() != null){
-                    certificateBO.setCertificateTicket(request.getCertificateTicket());
-                }
                 certificateBO = qualificationsRepoService.create(certificateBO);
                 return certificateBO;
             }
@@ -101,7 +98,6 @@ public class CertificateManagerImpl implements CertificateManager {
         }
         certificateBO.setCertificateType(CertificateTypeEnum.COMPETITION.getCode());
         certificateBO.setCompetitionName(request.getCompetitionName());
-        certificateBO.setRank(request.getRank());
         certificateBO.setTeamName(request.getTeamName());
         certificateBO.setUserId(request.getUserId());
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
@@ -243,7 +239,6 @@ public class CertificateManagerImpl implements CertificateManager {
             competitionRepoService.modify(certificateBO);
         }
         //删除成员
-        System.out.println("删除成员个数"+oldUserId.size());
         for (int i = 0; i < oldUserId.size(); i++) {
             String certificateId = competitionRepoService.queryByUserIdAndTeamId(oldUserId.get(i), request.getTeamId()).getCertificateId();
             competitionRepoService.delete(certificateId);
@@ -255,6 +250,7 @@ public class CertificateManagerImpl implements CertificateManager {
             certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
             competitionRepoService.create(certificateBO);
         }
+        certificateBO.setUserId(request.getUserId());
         return certificateBO;
     }
 

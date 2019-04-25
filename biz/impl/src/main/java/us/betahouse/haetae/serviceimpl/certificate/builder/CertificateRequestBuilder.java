@@ -94,10 +94,6 @@ final public class CertificateRequestBuilder {
      * 成绩
      */
     private String certificateGrade;
-    /**
-     * 准考证
-     */
-    private String certificateTicket;
     public static CertificateRequestBuilder getInstance() {
         return new CertificateRequestBuilder();
     }
@@ -123,7 +119,6 @@ final public class CertificateRequestBuilder {
         request.setWorkUserId(workUserId);
         request.setTeamId(teamId);
         request.setCertificateGrade(certificateGrade);
-        request.setCertificateTicket(certificateTicket);
         return request;
     }
 
@@ -221,11 +216,6 @@ final public class CertificateRequestBuilder {
     }
     public CertificateRequestBuilder withCertificateGrade(String certificateGrade) {
         this.certificateGrade = certificateGrade;
-        return this;
-    }
-
-    public CertificateRequestBuilder withCertificateTicket(String certificateTicket) {
-        this.certificateTicket = certificateTicket;
         return this;
     }
 }
