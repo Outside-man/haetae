@@ -95,10 +95,6 @@ final public class CertificateBOBuilder {
      * 成绩
      */
     private String certificateGrade;
-    /**
-     * 准考证
-     */
-    private String certificateTicket;
 
     public static CertificateBOBuilder getInstance() {
         return new CertificateBOBuilder();
@@ -125,7 +121,6 @@ final public class CertificateBOBuilder {
         certificateBO.setTeamName(teamName);
         certificateBO.setTeamId(teamId);
         certificateBO.setCertificateGrade(certificateGrade);
-        certificateBO.setCertificateTicket(certificateTicket);
         return certificateBO;
     }
 
@@ -233,9 +228,5 @@ final public class CertificateBOBuilder {
         return this;
     }
 
-    public CertificateBOBuilder withCertificateTicket(String certificateTicket) {
-        this.certificateTicket = certificateTicket;
-        return this;
-    }
 }
 

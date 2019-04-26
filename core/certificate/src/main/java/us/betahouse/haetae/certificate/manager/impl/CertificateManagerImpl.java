@@ -81,9 +81,6 @@ public class CertificateManagerImpl implements CertificateManager {
             case CET_6:{
                 AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
                 certificateBO.setCertificateGrade(request.getCertificateGrade());
-                if(request.getCertificateTicket() != null){
-                    certificateBO.setCertificateTicket(request.getCertificateTicket());
-                }
                 certificateBO = qualificationsRepoService.create(certificateBO);
                 return certificateBO;
             }

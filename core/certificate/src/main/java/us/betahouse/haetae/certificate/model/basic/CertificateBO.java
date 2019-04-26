@@ -89,10 +89,7 @@ public class CertificateBO extends ToString {
      * 成绩
      */
     private String certificateGrade;
-    /**
-     * 准考证
-     */
-    private String certificateTicket;
+
     /**
      * 指导老师
      */
@@ -272,11 +269,4 @@ public class CertificateBO extends ToString {
         this.certificateGrade = certificateGrade;
     }
 
-    public String getCertificateTicket() {
-        return certificateTicket;
-    }
-
-    public void setCertificateTicket(String certificateTicket) {
-        this.certificateTicket = certificateTicket;
-    }
 }
