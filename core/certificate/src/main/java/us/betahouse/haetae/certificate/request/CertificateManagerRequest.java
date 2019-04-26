@@ -246,4 +246,5 @@ public class CertificateManagerRequest extends BaseRequest {
     public void setCertificateGrade(String certificateGrade) {
         this.certificateGrade = certificateGrade;
     }
+
 }

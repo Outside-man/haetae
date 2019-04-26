@@ -50,6 +50,8 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateName(request.getCertificateName());
         certificateBO.setType(request.getType());
         certificateBO.setUserId(request.getUserId());
+        certificateBO.setRank(request.getRank());
+        System.out.println("cp"+request.getRank());
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setCertificateNumber(request.getCertificateNumber());
@@ -158,6 +160,8 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateName(request.getCertificateName());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
+        certificateBO.setRank(request.getRank());
+        certificateBO.setCertificateNumber(request.getCertificateNumber());
         certificateBO = setExtInfos(certificateBO, request);
         switch (certificateTypeEnum) {
             //国际资格证书  参数同普通证书相同
@@ -261,10 +265,13 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateNumber(request.getCertificateNumber());
         certificateBO.setCertificateName(request.getCertificateName());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
-        certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
         certificateBO.setRank(request.getRank());
         //设置拓展信息
         certificateBO = setExtInfos(certificateBO, request);
+        //技能证书有效期
+        if(request.getExpirationTime()!=null){
+            certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
+        }
         certificateBO = skillRepoService.modify(certificateBO);
         return certificateBO;
     }

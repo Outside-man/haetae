@@ -227,5 +227,6 @@ final public class CertificateBOBuilder {
         this.certificateGrade = certificateGrade;
         return this;
     }
+
 }
 

@@ -209,4 +209,5 @@ public class CertificateRestRequest extends RestRequest {
     public void setCertificateGrade(String certificateGrade) {
         this.certificateGrade = certificateGrade;
     }
+
 }

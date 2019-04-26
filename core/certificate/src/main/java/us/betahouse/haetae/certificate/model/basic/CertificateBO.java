@@ -90,6 +90,7 @@ public class CertificateBO extends ToString {
      */
     private String certificateGrade;
     /**
+    /**
      * 指导老师
      */
     private List<Map<String, String>> teacher;
@@ -267,4 +268,5 @@ public class CertificateBO extends ToString {
     public void setCertificateGrade(String certificateGrade) {
         this.certificateGrade = certificateGrade;
     }
+
 }

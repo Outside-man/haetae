@@ -93,6 +93,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getStatus() != null) {
             qualificationsDO.setStatus(newQualificationDO.getStatus());
         }
+        //更新证书等级
+        if (newQualificationDO.getRank() != null) {
+            qualificationsDO.setRank(newQualificationDO.getRank());
+        }
         //更新证书成绩
         if (newQualificationDO.getCertificateGrade() != null) {
             qualificationsDO.setCertificateGrade(newQualificationDO.getCertificateGrade());
@@ -164,6 +168,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .withCertificateNumber(qualificationsDO.getCertificateNumber())
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
+                .withRank(qualificationsDO.getRank())
                 .withCertificateGrade(qualificationsDO.getCertificateGrade())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
         return builder.build();
