@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.certificate.builder.CertificateBOBuilder;
+import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -183,7 +184,7 @@ public class CertificateController {
                         .withTeamId(request.getTeamId())
                         .withUserID(request.getUserId())
                         .withCertificateType(request.getCertificateType());
-                certificateService.deletebyStudent(builder.build(), context);
+                certificateService.deleteByStudent(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("删除记录成功");
             }
         });
@@ -195,7 +196,7 @@ public class CertificateController {
     @GetMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result<CertificateBO> getCertificateBycertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+    public Result<CertificateBO> getCertificateByCertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "根据证书id获取该证书详细信息", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
@@ -225,6 +226,9 @@ public class CertificateController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
+                if(CertificateTypeEnum.getByCode(request.getCertificateType()).equals(CertificateTypeEnum.CET_4_6)){
+                    AssertUtil.assertNotNull(request.getType(), "证书类型不能为空");
+                }
             }
 
             @Override

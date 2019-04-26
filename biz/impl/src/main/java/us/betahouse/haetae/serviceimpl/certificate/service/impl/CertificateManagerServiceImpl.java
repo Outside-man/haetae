@@ -87,8 +87,14 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(certificateType);
         CertificateBO certificateBO = new CertificateBO();
         AssertUtil.assertNotNull(certificateTypeEnum, "证书类型不存在");
-        //证书类型判断(三种)
+        //证书类型判断
         switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:{
+                AssertUtil.assertNotNull(request.getCertificateType(), "资格证书种类不能为空");
+                certificateBO = certificateManager.modifyQualifications(request);
+                break;
+            }
             //资格证书
             case QUALIFICATIONS: {
                 AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");

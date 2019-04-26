@@ -43,7 +43,7 @@ public interface CertificateService {
      * @param context
      * @return
      */
-    void deletebyStudent(CertificateRequest request, OperateContext context);
+    void deleteByStudent(CertificateRequest request, OperateContext context);
 
     /**
      * 删除证书记录（后台管理端）无需判断证书状态

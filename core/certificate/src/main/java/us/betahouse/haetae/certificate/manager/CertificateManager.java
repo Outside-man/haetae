@@ -77,10 +77,10 @@ public interface CertificateManager {
     /**
      * 通过用户id查找证书
      *
-     * @param userId
+     * @param request
      * @return
      */
-    List<CertificateBO> findByUserId(String userId);
+    List<CertificateBO> findByUserId(CertificateManagerRequest request);
 
     /**
      * 证书记录通过证书名称和用户id

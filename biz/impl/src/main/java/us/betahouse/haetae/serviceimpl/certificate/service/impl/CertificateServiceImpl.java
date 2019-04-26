@@ -60,8 +60,14 @@ public class CertificateServiceImpl implements CertificateService {
         //证书类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         CertificateBO certificateBO;
-        //证书类型判断(三种)
+        //证书类型判断(四种，四六级单独列出，但还是存在资格证书表里)
         switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:{
+                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
+                certificateBO = certificateManager.createQualifications(request);
+                break;
+            }
             //资格证书
             case QUALIFICATIONS: {
                 AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
@@ -110,8 +116,14 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateBO update(CertificateRequest request, OperateContext context) {
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         CertificateBO certificateBO;
-        //证书类型判断(三种)
+        //证书类型判断
         switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:{
+                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
+                certificateBO = certificateManager.modifyQualifications(request);
+                break;
+            }
             //资格证书
             case QUALIFICATIONS: {
                 AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
@@ -156,7 +168,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deletebyStudent(CertificateRequest request, OperateContext context) {
+    public void deleteByStudent(CertificateRequest request, OperateContext context) {
         //证书类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         //证书存在异常抛出
@@ -174,6 +186,8 @@ public class CertificateServiceImpl implements CertificateService {
         //证书存在异常抛出
         CertificateBO certificateBO = judgeIsExit(request);
         switch (certificateTypeEnum) {
+            //四六级证书，删除和资格证书一样
+            case CET_4_6:{}
             //资格证书
             case QUALIFICATIONS: {
                 qualificationsRepoService.deleteByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
@@ -225,9 +239,12 @@ public class CertificateServiceImpl implements CertificateService {
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         List<CertificateBO> certificateBOS;
         switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:{}
             //资格证书
             case QUALIFICATIONS: {
-                certificateBOS = qualificationsRepoService.queryByUserId(request.getUserId());
+                certificateBOS = qualificationsRepoService.queryByUserIdAndType(request.getUserId(), request.getType());
+                System.out.println(certificateBOS.size());
                 break;
             }
             //竞赛证书
@@ -285,6 +302,8 @@ public class CertificateServiceImpl implements CertificateService {
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         CertificateBO certificateBO;
         switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:{}
             //资格证书
             case QUALIFICATIONS: {
                 //证书存在判断

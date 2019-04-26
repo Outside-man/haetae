@@ -27,6 +27,10 @@ public enum CertificateTypeEnum {
      */
     SKILL("SKILL", "技能证书"),
     /**
+     * 资格证书(四级)
+     */
+    CET_4_6("CET_4_6","四六级证书"),
+    /**
      * 资格证书(普通类型)
      */
     NORMAL_QUALIFICATIONS("Normal", "普通资格证书"),

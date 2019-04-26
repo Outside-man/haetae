@@ -108,8 +108,8 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     }
 
     @Override
-    public List<CertificateBO> queryByUserId(String userId) {
-        return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
+    public List<CertificateBO> queryByUserIdAndType(String userId, String type) {
+        return CollectionUtils.toStream(qualificationsDORepo.findByUserIdAndType(userId, type))
                 .filter(Objects::nonNull)
                 .map(this::convert)
                 .collect(Collectors.toList());
@@ -147,13 +147,20 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (qualificationsDO == null) {
             return null;
         }
+        CertificateTypeEnum typeEnum = CertificateTypeEnum.getByCode(qualificationsDO.getType());
+        //判断是四六级证书还是普通的资格证书
+        if(typeEnum.equals(CertificateTypeEnum.CET_4) || typeEnum.equals(CertificateTypeEnum.CET_6)){
+            typeEnum = CertificateTypeEnum.CET_4_6;
+        }else {
+            typeEnum = CertificateTypeEnum.QUALIFICATIONS;
+        }
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(qualificationsDO.getCertificateId())
                 .withCertificateName(qualificationsDO.getCertificateName())
                 .withUserID(qualificationsDO.getUserId())
                 .withCertificateOrganization(qualificationsDO.getCertificateOrganization())
                 .withCertificatePublishTime(qualificationsDO.getCertificatePublishTime())
-                .withCertificateType(CertificateTypeEnum.QUALIFICATIONS.getCode())
+                .withCertificateType(typeEnum.getCode())
                 .withCertificateNumber(qualificationsDO.getCertificateNumber())
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
