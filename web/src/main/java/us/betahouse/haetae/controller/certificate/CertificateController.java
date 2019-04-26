@@ -102,6 +102,8 @@ public class CertificateController {
                         .withTeamName(request.getTeamName())
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
+                        .withCertificateGrade(request.getCertificateGrade())
+                        .withCertificateTicket(request.getCertificateTicket())
                         .withExtInfo(request.getExtInfo());
                 return RestResultUtil.buildSuccessResult(certificateService.create(builder.build(), context), "创建证书记录成功");
             }
@@ -118,7 +120,7 @@ public class CertificateController {
     @PutMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result<CertificateBO> modifiyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+    public Result<CertificateBO> modifyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "更改证书记录", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
@@ -151,6 +153,8 @@ public class CertificateController {
                         .withTeamId(request.getTeamId())
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
+                        .withCertificateGrade(request.getCertificateGrade())
+                        .withCertificateTicket(request.getCertificateTicket())
                         .withExtInfo(request.getExtInfo());
                 return RestResultUtil.buildSuccessResult(certificateService.update(builder.build(), context), "修改记录成功");
             }

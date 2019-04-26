@@ -97,6 +97,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getRank() != null) {
             qualificationsDO.setRank(newQualificationDO.getRank());
         }
+        //更新证书成绩
+        if (newQualificationDO.getCertificateGrade() != null) {
+            qualificationsDO.setCertificateGrade(newQualificationDO.getCertificateGrade());
+        }
         //更新修改时间
         qualificationsDO.setGmtModified(new Date());
         return convert(qualificationsDORepo.save(qualificationsDO));
@@ -150,6 +154,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(qualificationsDO.getCertificateId())
                 .withCertificateName(qualificationsDO.getCertificateName())
+                .withUserID(qualificationsDO.getUserId())
                 .withCertificateOrganization(qualificationsDO.getCertificateOrganization())
                 .withCertificatePublishTime(qualificationsDO.getCertificatePublishTime())
                 .withCertificateType(CertificateTypeEnum.QUALIFICATIONS.getCode())
@@ -157,6 +162,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
                 .withRank(qualificationsDO.getRank())
+                .withCertificateGrade(qualificationsDO.getCertificateGrade())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
         return builder.build();
     }
@@ -181,7 +187,6 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         qualificationsDO.setType(certificateBO.getType());
         qualificationsDO.setStatus(certificateBO.getStatus());
-        qualificationsDO.setRank(certificateBO.getRank());
         return qualificationsDO;
     }
 }

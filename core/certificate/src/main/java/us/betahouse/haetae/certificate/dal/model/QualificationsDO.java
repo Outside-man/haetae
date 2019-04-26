@@ -42,13 +42,19 @@ public class QualificationsDO extends BaseCommonDO {
     /**
      * 证书编号
      */
-    @Column(name = "certificate_number")
+    @Column(name = "certificate_number", length = 40)
     private String certificateNumber;
     /**
      * 资格证书等级
      */
     @Column(name = "certificate_rank")
     private String rank;
+    /**
+     * 成绩
+     */
+    @Column(name = "certificate_grade", length = 3)
+    private String certificateGrade;
+
 
     public String getType() {
         return type;
@@ -89,4 +95,13 @@ public class QualificationsDO extends BaseCommonDO {
     public void setRank(String rank) {
         this.rank = rank;
     }
+
+    public String getCertificateGrade() {
+        return certificateGrade;
+    }
+
+    public void setCertificateGrade(String certificateGrade) {
+        this.certificateGrade = certificateGrade;
+    }
+
 }
