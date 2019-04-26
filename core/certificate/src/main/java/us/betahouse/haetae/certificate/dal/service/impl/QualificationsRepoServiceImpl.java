@@ -93,6 +93,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getStatus() != null) {
             qualificationsDO.setStatus(newQualificationDO.getStatus());
         }
+        //更新证书等级
+        if (newQualificationDO.getRank() != null) {
+            qualificationsDO.setRank(newQualificationDO.getRank());
+        }
         //更新修改时间
         qualificationsDO.setGmtModified(new Date());
         return convert(qualificationsDORepo.save(qualificationsDO));
@@ -152,6 +156,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .withCertificateNumber(qualificationsDO.getCertificateNumber())
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
+                .withRank(qualificationsDO.getRank())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
         return builder.build();
     }
@@ -176,6 +181,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         qualificationsDO.setType(certificateBO.getType());
         qualificationsDO.setStatus(certificateBO.getStatus());
+        qualificationsDO.setRank(certificateBO.getRank());
         return qualificationsDO;
     }
 }
