@@ -51,11 +51,9 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setType(request.getType());
         certificateBO.setUserId(request.getUserId());
         certificateBO.setRank(request.getRank());
-        System.out.println("cp"+request.getRank());
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setCertificateNumber(request.getCertificateNumber());
-        certificateBO.putExtInfo(CertificateExtInfoKey.DESCRIPTION.getCode(), request.getDescription());
         //设置证书状态  待审核
         certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         certificateBO = setExtInfos(certificateBO, request);
@@ -77,8 +75,8 @@ public class CertificateManagerImpl implements CertificateManager {
                 certificateBO = qualificationsRepoService.create(certificateBO);
                 return certificateBO;
             }
-            case CET_4:
-            case CET_6:{
+            //四六级证书
+            case CET_4_6:{
                 AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
                 certificateBO.setCertificateGrade(request.getCertificateGrade());
                 certificateBO = qualificationsRepoService.create(certificateBO);
@@ -137,7 +135,6 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateType(CertificateTypeEnum.SKILL.getCode());
         certificateBO.setUserId(request.getUserId());
         certificateBO.setCertificateName(request.getCertificateName());
-        certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setRank(request.getRank());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
@@ -145,6 +142,10 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //额外信息插入extinfo
         certificateBO = setExtInfos(certificateBO, request);
+        //证书有效时间
+        if(request.getExpirationTime()!=null){
+            certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
+        }
         certificateBO = skillRepoService.create(certificateBO);
         return certificateBO;
     }
@@ -181,8 +182,7 @@ public class CertificateManagerImpl implements CertificateManager {
                 certificateBO = qualificationsRepoService.modify(certificateBO);
                 return certificateBO;
             }
-            case CET_4:
-            case CET_6: {
+            case CET_4_6: {
                 AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
                 certificateBO.setCertificateGrade(request.getCertificateGrade());
                 certificateBO = qualificationsRepoService.modify(certificateBO);
@@ -290,17 +290,22 @@ public class CertificateManagerImpl implements CertificateManager {
 
     @Override
     public List<CertificateBO> findByUserId(CertificateManagerRequest request) {
-        List<CertificateBO> certificateBOS = qualificationsRepoService.queryByUserIdAndType(request.getUserId(), request.getType());
-        List<CertificateBO> certificateBOS1 = competitionRepoService.queryByUserId(request.getUserId());
-        List<CertificateBO> certificateBOS2 = skillRepoService.queryByUserId(request.getUserId());
-        for (CertificateBO certificateBO : certificateBOS1) {
-            certificateBOS.add(certificateBO);
-        }
-        for (CertificateBO certificateBO : certificateBOS2) {
-            certificateBOS.add(certificateBO);
-        }
-        return certificateBOS;
+        return null;
     }
+
+//    @Override
+//    public List<CertificateBO> findByUserId(CertificateManagerRequest request) {
+//        List<CertificateBO> certificateBOS = qualificationsRepoService.queryByUserIdAndType(request.getUserId(), request.getType());
+//        List<CertificateBO> certificateBOS1 = competitionRepoService.queryByUserId(request.getUserId());
+//        List<CertificateBO> certificateBOS2 = skillRepoService.queryByUserId(request.getUserId());
+//        for (CertificateBO certificateBO : certificateBOS1) {
+//            certificateBOS.add(certificateBO);
+//        }
+//        for (CertificateBO certificateBO : certificateBOS2) {
+//            certificateBOS.add(certificateBO);
+//        }
+//        return certificateBOS;
+//    }
 
     @Override
     public List<CertificateBO> findByUserIdAndCertificateName(CertificateManagerRequest request) {

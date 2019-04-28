@@ -23,7 +23,7 @@ public interface QualificationsDORepo extends JpaRepository<QualificationsDO, Lo
     QualificationsDO findByCertificateId(String certificateId);
 
     /**
-     * 通过学生id和类型获取全部资格证书
+     * 通过学生id和类型获取证书
      *
      * @param userId
      * @param type
@@ -31,6 +31,13 @@ public interface QualificationsDORepo extends JpaRepository<QualificationsDO, Lo
      */
     List<QualificationsDO> findByUserIdAndType(String userId, String type);
 
+    /**
+     * 通过学生id获取全部证书（资格证书和四六级证书都有）
+     *
+     * @param userId
+     * @return
+     */
+    List<QualificationsDO> findByUserId(String userId);
     /**
      * 通过学生id和证书id查找证书
      *
@@ -72,4 +79,6 @@ public interface QualificationsDORepo extends JpaRepository<QualificationsDO, Lo
      * @return
      */
     List<QualificationsDO> findByCertificateName(String certificateName);
+
+
 }

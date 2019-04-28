@@ -4,14 +4,11 @@
  */
 package us.betahouse.haetae.controller.certificate;
 
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import us.betahouse.haetae.certificate.builder.CertificateBOBuilder;
 import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
-import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
@@ -19,7 +16,6 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.certificate.request.CertificateRestRequest;
 import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateRequestBuilder;
-import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.utils.IPUtil;
@@ -30,7 +26,6 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,8 +49,6 @@ public class CertificateController {
      */
     private final String DESCRIPTION = "description";
 
-    @Autowired
-    private CertificateManagerService certificateManagerService;
     @Autowired
     private CertificateService certificateService;
 
@@ -226,9 +219,6 @@ public class CertificateController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
-                if(CertificateTypeEnum.getByCode(request.getCertificateType()).equals(CertificateTypeEnum.CET_4_6)){
-                    AssertUtil.assertNotNull(request.getType(), "证书类型不能为空");
-                }
             }
 
             @Override

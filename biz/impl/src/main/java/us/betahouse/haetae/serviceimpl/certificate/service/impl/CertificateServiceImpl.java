@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.certificate.service.impl;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
-import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
@@ -44,8 +44,6 @@ public class CertificateServiceImpl implements CertificateService {
     @Autowired
     private CertificateManager certificateManager;
     @Autowired
-    private CertificateManagerService certificateManagerService;
-    @Autowired
     private QualificationsRepoService qualificationsRepoService;
     @Autowired
     private CompetitionRepoService competitionRepoService;
@@ -60,11 +58,15 @@ public class CertificateServiceImpl implements CertificateService {
         //证书类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         CertificateBO certificateBO;
-        //证书类型判断(四种，四六级单独列出，但还是存在资格证书表里)
+        //证书类型判断(四种类型，四六级与资格证书同表)
         switch (certificateTypeEnum) {
             //四六级证书
-            case CET_4_6:{
-                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
+            case CET_4_6: {
+                AssertUtil.assertNotNull(request.getRank(), "四六级证书类型等级不能为空");
+                request.setCertificateName("英语四六级证书");
+                request.setCertificateOrganization("教育部高等教育司");
+                //设置证书类型为四六级
+                request.setType(CertificateTypeEnum.CET_4_6.getCode());
                 certificateBO = certificateManager.createQualifications(request);
                 break;
             }
@@ -119,8 +121,10 @@ public class CertificateServiceImpl implements CertificateService {
         //证书类型判断
         switch (certificateTypeEnum) {
             //四六级证书
-            case CET_4_6:{
-                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
+            case CET_4_6: {
+                AssertUtil.assertNotNull(request.getRank(), "四六级证书类别不能为空");
+                //设置证书种类
+                request.setType(certificateTypeEnum.getCode());
                 certificateBO = certificateManager.modifyQualifications(request);
                 break;
             }
@@ -186,9 +190,9 @@ public class CertificateServiceImpl implements CertificateService {
         //证书存在异常抛出
         CertificateBO certificateBO = judgeIsExit(request);
         switch (certificateTypeEnum) {
-            //四六级证书，删除和资格证书一样
-            case CET_4_6:{}
-            //资格证书
+            //四六级证书 删除
+            case CET_4_6:
+                //资格证书
             case QUALIFICATIONS: {
                 qualificationsRepoService.deleteByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
                 break;
@@ -223,6 +227,10 @@ public class CertificateServiceImpl implements CertificateService {
             competitionUserIdCovert(certificateBO);
         }
         AssertUtil.assertNotNull(certificateBO);
+        //certificateType 由QUALIFICATIONS 改为CET4_6
+        if (certificateBO.getType().equals(CertificateTypeEnum.CET_4_6.getCode())) {
+            certificateBO.setCertificateType(CertificateTypeEnum.CET_4_6.getCode());
+        }
         return certificateBO;
     }
 
@@ -240,11 +248,13 @@ public class CertificateServiceImpl implements CertificateService {
         List<CertificateBO> certificateBOS;
         switch (certificateTypeEnum) {
             //四六级证书
-            case CET_4_6:{}
+            case CET_4_6: {
+                certificateBOS = qualificationsRepoService.queryCET46(request.getUserId(),certificateTypeEnum.getCode());
+                break;
+            }
             //资格证书
             case QUALIFICATIONS: {
-                certificateBOS = qualificationsRepoService.queryByUserIdAndType(request.getUserId(), request.getType());
-                System.out.println(certificateBOS.size());
+                certificateBOS = qualificationsRepoService.queryQualificate(request.getUserId());
                 break;
             }
             //竞赛证书
@@ -303,8 +313,8 @@ public class CertificateServiceImpl implements CertificateService {
         CertificateBO certificateBO;
         switch (certificateTypeEnum) {
             //四六级证书
-            case CET_4_6:{}
-            //资格证书
+            case CET_4_6:
+                //资格证书
             case QUALIFICATIONS: {
                 //证书存在判断
                 certificateBO = qualificationsRepoService.queryByUserIdAndCertificateId(request.getUserId(), request.getCertificateId());

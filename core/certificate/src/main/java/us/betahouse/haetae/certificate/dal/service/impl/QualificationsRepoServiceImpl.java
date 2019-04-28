@@ -111,10 +111,23 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         return convert(qualificationsDORepo.findByCertificateId(certificateId));
     }
 
+
+
     @Override
-    public List<CertificateBO> queryByUserIdAndType(String userId, String type) {
+    public List<CertificateBO> queryCET46(String userId, String type) {
         return CollectionUtils.toStream(qualificationsDORepo.findByUserIdAndType(userId, type))
                 .filter(Objects::nonNull)
+                .filter(str->str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CertificateBO> queryQualificate(String userId) {
+        return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
+                .filter(Objects::nonNull)
+                //拦截四六级证书
+                .filter(qualificationsDO->!qualificationsDO.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -151,24 +164,18 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (qualificationsDO == null) {
             return null;
         }
-        CertificateTypeEnum typeEnum = CertificateTypeEnum.getByCode(qualificationsDO.getType());
-        //判断是四六级证书还是普通的资格证书
-        if(typeEnum.equals(CertificateTypeEnum.CET_4) || typeEnum.equals(CertificateTypeEnum.CET_6)){
-            typeEnum = CertificateTypeEnum.CET_4_6;
-        }else {
-            typeEnum = CertificateTypeEnum.QUALIFICATIONS;
-        }
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(qualificationsDO.getCertificateId())
                 .withCertificateName(qualificationsDO.getCertificateName())
                 .withUserID(qualificationsDO.getUserId())
                 .withCertificateOrganization(qualificationsDO.getCertificateOrganization())
                 .withCertificatePublishTime(qualificationsDO.getCertificatePublishTime())
-                .withCertificateType(typeEnum.getCode())
+                .withCertificateType(CertificateTypeEnum.QUALIFICATIONS.getCode())
                 .withCertificateNumber(qualificationsDO.getCertificateNumber())
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
                 .withRank(qualificationsDO.getRank())
+                //四六级证书成绩
                 .withCertificateGrade(qualificationsDO.getCertificateGrade())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
         return builder.build();
@@ -193,8 +200,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
         qualificationsDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         qualificationsDO.setType(certificateBO.getType());
-        qualificationsDO.setCertificateGrade(certificateBO.getCertificateGrade());
+        qualificationsDO.setRank(certificateBO.getRank());
         qualificationsDO.setStatus(certificateBO.getStatus());
+        //四六级证书成绩
+        qualificationsDO.setCertificateGrade(certificateBO.getCertificateGrade());
         return qualificationsDO;
     }
 }
