@@ -11,13 +11,9 @@ package us.betahouse.haetae.serviceimpl.certificate.constant;
 public class CertificatePermType {
     //=================总管理权限 start=================
     /**
-     * 分配审核员
+     * 管理审核员
      */
-    public final static String ASSIGN_CONFIRM = "ASSIGN_CONFIRM";
-    /**
-     * 删除审核员
-     */
-    public final static String DELETE_CONFIRM = "DELETE_CONFIRM";
+    public final static String MANAGER_CONFIRM = "MANAGER_CONFIRM";
     /**
      * 批量导入证书 （直接通过）
      */

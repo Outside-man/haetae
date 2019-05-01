@@ -23,22 +23,22 @@ public enum UserRoleCode implements RoleCode {
     /**
      * 党建活动管理员
      */
-    PARTY_ACTIVITY_MANAGER("PARTY_ACTIVITY_MANAGER","党建活动管理员"),
+    PARTY_ACTIVITY_MANAGER("PARTY_ACTIVITY_MANAGER", "党建活动管理员"),
 
     /**
      * 义工活动管理员
      */
-    VOLUNTEER_WORK_MANAGER("VOLUNTEER_WORK_MANAGER","义工活动管理员"),
+    VOLUNTEER_WORK_MANAGER("VOLUNTEER_WORK_MANAGER", "义工活动管理员"),
 
     /**
      * 志愿活动管理员
      */
-    VOLUNTEER_ACTIVITY_MANAGER("VOLUNTEER_ACTIVITY_MANAGER","志愿活动管理员"),
+    VOLUNTEER_ACTIVITY_MANAGER("VOLUNTEER_ACTIVITY_MANAGER", "志愿活动管理员"),
 
     /**
      * 社会实践管理员
      */
-    PRACTICE_ACTIVITY_MANAGER("PRACTICE_ACTIVITY_MANAGER","社会实践管理员"),
+    PRACTICE_ACTIVITY_MANAGER("PRACTICE_ACTIVITY_MANAGER", "社会实践管理员"),
 
     /**
      * 活动盖章员 盖章入口
@@ -54,6 +54,16 @@ public enum UserRoleCode implements RoleCode {
      * 组织管理员 管理所有组织相关
      */
     ORGANIZATION_MANAGER("ORGANIZATION_MANAGER", "组织管理员"),
+
+    /**
+     * 证书审核员
+     */
+    CERTIFICATE_CONFIRM("CERTIFICATE_CONFIRM", "证书审核员"),
+
+    /**
+     * 证书管理员
+     */
+    CERTIFICATE_MANAGER("CERTIFICATE_MANAGER", "证书管理员"),
 
     /**
      * 非学生用户

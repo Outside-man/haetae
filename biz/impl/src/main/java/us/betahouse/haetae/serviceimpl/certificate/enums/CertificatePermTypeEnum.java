@@ -17,13 +17,9 @@ import us.betahouse.haetae.user.enums.PermType;
 public enum CertificatePermTypeEnum implements PermType {
     //=================总管理权限 start=================
     /**
-     * 分配审核员
+     * 管理审核员
      */
-    ASSIGN_CONFIRM(CertificatePermType.ASSIGN_CONFIRM, "分配审核员", true),
-    /**
-     * 删除审核员
-     */
-    DELETE_CONFIRM(CertificatePermType.DELETE_CONFIRM, "删除扫描员", true),
+    MANAGER_CONFIRM(CertificatePermType.MANAGER_CONFIRM, "管理审核员", true),
     /**
      * 批量导入证书 （直接通过）
      */
@@ -37,6 +33,9 @@ public enum CertificatePermTypeEnum implements PermType {
      */
     DELETE_CERTIFICATE(CertificatePermType.DELETE_CERTIFICATE, "删除有误证书", true),
     //=================总管理权限 end===================
+
+
+    //=================证书审核员 start=================
     /**
      * 审核证书
      */
@@ -45,6 +44,9 @@ public enum CertificatePermTypeEnum implements PermType {
      * 获取未通过证书
      */
     GET_CERTIFICATE(CertificatePermType.GET_CERTIFICATES,"获取未审核证书",true);
+    //=================证书审核员 end=================
+
+
     private String code;
 
     private String desc;

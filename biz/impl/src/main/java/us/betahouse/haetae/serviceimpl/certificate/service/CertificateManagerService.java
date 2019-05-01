@@ -4,10 +4,14 @@
  */
 package us.betahouse.haetae.serviceimpl.certificate.service;
 
+import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
+import java.security.cert.Certificate;
 import java.util.List;
 
 /**
@@ -17,14 +21,6 @@ import java.util.List;
  * @version : CertificateManagerService.java 2019/04/06 8:26 guofan.cp
  */
 public interface CertificateManagerService {
-
-    /**
-     * 创建证书记录
-     *
-     * @param request
-     * @return
-     */
-    CertificateBO create(CertificateRequest request, OperateContext context);
 
     /**
      * 修改证书记录
@@ -43,9 +39,6 @@ public interface CertificateManagerService {
      */
     void delete(CertificateRequest request, OperateContext context);
 
-    //授权管理员
-    //删除授权管理员
-    //查询证书详细信息
     /**
      * 通过证书id获取详细信息
      *
@@ -54,4 +47,62 @@ public interface CertificateManagerService {
      * @return
      */
     CertificateBO findByCertificateId(CertificateRequest request,OperateContext context);
+    /**
+     * 绑定审核员
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    void bindConfirmUser(CertificateConfirmRequest request,OperateContext context);
+    /**
+     * 取绑审核员
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    void delteConfirmUser(CertificateConfirmRequest request,OperateContext context);
+    /**
+     * 获取审核员信息
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<UserInfoBO> getConfirmUser(CertificateConfirmRequest request,OperateContext context);
+    /**
+     * 导入证书
+     *
+     * @param url
+     * @return  未导入证书的学生id
+     */
+    List<String> importCertificate(String url);
+    /**
+     * 获取用户全部证书
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<CertificateBO> fetchAllCertificate(CertificateConfirmRequest request,OperateContext context);
+    /**
+     * 获取用户未过审证书
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<CertificateBO> fetchUnreviedCertificate(CertificateConfirmRequest request,OperateContext context);
+
+    /**
+     * 证书审核通过
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    CertificateBO confirmCertificate(CertificateConfirmRequest request,OperateContext context);
+    //批量创建证书
+
 }

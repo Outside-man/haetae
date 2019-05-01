@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 
 /**
  * 证书服务实现
- * <p>
  * 无需鉴权 （普通用户操作）
  *
  * @author guofan.cp
@@ -141,7 +140,6 @@ public class CertificateServiceImpl implements CertificateService {
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
                 AssertUtil.assertNotNull(request.getTeamId(), "团队比赛id不能为空");
-                System.out.println("cp+biz" + request.getWorkUserId());
                 //stuid转userid
                 List<String> userIds = new ArrayList<>();
                 request.getWorkUserId().forEach(stuId -> {
@@ -168,6 +166,18 @@ public class CertificateServiceImpl implements CertificateService {
             }
         }
         return certificateBO;
+    }
+
+    @Override
+    public CertificateBO updateByStudent(CertificateRequest request, OperateContext context) {
+        //证书类型异常抛出
+        CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
+        //证书存在异常抛出
+        CertificateBO certificateBO = judgeIsExit(request);
+        //证书过审异常抛出
+        judgeState(certificateBO);
+        update(request,context);
+        return null;
     }
 
     @Override
@@ -236,12 +246,6 @@ public class CertificateServiceImpl implements CertificateService {
 
 
     @Override
-    public CertificateBO findByCertificateTypeAndId(CertificateRequest request, OperateContext context) {
-        //存在性判断返回证书BO
-        return judgeIsExit(request);
-    }
-
-    @Override
     public List<CertificateBO> findAllByCertificateTypeAndUserId(CertificateRequest request, OperateContext context) {
         //类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
@@ -249,7 +253,7 @@ public class CertificateServiceImpl implements CertificateService {
         switch (certificateTypeEnum) {
             //四六级证书
             case CET_4_6: {
-                certificateBOS = qualificationsRepoService.queryCET46(request.getUserId(),certificateTypeEnum.getCode());
+                certificateBOS = qualificationsRepoService.queryCET46(request.getUserId());
                 break;
             }
             //资格证书

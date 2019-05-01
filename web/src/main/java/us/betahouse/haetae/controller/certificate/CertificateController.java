@@ -148,7 +148,7 @@ public class CertificateController {
                         .withCertificateNumber(request.getCertificateNumber())
                         .withCertificateGrade(request.getCertificateGrade())
                         .withExtInfo(request.getExtInfo());
-                return RestResultUtil.buildSuccessResult(certificateService.update(builder.build(), context), "修改记录成功");
+                return RestResultUtil.buildSuccessResult(certificateService.updateByStudent(builder.build(), context), "修改记录成功");
             }
         });
     }

@@ -49,21 +49,13 @@ public interface QualificationsRepoService {
      */
     CertificateBO queryByCertificateId(String certificateId);
 
-//    /**
-//     * 查询证书 通过用户id和type
-//     *
-//     * @param userId
-//     * @param type
-//     * @return
-//     */
-//    List<CertificateBO> queryByUserIdAndType(String userId, String type);
 
     /**
      * 查询四六级证书
      * @param userId
      * @return
      */
-    List<CertificateBO> queryCET46(String userId,String type);
+    List<CertificateBO> queryCET46(String userId);
 
     /**
      * 查询资格证书（不包括四六级证书）

@@ -114,11 +114,12 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
 
 
     @Override
-    public List<CertificateBO> queryCET46(String userId, String type) {
-        return CollectionUtils.toStream(qualificationsDORepo.findByUserIdAndType(userId, type))
+    public List<CertificateBO> queryCET46(String userId) {
+        return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
                 .filter(Objects::nonNull)
                 .filter(str->str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
                 .map(this::convert)
+                .map(this::changeType)
                 .collect(Collectors.toList());
     }
 
@@ -205,5 +206,19 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         //四六级证书成绩
         qualificationsDO.setCertificateGrade(certificateBO.getCertificateGrade());
         return qualificationsDO;
+    }
+
+    /**
+     * 资格证书类型转四六级证书
+     *
+     * @param certificateBO
+     * @return
+     */
+    public CertificateBO changeType(CertificateBO certificateBO){
+        if(certificateBO==null){
+            return null;
+        }
+        certificateBO.setCertificateType(CertificateTypeEnum.CET_4_6.getCode());
+        return certificateBO;
     }
 }

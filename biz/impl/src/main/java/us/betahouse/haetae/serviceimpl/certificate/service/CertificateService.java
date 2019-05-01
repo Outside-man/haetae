@@ -28,13 +28,21 @@ public interface CertificateService {
     CertificateBO create(CertificateRequest request, OperateContext context);
 
     /**
-     * 修改证书记录
+     * 修改证书记录（后台管理端）无需判断证书状态
      *
      * @param request
      * @return
      */
     CertificateBO update(CertificateRequest request, OperateContext context);
 
+    /**
+     * 修改证书记录（学生端）需判断证书状态
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    CertificateBO updateByStudent(CertificateRequest request, OperateContext context);
 
     /**
      * 删除证书记录（学生端） 需判断证书状态
@@ -62,15 +70,6 @@ public interface CertificateService {
     CertificateBO findByCertificateId(String certificateId);
 
     /**
-     * 证书记录通过类型和证书id
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    CertificateBO findByCertificateTypeAndId(CertificateRequest request, OperateContext context);
-
-    /**
      * 单种证书全部记录通过用户id和证书类型
      *
      * @param request
@@ -78,4 +77,5 @@ public interface CertificateService {
      * @return
      */
     List<CertificateBO> findAllByCertificateTypeAndUserId(CertificateRequest request, OperateContext context);
+
 }
