@@ -5,6 +5,8 @@
 package us.betahouse.haetae.activity.request;
 
 
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
+
 /**
  * 活动管理请求
  *
@@ -101,6 +103,38 @@ public class ActivityRequest extends BaseRequest {
      * 排序方式
      */
     private String orderRule;
+
+    /**
+     * 学号
+     */
+    private String stuId;
+
+    /**
+     * 尚未分配活动章
+     */
+    private Long undistributedStamp;
+
+    /**
+     * 以往校园活动章
+     */
+    private Long pastSchoolActivity;
+
+    /**
+     * 以往讲座活动章
+     */
+    private Long pastLectureActivity;
+
+    /**
+     * 以往志愿活动时间
+     */
+    private Long pastVolunteerActivityTime;
+
+    /**
+     * 以往社会实践次数
+     */
+    private Long pastPracticeActivity;
+
+    private PastActivityBO pastActivityBO;
 
     public String getOrderRule() {
         return orderRule;
@@ -238,4 +272,60 @@ public class ActivityRequest extends BaseRequest {
         this.page = page;
     }
 
+    public String getStuId() {
+        return stuId;
+    }
+
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
+    }
+
+
+    public Long getUndistributedStamp() {
+        return undistributedStamp;
+    }
+
+    public void setUndistributedStamp(Long undistributedStamp) {
+        this.undistributedStamp = undistributedStamp;
+    }
+
+    public Long getPastSchoolActivity() {
+        return pastSchoolActivity;
+    }
+
+    public void setPastSchoolActivity(Long pastSchoolActivity) {
+        this.pastSchoolActivity = pastSchoolActivity;
+    }
+
+    public Long getPastLectureActivity() {
+        return pastLectureActivity;
+    }
+
+    public void setPastLectureActivity(Long pastLectureActivity) {
+        this.pastLectureActivity = pastLectureActivity;
+    }
+
+    public Long getPastVolunteerActivityTime() {
+        return pastVolunteerActivityTime;
+    }
+
+    public void setPastVolunteerActivityTime(Long pastVolunteerActivityTime) {
+        this.pastVolunteerActivityTime = pastVolunteerActivityTime;
+    }
+
+    public Long getPastPracticeActivity() {
+        return pastPracticeActivity;
+    }
+
+    public void setPastPracticeActivity(Long pastPracticeActivity) {
+        this.pastPracticeActivity = pastPracticeActivity;
+    }
+
+    public PastActivityBO getPastActivityBO() {
+        return pastActivityBO;
+    }
+
+    public void setPastActivityBO(PastActivityBO pastActivityBO) {
+        this.pastActivityBO = pastActivityBO;
+    }
 }

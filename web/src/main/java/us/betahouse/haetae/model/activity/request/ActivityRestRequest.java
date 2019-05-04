@@ -107,6 +107,22 @@ public class ActivityRestRequest extends RestRequest {
      */
     private String orderRule;
 
+
+    /**
+     * 尚未分配活动章
+     */
+    private Long undistributedStamp;
+
+    /**
+     * 以往校园活动章
+     */
+    private Long pastSchoolActivity;
+
+    /**
+     * 以往讲座活动章
+     */
+    private Long pastLectureActivity;
+
     public String getOrderRule() {
         return orderRule;
     }
@@ -244,5 +260,29 @@ public class ActivityRestRequest extends RestRequest {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public Long getUndistributedStamp() {
+        return undistributedStamp;
+    }
+
+    public void setUndistributedStamp(Long undistributedStamp) {
+        this.undistributedStamp = undistributedStamp;
+    }
+
+    public Long getPastSchoolActivity() {
+        return pastSchoolActivity;
+    }
+
+    public void setPastSchoolActivity(Long pastSchoolActivity) {
+        this.pastSchoolActivity = pastSchoolActivity;
+    }
+
+    public Long getPastLectureActivity() {
+        return pastLectureActivity;
+    }
+
+    public void setPastLectureActivity(Long pastLectureActivity) {
+        this.pastLectureActivity = pastLectureActivity;
     }
 }

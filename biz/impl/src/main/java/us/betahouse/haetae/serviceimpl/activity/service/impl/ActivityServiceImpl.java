@@ -8,11 +8,13 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.activity.builder.PastActivityBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
@@ -249,6 +251,37 @@ public class ActivityServiceImpl implements ActivityService {
 
         }
         return systemFinishActivities;
+    }
+
+    @Override
+    public void initPastActivity() {
+        PastActivityBOBuilder boBuilder=PastActivityBOBuilder.aPastActivityBO()
+                .withPastLectureActivity(0L)
+                .withPastPracticeActivity(0L)
+                .withPastSchoolActivity(0L)
+                .withPastVolunteerActivityTime(0L)
+                .withUndistributedStamp(0L)
+                ;
+        List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
+        userInfoBOList.forEach(userInfoBO -> activityManager.createPast(boBuilder.withStuId(userInfoBO.getStuId()).withUserId(userInfoBO.getUserId()).build()));
+    }
+
+    @Override
+    public PastActivityBO getPastActivity(ActivityManagerRequest request, OperateContext context) {
+        return activityManager.findPast(request);
+    }
+
+    @Override
+    public void assignPastRecord(ActivityManagerRequest request, OperateContext context) {
+        PastActivityBO pastActivityBO=activityManager.findPast(request);
+        AssertUtil.assertNotNull(pastActivityBO, "无法获取以往活动记录");
+        AssertUtil.assertEquals(request.getUndistributedStamp()+request.getPastSchoolActivity()+request.getPastLectureActivity(),
+                pastActivityBO.getUndistributedStamp()+pastActivityBO.getPastSchoolActivity()+pastActivityBO.getPastLectureActivity());
+        pastActivityBO.setUndistributedStamp(request.getUndistributedStamp());
+        pastActivityBO.setPastSchoolActivity(request.getPastSchoolActivity());
+        pastActivityBO.setPastLectureActivity(request.getPastLectureActivity());
+        request.setPastActivityBO(pastActivityBO);
+        activityManager.updatePast(request);
     }
 
     /**

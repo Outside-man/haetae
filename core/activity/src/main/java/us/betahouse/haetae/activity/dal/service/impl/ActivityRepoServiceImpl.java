@@ -13,15 +13,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
+import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
+import us.betahouse.haetae.activity.dal.repo.PastActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
+import us.betahouse.util.utils.NumberUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -40,6 +44,9 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     private final Logger LOGGER = LoggerFactory.getLogger(ActivityRepoServiceImpl.class);
     @Autowired
     private ActivityDORepo activityDORepo;
+
+    @Autowired
+    private PastActivityDORepo pastActivityDORepo;
     /**
      * id工厂
      */
@@ -182,11 +189,58 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         return new PageList<>(activityDORepo.findAllByTermContainsAndStateContainsAndTypeContains(pageable, term, status, type), this::convert);
     }
 
+    @Override
+    public PastActivityBO getPastByUserId(String userId) {
+        return convert(pastActivityDORepo.findByUserId(userId));
+    }
+
+    @Override
+    public PastActivityBO getPastByStuId(String stuId) {
+        return convert(pastActivityDORepo.findByStuId(stuId));
+    }
+
+    @Override
+    public PastActivityBO updatePastActivity(String userId, PastActivityBO pastActivityBO) {
+        PastActivityDO pastActivityDO=pastActivityDORepo.findByUserId(userId);
+        if(pastActivityDO==null){
+            return null;
+        }
+        if (Objects.nonNull((pastActivityBO.getPastLectureActivity()))) {
+            pastActivityDO.setPastLectureActivity(pastActivityBO.getPastLectureActivity());
+        }
+        if (Objects.nonNull(pastActivityBO.getPastPracticeActivity())){
+            pastActivityDO.setPastPracticeActivity(pastActivityBO.getPastPracticeActivity());
+        }
+        if(Objects.nonNull(pastActivityBO.getPastSchoolActivity())){
+            pastActivityDO.setPastSchoolActivity(pastActivityBO.getPastSchoolActivity());
+        }
+        if(Objects.nonNull(pastActivityBO.getPastVolunteerActivityTime())){
+            pastActivityDO.setPastVolunteerActivityTime(pastActivityBO.getPastVolunteerActivityTime());
+        }
+        if(Objects.nonNull(pastActivityBO.getUndistributedStamp())){
+            pastActivityDO.setUndistributedStamp(pastActivityBO.getUndistributedStamp());
+        }
+        return convert(pastActivityDORepo.save(pastActivityDO));
+    }
+
+    @Override
+    public PastActivityBO createPastActivity(PastActivityBO pastActivityBO) {
+        PastActivityDO pastActivityDO=convert(pastActivityBO);
+        if(StringUtils.isBlank(pastActivityDO.getPastActivityId())){
+            pastActivityDO.setPastActivityId(activityBizFactory.getPastActivityId());
+        }
+        return convert(pastActivityDORepo.save(pastActivityDO));
+    }
+
     private Object convert(Object o) {
         if(o instanceof ActivityDO){
             return convert((ActivityDO)o);
         }else if(o instanceof ActivityBO){
             return convert((ActivityBO)o);
+        }else if(o instanceof PastActivityBO) {
+            return convert((PastActivityBO) o);
+        }else if(o instanceof PastActivityDO) {
+            return convert((PastActivityDO) o);
         }else{
             return null;
         }
@@ -245,5 +299,37 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setTerm(activityBO.getTerm());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
+    }
+
+    private PastActivityBO convert(PastActivityDO pastActivityDO){
+        if(pastActivityDO==null){
+            return null;
+        }
+        PastActivityBO pastActivityBO = new PastActivityBO();
+        pastActivityBO.setPastActivityId(pastActivityDO.getPastActivityId());
+        pastActivityBO.setUserId(pastActivityDO.getUserId());
+        pastActivityBO.setStuId(pastActivityDO.getStuId());
+        pastActivityBO.setUndistributedStamp(pastActivityDO.getUndistributedStamp());
+        pastActivityBO.setPastSchoolActivity(pastActivityDO.getPastSchoolActivity());
+        pastActivityBO.setPastLectureActivity(pastActivityDO.getPastLectureActivity());
+        pastActivityBO.setPastVolunteerActivityTime(pastActivityDO.getPastVolunteerActivityTime());
+        pastActivityBO.setPastPracticeActivity(pastActivityDO.getPastPracticeActivity());
+        return pastActivityBO;
+    }
+    private PastActivityDO convert(PastActivityBO pastActivityBO){
+        if(pastActivityBO==null){
+            return null;
+        }
+        PastActivityDO pastActivityDO = new PastActivityDO();
+        pastActivityDO.setPastActivityId(pastActivityBO.getPastActivityId());
+        pastActivityDO.setUserId(pastActivityBO.getUserId());
+        pastActivityDO.setStuId(pastActivityBO.getStuId());
+        pastActivityDO.setUndistributedStamp(pastActivityBO.getUndistributedStamp());
+        pastActivityDO.setPastSchoolActivity(pastActivityBO.getPastSchoolActivity());
+        pastActivityDO.setPastLectureActivity(pastActivityBO.getPastLectureActivity());
+        pastActivityDO.setPastVolunteerActivityTime(pastActivityBO.getPastVolunteerActivityTime());
+        pastActivityDO.setPastPracticeActivity(pastActivityBO.getPastPracticeActivity());
+        return pastActivityDO;
+
     }
 }

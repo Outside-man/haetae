@@ -36,4 +36,6 @@ public interface BizIdFactory {
      * @return
      */
     String getPositionRecordId();
+
+    String getPastActivityId();
 }

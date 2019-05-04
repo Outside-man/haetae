@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.model.activity.PastActivityVO;
 import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
@@ -201,5 +203,67 @@ public class ActivityController {
             }
         });
     }
+    /**
+     * 获取以往活动记录
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping("/past")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PastActivityVO> getPastActivity(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "操作活动", request, new RestOperateCallBack<PastActivityVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
 
+            @Override
+            public Result<PastActivityVO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequest activityManagerRequest=new ActivityManagerRequest();
+                activityManagerRequest.setUserId(request.getUserId());
+                return RestResultUtil.buildSuccessResult(PastActivityVO.valueOf(activityService.getPastActivity(activityManagerRequest, context)));
+            }
+        });
+    }
+    /**
+     * 分配未分配活动章
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @PostMapping("/past")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PastActivityVO> assignPastActivity(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "操作活动", request, new RestOperateCallBack<PastActivityVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(request.getUndistributedStamp(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "未分配活动章数不能为空");
+                AssertUtil.assertNotNull(request.getPastSchoolActivity(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "校园活动章数不能为空");
+                AssertUtil.assertNotNull(request.getPastLectureActivity(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "讲座活动章数不能为空");
+            }
+
+            @Override
+            public Result<PastActivityVO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequest activityManagerRequest=new ActivityManagerRequest();
+                activityManagerRequest.setUserId(request.getUserId());
+                activityManagerRequest.setUndistributedStamp(request.getUndistributedStamp());
+                activityManagerRequest.setPastSchoolActivity(request.getPastSchoolActivity());
+                activityManagerRequest.setPastLectureActivity(request.getPastLectureActivity());
+                activityService.assignPastRecord(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(PastActivityVO.valueOf(activityService.getPastActivity(activityManagerRequest, context)));
+            }
+        });
+    }
 }

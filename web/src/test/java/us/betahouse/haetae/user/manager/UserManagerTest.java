@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 import us.betahouse.util.utils.CsvUtil;
@@ -130,4 +131,35 @@ public class UserManagerTest {
             userManager.batchBindRolByCode(request1);
         }
     }
+
+    @Test
+    public void initTest(){
+        String csvs[][]=CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\【16级小绿本1】.csv");
+        for(int i=1;i< csvs.length;i++){
+            System.out.println(csvs[i][4]);
+            UserInfoBO userInfoBO=userInfoRepoService.queryUserInfoByStuId(csvs[i][4]);
+            userInfoBO.setGrade(csvs[i][0]);
+            userInfoBO.setMajor(csvs[i][1]);
+            userInfoBO.setClassId(csvs[i][2]);
+            userInfoRepoService.modifyUserInfoByUserId(userInfoBO.getUserId(), userInfoBO);
+        }
+    }
+    @Test
+    public void check() {
+        String url = "C:\\Users\\j10k\\Desktop\\【16级小绿本1】.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        List<String> notStampStuIds = new ArrayList<>();
+        for (int i = 1; i < csv.length; i++) {
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(csv[i][4]);
+            if (userInfoBO == null) {
+                System.out.println(i + " " + csv[i][4] + " " + null);
+                notStampStuIds.add(csv[i][4]);
+            } else if (!userInfoBO.getRealName().equals(csv[i][3])) {
+                System.out.println(i + " " + csv[i][4] + " name " + userInfoBO.getRealName() + " " + csv[i][3]);
+                notStampStuIds.add(csv[i][4]);
+            }
+        }
+        System.out.println(notStampStuIds.size());
+    }
+
 }

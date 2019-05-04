@@ -10,10 +10,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
+import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
+import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.GradesConstant;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
@@ -49,10 +52,11 @@ public class ActivityRecordServiceTest {
     private StampManager stampManager;
     @Autowired
     private ActivityRecordManager activityRecordManager;
-
+    @Autowired
+    private ActivityRepoService activityRepoService;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\4.27数据导入.csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
@@ -100,7 +104,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\志愿活动.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019“三位一体”志愿活动.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -183,7 +187,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019“三位一体”志愿活动.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {
@@ -208,23 +212,25 @@ public class ActivityRecordServiceTest {
     @Test
     public void fetchUserRecordStatistics1() throws IOException {
         CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出1.csv", ',', Charset.forName("GBK"));
-        String[] headers = {"学号", "姓名", "校园活动次数", "讲座活动次数", "社会实践次数", "志愿活动次数", "志愿活动时长", "义工活动次数", "义工活动时长"};
+        String[] headers = {"学号", "姓名", "校园活动次数", "讲座活动次数", "社会实践次数", "志愿活动次数", "志愿活动时长", "义工活动次数", "义工活动时长","尚未分配活动章"};
         csvWriter.writeRecord(headers);
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
         for (UserInfoBO userInfoBO : userInfoBOList) {
             ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId());
+            PastActivityBO pastActivityBO=activityRepoService.getPastByUserId(userInfoBO.getUserId());
             System.out.println(activityRecordStatistics);
             Map<String, Integer> map = activityRecordStatistics.getStatistics();
-            String[] content = new String[9];
+            String[] content = new String[10];
             content[0] = activityRecordStatistics.getStuId();
             content[1] = activityRecordStatistics.getRealName();
-            content[2] = map.get(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode()).toString();
-            content[3] = map.get(ActivityTypeEnum.LECTURE_ACTIVITY.getCode()).toString();
+            content[2] = String.valueOf((Long.valueOf(map.get(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode()))+pastActivityBO.getPastSchoolActivity()));
+            content[3] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.LECTURE_ACTIVITY.getCode()))+pastActivityBO.getPastLectureActivity());
             content[4] = map.get(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode()).toString();
             content[5] = map.get(ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode()).toString();
-            content[6] = String.format("%.1f", Double.valueOf(map.get("volunteerActivityTime")) / 10.0);
+            content[6] = String.format("%.1f", (double) (map.get("volunteerActivityTime") + pastActivityBO.getPastVolunteerActivityTime()) / 10.0);
             content[7] = map.get(ActivityTypeEnum.VOLUNTEER_WORK.getCode()).toString();
             content[8] = String.format("%.1f", Double.valueOf(map.get("volunteerWorkTime")) / 10.0);
+            content[9] = pastActivityBO.getUndistributedStamp().toString();
             csvWriter.writeRecord(content);
         }
         csvWriter.close();
