@@ -97,6 +97,10 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         if (newSkillDO.getStatus() != null) {
             skillDO.setStatus(newSkillDO.getStatus());
         }
+        //更新审核员信息
+        if(newSkillDO.getConfirmUserId()!=null){
+            skillDO.setConfirmUserId(newSkillDO.getConfirmUserId());
+        }
         //更新修改时间
         skillDO.setGmtModified(new Date());
         return convert(skillDORepo.save(skillDO));
@@ -176,6 +180,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         skillDO.setCertificateName(certificateBO.getCertificateName());
         skillDO.setCertificateNumber(certificateBO.getCertificateNumber());
         skillDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
+        skillDO.setConfirmUserId(certificateBO.getConfirmUserId());
         skillDO.setExpirationTime(certificateBO.getExpirationTime());
         skillDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         skillDO.setStatus(certificateBO.getStatus());

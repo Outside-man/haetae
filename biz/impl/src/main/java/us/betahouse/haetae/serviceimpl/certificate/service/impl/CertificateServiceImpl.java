@@ -234,11 +234,11 @@ public class CertificateServiceImpl implements CertificateService {
         }
         if (certificateBO == null) {
             certificateBO = competitionRepoService.queryByCertificateId(certificateId);
-            competitionUserIdCovert(certificateBO);
+//            competitionUserIdCovert(certificateBO);
         }
         AssertUtil.assertNotNull(certificateBO);
         //certificateType 由QUALIFICATIONS 改为CET4_6
-        if (certificateBO.getType().equals(CertificateTypeEnum.CET_4_6.getCode())) {
+        if (CertificateTypeEnum.CET_4_6.getCode().equals(certificateBO.getType())) {
             certificateBO.setCertificateType(CertificateTypeEnum.CET_4_6.getCode());
         }
         return certificateBO;

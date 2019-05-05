@@ -64,13 +64,13 @@ public interface CertificateManagerService {
      */
     void delteConfirmUser(CertificateConfirmRequest request,OperateContext context);
     /**
-     * 获取审核员信息
+     * 获取所有审核员信息
      *
-     * @param request
-     * @param context
+     * @param
+     * @param
      * @return
      */
-    List<UserInfoBO> getConfirmUser(CertificateConfirmRequest request,OperateContext context);
+    List<UserInfoBO> getConfirmUser();
     /**
      * 导入证书
      *

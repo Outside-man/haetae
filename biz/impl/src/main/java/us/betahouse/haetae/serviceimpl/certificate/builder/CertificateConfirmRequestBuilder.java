@@ -6,9 +6,13 @@ package us.betahouse.haetae.serviceimpl.certificate.builder;
 
 
 import us.betahouse.haetae.certificate.request.CertificateRecordRequest;
+import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
+
+import java.util.List;
 
 /**
  * 证书盖章请求构造器
+ *
  * @author guofan.cp
  * @version : CertificateConfirmRequest.java 2019/04/30 12:42 guofan.cp
  */
@@ -35,7 +39,7 @@ public class CertificateConfirmRequestBuilder {
      */
     private String certificateState;
     /**
-     * 证书学号
+     * 学生学号
      */
     private String confirmStuId;
     /**
@@ -43,40 +47,54 @@ public class CertificateConfirmRequestBuilder {
      */
     private String localUrl;
 
+
     public static CertificateConfirmRequestBuilder getInstance() {
         return new CertificateConfirmRequestBuilder();
     }
-    public CertificateRecordRequest build() {
-        CertificateRecordRequest certificateRecordRequest=new CertificateRecordRequest();
-        certificateRecordRequest.setCertificateId(certificateId);
-        certificateRecordRequest.setCertificateState(certificateState);
-        certificateRecordRequest.setCertificateType(certificateType);
-        certificateRecordRequest.setConfirmStuId(confirmStuId);
-        certificateRecordRequest.setConfirmUserId(confirmUserId);
-        certificateRecordRequest.setUserId(userId);
-        return certificateRecordRequest;
+
+    public CertificateConfirmRequest build() {
+        CertificateConfirmRequest certificateConfirmRequest = new CertificateConfirmRequest();
+        certificateConfirmRequest.setCertificateId(certificateId);
+        certificateConfirmRequest.setCertificateState(certificateState);
+        certificateConfirmRequest.setCertificateType(certificateType);
+        certificateConfirmRequest.setConfirmStuId(confirmStuId);
+        certificateConfirmRequest.setConfirmUserId(confirmUserId);
+        certificateConfirmRequest.setUserId(userId);
+        certificateConfirmRequest.setLocalURL(localUrl);
+        return certificateConfirmRequest;
     }
+
     private CertificateConfirmRequestBuilder() {
     }
-    public CertificateConfirmRequestBuilder withCertificateId(String certificateId){
-        this.certificateId=certificateId;
+
+    public CertificateConfirmRequestBuilder withCertificateId(String certificateId) {
+        this.certificateId = certificateId;
         return this;
     }
-    public CertificateConfirmRequestBuilder withCertificateState(String certificateState){
-        this.certificateState=certificateState;
+
+    public CertificateConfirmRequestBuilder withCertificateState(String certificateState) {
+        this.certificateState = certificateState;
         return this;
     }
-    public CertificateConfirmRequestBuilder withCertificateType(String certificateType){
-        this.certificateType=certificateType;
+
+    public CertificateConfirmRequestBuilder withCertificateType(String certificateType) {
+        this.certificateType = certificateType;
         return this;
     }
-    public CertificateConfirmRequestBuilder withConfirmStuId(String confirmStuId){
-        this.confirmStuId=confirmStuId;
+
+    public CertificateConfirmRequestBuilder withConfirmStuId(String confirmStuId) {
+        this.confirmStuId = confirmStuId;
         return this;
     }
-    public CertificateConfirmRequestBuilder withConfirmUserId(String confirmUserId){
-        this.confirmUserId=confirmUserId;
+
+    public CertificateConfirmRequestBuilder withConfirmUserId(String confirmUserId) {
+        this.confirmUserId = confirmUserId;
         return this;
     }
+    public CertificateConfirmRequestBuilder withUserId(String userId){
+        this.userId=userId;
+        return this;
+    }
+
 
 }

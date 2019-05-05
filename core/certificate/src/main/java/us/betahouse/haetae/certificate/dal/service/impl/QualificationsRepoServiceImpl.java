@@ -101,6 +101,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getCertificateGrade() != null) {
             qualificationsDO.setCertificateGrade(newQualificationDO.getCertificateGrade());
         }
+        //更新审核员信息
+        if (newQualificationDO.getConfirmUserId() != null) {
+            qualificationsDO.setConfirmUserId(newQualificationDO.getConfirmUserId());
+        }
         //更新修改时间
         qualificationsDO.setGmtModified(new Date());
         return convert(qualificationsDORepo.save(qualificationsDO));
@@ -112,12 +116,11 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
     }
 
 
-
     @Override
     public List<CertificateBO> queryCET46(String userId) {
         return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
                 .filter(Objects::nonNull)
-                .filter(str->str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .filter(str -> str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
                 .map(this::convert)
                 .map(this::changeType)
                 .collect(Collectors.toList());
@@ -128,7 +131,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         return CollectionUtils.toStream(qualificationsDORepo.findByUserId(userId))
                 .filter(Objects::nonNull)
                 //拦截四六级证书
-                .filter(qualificationsDO->!qualificationsDO.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .filter(qualificationsDO -> !qualificationsDO.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
@@ -199,6 +202,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setCertificateNumber(certificateBO.getCertificateNumber());
         qualificationsDO.setCertificateOrganization(certificateBO.getCertificateOrganization());
         qualificationsDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
+        qualificationsDO.setConfirmUserId(certificateBO.getConfirmUserId());
         qualificationsDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         qualificationsDO.setType(certificateBO.getType());
         qualificationsDO.setRank(certificateBO.getRank());
@@ -214,8 +218,8 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
      * @param certificateBO
      * @return
      */
-    public CertificateBO changeType(CertificateBO certificateBO){
-        if(certificateBO==null){
+    public CertificateBO changeType(CertificateBO certificateBO) {
+        if (certificateBO == null) {
             return null;
         }
         certificateBO.setCertificateType(CertificateTypeEnum.CET_4_6.getCode());

@@ -25,7 +25,7 @@ public class CertificateConfirmRequest extends CertificateRecordRequest implemen
 
     @Override
     public String getVerifyUserId() {
-        return getConfirmUserId();
+        return getUserId();
     }
 
     public List<String> getStuId() {

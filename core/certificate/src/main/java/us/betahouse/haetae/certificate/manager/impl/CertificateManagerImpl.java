@@ -103,6 +103,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setWorkUserId(request.getWorkUserId());
+        certificateBO.setRank(request.getRank());
         //设置证书状态 待审核
         certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //放入拓展信息

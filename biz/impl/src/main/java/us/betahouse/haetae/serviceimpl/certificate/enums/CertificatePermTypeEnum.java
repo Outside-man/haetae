@@ -73,16 +73,16 @@ public enum CertificatePermTypeEnum implements PermType {
 
     @Override
     public String getCode() {
-        return null;
+        return code;
     }
 
     @Override
     public String getDesc() {
-        return null;
+        return desc;
     }
 
     @Override
     public boolean isInit() {
-        return false;
+        return init;
     }
 }

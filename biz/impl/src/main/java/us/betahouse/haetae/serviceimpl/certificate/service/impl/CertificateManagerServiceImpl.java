@@ -113,7 +113,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
 
     @Override
     @VerifyPerm(permType =  CertificatePermType.MANAGER_CONFIRM)
-    public List<UserInfoBO> getConfirmUser(CertificateConfirmRequest request, OperateContext context) {
+    public List<UserInfoBO> getConfirmUser() {
         //获取角色号
         String roleId=roleDORepo.findByRoleCode(UserRoleCode.CERTIFICATE_CONFIRM.getCode()).getRoleId();
         //获取角色下的所有用户userid
@@ -135,10 +135,12 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     @VerifyPerm(permType = CertificatePermType.GET_CERTIFICATES)
     public List<CertificateBO> fetchAllCertificate(CertificateConfirmRequest request, OperateContext context) {
         List<CertificateBO> certificateBOS=new ArrayList<>();
-        certificateBOS.addAll(qualificationsRepoService.queryCET46(request.getUserId()));
-        certificateBOS.addAll(qualificationsRepoService.queryQualificate(request.getUserId()));
-        certificateBOS.addAll(qualificationsRepoService.queryQualificate(request.getUserId()));
-        certificateBOS.addAll(competitionRepoService.queryByUserId(request.getUserId()));
+        String studId=request.getConfirmStuId();
+        String stuUserId=userInfoRepoService.queryUserInfoByStuId(studId).getUserId();
+        certificateBOS.addAll(qualificationsRepoService.queryCET46(stuUserId));
+        certificateBOS.addAll(qualificationsRepoService.queryQualificate(stuUserId));
+        certificateBOS.addAll(skillRepoService.queryByUserId(stuUserId));
+        certificateBOS.addAll(competitionRepoService.queryByUserId(stuUserId));
         return certificateBOS;
     }
 
@@ -153,6 +155,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
 
     @Override
     @VerifyPerm(permType = CertificatePermType.CONFIRM_CERTIFICATE)
+    @Transactional(rollbackFor = Exception.class)
     public CertificateBO confirmCertificate(CertificateConfirmRequest request, OperateContext context) {
         CertificateBO certificateBO=certificateService.findByCertificateId(request.getCertificateId());
         AssertUtil.assertNotNull(certificateBO,"证书id不存在");
@@ -162,6 +165,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         certificateBO.setConfirmUserId(request.getUserId());
         //保存信息 更新信息
         CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(request.getCertificateType());
+        AssertUtil.assertNotNull(certificateTypeEnum,"证书类型不存在");
         //证书类型判断(四种类型，四六级与资格证书同表)
         switch (certificateTypeEnum) {
             //四六级证书
@@ -173,7 +177,13 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
             }
             //竞赛证书
             case COMPETITION: {
-                competitionRepoService.modify(certificateBO);
+                //获取竞赛证书团队信息
+                String teamid=certificateBO.getTeamId();
+                List<CertificateBO> certificateBOList=competitionRepoService.queryByTeamId(teamid);
+                for( CertificateBO certificateBO1:certificateBOList){
+                    certificateBO.setCertificateId(certificateBO1.getCertificateId());
+                    competitionRepoService.modify(certificateBO);
+                }
                break;
             }
             //技能证书

@@ -106,6 +106,10 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (newCompetitionDO.getStatus() != null) {
             competitionDO.setStatus(newCompetitionDO.getStatus());
         }
+        //更新审核员id
+        if (newCompetitionDO.getConfirmUserId() != null) {
+            competitionDO.setConfirmUserId(newCompetitionDO.getConfirmUserId());
+        }
         //更新修改时间
         competitionDO.setGmtModified(new Date());
         return convert(competitionDORepo.save(competitionDO));
@@ -160,7 +164,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
 
     @Override
     public CertificateBO queryByUserIdAndTeamId(String userId, String teamId) {
-        return convert(competitionDORepo.findByUserIdAndTeamId(userId,teamId));
+        return convert(competitionDORepo.findByUserIdAndTeamId(userId, teamId));
     }
 
     /**
@@ -207,6 +211,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         competitionDO.setRank(certificateBO.getRank());
         competitionDO.setCertificatePublishTime(certificateBO.getCertificatePublishTime());
         competitionDO.setTeamName(certificateBO.getTeamName());
+        competitionDO.setConfirmUserId(certificateBO.getConfirmUserId());
         competitionDO.setTeamId(certificateBO.getTeamId());
         competitionDO.setStatus(certificateBO.getStatus());
         competitionDO.setWorkersUserId(JSON.toJSONString(certificateBO.getWorkUserId()));

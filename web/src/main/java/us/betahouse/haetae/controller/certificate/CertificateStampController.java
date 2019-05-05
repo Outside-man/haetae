@@ -14,10 +14,13 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.user.request.ConfirmRequest;
+import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateConfirmRequestBuilder;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateManagerService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.utils.IPUtil;
+import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
@@ -50,7 +53,7 @@ public class CertificateStampController {
      * @param httpServletRequest
      * @return
      */
-    @GetMapping
+    @GetMapping(value = "unrecivedCertificates")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<List<CertificateBO>> findUnrecivedCertificatesByUserId(ConfirmRequest request, HttpServletRequest httpServletRequest) {
@@ -64,7 +67,11 @@ public class CertificateStampController {
             public Result<List<CertificateBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .withConfirmStuId(request.getStuId());
+                List<CertificateBO> certificateBOList = certificateManagerService.fetchUnreviedCertificate(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(certificateBOList, "获取未过审核证书成功");
             }
         });
     }
@@ -90,7 +97,12 @@ public class CertificateStampController {
             public Result<CertificateBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .withCertificateType(request.getCertificateType())
+                        .withCertificateId(request.getCertificateId());
+                CertificateBO certificateBO = certificateManagerService.confirmCertificate(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(certificateBO, "证书审核通过");
             }
         });
     }
@@ -102,55 +114,63 @@ public class CertificateStampController {
      * @param httpServletRequest
      * @return
      */
-    @GetMapping
+    @GetMapping(value = "confirmUsers")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result<CertificateBO> getAllConfirms(ConfirmRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "证书审核通过", request, new RestOperateCallBack<CertificateBO>() {
+    public Result<List<UserInfoBO>> getAllConfirms(ConfirmRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "证书审核通过", request, new RestOperateCallBack<List<UserInfoBO>>() {
             @Override
             public void before() {
+                AssertUtil.assertNotNull(request, "请求体不能为空");
             }
 
             @Override
-            public Result<CertificateBO> execute() {
+            public Result<List<UserInfoBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                List<UserInfoBO> userInfoBOS = certificateManagerService.getConfirmUser();
+                return RestResultUtil.buildSuccessResult(userInfoBOS, "获取未过审核证书成功");
             }
         });
     }
+
     /**
-     *
      * 添加证书审核员
+     *
      * @param request
      * @param httpServletRequest
      * @return
      */
-    @PostMapping
+    @PostMapping(value = "confirmUser")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<CertificateBO> addConfirms(ConfirmRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "证书审核通过", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
+                AssertUtil.assertNotNull(request.getStuId(), "添加证书审核员学号不能为空");
             }
 
             @Override
             public Result<CertificateBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return null;
+                CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
+                        .withConfirmStuId(request.getStuId());
+                certificateManagerService.bindConfirmUser(builder.build(), context);
+                return RestResultUtil.buildSuccessResult("绑定审核员成功");
             }
         });
     }
+
     /**
-     *
      * 删除证书审核员
+     *
      * @param request
      * @param httpServletRequest
      * @return
      */
-    @DeleteMapping
+    @DeleteMapping(value = "confirmUser")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<CertificateBO> deleteConfirms(ConfirmRequest request, HttpServletRequest httpServletRequest) {
