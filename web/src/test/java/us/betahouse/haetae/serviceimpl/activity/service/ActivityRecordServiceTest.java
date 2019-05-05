@@ -56,7 +56,7 @@ public class ActivityRecordServiceTest {
     private ActivityRepoService activityRepoService;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\4.27数据导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\校园活动-模板.csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
