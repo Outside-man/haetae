@@ -26,7 +26,14 @@ public enum IdTypeEnum {
     /**
      * 履历id
      */
-    Position_Record_ID("1004", "履历id"),;
+    Position_Record_ID("1004", "履历id"),
+
+    /**
+     * 以往活动记录id
+     */
+    Past_Activity_ID("1005","以往活动记录id"),
+
+    ;
 
 
     /**

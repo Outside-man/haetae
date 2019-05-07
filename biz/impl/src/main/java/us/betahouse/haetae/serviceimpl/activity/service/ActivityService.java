@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.activity.service;
 
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -87,4 +88,26 @@ public interface ActivityService {
      * @return
      */
     List<ActivityBO> systemFinishActivity();
+
+    /**
+     * 初始化以往活动记录
+     */
+    void initPastActivity();
+
+    /**
+     * 获取以往活动记录
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PastActivityBO getPastActivity(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 分配以往活动记录
+     *
+     * @param request
+     * @param context
+     */
+    void  assignPastRecord(ActivityManagerRequest request,OperateContext context);
 }

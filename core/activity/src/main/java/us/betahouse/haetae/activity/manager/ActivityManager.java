@@ -4,8 +4,10 @@
  */
 package us.betahouse.haetae.activity.manager;
 
+import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 
@@ -56,4 +58,35 @@ public interface ActivityManager {
      * @return
      */
     PageList<ActivityBO> find(ActivityRequest request);
+
+    /**
+     * 查询过去活动记录
+     * @param request
+     * @return
+     */
+    PastActivityBO findPast(ActivityRequest request);
+
+    /**
+     * 创建过去活动
+     *
+     * @param request
+     * @return
+     */
+    PastActivityBO createPast(ActivityRequest request);
+
+    /**
+     * 创建过去活动记录
+     *
+     * @param pastActivityBO
+     * @return
+     */
+    PastActivityBO createPast(PastActivityBO pastActivityBO);
+
+    /**
+     * 更新过去活动记录
+     *
+     * @param request
+     * @return
+     */
+    PastActivityBO updatePast(ActivityRequest request);
 }

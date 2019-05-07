@@ -12,6 +12,7 @@ import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
@@ -31,6 +32,8 @@ public class ActivityManagerImpl implements ActivityManager {
 
     @Autowired
     private ActivityRepoService activityRepoService;
+
+
 
     /**
      * 创建活动
@@ -114,5 +117,45 @@ public class ActivityManagerImpl implements ActivityManager {
             return activityRepoService.queryActivityByTermAndStateAndTypePagerDESC(request.getTerm(), request.getState(), request.getType(), request.getPage(), request.getLimit());
         }
 
+    }
+
+    @Override
+    public PastActivityBO findPast(ActivityRequest request) {
+        if(StringUtils.isNotBlank(request.getUserId())){
+            return activityRepoService.getPastByUserId(request.getUserId());
+        }
+        if(StringUtils.isNotBlank(request.getStuId())){
+            return activityRepoService.getPastByStuId(request.getStuId());
+        }
+        return null;
+    }
+
+    @Override
+    public PastActivityBO createPast(ActivityRequest request) {
+        PastActivityBO pastActivityBO = new PastActivityBO();
+        if(activityRepoService.getPastByUserId(request.getUserId())!=null){
+            return activityRepoService.getPastByUserId(pastActivityBO.getUserId());
+        }
+        pastActivityBO.setUserId(request.getUserId());
+        pastActivityBO.setUndistributedStamp(request.getUndistributedStamp());
+        pastActivityBO.setPastSchoolActivity(request.getPastSchoolActivity());
+        pastActivityBO.setPastLectureActivity(request.getPastLectureActivity());
+        pastActivityBO.setPastVolunteerActivityTime(request.getPastVolunteerActivityTime());
+        pastActivityBO.setPastPracticeActivity(request.getPastPracticeActivity());
+        pastActivityBO.setStuId(request.getStuId());
+        return activityRepoService.createPastActivity(pastActivityBO);
+    }
+
+    @Override
+    public PastActivityBO createPast(PastActivityBO pastActivityBO) {
+        if(activityRepoService.getPastByUserId(pastActivityBO.getUserId())!=null){
+            return activityRepoService.getPastByUserId(pastActivityBO.getUserId());
+        }
+        return activityRepoService.createPastActivity(pastActivityBO);
+    }
+
+    @Override
+    public PastActivityBO updatePast(ActivityRequest request) {
+        return activityRepoService.updatePastActivity(request.getUserId(), request.getPastActivityBO());
     }
 }
