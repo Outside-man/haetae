@@ -156,6 +156,7 @@ public class CertificateStampController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
                         .withConfirmStuId(request.getStuId());
                 certificateManagerService.bindConfirmUser(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("绑定审核员成功");
