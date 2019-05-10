@@ -85,11 +85,8 @@ public class CertificateServiceImpl implements CertificateService {
                 List<String> userIds = new ArrayList<>();
                 for (String stuId : request.getWorkUserId()) {
                     UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
-                    if (userInfoBO == null) {
-                        AssertUtil.assertNotNull("队员id不存在");
-                    } else {
-                        userIds.add(userInfoBO.getUserId());
-                    }
+                    AssertUtil.assertNotNull(userInfoBO, stuId + "学号不存在");
+                    userIds.add(userInfoBO.getUserId());
                 }
                 request.setWorkUserId(userIds);
                 certificateBO = certificateManager.createCompetition(request);
@@ -176,7 +173,7 @@ public class CertificateServiceImpl implements CertificateService {
         CertificateBO certificateBO = judgeIsExit(request);
         //证书过审异常抛出
         judgeState(certificateBO);
-        update(request,context);
+        update(request, context);
         return null;
     }
 
