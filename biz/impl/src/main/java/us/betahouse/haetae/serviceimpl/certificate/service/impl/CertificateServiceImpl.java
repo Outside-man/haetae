@@ -237,7 +237,7 @@ public class CertificateServiceImpl implements CertificateService {
         }
         if (certificateBO == null) {
             certificateBO = competitionRepoService.queryByCertificateId(certificateId);
-//            competitionUserIdCovert(certificateBO);
+            competitionUserIdCovert(certificateBO);
         }
         AssertUtil.assertNotNull(certificateBO);
         //certificateType 由QUALIFICATIONS 改为CET4_6
