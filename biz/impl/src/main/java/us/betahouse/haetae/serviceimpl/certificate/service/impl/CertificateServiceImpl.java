@@ -79,12 +79,18 @@ public class CertificateServiceImpl implements CertificateService {
             }
             //竞赛证书
             case COMPETITION: {
+                //传入的空参数
+                final String nullStuid="";
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
                 //重置  stuid转userid
                 List<String> userIds = new ArrayList<>();
                 for (String stuId : request.getWorkUserId()) {
                     UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
+                    //前端文本框 固定 需进行学号参数""判断 orz
+                    if(nullStuid.equals(stuId)){
+                        continue;
+                    }
                     AssertUtil.assertNotNull(userInfoBO, stuId + "学号不存在");
                     userIds.add(userInfoBO.getUserId());
                 }
