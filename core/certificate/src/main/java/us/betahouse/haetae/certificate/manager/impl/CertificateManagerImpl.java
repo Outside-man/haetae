@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.certificate.manager.impl;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -163,6 +164,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setCertificateOrganization(request.getCertificateOrganization());
         certificateBO.setRank(request.getRank());
+        certificateBO.setConfirmUserId(request.getConfirmUserId());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
         certificateBO = setExtInfos(certificateBO, request);
         switch (certificateTypeEnum) {
@@ -211,6 +213,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setWorkUserId(request.getWorkUserId());
         certificateBO.setTeamId(request.getTeamId());
+        certificateBO.setConfirmUserId(request.getConfirmUserId());
         //放入拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //放入指导老师信息
@@ -252,7 +255,7 @@ public class CertificateManagerImpl implements CertificateManager {
         for (int i = 0; i < newUserId.size(); i++) {
             certificateBO.setUserId(newUserId.get(i));
             certificateBO.setCertificateId(null);
-            certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
+//            certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
             competitionRepoService.create(certificateBO);
         }
         certificateBO.setUserId(request.getUserId());
@@ -267,6 +270,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificateName(request.getCertificateName());
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setRank(request.getRank());
+        certificateBO.setConfirmUserId(request.getConfirmUserId());
         //设置拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //技能证书有效期

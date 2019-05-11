@@ -15,9 +15,11 @@ import us.betahouse.haetae.certificate.enums.CertificateStateEnum;
 import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.enums.CommonResultCode;
@@ -32,7 +34,6 @@ import java.util.stream.Collectors;
 
 /**
  * 证书服务实现
- * 无需鉴权 （普通用户操作）
  *
  * @author guofan.cp
  * @version : CertificateServiceImpl.java 2019/04/06 8:26 guofan.cp
@@ -80,7 +81,7 @@ public class CertificateServiceImpl implements CertificateService {
             //竞赛证书
             case COMPETITION: {
                 //传入的空参数
-                final String nullStuid="";
+                final String nullStuid = "";
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
                 //重置  stuid转userid
@@ -88,7 +89,7 @@ public class CertificateServiceImpl implements CertificateService {
                 for (String stuId : request.getWorkUserId()) {
                     UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
                     //前端文本框 固定 需进行学号参数""判断 orz
-                    if(nullStuid.equals(stuId)){
+                    if (nullStuid.equals(stuId)) {
                         continue;
                     }
                     AssertUtil.assertNotNull(userInfoBO, stuId + "学号不存在");
@@ -117,70 +118,37 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @VerifyPerm(permType = CertificatePermType.MODIFY_CERTIFICATE)
+    public CertificateBO updateByTeacher(CertificateRequest request, OperateContext context) {
+        CertificateBO certificateBO ;
+        certificateBO = Modify(request, context);
+        AssertUtil.assertNotNull(certificateBO,"证书修改失败");
+        return certificateBO;
+    }
+
+    @Override
     public CertificateBO update(CertificateRequest request, OperateContext context) {
+        //证书类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
-        CertificateBO certificateBO;
-        //证书类型判断
-        switch (certificateTypeEnum) {
-            //四六级证书
-            case CET_4_6: {
-                AssertUtil.assertNotNull(request.getRank(), "四六级证书类别不能为空");
-                //设置证书种类
-                request.setType(certificateTypeEnum.getCode());
-                certificateBO = certificateManager.modifyQualifications(request);
-                break;
-            }
-            //资格证书
-            case QUALIFICATIONS: {
-                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
-                AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
-                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
-                certificateBO = certificateManager.modifyQualifications(request);
-                break;
-            }
-            //竞赛证书
-            case COMPETITION: {
-                AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
-                AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
-                AssertUtil.assertNotNull(request.getTeamId(), "团队比赛id不能为空");
-                //stuid转userid
-                List<String> userIds = new ArrayList<>();
-                request.getWorkUserId().forEach(stuId -> {
-                    UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
-                    AssertUtil.assertNotNull(userInfoBO, "队员id不存在");
-                    userIds.add(userInfoBO.getUserId());
-                });
-                request.setWorkUserId(userIds);
-                certificateBO = certificateManager.modifyCompetition(request);
-                //显示 userid转stuid
-                competitionUserIdCovert(certificateBO);
-                break;
-            }
-            //技能证书
-            case SKILL: {
-                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
-                AssertUtil.assertNotNull(request.getRank(), "证书等级不能为空");
-                certificateBO = certificateManager.modifySkill(request);
-                break;
-            }
-            //异常
-            default: {
-                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
-            }
+        CertificateBO certificateBO = new CertificateBO();
+        if (request.getConfirmUserId() != null) {
+            //调用管理端修改
+            certificateBO = updateByTeacher(request, context);
+        } else {
+            //调用用户修改
+            certificateBO = updateByStudent(request, context);
         }
         return certificateBO;
     }
 
     @Override
     public CertificateBO updateByStudent(CertificateRequest request, OperateContext context) {
-        //证书类型异常抛出
-        CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         //证书存在异常抛出
         CertificateBO certificateBO = judgeIsExit(request);
         //证书过审异常抛出
         judgeState(certificateBO);
-        update(request, context);
-        return null;
+        certificateBO = Modify(request, context);
+        return certificateBO;
     }
 
     @Override
@@ -291,7 +259,7 @@ public class CertificateServiceImpl implements CertificateService {
      * @return
      */
     private void judgeState(CertificateBO certificateBO) {
-        AssertUtil.assertTrue(certificateBO.getStatus().equals(CertificateStateEnum.UNREVIEWED.getCode()), "证书已通过审核无法删除");
+        AssertUtil.assertTrue(certificateBO.getStatus().equals(CertificateStateEnum.UNREVIEWED.getCode()), "证书已通过审核");
     }
 
     /**
@@ -375,5 +343,59 @@ public class CertificateServiceImpl implements CertificateService {
                 .filter(Objects::nonNull)
                 .map(this::competitionUserIdCovert)
                 .collect(Collectors.toList());
+    }
+
+    private CertificateBO Modify(CertificateRequest request, OperateContext context) {
+        CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
+        CertificateBO certificateBO;
+        //证书类型判断
+        switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6: {
+                AssertUtil.assertNotNull(request.getRank(), "四六级证书类别不能为空");
+                //设置证书种类
+                request.setType(certificateTypeEnum.getCode());
+                certificateBO = certificateManager.modifyQualifications(request);
+                break;
+            }
+            //资格证书
+            case QUALIFICATIONS: {
+                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getCertificateOrganization(), "发行证书组织不能为空");
+                AssertUtil.assertNotNull(request.getType(), "资格证书种类不能为空");
+                certificateBO = certificateManager.modifyQualifications(request);
+                break;
+            }
+            //竞赛证书
+            case COMPETITION: {
+                AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
+                AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
+                AssertUtil.assertNotNull(request.getTeamId(), "团队比赛id不能为空");
+                //stuid转userid
+                List<String> userIds = new ArrayList<>();
+                request.getWorkUserId().forEach(stuId -> {
+                    UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
+                    AssertUtil.assertNotNull(userInfoBO, "队员id不存在");
+                    userIds.add(userInfoBO.getUserId());
+                });
+                request.setWorkUserId(userIds);
+                certificateBO = certificateManager.modifyCompetition(request);
+                //显示 userid转stuid
+                competitionUserIdCovert(certificateBO);
+                break;
+            }
+            //技能证书
+            case SKILL: {
+                AssertUtil.assertNotNull(request.getCertificateName(), "发行证书名字不能为空");
+                AssertUtil.assertNotNull(request.getRank(), "证书等级不能为空");
+                certificateBO = certificateManager.modifySkill(request);
+                break;
+            }
+            //异常
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
+            }
+        }
+        return certificateBO;
     }
 }

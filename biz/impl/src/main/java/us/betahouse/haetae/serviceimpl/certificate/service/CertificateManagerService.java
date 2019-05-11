@@ -22,13 +22,6 @@ import java.util.List;
  */
 public interface CertificateManagerService {
 
-    /**
-     * 修改证书记录
-     *
-     * @param request
-     * @return
-     */
-    CertificateBO update(CertificateRequest request, OperateContext context);
 
     /**
      * 删除证书记录
@@ -38,6 +31,7 @@ public interface CertificateManagerService {
      * @return
      */
     void delete(CertificateRequest request, OperateContext context);
+
 
     /**
      * 通过证书id获取详细信息

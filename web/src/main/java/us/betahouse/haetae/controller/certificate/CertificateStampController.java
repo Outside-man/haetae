@@ -13,6 +13,7 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.model.certificate.request.CertificateRestRequest;
 import us.betahouse.haetae.model.user.request.ConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateConfirmRequestBuilder;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
@@ -22,11 +23,15 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
+
+import static us.betahouse.haetae.certificate.enums.CertificateExtInfoKey.DESCRIPTION;
 
 /**
  * 证书审核员 接口
@@ -47,7 +52,7 @@ public class CertificateStampController {
     private CertificateManagerService certificateManagerService;
 
     /**
-     * 审核员 获取未过审证书
+     * 审核员 获取用户所有证书信息
      *
      * @param request
      * @param httpServletRequest
@@ -56,7 +61,7 @@ public class CertificateStampController {
     @GetMapping(value = "unrecivedCertificates")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result<List<CertificateBO>> findUnrecivedCertificatesByUserId(ConfirmRequest request, HttpServletRequest httpServletRequest) {
+    public Result<List<CertificateBO>> findCertificatesByUserId(ConfirmRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取该生未审核记录", request, new RestOperateCallBack<List<CertificateBO>>() {
             @Override
             public void before() {
@@ -70,8 +75,8 @@ public class CertificateStampController {
                 CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
                         .withUserId(request.getUserId())
                         .withConfirmStuId(request.getStuId());
-                List<CertificateBO> certificateBOList = certificateManagerService.fetchUnreviedCertificate(builder.build(), context);
-                return RestResultUtil.buildSuccessResult(certificateBOList, "获取未过审核证书成功");
+                List<CertificateBO> certificateBOList = certificateManagerService.fetchAllCertificate(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(certificateBOList, "获取该用户所有证书信息成功");
             }
         });
     }

@@ -79,7 +79,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         }
         //有效时间
         if (newSkillDO.getExpirationTime() != null) {
-            skillDO.setExpirationTime(newSkillDO.getCertificatePublishTime());
+            skillDO.setExpirationTime(newSkillDO.getExpirationTime());
         }
         //更新证书编号
         if (newSkillDO.getCertificateNumber() != null) {

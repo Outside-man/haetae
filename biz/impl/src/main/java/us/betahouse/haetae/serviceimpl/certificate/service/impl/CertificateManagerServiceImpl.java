@@ -38,6 +38,7 @@ import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -67,17 +68,13 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     private RoleDORepo roleDORepo;
 
 
-    @Override
-    @VerifyPerm(permType = CertificatePermType.MODIFY_CERTIFICATE)
-    public CertificateBO update(CertificateRequest request, OperateContext context) {
-        return certificateService.update(request,context);
-    }
 
     @Override
     @VerifyPerm(permType = CertificatePermType.DELETE_CERTIFICATE)
     public void delete(CertificateRequest request, OperateContext context) {
         certificateService.delete(request,context);
     }
+
 
     @Override
     @VerifyPerm(permType = CertificatePermType.GET_CERTIFICATES)
@@ -140,7 +137,8 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         certificateBOS.addAll(qualificationsRepoService.queryCET46(stuUserId));
         certificateBOS.addAll(qualificationsRepoService.queryQualificate(stuUserId));
         certificateBOS.addAll(skillRepoService.queryByUserId(stuUserId));
-        certificateBOS.addAll(competitionRepoService.queryByUserId(stuUserId));
+        //竞赛证书查找后userid转换stuid
+        certificateBOS.addAll(competitionUserIdCovert(competitionRepoService.queryByUserId(stuUserId)));
         return certificateBOS;
     }
 
@@ -154,7 +152,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     }
 
     @Override
-    @VerifyPerm(permType = CertificatePermType.CONFIRM_CERTIFICATE)
+    @VerifyPerm(permType = CertificatePermType.MODIFY_CERTIFICATE)
     @Transactional(rollbackFor = Exception.class)
     public CertificateBO confirmCertificate(CertificateConfirmRequest request, OperateContext context) {
         CertificateBO certificateBO=certificateService.findByCertificateId(request.getCertificateId());
@@ -182,8 +180,10 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
                 List<CertificateBO> certificateBOList=competitionRepoService.queryByTeamId(teamid);
                 for( CertificateBO certificateBO1:certificateBOList){
                     certificateBO.setCertificateId(certificateBO1.getCertificateId());
+                    certificateBO.setWorkUserId(certificateBO1.getWorkUserId());
                     competitionRepoService.modify(certificateBO);
                 }
+                competitionUserIdCovert(certificateBO);
                break;
             }
             //技能证书
@@ -198,4 +198,33 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         }
         return certificateBO;
     }
+
+    /**
+     * 转换器 竞赛证书userid 转stuid
+     *
+     * @param certificateBOS
+     * @return
+     */
+    private List<CertificateBO> competitionUserIdCovert(List<CertificateBO> certificateBOS) {
+        return CollectionUtils.toStream(certificateBOS)
+                .filter(Objects::nonNull)
+                .map(this::competitionUserIdCovert)
+                .collect(Collectors.toList());
+    }
+    /**
+     * 转换器 竞赛证书userid转 stuid
+     *
+     * @param certificateBO
+     * @return
+     */
+    private CertificateBO competitionUserIdCovert(CertificateBO certificateBO) {
+        List<String> userIds = new ArrayList<>();
+        for (String userid : certificateBO.getWorkUserId()) {
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByUserId(userid);
+            userIds.add(userInfoBO.getStuId());
+        }
+        certificateBO.setWorkUserId(userIds);
+        return certificateBO;
+    }
 }
+

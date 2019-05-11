@@ -87,6 +87,7 @@ public class InitService {
         //证书
         certificateConfirmPerm.add(CertificatePermType.CONFIRM_CERTIFICATE);
         certificateConfirmPerm.add(CertificatePermType.GET_CERTIFICATES);
+        certificateConfirmPerm.add(CertificatePermType.MODIFY_CERTIFICATE);
 
         certificateManagerPerm.add(CertificatePermType.GET_CERTIFICATES);
         certificateManagerPerm.add(CertificatePermType.DELETE_CERTIFICATE);

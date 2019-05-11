@@ -53,7 +53,7 @@ public class CertificateController {
     private CertificateService certificateService;
 
     /**
-     * 创建资格证书
+     * 创建证书
      *
      * @param request
      * @param httpServletRequest
@@ -139,6 +139,7 @@ public class CertificateController {
                         .withCertificatePublishTime(request.getCertificatePublishTime())
                         .withCertificateType(request.getCertificateType())
                         .withType(request.getType())
+                        .withConfirmUserId(request.getConfirmUserId())
                         .withRank(request.getRank())
                         .withWorkUserId(request.getWorkUserId())
                         .withExpirationTime(request.getExpirationTime())
@@ -147,8 +148,9 @@ public class CertificateController {
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
                         .withCertificateGrade(request.getCertificateGrade())
+                        .withExpirationTime(request.getExpirationTime())
                         .withExtInfo(request.getExtInfo());
-                return RestResultUtil.buildSuccessResult(certificateService.updateByStudent(builder.build(), context), "修改记录成功");
+                return RestResultUtil.buildSuccessResult(certificateService.update(builder.build(), context), "修改记录成功");
             }
         });
     }

@@ -19,10 +19,6 @@ public class CertificatePermType {
      */
     public final static String IMPORT_CERTIFICATE = "IMPORT_CERTIFICATE";
     /**
-     * 修改证书信息
-     */
-    public final static String MODIFY_CERTIFICATE = "MODIFY_CERTIFICATE";
-    /**
      * 删除有误证书
      */
     public final static String DELETE_CERTIFICATE = "DELETE_CERTIFICATE";
@@ -35,8 +31,12 @@ public class CertificatePermType {
      */
     public final  static  String CONFIRM_CERTIFICATE="CONFIRM_CERTIFICATE";
     /**
-     * 用户未审核证书获取
+     * 用户证书获取
      */
     public final  static String GET_CERTIFICATES="GET_CERTIFICATE";
+    /**
+     * 修改证书信息
+     */
+    public final static String MODIFY_CERTIFICATE = "MODIFY_CERTIFICATE";
     //=================审核员权限 end===================
 }

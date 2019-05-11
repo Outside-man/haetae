@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.certificate.service;
 
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
@@ -12,7 +13,6 @@ import java.util.List;
 
 /**
  * 证书服务
- * 无需鉴权
  *
  * @author guofan.cp
  * @version : CertificateService.java 2019/04/05 10:55 guofan.cp
@@ -31,6 +31,15 @@ public interface CertificateService {
      * 修改证书记录（后台管理端）无需判断证书状态
      *
      * @param request
+     * @return
+     */
+    CertificateBO updateByTeacher(CertificateRequest request, OperateContext context);
+
+    /**
+     * 修改证书记录
+     *
+     * @param request
+     * @param context
      * @return
      */
     CertificateBO update(CertificateRequest request, OperateContext context);
@@ -63,7 +72,7 @@ public interface CertificateService {
 
     /**
      * 通过证书id查找证书
-     *
+     * 竞赛证书返回为stuid 四六级证书返回
      * @param certificateId
      * @return
      */
