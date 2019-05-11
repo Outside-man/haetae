@@ -80,18 +80,12 @@ public class CertificateServiceImpl implements CertificateService {
             }
             //竞赛证书
             case COMPETITION: {
-                //传入的空参数
-                final String nullStuid = "";
                 AssertUtil.assertNotNull(request.getCompetitionName(), "比赛名字不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "比赛级别不能为空");
                 //重置  stuid转userid
                 List<String> userIds = new ArrayList<>();
                 for (String stuId : request.getWorkUserId()) {
                     UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
-                    //前端文本框 固定 需进行学号参数""判断 orz
-                    if (nullStuid.equals(stuId)) {
-                        continue;
-                    }
                     AssertUtil.assertNotNull(userInfoBO, stuId + "学号不存在");
                     userIds.add(userInfoBO.getUserId());
                 }
@@ -120,9 +114,9 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional(rollbackFor = Exception.class)
     @VerifyPerm(permType = CertificatePermType.MODIFY_CERTIFICATE)
     public CertificateBO updateByTeacher(CertificateRequest request, OperateContext context) {
-        CertificateBO certificateBO ;
+        CertificateBO certificateBO;
         certificateBO = Modify(request, context);
-        AssertUtil.assertNotNull(certificateBO,"证书修改失败");
+        AssertUtil.assertNotNull(certificateBO, "证书修改失败");
         return certificateBO;
     }
 
@@ -132,6 +126,8 @@ public class CertificateServiceImpl implements CertificateService {
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         CertificateBO certificateBO = new CertificateBO();
         if (request.getConfirmUserId() != null) {
+            //这边confirmStuid更换为UserId;
+            request.setConfirmUserId(userInfoRepoService.queryUserInfoByStuId(request.getConfirmUserId()).getUserId());
             //调用管理端修改
             certificateBO = updateByTeacher(request, context);
         } else {
@@ -199,15 +195,17 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public CertificateBO findByCertificateId(String certificateId) {
+        // 1.查找资格证书 2.查找技能证书 3.查找竞赛证书
         CertificateBO certificateBO = qualificationsRepoService.queryByCertificateId(certificateId);
         if (certificateBO == null) {
             certificateBO = skillRepoService.queryByCertificateId(certificateId);
         }
         if (certificateBO == null) {
             certificateBO = competitionRepoService.queryByCertificateId(certificateId);
+            //竞赛证书 团队成员和审核员 UserId 转 stuId
             competitionUserIdCovert(certificateBO);
         }
-        AssertUtil.assertNotNull(certificateBO);
+        AssertUtil.assertNotNull(certificateBO, "未查找到该证书");
         //certificateType 由QUALIFICATIONS 改为CET4_6
         if (CertificateTypeEnum.CET_4_6.getCode().equals(certificateBO.getType())) {
             certificateBO.setCertificateType(CertificateTypeEnum.CET_4_6.getCode());
@@ -318,6 +316,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     /**
      * 转换器 竞赛证书userid转 stuid
+     * 审核员 userid转 stuid
      *
      * @param certificateBO
      * @return
@@ -328,7 +327,12 @@ public class CertificateServiceImpl implements CertificateService {
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByUserId(userid);
             userIds.add(userInfoBO.getStuId());
         }
+        //团队伙伴id转stuId
         certificateBO.setWorkUserId(userIds);
+        //审核员id转userId
+        if (certificateBO.getConfirmUserId() != null) {
+            certificateBO.setConfirmUserId(userInfoRepoService.queryUserInfoByUserId(certificateBO.getConfirmUserId()).getStuId());
+        }
         return certificateBO;
     }
 
@@ -345,6 +349,13 @@ public class CertificateServiceImpl implements CertificateService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 修改证书
+     *
+     * @param request
+     * @param context
+     * @return
+     */
     private CertificateBO Modify(CertificateRequest request, OperateContext context) {
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         CertificateBO certificateBO;

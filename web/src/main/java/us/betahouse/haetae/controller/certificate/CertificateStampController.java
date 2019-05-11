@@ -58,14 +58,14 @@ public class CertificateStampController {
      * @param httpServletRequest
      * @return
      */
-    @GetMapping(value = "unrecivedCertificates")
+    @GetMapping(value = "certificates")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<List<CertificateBO>> findCertificatesByUserId(ConfirmRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取该生未审核记录", request, new RestOperateCallBack<List<CertificateBO>>() {
+        return RestOperateTemplate.operate(LOGGER, "获取该生全部记录", request, new RestOperateCallBack<List<CertificateBO>>() {
             @Override
             public void before() {
-                AssertUtil.assertNotNull(request.getStuId(), "待审核学生id不能为空");
+                AssertUtil.assertNotNull(request.getStuId(), "学生id不能为空");
             }
 
             @Override
@@ -95,7 +95,7 @@ public class CertificateStampController {
         return RestOperateTemplate.operate(LOGGER, "证书审核通过", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
-                AssertUtil.assertNotNull(request.getCertificateId(), "通过证书不能为空");
+                AssertUtil.assertNotNull(request.getCertificateId(), "通过证书id不能为空");
             }
 
             @Override
@@ -134,7 +134,7 @@ public class CertificateStampController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 List<UserInfoBO> userInfoBOS = certificateManagerService.getConfirmUser();
-                return RestResultUtil.buildSuccessResult(userInfoBOS, "获取未过审核证书成功");
+                return RestResultUtil.buildSuccessResult(userInfoBOS, "获取所有证书审核员信息成功");
             }
         });
     }
@@ -169,6 +169,8 @@ public class CertificateStampController {
         });
     }
 
+    //TODO 没有测试
+
     /**
      * 删除证书审核员
      *
@@ -183,12 +185,17 @@ public class CertificateStampController {
         return RestOperateTemplate.operate(LOGGER, "证书审核通过", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
+                AssertUtil.assertNotNull(request.getStuId(), "添加证书审核员学号不能为空");
             }
 
             @Override
             public Result<CertificateBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .withConfirmStuId(request.getStuId());
+                certificateManagerService.delteConfirmUser(builder.build(), context);
                 return null;
             }
         });

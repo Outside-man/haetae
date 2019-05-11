@@ -101,7 +101,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
        List<RoleBO> roleBOS =CollectionUtils.toStream(roleRepoService.queryRolesByUserId(userInfoBO.getUserId()))
                 .filter(roleBO -> roleBO.getRoleCode().equals(CertificatePermType.CONFIRM_CERTIFICATE))
                .collect(Collectors.toList());
-       AssertUtil.assertNotNull(roleBOS,"用户不属于证书审核员");
+       AssertUtil.assertNotNull(roleBOS,"证书审核员权限不存在");
        List<String> rolds=new ArrayList<>();
        rolds.add(roleBOS.get(0).getRoleId());
        //解除绑定

@@ -69,7 +69,7 @@ public class CertificateController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertNotNull(request.getUserId(),"用户id不能为空");
+                AssertUtil.assertNotNull(request.getUserId(), "用户id不能为空");
                 AssertUtil.assertStringNotBlank(request.getCertificateType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不能为空");
                 AssertUtil.assertNotNull(request.getCertificatePublishTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "证书发布时间不能为空");
                 //获取 Extinfo 中 description信息
@@ -161,7 +161,7 @@ public class CertificateController {
     @DeleteMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result deleteCertificate( CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+    public Result deleteCertificate(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "删除证书记录", request, new RestOperateCallBack<CertificateBO>() {
 
             @Override

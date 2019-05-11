@@ -187,6 +187,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .withCertificatePublishTime(competitionDO.getCertificatePublishTime())
                 .withTeamName(competitionDO.getTeamName())
                 .withStatus(competitionDO.getStatus())
+                .withConfirmUserId(competitionDO.getConfirmUserId())
                 .withUserID(competitionDO.getUserId())
                 .withWorkUserId(JSON.parseObject(competitionDO.getWorkersUserId(), List.class))
                 .withExtInfo(JSON.parseObject(competitionDO.getExtInfo(), Map.class))
