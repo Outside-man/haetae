@@ -30,6 +30,7 @@ import us.betahouse.util.utils.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +63,15 @@ public class CertificateServiceImpl implements CertificateService {
         switch (certificateTypeEnum) {
             //四六级证书
             case CET_4_6: {
+                AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "四六级证书类型等级不能为空");
+                Boolean CET_4_6Grade = Pattern.matches("[0-9]{3}", request.getCertificateGrade().toString());;
+                AssertUtil.assertTrue(CET_4_6Grade, "输入成绩需要为三位数");
+                //证书范围判断
+                if(Integer.valueOf(request.getCertificateGrade())>710||Integer.valueOf(request.getCertificateGrade())<=424){
+                    CET_4_6Grade=false;
+                }
+                AssertUtil.assertTrue(CET_4_6Grade, "输入成绩区间不符合标准");
                 request.setCertificateName("英语四六级证书");
                 request.setCertificateOrganization("教育部高等教育司");
                 //设置证书类型为四六级
