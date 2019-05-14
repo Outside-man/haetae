@@ -77,7 +77,7 @@ public class CertificateManagerImpl implements CertificateManager {
                 return certificateBO;
             }
             //四六级证书
-            case CET_4_6:{
+            case CET_4_6: {
                 certificateBO.setCertificateGrade(request.getCertificateGrade());
                 certificateBO = qualificationsRepoService.create(certificateBO);
                 return certificateBO;
@@ -144,7 +144,7 @@ public class CertificateManagerImpl implements CertificateManager {
         //额外信息插入extinfo
         certificateBO = setExtInfos(certificateBO, request);
         //证书有效时间
-        if(request.getExpirationTime()!=null){
+        if (request.getExpirationTime() != null) {
             certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
         }
         certificateBO = skillRepoService.create(certificateBO);
@@ -238,6 +238,8 @@ public class CertificateManagerImpl implements CertificateManager {
         remainUserId.removeAll(oldUserId);
         //获取旧版用户证书BO
         CertificateBO oldCertificateBO = competitionRepoService.queryByCertificateId(request.getCertificateId());
+        //获取旧版用户证书状态
+        String status = oldCertificateBO.getStatus();
         //更新成员
         for (int i = 0; i < remainUserId.size(); i++) {
             //获取更新证书id
@@ -254,7 +256,7 @@ public class CertificateManagerImpl implements CertificateManager {
         for (int i = 0; i < newUserId.size(); i++) {
             certificateBO.setUserId(newUserId.get(i));
             certificateBO.setCertificateId(null);
-//            certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
+            certificateBO.setStatus(status);
             competitionRepoService.create(certificateBO);
         }
         certificateBO.setUserId(request.getUserId());
@@ -273,7 +275,7 @@ public class CertificateManagerImpl implements CertificateManager {
         //设置拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //技能证书有效期
-        if(request.getExpirationTime()!=null){
+        if (request.getExpirationTime() != null) {
             certificateBO.setExpirationTime(new Date(request.getExpirationTime()));
         }
         certificateBO = skillRepoService.modify(certificateBO);
