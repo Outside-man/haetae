@@ -8,6 +8,7 @@ import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import us.betahouse.haetae.certificate.dal.service.CompetitionRepoService;
 import us.betahouse.haetae.certificate.dal.service.QualificationsRepoService;
 import us.betahouse.haetae.certificate.dal.service.SkillRepoService;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 证书服务实现
@@ -65,11 +67,12 @@ public class CertificateServiceImpl implements CertificateService {
             case CET_4_6: {
                 AssertUtil.assertNotNull(request.getCertificateGrade(), "成绩不能为空");
                 AssertUtil.assertNotNull(request.getRank(), "四六级证书类型等级不能为空");
-                Boolean CET_4_6Grade = Pattern.matches("[0-9]{3}", request.getCertificateGrade().toString());;
+                Boolean CET_4_6Grade = Pattern.matches("[0-9]{3}", request.getCertificateGrade().toString());
+                ;
                 AssertUtil.assertTrue(CET_4_6Grade, "输入成绩需要为三位数");
                 //证书范围判断
-                if(Integer.valueOf(request.getCertificateGrade())>710||Integer.valueOf(request.getCertificateGrade())<=424){
-                    CET_4_6Grade=false;
+                if (Integer.valueOf(request.getCertificateGrade()) > 710 || Integer.valueOf(request.getCertificateGrade()) <= 424) {
+                    CET_4_6Grade = false;
                 }
                 AssertUtil.assertTrue(CET_4_6Grade, "输入成绩区间不符合标准");
                 request.setCertificateName("英语四六级证书");
@@ -98,9 +101,13 @@ public class CertificateServiceImpl implements CertificateService {
                     AssertUtil.assertNotNull(userInfoBO, stuId + "学号不存在");
                     userIds.add(userInfoBO.getUserId());
                 }
+                //userid去重
+                userIds = CollectionUtils.toStream(userIds)
+                        .distinct()
+                        .collect(Collectors.toList());
                 request.setWorkUserId(userIds);
                 certificateBO = certificateManager.createCompetition(request);
-                AssertUtil.assertNotNull(certificateBO, "BO为空");
+                AssertUtil.assertNotNull(certificateBO, "证书为空创建失败");
                 competitionUserIdCovert(certificateBO);
                 break;
             }
