@@ -102,9 +102,11 @@ public class CertificateServiceImpl implements CertificateService {
                     userIds.add(userInfoBO.getUserId());
                 }
                 //userid去重
-                userIds = CollectionUtils.toStream(userIds)
+                 int userIdLength =CollectionUtils.toStream(userIds)
                         .distinct()
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toList()).size();
+                //学号重复异常抛出
+                AssertUtil.assertTrue(userIdLength==userIds.size(),"重复学号添加");
                 request.setWorkUserId(userIds);
                 certificateBO = certificateManager.createCompetition(request);
                 AssertUtil.assertNotNull(certificateBO, "证书为空创建失败");
