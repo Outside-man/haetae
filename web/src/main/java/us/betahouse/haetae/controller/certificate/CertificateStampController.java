@@ -133,7 +133,9 @@ public class CertificateStampController {
             public Result<List<UserInfoBO>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                List<UserInfoBO> userInfoBOS = certificateManagerService.getConfirmUser();
+                CertificateConfirmRequest request1=new CertificateConfirmRequest();
+                request1.setUserId(request.getUserId());
+                List<UserInfoBO> userInfoBOS = certificateManagerService.getConfirmUser(request1,context);
                 return RestResultUtil.buildSuccessResult(userInfoBOS, "获取所有证书审核员信息成功");
             }
         });
@@ -169,7 +171,6 @@ public class CertificateStampController {
         });
     }
 
-    //TODO 没有测试
 
     /**
      * 删除证书审核员
@@ -185,7 +186,7 @@ public class CertificateStampController {
         return RestOperateTemplate.operate(LOGGER, "证书审核通过", request, new RestOperateCallBack<CertificateBO>() {
             @Override
             public void before() {
-                AssertUtil.assertNotNull(request.getStuId(), "添加证书审核员学号不能为空");
+                AssertUtil.assertNotNull(request.getStuId(), "删除证书审核员学号不能为空");
             }
 
             @Override
@@ -196,7 +197,7 @@ public class CertificateStampController {
                         .withUserId(request.getUserId())
                         .withConfirmStuId(request.getStuId());
                 certificateManagerService.delteConfirmUser(builder.build(), context);
-                return null;
+                return RestResultUtil.buildSuccessResult("删除证书审核员成功");
             }
         });
     }

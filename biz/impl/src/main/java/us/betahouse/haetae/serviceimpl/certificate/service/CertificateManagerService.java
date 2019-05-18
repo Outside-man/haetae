@@ -64,7 +64,7 @@ public interface CertificateManagerService {
      * @param
      * @return
      */
-    List<UserInfoBO> getConfirmUser();
+    List<UserInfoBO> getConfirmUser(CertificateConfirmRequest request,OperateContext context);
     /**
      * 导入证书
      *
