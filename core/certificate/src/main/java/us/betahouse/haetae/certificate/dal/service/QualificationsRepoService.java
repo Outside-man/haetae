@@ -63,7 +63,7 @@ public interface QualificationsRepoService {
      * @param userId
      * @return
      */
-    List<CertificateBO>queryQualificate(String userId);
+    List<CertificateBO> queryQualificate(String userId);
     /**
      * 查找证书 通过证书名字
      *

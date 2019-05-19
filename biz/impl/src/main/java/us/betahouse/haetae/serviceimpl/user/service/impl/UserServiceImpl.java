@@ -12,9 +12,11 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.manager.UserManager;
 import us.betahouse.haetae.user.model.CommonUser;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
@@ -45,6 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepoService userRepoService;
+
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
 
     @Autowired
     private UserManager userManager;
@@ -121,6 +126,25 @@ public class UserServiceImpl implements UserService {
             userBO.setSalt(UUID.randomUUID().toString());
             userBO.setPassword(EncryptUtil.encryptPassword(request.getPassword(), userBO.getSalt()));
         }
+        userRepoService.updateUserByUserId(userBO);
+    }
+
+    @Override
+    public void modifyPwdByStuId(CommonUserRequest request, OperateContext context) {
+
+        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(request.getStuId());
+        AssertUtil.assertNotNull(userInfoBO, "学号不存在");
+        UserBO userBO = userRepoService.queryByUserId(userInfoBO.getUserId());
+        AssertUtil.assertNotNull(userBO, "用户不存在");
+
+        // 将新密码组装入管理请求
+        request.setPassword(request.fetchExtInfo(UserRequestExtInfoKey.USER_NEW_PASSWORD));
+        // 校验新密码是否满足 密码规则
+        passwordValidator.validate(request);
+
+        userBO.setSalt(UUID.randomUUID().toString());
+        userBO.setPassword(EncryptUtil.encryptPassword(request.getPassword(), userBO.getSalt()));
+
         userRepoService.updateUserByUserId(userBO);
     }
 

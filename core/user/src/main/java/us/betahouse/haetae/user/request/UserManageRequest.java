@@ -31,7 +31,10 @@ public class UserManageRequest extends BaseRequest {
      */
     @NotBlank
     private String username;
-
+    /**
+     * 学号
+     */
+    private String stuId;
     /**
      * 明文密码
      */
@@ -67,6 +70,14 @@ public class UserManageRequest extends BaseRequest {
      * 绑定的权限码
      */
     private RoleCode roleCode;
+
+    public String getStuId() {
+        return stuId;
+    }
+
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
+    }
 
     public String getUserId() {
         return userId;
