@@ -263,7 +263,11 @@ public class ActivityServiceImpl implements ActivityService {
                 .withUndistributedStamp(0L)
                 ;
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
-        userInfoBOList.forEach(userInfoBO -> activityManager.createPast(boBuilder.withStuId(userInfoBO.getStuId()).withUserId(userInfoBO.getUserId()).build()));
+        ActivityRequest activityRequest=new ActivityRequest();
+        userInfoBOList.forEach(userInfoBO -> {
+            activityRequest.setUserId(userInfoBO.getUserId());
+            if(activityManager.findPast(activityRequest)==null){
+            activityManager.createPast(boBuilder.withStuId(userInfoBO.getStuId()).withUserId(userInfoBO.getUserId()).build());}});
     }
 
     @Override

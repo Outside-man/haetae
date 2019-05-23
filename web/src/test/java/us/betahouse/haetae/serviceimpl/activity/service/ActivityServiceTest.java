@@ -42,7 +42,7 @@ public class ActivityServiceTest {
 
     @Test
     public void initPastActivityRecord(){
-        String url = "C:\\Users\\j10k\\Desktop\\【17级专升本小绿本】.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\16级数据修改 (1).csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         PastActivityBO pastActivityBO;
         ActivityRequest activityRequest=new ActivityRequest();
@@ -50,9 +50,11 @@ public class ActivityServiceTest {
             String[] acsv = csv[i];
             activityRequest.setStuId(acsv[4]);
             pastActivityBO = activityManager.findPast(activityRequest);
-            pastActivityBO.setPastLectureActivity(Long.valueOf(acsv[5]));
+            pastActivityBO.setPastLectureActivity(0L);
             pastActivityBO.setPastVolunteerActivityTime(Long.valueOf(acsv[6]));
             pastActivityBO.setPastPracticeActivity(Long.valueOf(acsv[7]));
+            pastActivityBO.setPastSchoolActivity(0L);
+            pastActivityBO.setUndistributedStamp(Long.valueOf(acsv[5]));
             System.out.println(pastActivityBO);
             activityRepoService.updatePastActivity(pastActivityBO.getUserId(), pastActivityBO);
         }

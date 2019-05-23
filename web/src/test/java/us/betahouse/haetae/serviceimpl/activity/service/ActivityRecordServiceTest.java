@@ -29,10 +29,8 @@ import us.betahouse.util.utils.CsvUtil;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.MessageFormat;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,7 +54,7 @@ public class ActivityRecordServiceTest {
     private ActivityRepoService activityRepoService;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\校园活动-模板.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\5.19数据导入.csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
@@ -86,7 +84,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerWork(){
-        String url = "C:\\Users\\j10k\\Desktop\\4.9 义工活动.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\义工活动1条数据.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -100,6 +98,56 @@ public class ActivityRecordServiceTest {
             stuIdList.add(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             request.setStuIds(stuIdList);
             stampManager.batchStamp(request, stuIdList);
+        }
+    }
+    @Test
+    public void importShenQi(){
+        String url = "C:\\Users\\j10k\\Desktop\\2019五四升旗仪式名单.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        for (int i = 1; i < csv.length; i++) {
+            ActivityStampRequest request=new ActivityStampRequest();
+            request.setActivityId("201904151547343710112210012019");
+            request.setScannerUserId("201812010040554783180001201835");
+            request.setStatus("ENABLE");
+            request.setTerm(TermUtil.getNowTerm());
+            List<String> stuIdList=new ArrayList<>();
+            stuIdList.add(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
+            request.setStuIds(stuIdList);
+            stampManager.batchStamp(request, stuIdList);
+        }
+    }
+    @Test
+    public void importCXJC(){
+        String url = "C:\\Users\\j10k\\Desktop\\5.18初心剧场后台导入名单.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        for (int i = 1; i < csv.length; i++) {
+            ActivityStampRequest request=new ActivityStampRequest();
+            request.setActivityId("201904151545269174388510012019");
+            request.setScannerUserId("201812010040554783180001201835");
+            request.setStatus("ENABLE");
+            request.setTerm(TermUtil.getNowTerm());
+            List<String> stuIdList=new ArrayList<>();
+            stuIdList.add(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
+            request.setStuIds(stuIdList);
+            stampManager.batchStamp(request, stuIdList);
+        }
+    }
+    @Test
+    public void importOneHour(){
+        String url =  "C:\\Users\\j10k\\Desktop\\交换一小时.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        for (int i = 1; i < csv.length; i++) {
+            ActivityRecordDO activityRecordDO = new ActivityRecordDO();
+            activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
+            activityRecordDO.setActivityId("201904151539461439186510012019");
+            activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
+            activityRecordDO.setScannerUserId("201812010040554783180001201835");
+            activityRecordDO.setTime((int)(Double.valueOf(csv[i][3])*10));
+            activityRecordDO.setType("partyTimeActivity");
+            activityRecordDO.setStatus("ENABLE");
+            activityRecordDO.setTerm(TermUtil.getNowTerm());
+            activityRecordDORepo.save(activityRecordDO);
+            System.out.println(i+" "+activityRecordDO);
         }
     }
     @Test
@@ -187,7 +235,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\2019“三位一体”志愿活动.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\5.18初心剧场后台导入名单.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {
@@ -211,28 +259,74 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void fetchUserRecordStatistics1() throws IOException {
-        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出1.csv", ',', Charset.forName("GBK"));
-        String[] headers = {"学号", "姓名", "校园活动次数", "讲座活动次数", "社会实践次数", "志愿活动次数", "志愿活动时长", "义工活动次数", "义工活动时长","尚未分配活动章"};
+        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出12.csv", ',', Charset.forName("GBK"));
+        String[] headers = {"学号", "姓名", "校园活动次数", "讲座活动次数", "社会实践次数", "志愿活动次数", "志愿活动时长", "义工活动次数", "义工活动时长","尚未分配活动章","年级","专业","班级"};
         csvWriter.writeRecord(headers);
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
         for (UserInfoBO userInfoBO : userInfoBOList) {
             ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId());
             PastActivityBO pastActivityBO=activityRepoService.getPastByUserId(userInfoBO.getUserId());
-            System.out.println(activityRecordStatistics);
             Map<String, Integer> map = activityRecordStatistics.getStatistics();
-            String[] content = new String[10];
+            String[] content = new String[13];
             content[0] = activityRecordStatistics.getStuId();
             content[1] = activityRecordStatistics.getRealName();
             content[2] = String.valueOf((Long.valueOf(map.get(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode()))+pastActivityBO.getPastSchoolActivity()));
             content[3] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.LECTURE_ACTIVITY.getCode()))+pastActivityBO.getPastLectureActivity());
-            content[4] = map.get(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode()).toString();
+            content[4] =String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode()))+pastActivityBO.getPastPracticeActivity());
             content[5] = map.get(ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode()).toString();
             content[6] = String.format("%.1f", (double) (map.get("volunteerActivityTime") + pastActivityBO.getPastVolunteerActivityTime()) / 10.0);
             content[7] = map.get(ActivityTypeEnum.VOLUNTEER_WORK.getCode()).toString();
             content[8] = String.format("%.1f", Double.valueOf(map.get("volunteerWorkTime")) / 10.0);
             content[9] = pastActivityBO.getUndistributedStamp().toString();
+            content[10]=userInfoBO.getGrade();
+            content[11]=userInfoBO.getMajor();
+            content[12]=userInfoBO.getClassId();
+            System.out.println(activityRecordStatistics);
             csvWriter.writeRecord(content);
         }
         csvWriter.close();
     }
+
+    @Test
+    public void fetchUserRecordStatistics2() throws IOException {
+        String temp1="=IF(J{0}>=1,G{0}+4,G{0})";
+        String temp2="=I{0}+J{0}*4";
+        String temp3="=F{0}+I{0}+J{0}*4+K{0}";
+        String temp4="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((H{0}>7),(F{0}+K{0})<8),AND((F{0}<8),(H{0}<8),(F{0}+K{0})<8,(H{0}+K{0})>7),AND((H{0}+K{0})<8,(F{0}+K{0})<8)),8-F{0}-K{0},0))";
+        String temp5="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((F{0}>7),(H{0}+K{0})<8),AND((H{0}<8),(F{0}<8),(F{0}+K{0})<8,(F{0}+K{0})>7),AND((F{0}+K{0})<8,(H{0}+K{0})<8)),8-H{0}-K{0},0))";
+        String temp6="=IF((M{0}+N{0})<(16-L{0}),(16-L{0}),(M{0}+N{0}))";
+        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出12.csv", ',', Charset.forName("GBK"));
+        String[] headers ={"学号", "姓名","专业","年级","班级","讲座(实际)","讲座活动次数","校园活动(实际)","校园活动次数","社会实践次数","尚未分配活动章","总章数","最少讲座章","最少活动章","最少总章数"};
+
+
+        csvWriter.writeRecord(headers);
+        List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
+        int i=1;
+        for (UserInfoBO userInfoBO : userInfoBOList) {
+            i++;
+            ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId());
+            PastActivityBO pastActivityBO=activityRepoService.getPastByUserId(userInfoBO.getUserId());
+            Map<String, Integer> map = activityRecordStatistics.getStatistics();
+            String[] content = new String[15];
+            content[0] = activityRecordStatistics.getStuId();
+            content[1] = activityRecordStatistics.getRealName();
+            content[2] = userInfoBO.getMajor();
+            content[3] = userInfoBO.getGrade();
+            content[4] = userInfoBO.getClassId();
+            content[5] = MessageFormat.format(temp1, String.valueOf(i));
+            content[6] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.LECTURE_ACTIVITY.getCode()))+pastActivityBO.getPastLectureActivity());
+            content[7] = MessageFormat.format(temp2, String.valueOf(i));
+            content[8] = String.valueOf((Long.valueOf(map.get(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode()))+pastActivityBO.getPastSchoolActivity()));
+            content[9] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode()))+pastActivityBO.getPastPracticeActivity());
+            content[10] = pastActivityBO.getUndistributedStamp().toString();
+            content[11] = MessageFormat.format(temp3, String.valueOf(i));
+            content[12] = MessageFormat.format(temp4, String.valueOf(i));
+            content[13] = MessageFormat.format(temp5, String.valueOf(i));
+            content[14] = MessageFormat.format(temp6, String.valueOf(i));
+            System.out.println(activityRecordStatistics);
+            csvWriter.writeRecord(content);
+        }
+        csvWriter.close();
+    }
+
 }

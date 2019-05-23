@@ -1,5 +1,6 @@
 package us.betahouse.haetae.user.manager;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,14 +135,14 @@ public class UserManagerTest {
 
     @Test
     public void initTest(){
-        String csvs[][]=CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\【16级小绿本1】.csv");
+        String csvs[][]=CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\2015级.csv");
         for(int i=1;i< csvs.length;i++){
-            System.out.println(csvs[i][4]);
-            UserInfoBO userInfoBO=userInfoRepoService.queryUserInfoByStuId(csvs[i][4]);
-            userInfoBO.setGrade(csvs[i][0]);
-            userInfoBO.setMajor(csvs[i][1]);
-            userInfoBO.setClassId(csvs[i][2]);
-            userInfoRepoService.modifyUserInfoByUserId(userInfoBO.getUserId(), userInfoBO);
+            System.out.println(csvs[i][0]);
+            UserInfoBO userInfoBO=userInfoRepoService.queryUserInfoByStuId(csvs[i][0]);
+                userInfoBO.setGrade(csvs[i][5]);
+                userInfoBO.setMajor(csvs[i][3]);
+                userInfoBO.setClassId(csvs[i][4]);
+                userInfoRepoService.modifyUserInfoByUserId(userInfoBO.getUserId(), userInfoBO);
         }
     }
     @Test
