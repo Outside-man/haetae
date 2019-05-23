@@ -58,4 +58,5 @@ public interface UserRoleRelationDORepo extends JpaRepository<UserRoleRelationDO
      * @param roleId
      */
     void deleteByRoleId(String roleId);
+
 }

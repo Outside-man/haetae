@@ -7,6 +7,7 @@ package us.betahouse.haetae.serviceimpl.common.init;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.finance.manager.FinanceManager;
 
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
@@ -14,6 +15,8 @@ import us.betahouse.haetae.organization.manager.OrganizationManager;
 import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
+import us.betahouse.haetae.serviceimpl.certificate.enums.CertificatePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
 import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
@@ -48,7 +51,6 @@ public class InitService {
     private RoleRepoService roleRepoService;
 
 
-
     @Autowired
     private FinanceManager financeManager;
 
@@ -60,6 +62,11 @@ public class InitService {
     private final static List<String> assetManagerPerm = new ArrayList<>();
 
     private final static List<String> organizationManagerPerm = new ArrayList<>();
+
+    private final static List<String> certificateManagerPerm = new ArrayList<>();
+
+    private final static List<String> certificateConfirmPerm = new ArrayList<>();
+
 
     static {
         //活动
@@ -77,6 +84,17 @@ public class InitService {
         organizationManagerPerm.add(OrganizationPermType.ALL_ORG_MANAGE);
         organizationManagerPerm.add(OrganizationPermType.ALL_ORG_MEMBER_MANAGE);
         organizationManagerPerm.add(OrganizationPermType.ALL_ORG_RELATION_MANAGE);
+        //证书
+        certificateConfirmPerm.add(CertificatePermType.CONFIRM_CERTIFICATE);
+        certificateConfirmPerm.add(CertificatePermType.GET_CERTIFICATES);
+        certificateConfirmPerm.add(CertificatePermType.MODIFY_CERTIFICATE);
+
+        certificateManagerPerm.add(CertificatePermType.GET_CERTIFICATES);
+        certificateManagerPerm.add(CertificatePermType.DELETE_CERTIFICATE);
+        certificateManagerPerm.add(CertificatePermType.CONFIRM_CERTIFICATE);
+        certificateManagerPerm.add(CertificatePermType.IMPORT_CERTIFICATE);
+        certificateManagerPerm.add(CertificatePermType.MODIFY_CERTIFICATE);
+        certificateManagerPerm.add(CertificatePermType.MANAGER_CONFIRM);
     }
 
 
@@ -128,6 +146,16 @@ public class InitService {
                 initPermMap.put(permType.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
             }
         }
+
+        //证书权限
+        for (PermType permType : CertificatePermTypeEnum.values()) {
+            if (permType.isInit()) {
+                permBuilder.withPermType(permType.getCode())
+                        .withPermName(permType.getDesc());
+                initPermMap.put(permType.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
+            }
+        }
+
         // 初始化角色
         Map<String, String> initRoleMap = new HashMap<>(16);
         RoleBOBuilder roleBOBuilder = RoleBOBuilder.getInstance();
@@ -193,6 +221,18 @@ public class InitService {
             Set<String> permIds = new HashSet<>();
             organizationManagerPerm.forEach(organizationPermType -> permIds.add(initPermMap.get(organizationPermType)));
             permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
+        //初始化 证书管理员权限
+        if (StringUtils.equals((role.getRoleCode()), UserRoleCode.CERTIFICATE_MANAGER.getCode())) {
+            Set<String> permIds = new HashSet<>();
+            certificateManagerPerm.forEach(certificatePermType -> permIds.add(initPermMap.get(certificatePermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permIds));
+        }
+        //初始化 证书审核员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.CERTIFICATE_CONFIRM.getCode())) {
+            Set<String> permId=new HashSet<>();
+            certificateConfirmPerm.forEach(certificatePermType->permId.add(initPermMap.get(certificatePermType)));
+            permRepoService.roleBindPerms(role.getRoleId(),new ArrayList<>(permId));
         }
     }
 }

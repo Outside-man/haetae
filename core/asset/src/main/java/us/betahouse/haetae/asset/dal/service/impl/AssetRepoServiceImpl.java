@@ -38,9 +38,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
     private BizIdFactory assetBizFactory;
     @Autowired
     private AssetDORepo assetDORepo;
-    // TODO @dango.yxm 使用新模块
-//    @Autowired
-//    private OrganizationRepoService organizationRepoService;
 
     /**
      * 创建物资
@@ -159,8 +156,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         if (assetDO == null) {
             return null;
         }
-//        OrganizationBO organizationBo = organizationRepoService.queryOrganizationByOrganizationId(assetDO.getOrginazationId());
-//        String organizationName = organizationBo.getOrganizationName();
         AssetBO assetBO = new AssetBO();
         assetBO.setAssetId(assetDO.getAssetId());
         assetBO.setAssetAmount(assetDO.getAmount());
@@ -172,8 +167,6 @@ public class AssetRepoServiceImpl implements AssetRepoService {
         assetBO.setAssetType(assetDO.getType());
         assetBO.setCreate(assetDO.getGmtCreate());
         assetBO.setModified(assetDO.getGmtModified());
-//        assetBO.setAssetOrganizationName(organizationName);
-        //assetBO.setExtInfo(JSON.parseObject(assetDO.getExtInfo(), Map.class));
         return assetBO;
     }
 

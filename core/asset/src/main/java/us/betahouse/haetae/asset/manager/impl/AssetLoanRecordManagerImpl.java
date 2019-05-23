@@ -6,7 +6,6 @@ package us.betahouse.haetae.asset.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.asset.builder.AssetLoanRecordBOBulider;
 import us.betahouse.haetae.asset.dal.service.AssetLoanRecordRepoService;
 import us.betahouse.haetae.asset.manager.AssetLoanRecordManager;
