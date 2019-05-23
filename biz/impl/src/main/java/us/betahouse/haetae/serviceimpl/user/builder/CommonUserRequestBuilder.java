@@ -31,7 +31,10 @@ final public class CommonUserRequestBuilder {
      * 用户id
      */
     private String userId;
-
+    /**
+     * 学号
+     */
+    private String stuId;
     /**
      * 微信小程序code
      */
@@ -97,6 +100,7 @@ final public class CommonUserRequestBuilder {
         request.setPermIds(permIds);
         request.setExtInfo(extInfo);
         request.setToken(token);
+        request.setStuId(stuId);
         return request;
     }
 
@@ -110,6 +114,11 @@ final public class CommonUserRequestBuilder {
 
     public CommonUserRequestBuilder withUserId(String userId) {
         this.userId = userId;
+        return this;
+    }
+
+    public CommonUserRequestBuilder withStuId(String stuId) {
+        this.stuId = stuId;
         return this;
     }
 

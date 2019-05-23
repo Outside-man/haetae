@@ -92,6 +92,12 @@ public interface UserService {
      */
     void modifyUser(CommonUserRequest request, OperateContext context);
 
+    /**
+     * 根据学号修改密码
+     * @param request
+     * @param context
+     */
+    void modifyPwdByStuId(CommonUserRequest request, OperateContext context);
     void modifyUserMajorAndClassAndGrade(CommonUserRequest request, OperateContext context);
 }
 

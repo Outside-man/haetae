@@ -242,6 +242,41 @@ public class UserController {
         });
     }
 
+    /**
+     * 根据学号修改密码
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PutMapping(value = "/pwdByStuId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<UserVO> modifyPasswordByStuId(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据学号修改密码", null, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getStuId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "学号不能为空");
+                AssertUtil.assertStringNotBlank(request.getNewPassword(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "新密码不能为空");
+            }
+
+            @Override
+            public Result<UserVO> execute() {
+                CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
+                        .withStuId(request.getStuId())
+                        .withPassword(request.getPassword())
+                        .withUserId(request.getUserId());
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                CommonUserRequest commonUserRequest = builder.build();
+                commonUserRequest.putExtInfo(UserRequestExtInfoKey.USER_NEW_PASSWORD, request.getNewPassword());
+
+                userService.modifyPwdByStuId(commonUserRequest, context);
+                return RestResultUtil.buildSuccessResult("密码修改成功");
+            }
+        });
+    }
 
     /**
      * 修改班级、年级、专业
@@ -266,7 +301,7 @@ public class UserController {
 
             @Override
             public Result<UserVO> execute() {
-                UserInfoBO userInfoBO=new UserInfoBO();
+                UserInfoBO userInfoBO = new UserInfoBO();
                 userInfoBO.setGrade(request.getGrade());
                 userInfoBO.setClassId(request.getClassId());
                 userInfoBO.setMajor(request.getMajor());
