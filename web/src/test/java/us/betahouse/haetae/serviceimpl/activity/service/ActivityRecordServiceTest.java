@@ -54,7 +54,7 @@ public class ActivityRecordServiceTest {
     private ActivityRepoService activityRepoService;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\5.19数据导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\5.26数据导入(1).csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
@@ -130,6 +130,23 @@ public class ActivityRecordServiceTest {
             stuIdList.add(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             request.setStuIds(stuIdList);
             stampManager.batchStamp(request, stuIdList);
+        }
+    }
+    @Test
+    public void importLastPartyRecord(){
+        String url =  "C:\\Users\\j10k\\Desktop\\2017-2018学年第二学期考核卡盖章情况汇总.csv";
+        String[][] csv = CsvUtil.getWithHeader(url);
+        for (int i = 1; i < csv.length; i++) {
+            ActivityRecordDO activityRecordDO = new ActivityRecordDO();
+            activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
+            activityRecordDO.setActivityId(activityDORepo.findByActivityName(csv[i][2]).getActivityId());
+            activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
+            activityRecordDO.setScannerUserId("201812010040554783180001201835");
+            activityRecordDO.setType(ActivityTypeEnum.PARTY_ACTIVITY.getCode());
+            activityRecordDO.setStatus("ENABLE");
+            activityRecordDO.setTerm(csv[i][3]);
+            activityRecordDORepo.save(activityRecordDO);
+            System.out.println(i+" "+activityRecordDO);
         }
     }
     @Test
@@ -235,7 +252,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\5.18初心剧场后台导入名单.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2018-2019学年第一学期考核卡盖章情况.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {

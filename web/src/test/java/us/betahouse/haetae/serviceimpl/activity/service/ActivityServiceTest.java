@@ -42,7 +42,7 @@ public class ActivityServiceTest {
 
     @Test
     public void initPastActivityRecord(){
-        String url = "C:\\Users\\j10k\\Desktop\\16级数据修改 (1).csv";
+        String url = "C:\\Users\\j10k\\Desktop\\16数据修改2.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         PastActivityBO pastActivityBO;
         ActivityRequest activityRequest=new ActivityRequest();
