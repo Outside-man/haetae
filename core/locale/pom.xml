@@ -10,39 +10,37 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>haetae-service-impl</artifactId>
+    <artifactId>haetae-locale</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-user</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-finance</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-organization</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-asset</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-activity</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-certificate</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>us.betahouse</groupId>
-            <artifactId>haetae-locale</artifactId>
-        </dependency>
-    </dependencies>
 
+        <dependency>
+            <groupId>us.betahouse</groupId>
+            <artifactId>util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <!-- hibernate validator-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

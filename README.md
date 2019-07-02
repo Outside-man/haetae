@@ -97,6 +97,16 @@ id      | desc                 | id     | desc
 0011    | organization         | 0012   | organization member relation
 0013    | organization relation
 
+#### locale 模块
+
+id      | desc                 | id     | desc
+----    | ----                 | ----   | ----
+4001    | locale   | 4002 | locale area 
+4003    | locale apply ||
+
+
+
+
 <br/>
 <br/>
 
