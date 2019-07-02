@@ -43,6 +43,13 @@ public abstract class BaseDO extends ToString {
     @Column(name = "gmt_modified", nullable = false)
     private Date gmtModified;
 
+
+    /**
+     * 拓展信息
+     */
+    @Column(length = 2000)
+    private String extInfo;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +72,13 @@ public abstract class BaseDO extends ToString {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getExtInfo() {
+        return extInfo;
+    }
+
+    public void setExtInfo(String extInfo) {
+        this.extInfo = extInfo;
     }
 }

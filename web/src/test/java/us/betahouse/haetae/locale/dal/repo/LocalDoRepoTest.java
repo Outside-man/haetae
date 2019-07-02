@@ -13,7 +13,8 @@ public class LocalDoRepoTest {
     @Autowired
     LocaleDORepo localeDORepo;
     @Autowired
-    BizIdFactory localBizFactoryp;
+    BizIdFactory localBizFactory;
+
 
     @Test
     public void test() {
