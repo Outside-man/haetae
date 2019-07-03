@@ -1,3 +1,7 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.serviceimpl.locale.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,11 @@ import us.betahouse.haetae.serviceimpl.locale.request.LocaleManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleService;
 
 import java.util.List;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 @Service
 public class LocaleServiceImpl implements LocaleService {

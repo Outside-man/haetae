@@ -1,9 +1,18 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.model.basic;
 
 import us.betahouse.util.common.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 public class LocaleAreaBO extends ToString {
     private static final long serialVersionUID = 3114186423378005529L;

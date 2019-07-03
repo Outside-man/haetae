@@ -1,3 +1,7 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.request;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -5,6 +9,11 @@ import us.betahouse.util.common.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 public class BaseRequest extends ToString {
     private static final long serialVersionUID = 7010151013811205351L;

@@ -1,8 +1,17 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.dal.service;
 
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 
 import java.util.List;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 public interface LocaleDORepoService {
 

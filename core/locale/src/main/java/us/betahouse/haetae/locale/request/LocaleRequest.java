@@ -1,4 +1,13 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.request;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 public class LocaleRequest extends BaseRequest {
     private static final long serialVersionUID = 4003467013216892700L;

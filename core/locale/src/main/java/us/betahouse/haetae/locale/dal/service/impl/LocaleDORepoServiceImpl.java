@@ -1,3 +1,7 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.dal.service.impl;
 
 import org.slf4j.Logger;
@@ -14,6 +18,11 @@ import us.betahouse.util.utils.CollectionUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 @Service
 public class LocaleDORepoServiceImpl implements LocaleDORepoService {

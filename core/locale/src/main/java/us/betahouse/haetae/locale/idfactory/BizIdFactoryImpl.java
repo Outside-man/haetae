@@ -1,3 +1,7 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.idfactory;
 
 import org.apache.commons.lang.StringUtils;
@@ -6,6 +10,11 @@ import us.betahouse.util.utils.DateUtil;
 
 import java.util.Date;
 import java.util.Random;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 @Service("localeBizFactory")
 public class BizIdFactoryImpl implements BizIdFactory {

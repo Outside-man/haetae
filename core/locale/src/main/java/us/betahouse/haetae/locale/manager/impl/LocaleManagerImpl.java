@@ -1,3 +1,7 @@
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2019
+ */
 package us.betahouse.haetae.locale.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,11 @@ import us.betahouse.haetae.locale.manager.LocaleManager;
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 
 import java.util.List;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
+ */
 
 @Service
 public class LocaleManagerImpl implements LocaleManager {
