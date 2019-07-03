@@ -1,12 +1,14 @@
 package us.betahouse.haetae.locale.manager.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import us.betahouse.haetae.locale.dal.service.LocaleDORepoService;
 import us.betahouse.haetae.locale.manager.LocaleManager;
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 
 import java.util.List;
 
+@Service
 public class LocaleManagerImpl implements LocaleManager {
     @Autowired
     LocaleDORepoService localeDORepoService;

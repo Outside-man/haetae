@@ -1,13 +1,8 @@
-package us.betahouse.haetae.locale.model.basic;
+package us.betahouse.haetae.locale.request;
 
-import us.betahouse.util.common.ToString;
+public class LocaleRequest extends BaseRequest {
+    private static final long serialVersionUID = 4003467013216892700L;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class LocaleBO extends ToString {
-
-    private static final long serialVersionUID = 8875918091689078054L;
     /**
      * 场地ID
      */
@@ -24,11 +19,6 @@ public class LocaleBO extends ToString {
      * 是否可借用 两种：可借 USABLE 不可借 DISABLE
      */
     private String status;
-
-    /**
-     * 物资额外信息
-     */
-    private Map<String, String> extInfo = new HashMap<>();
 
 
     public String getLocaleId() {
@@ -61,13 +51,5 @@ public class LocaleBO extends ToString {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Map<String, String> getExtInfo() {
-        return extInfo;
-    }
-
-    public void setExtInfo(Map<String, String> extInfo) {
-        this.extInfo = extInfo;
     }
 }

@@ -2,6 +2,9 @@ package us.betahouse.haetae.locale.model.basic;
 
 import us.betahouse.util.common.ToString;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LocaleApplyBO extends ToString {
     private static final long serialVersionUID = 8054300729751912489L;
@@ -66,6 +69,13 @@ public class LocaleApplyBO extends ToString {
      */
 
     private String localeApplyId;
+
+
+    /**
+     * 物资额外信息
+     */
+    private Map<String, String> extInfo = new HashMap<>();
+
 
     public String getTel() {
         return tel;
@@ -161,5 +171,13 @@ public class LocaleApplyBO extends ToString {
 
     public void setLocaleApplyId(String localeApplyId) {
         this.localeApplyId = localeApplyId;
+    }
+
+    public Map<String, String> getExtInfo() {
+        return extInfo;
+    }
+
+    public void setExtInfo(Map<String, String> extInfo) {
+        this.extInfo = extInfo;
     }
 }
