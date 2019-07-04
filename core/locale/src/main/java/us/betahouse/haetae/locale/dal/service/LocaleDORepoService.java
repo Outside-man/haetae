@@ -31,7 +31,7 @@ public interface LocaleDORepoService {
     List<LocaleBO> queryAllLocales();
 
     /**
-     * 通过状态查询可以用的场地
+     * 通过 状态 查询场地
      *
      * @param status
      * @return

@@ -11,6 +11,11 @@ import us.betahouse.haetae.locale.dal.repo.LocaleApplyDORepo;
 import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.util.utils.CollectionUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author NathanDai
@@ -29,23 +34,38 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     private LocaleApplyDORepo localeApplyDORepo;
 
     /**
+     * 新建一个场地申请
+     *
      * @param localeApplyBO
      * @return
      */
     @Override
     public LocaleApplyBO createLocaleApply(LocaleApplyBO localeApplyBO) {
-        return null;
+        localeApplyBO.setLocaleApplyId(localBizFactory.getLocaleApplyId());
+        return convert(localeApplyDORepo.save(convert(localeApplyBO)));
     }
 
     /**
+     * 查询所有场地申请
+     *
      * @return
      */
     @Override
-    public LocaleApplyBO queryAllLocaleApply() {
-        return null;
+    public List<LocaleApplyBO> queryAllLocaleApply() {
+        List<LocaleApplyDO> localeApplyDOList = localeApplyDORepo.findAll();
+        return CollectionUtils.toStream(localeApplyDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
 
+    /**
+     * 申请DO2BO
+     *
+     * @param localeApplyDO
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private LocaleApplyBO convert(LocaleApplyDO localeApplyDO) {
         if (localeApplyDO == null) {
@@ -67,6 +87,12 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         return localeApplyBO;
     }
 
+    /**
+     * 申请BO2DO
+     *
+     * @param localeApplyBO
+     * @return
+     */
     private LocaleApplyDO convert(LocaleApplyBO localeApplyBO) {
         if (localeApplyBO == null) {
             return null;

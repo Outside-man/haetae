@@ -62,14 +62,14 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     }
 
     /**
-     * 通过状态查询可以用的场地
+     * 通过 状态 查询场地
      *
      * @param Status
      * @return
      */
     @Override
     public List<LocaleBO> queryLocalesByStatus(String Status) {
-        List<LocaleDO> localeDOList = localeDORepo.findByStatus(Status);
+        List<LocaleDO> localeDOList = localeDORepo.findAllByStatus(Status);
         return CollectionUtils.toStream(localeDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)

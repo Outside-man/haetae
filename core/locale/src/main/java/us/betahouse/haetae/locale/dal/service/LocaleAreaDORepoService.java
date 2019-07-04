@@ -17,7 +17,7 @@ import java.util.List;
 public interface LocaleAreaDORepoService {
 
     /**
-     * 创建一个场地占用
+     * 新建一个场地占用
      *
      * @param localeAreaBO
      * @return
@@ -25,7 +25,7 @@ public interface LocaleAreaDORepoService {
     LocaleAreaBO createLocaleArea(LocaleAreaBO localeAreaBO);
 
     /**
-     * 通过场地id 日期 状态 查询场地占用
+     * 通过 场地id 日期 状态!=CANCEL 查询场地占用
      *
      * @param LocaleId
      * @param TimeDate

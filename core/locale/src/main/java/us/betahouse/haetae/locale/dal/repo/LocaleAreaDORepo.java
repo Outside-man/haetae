@@ -29,8 +29,7 @@ public interface LocaleAreaDORepo extends JpaRepository<LocaleAreaDO, Long> {
      *
      * @return
      */
-    List<LocaleAreaDO> findByLocaleIdAndTimeDateAndStatus(String LocaleId, String TimeDate, String Status);
 
-    List<LocaleAreaDO> findByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status);
+    List<LocaleAreaDO> findAllByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status);
 
 }

@@ -30,7 +30,7 @@ public interface LocaleDORepo extends JpaRepository<LocaleDO, Long> {
      * @param status
      * @return
      */
-    List<LocaleDO> findByStatus(String status);
+    List<LocaleDO> findAllByStatus(String status);
 
 
 }

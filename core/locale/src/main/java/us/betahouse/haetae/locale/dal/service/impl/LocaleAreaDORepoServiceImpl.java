@@ -34,7 +34,7 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     private LocaleAreaDORepo localeAreaDORepo;
 
     /**
-     * 创建一个场地占用
+     * 新建一个场地占用
      *
      * @param localeAreaBO
      * @return
@@ -47,7 +47,7 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     }
 
     /**
-     * 通过场地id 日期 状态 查看场地占用
+     * 通过 场地id 日期 状态!=CANCEL 查询场地占用
      *
      * @param LocaleId
      * @param TimeDate
@@ -56,7 +56,7 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
      */
     @Override
     public List<LocaleAreaBO> queryLocaleAreasByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status) {
-        List<LocaleAreaDO> localeAreaDOList = localeAreaDORepo.findByLocaleIdAndTimeDateAndStatus(LocaleId, TimeDate, Status);
+        List<LocaleAreaDO> localeAreaDOList = localeAreaDORepo.findAllByLocaleIdAndTimeDateAndStatusNot(LocaleId, TimeDate, Status);
 
         return CollectionUtils.toStream(localeAreaDOList)
                 .filter(Objects::nonNull)
