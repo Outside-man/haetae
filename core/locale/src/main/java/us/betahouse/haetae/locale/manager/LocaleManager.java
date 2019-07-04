@@ -20,4 +20,12 @@ public interface LocaleManager {
      * @return
      */
     List<LocaleBO> findAll();
+
+    /**
+     * 通过状态查看场地
+     *
+     * @param status
+     * @return
+     */
+    List<LocaleBO> findByStatus(String status);
 }

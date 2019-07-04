@@ -18,6 +18,6 @@ public class LocalDoRepoTest {
 
     @Test
     public void test() {
-        System.out.println(localeDORepo.findAll());
+        System.out.println(localeDORepo.findByStatus("USABLE"));
     }
 }

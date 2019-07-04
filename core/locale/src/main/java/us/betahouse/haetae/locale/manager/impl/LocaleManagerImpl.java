@@ -31,4 +31,9 @@ public class LocaleManagerImpl implements LocaleManager {
     public List<LocaleBO> findAll() {
         return localeDORepoService.queryAllLocales();
     }
+
+    @Override
+    public List<LocaleBO> findByStatus(String status) {
+        return localeDORepoService.queryLocalesByStatus(status);
+    }
 }

@@ -73,6 +73,11 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
         return localeBO;
     }
 
+    /**
+     * 场地BO2DO
+     * @param localeBO
+     * @return
+     */
     private LocaleDO convert(LocaleBO localeBO) {
         if (localeBO == null) {
             return null;
