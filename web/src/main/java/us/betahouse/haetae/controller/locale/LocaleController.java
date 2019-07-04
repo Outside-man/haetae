@@ -63,7 +63,6 @@ public class LocaleController {
     @GetMapping(value = "/locales")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<LocaleBO>> getAll(LocaleRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        System.out.println(restRequest.getUserId());
         return RestOperateTemplate.operate(LOGGER, "获取特定组织或全部物资信息", restRequest, new RestOperateCallBack<List<LocaleBO>>() {
 
             @Override
@@ -86,4 +85,6 @@ public class LocaleController {
             }
         });
     }
+
+
 }
