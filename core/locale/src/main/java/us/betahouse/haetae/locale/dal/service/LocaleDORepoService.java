@@ -16,6 +16,14 @@ import java.util.List;
 public interface LocaleDORepoService {
 
     /**
+     * 新建一个场地
+     *
+     * @param localeBO
+     * @return
+     */
+    LocaleBO createLocale(LocaleBO localeBO);
+
+    /**
      * 查询所有场地
      *
      * @return

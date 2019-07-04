@@ -11,8 +11,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class LocaleAreaDORepoTest {
     @Autowired
     LocaleAreaDORepo localeAreaDORepo;
+
     @Test
     public void test() {
-        System.out.println(localeAreaDORepo.findAll());
+        System.out.println(localeAreaDORepo.findByLocaleIdAndTimeDateAndStatusNot("201907021741500068564001201964", "2019-07-02", "CANCEL"));
     }
+
+
 }

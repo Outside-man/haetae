@@ -37,6 +37,13 @@ public class LocaleServiceImpl implements LocaleService {
         return localeBOList;
     }
 
+    /**
+     * 通过场地状态查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
     @Override
     public List<LocaleBO> findLocaleByStatus(LocaleManagerRequest request, OperateContext context) {
         List<LocaleBO> localeBOList = localeManager.findByStatus(request.getStatus());

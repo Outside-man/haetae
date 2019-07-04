@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.locale.model.basic;
 
+import us.betahouse.haetae.locale.enums.LocaleStatusEnum;
 import us.betahouse.util.common.ToString;
 
 import java.util.HashMap;
@@ -21,22 +22,31 @@ public class LocaleBO extends ToString {
      * 场地ID
      */
     private String localeId;
+
     /**
      * 场地名称 例如：笃行楼501
      */
+
     private String localeName;
+
     /**
      * 场地代号 例如：DUXING501
      */
+
     private String localeCode;
+
     /**
-     * 是否可借用 两种：可借 USABLE 不可借 DISABLE
+     * 场地状态 两种：可借 USABLE 不可借 DISABLE
+     *
+     * @see LocaleStatusEnum
      */
+
     private String status;
 
     /**
      * 物资额外信息
      */
+
     private Map<String, String> extInfo = new HashMap<>();
 
 

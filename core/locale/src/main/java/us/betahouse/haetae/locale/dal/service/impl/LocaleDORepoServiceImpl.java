@@ -35,6 +35,23 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     @Autowired
     private BizIdFactory localBizFactory;
 
+    /**
+     * 新建一个场地
+     *
+     * @param localeBO
+     * @return
+     */
+    @Override
+    public LocaleBO createLocale(LocaleBO localeBO) {
+        localeBO.setLocaleId(localBizFactory.getLocaleId());
+        return convert(localeDORepo.save(convert(localeBO)));
+    }
+
+    /**
+     * 查询所有场地
+     *
+     * @return
+     */
     @Override
     public List<LocaleBO> queryAllLocales() {
         List<LocaleDO> localeDOList = localeDORepo.findAll();
@@ -44,6 +61,12 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 通过状态查询可以用的场地
+     *
+     * @param Status
+     * @return
+     */
     @Override
     public List<LocaleBO> queryLocalesByStatus(String Status) {
         List<LocaleDO> localeDOList = localeDORepo.findByStatus(Status);
@@ -75,6 +98,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
 
     /**
      * 场地BO2DO
+     *
      * @param localeBO
      * @return
      */

@@ -18,8 +18,19 @@ import java.util.List;
 @Repository
 public interface LocaleAreaDORepo extends JpaRepository<LocaleAreaDO, Long> {
     /**
+     * 查询所有被占用的场地
      *
      * @return
      */
     List<LocaleAreaDO> findAll();
+
+    /**
+     * 查询某个场地某天有没有被占用
+     *
+     * @return
+     */
+    List<LocaleAreaDO> findByLocaleIdAndTimeDateAndStatus(String LocaleId, String TimeDate, String Status);
+
+    List<LocaleAreaDO> findByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status);
+
 }
