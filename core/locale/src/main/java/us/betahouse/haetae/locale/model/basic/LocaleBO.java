@@ -44,10 +44,24 @@ public class LocaleBO extends ToString {
     private String status;
 
     /**
-     * 物资额外信息
+     * 场地额外信息
      */
 
     private Map<String, String> extInfo = new HashMap<>();
+
+    public String fetchExtInfo(String key) {
+        if (extInfo == null) {
+            return null;
+        }
+        return extInfo.get(key);
+    }
+
+    public void putExtInfo(String key, String value) {
+        if (extInfo == null) {
+            extInfo = new HashMap<>();
+        }
+        extInfo.put(key, value);
+    }
 
 
     public String getLocaleId() {

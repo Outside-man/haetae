@@ -18,6 +18,7 @@ import java.util.List;
 @Repository
 public interface LocaleApplyDORepo extends JpaRepository<LocaleApplyDO, Long> {
     /**
+     * 查询所有场地申请
      *
      * @return
      */

@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface LocaleAreaDORepo extends JpaRepository<LocaleAreaDO, Long> {
     /**
-     * 查询所有被占用的场地
+     * 查询所有场地占用
      *
      * @return
      */

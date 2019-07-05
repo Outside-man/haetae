@@ -1,21 +1,16 @@
 /*
-  betahouse.us
-  CopyRight (c) 2012 - 2019
+ * betahouse.us
+ * Copyright (c) 2012 - 2019
  */
-package us.betahouse.haetae.locale.model.basic;
 
-import us.betahouse.util.common.ToString;
-
-import java.util.HashMap;
-import java.util.Map;
+package us.betahouse.haetae.locale.request;
 
 /**
  * @author NathanDai
- * @version :  2019-07-03 21:24 NathanDai
+ * @version :  2019-07-05 06:25 NathanDai
  */
-
-public class LocaleApplyBO extends ToString {
-    private static final long serialVersionUID = 8054300729751912489L;
+public class LocaleApplyRequest extends BaseRequest {
+    private static final long serialVersionUID = -697605016962701559L;
 
     /**
      * 申请者的联系方式
@@ -77,26 +72,6 @@ public class LocaleApplyBO extends ToString {
      */
 
     private String localeApplyId;
-
-
-    /**
-     * 场地申请额外信息
-     */
-    private Map<String, String> extInfo = new HashMap<>();
-
-    public String fetchExtInfo(String key) {
-        if (extInfo == null) {
-            return null;
-        }
-        return extInfo.get(key);
-    }
-
-    public void putExtInfo(String key, String value) {
-        if (extInfo == null) {
-            extInfo = new HashMap<>();
-        }
-        extInfo.put(key, value);
-    }
 
     public String getTel() {
         return tel;
@@ -192,13 +167,5 @@ public class LocaleApplyBO extends ToString {
 
     public void setLocaleApplyId(String localeApplyId) {
         this.localeApplyId = localeApplyId;
-    }
-
-    public Map<String, String> getExtInfo() {
-        return extInfo;
-    }
-
-    public void setExtInfo(Map<String, String> extInfo) {
-        this.extInfo = extInfo;
     }
 }

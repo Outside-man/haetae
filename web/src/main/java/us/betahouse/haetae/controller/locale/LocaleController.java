@@ -53,6 +53,7 @@ public class LocaleController {
 
     /**
      * 获取可以使用的场地
+     * status=USABLE
      * 获取场地之前需要登录
      *
      * @param restRequest

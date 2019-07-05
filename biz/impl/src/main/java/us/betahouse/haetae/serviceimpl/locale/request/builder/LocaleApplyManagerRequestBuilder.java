@@ -1,0 +1,121 @@
+/*
+ * betahouse.us
+ * Copyright (c) 2012 - 2019
+ */
+
+package us.betahouse.haetae.serviceimpl.locale.request.builder;
+
+import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author NathanDai
+ * @version :  2019-07-05 19:26 NathanDai
+ */
+public final class LocaleApplyManagerRequestBuilder {
+    private String tel;
+    private String usage;
+    private String remark;
+    private String document;
+    private String status;
+    private String timeDate;
+    private String timeBucket;
+    private String localeCode;
+    private String localeAreaId;
+    private String localeId;
+    private String userId;
+    private String localeApplyId;
+    private Map<String, String> extInfo = new HashMap<>();
+
+    private LocaleApplyManagerRequestBuilder() {
+    }
+
+    public static LocaleApplyManagerRequestBuilder getInstance() {
+        return new LocaleApplyManagerRequestBuilder();
+    }
+
+    public LocaleApplyManagerRequestBuilder withTel(String tel) {
+        this.tel = tel;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withUsage(String usage) {
+        this.usage = usage;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withRemark(String remark) {
+        this.remark = remark;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withDocument(String document) {
+        this.document = document;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withLocaleId(String localeId) {
+        this.localeId = localeId;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withLocaleAreaId(String localeAreaId) {
+        this.localeAreaId = localeAreaId;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withTimeDate(String timeDate) {
+        this.timeDate = timeDate;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withTimeBucket(String timeBucket) {
+        this.timeBucket = timeBucket;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withLocaleCode(String localeCode) {
+        this.localeCode = localeCode;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withLocaleApplyId(String localeApplyId) {
+        this.localeApplyId = localeApplyId;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withExtInfo(Map<String, String> extInfo) {
+        this.extInfo = extInfo;
+        return this;
+    }
+
+    public LocaleApplyManagerRequest build() {
+        LocaleApplyManagerRequest localeApplyManagerRequest = new LocaleApplyManagerRequest();
+        localeApplyManagerRequest.setTel(tel);
+        localeApplyManagerRequest.setUsage(usage);
+        localeApplyManagerRequest.setRemark(remark);
+        localeApplyManagerRequest.setDocument(document);
+        localeApplyManagerRequest.setLocaleAreaId(localeAreaId);
+        localeApplyManagerRequest.setLocaleId(localeId);
+        localeApplyManagerRequest.setUserId(userId);
+        localeApplyManagerRequest.setTimeDate(timeDate);
+        localeApplyManagerRequest.setLocaleCode(localeCode);
+        localeApplyManagerRequest.setTimeBucket(timeBucket);
+        localeApplyManagerRequest.setLocaleApplyId(localeApplyId);
+        localeApplyManagerRequest.setStatus(status);
+        localeApplyManagerRequest.setExtInfo(extInfo);
+        return localeApplyManagerRequest;
+    }
+}

@@ -15,7 +15,7 @@ import java.util.Map;
  * @version :  2019-07-03 21:24 NathanDai
  */
 
-public class BaseRequest extends ToString {
+public abstract class BaseRequest extends ToString {
     private static final long serialVersionUID = 7010151013811205351L;
 
     /**
