@@ -15,9 +15,23 @@ import java.util.List;
  * @version :  2019-07-05 06:27 NathanDai
  */
 public interface LocaleAreaManager {
+    /**
+     * @param localeId
+     * @param timeDate
+     * @param status
+     * @return
+     */
     List<LocaleAreaBO> findAllByLocaleIdAndTimeDateAndStatus(String localeId, String timeDate, String status);
 
+    /**
+     * @param localeAreaRequest
+     * @return
+     */
     LocaleAreaBO create(LocaleAreaRequest localeAreaRequest);
 
+    /**
+     * @param localeAreaRequest
+     * @return
+     */
     LocaleAreaBO update(LocaleAreaRequest localeAreaRequest);
 }

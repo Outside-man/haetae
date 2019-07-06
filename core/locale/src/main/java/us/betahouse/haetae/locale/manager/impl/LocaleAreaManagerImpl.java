@@ -35,6 +35,10 @@ public class LocaleAreaManagerImpl implements LocaleAreaManager {
         return localeAreaDORepoService.queryLocaleAreasByLocaleIdAndTimeDateAndStatusNot(localeId, timeDate, status);
     }
 
+    /**
+     * @param request
+     * @return
+     */
     @Override
     public LocaleAreaBO create(LocaleAreaRequest request) {
         LocaleAreaBOBuilder localeAreaBOBuilder = LocaleAreaBOBuilder.getInstance()
@@ -46,6 +50,10 @@ public class LocaleAreaManagerImpl implements LocaleAreaManager {
         return localeAreaDORepoService.createLocaleArea(localeAreaBOBuilder.build());
     }
 
+    /**
+     * @param request
+     * @return
+     */
     @Override
     public LocaleAreaBO update(LocaleAreaRequest request) {
         LocaleAreaBOBuilder localeAreaBOBuilder = LocaleAreaBOBuilder.getInstance()

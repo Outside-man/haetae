@@ -24,6 +24,10 @@ public interface LocaleAreaDORepoService {
      */
     LocaleAreaBO createLocaleArea(LocaleAreaBO localeAreaBO);
 
+    /**
+     * @param localeAreaBO
+     * @return
+     */
     LocaleAreaBO updateLocaleArea(LocaleAreaBO localeAreaBO);
 
     /**

@@ -7,14 +7,25 @@ package us.betahouse.haetae.controller.locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
+import us.betahouse.haetae.common.template.RestOperateCallBack;
+import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.model.locale.request.LocaleApplyRestRequest;
+import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
+import us.betahouse.haetae.serviceimpl.locale.request.builder.LocaleApplyManagerRequestBuilder;
+import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
+import us.betahouse.haetae.utils.IPUtil;
+import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
+import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +42,9 @@ public class LocaleApplyController {
      */
     private final Logger LOGGER = LoggerFactory.getLogger(LocaleApplyController.class);
 
+    @Autowired
+    LocaleApplyService localeApplyService;
+
     /**
      * 提交场地申请
      *
@@ -42,7 +56,38 @@ public class LocaleApplyController {
     @PostMapping("/apply")
     @Log(loggerName = LoggerName.FINANCE_DIGEST)
     public Result<LocaleApplyBO> submitApply(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return null;
+        return RestOperateTemplate.operate(LOGGER, "提交场地申请", restRequest, new RestOperateCallBack<LocaleApplyBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<LocaleApplyBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
+                        .withTel(restRequest.getTel())
+                        .withUsage(restRequest.getUsage())
+                        .withRemark(restRequest.getRemark())
+                        .withDocument(restRequest.getDocument())
+                        .withLocaleCode(restRequest.getLocaleCode())
+                        .withLocaleId(restRequest.getLocaleId())
+                        .withLocaleAreaId(restRequest.getLocaleAreaId())
+                        .withTimeDate(restRequest.getTimeDate())
+                        .withTimeBucket(restRequest.getTimeBucket())
+                        .withUserId(restRequest.getUserId())
+                        .withStatus(restRequest.getStatus())
+                        .build();
+
+                LocaleApplyBO localeApplyBO = localeApplyService.create(localeApplyManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(localeApplyBO, "场地占用创建");
+
+            }
+        });
     }
 
     /**

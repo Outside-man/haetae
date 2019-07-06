@@ -25,18 +25,33 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
     @Autowired
     LocaleAreaManager localeAreaManager;
 
+    /**
+     * @param request
+     * @param context
+     * @return
+     */
     @Override
     public List<LocaleAreaBO> findAllByLocaleIdAndTimeDateAndStatus(LocaleAreaManagerRequest request, OperateContext context) {
         List<LocaleAreaBO> localeAreaBO = localeAreaManager.findAllByLocaleIdAndTimeDateAndStatus(request.getLocaleId(), request.getTimeDate(), "CANCEL");
         return localeAreaBO;
     }
 
+    /**
+     * @param request
+     * @param context
+     * @return
+     */
     @Override
     public LocaleAreaBO create(LocaleAreaManagerRequest request, OperateContext context) {
         LocaleAreaBO localeAreaBO = localeAreaManager.create(request);
         return localeAreaBO;
     }
 
+    /**
+     * @param request
+     * @param context
+     * @return
+     */
     @Override
     public LocaleAreaBO update(LocaleAreaManagerRequest request, OperateContext context) {
         LocaleAreaBO localeAreaBO = localeAreaManager.update(request);

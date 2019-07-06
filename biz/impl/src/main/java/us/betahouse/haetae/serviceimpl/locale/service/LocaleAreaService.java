@@ -24,7 +24,6 @@ public interface LocaleAreaService {
     List<LocaleAreaBO> findAllByLocaleIdAndTimeDateAndStatus(LocaleAreaManagerRequest request, OperateContext context);
 
     /**
-     *
      * @param request
      * @param context
      * @return
@@ -32,7 +31,6 @@ public interface LocaleAreaService {
     LocaleAreaBO create(LocaleAreaManagerRequest request, OperateContext context);
 
     /**
-     *
      * @param request
      * @param context
      * @return
