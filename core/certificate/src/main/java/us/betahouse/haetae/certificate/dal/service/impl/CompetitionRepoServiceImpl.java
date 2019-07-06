@@ -110,6 +110,10 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (newCompetitionDO.getConfirmUserId() != null) {
             competitionDO.setConfirmUserId(newCompetitionDO.getConfirmUserId());
         }
+        //更新图片路径
+        if(newCompetitionDO.getPictureUrl()!=null){
+            competitionDO.setPictureUrl(newCompetitionDO.getPictureUrl());
+        }
         //更新修改时间
         competitionDO.setGmtModified(new Date());
         return convert(competitionDORepo.save(competitionDO));
@@ -189,6 +193,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .withStatus(competitionDO.getStatus())
                 .withConfirmUserId(competitionDO.getConfirmUserId())
                 .withUserID(competitionDO.getUserId())
+                .withCertificatePictureUrl(competitionDO.getPictureUrl())
                 .withWorkUserId(JSON.parseObject(competitionDO.getWorkersUserId(), List.class))
                 .withExtInfo(JSON.parseObject(competitionDO.getExtInfo(), Map.class))
                 .withTeacher(JSON.parseObject(competitionDO.getTeacher(), List.class));
@@ -215,6 +220,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         competitionDO.setConfirmUserId(certificateBO.getConfirmUserId());
         competitionDO.setTeamId(certificateBO.getTeamId());
         competitionDO.setStatus(certificateBO.getStatus());
+        competitionDO.setPictureUrl(certificateBO.getPictureUrl());
         competitionDO.setWorkersUserId(JSON.toJSONString(certificateBO.getWorkUserId()));
         competitionDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         competitionDO.setTeacher(JSON.toJSONString(certificateBO.getTeacher()));

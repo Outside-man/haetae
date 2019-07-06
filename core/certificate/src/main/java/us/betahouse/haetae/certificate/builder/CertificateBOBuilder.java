@@ -95,6 +95,10 @@ final public class CertificateBOBuilder {
      * 成绩
      */
     private String certificateGrade;
+    /**
+     * 图片路径
+     */
+    private String pictureUrl;
 
     public static CertificateBOBuilder getInstance() {
         return new CertificateBOBuilder();
@@ -121,6 +125,7 @@ final public class CertificateBOBuilder {
         certificateBO.setTeamName(teamName);
         certificateBO.setTeamId(teamId);
         certificateBO.setCertificateGrade(certificateGrade);
+        certificateBO.setPictureUrl(pictureUrl);
         return certificateBO;
     }
 
@@ -135,6 +140,11 @@ final public class CertificateBOBuilder {
 
     public CertificateBOBuilder withCertificateName(String certificateName) {
         this.certificateName = certificateName;
+        return this;
+    }
+
+    public CertificateBOBuilder withCertificatePictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
         return this;
     }
 

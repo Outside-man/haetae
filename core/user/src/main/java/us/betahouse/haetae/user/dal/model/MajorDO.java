@@ -43,6 +43,11 @@ public class MajorDO extends BaseDO {
     private String grade;
 
     /**
+     * 系名称
+     */
+    @Column(name="department_name",length = 64)
+    private String departmentName;
+    /**
      * 拓展信息
      */
     @Column(length = 2000)
@@ -80,5 +85,11 @@ public class MajorDO extends BaseDO {
         this.extInfo = extInfo;
     }
 
+    public String getDepartmentName() {
+        return departmentName;
+    }
 
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 }

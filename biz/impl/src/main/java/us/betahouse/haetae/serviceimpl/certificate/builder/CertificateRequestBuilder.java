@@ -94,6 +94,12 @@ final public class CertificateRequestBuilder {
      * 成绩
      */
     private String certificateGrade;
+
+    /**
+     * 图片路径
+     */
+    private String pictureUrl;
+
     public static CertificateRequestBuilder getInstance() {
         return new CertificateRequestBuilder();
     }
@@ -119,6 +125,7 @@ final public class CertificateRequestBuilder {
         request.setWorkUserId(workUserId);
         request.setTeamId(teamId);
         request.setCertificateGrade(certificateGrade);
+        request.setPictureUrl(pictureUrl);
         return request;
     }
 
@@ -127,6 +134,11 @@ final public class CertificateRequestBuilder {
 
     public CertificateRequestBuilder withRequestId(String requestId) {
         this.requestId = requestId;
+        return this;
+    }
+
+    public CertificateRequestBuilder withPictureUrl(String pictureUrl){
+        this.pictureUrl=pictureUrl;
         return this;
     }
 

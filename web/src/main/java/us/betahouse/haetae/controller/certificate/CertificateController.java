@@ -97,6 +97,7 @@ public class CertificateController {
                         .withTeacher(request.getTeacher())
                         .withCertificateNumber(request.getCertificateNumber())
                         .withCertificateGrade(request.getCertificateGrade())
+                        .withPictureUrl(request.getPictureUrl())
                         .withExtInfo(request.getExtInfo());
                 return RestResultUtil.buildSuccessResult(certificateService.create(builder.build(), context), "创建证书记录成功");
             }
@@ -149,6 +150,7 @@ public class CertificateController {
                         .withCertificateNumber(request.getCertificateNumber())
                         .withCertificateGrade(request.getCertificateGrade())
                         .withExpirationTime(request.getExpirationTime())
+                        .withPictureUrl(request.getPictureUrl())
                         .withExtInfo(request.getExtInfo());
                 return RestResultUtil.buildSuccessResult(certificateService.update(builder.build(), context), "修改记录成功");
             }

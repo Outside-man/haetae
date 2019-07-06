@@ -53,7 +53,16 @@
             <artifactId>pinyin4j</artifactId>
             <version>2.5.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-examples</artifactId>
+            <version>3.9</version>
+        </dependency>
     </dependencies>
 
     <build>

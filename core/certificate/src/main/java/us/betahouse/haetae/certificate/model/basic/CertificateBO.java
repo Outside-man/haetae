@@ -99,6 +99,11 @@ public class CertificateBO extends ToString {
      */
     private Map<String, String> extInfo = new HashMap<>();
 
+    /**
+     * 证书图片
+     */
+    private String pictureUrl;
+
     public String getCertificateId() {
         return certificateId;
     }
@@ -269,4 +274,11 @@ public class CertificateBO extends ToString {
         this.certificateGrade = certificateGrade;
     }
 
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 }
