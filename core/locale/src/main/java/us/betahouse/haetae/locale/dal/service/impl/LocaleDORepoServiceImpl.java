@@ -68,7 +68,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
      * @return
      */
     @Override
-    public List<LocaleBO> queryLocalesByStatus(String Status) {
+    public List<LocaleBO> queryAllLocalesByStatus(String Status) {
         List<LocaleDO> localeDOList = localeDORepo.findAllByStatus(Status);
         return CollectionUtils.toStream(localeDOList)
                 .filter(Objects::nonNull)

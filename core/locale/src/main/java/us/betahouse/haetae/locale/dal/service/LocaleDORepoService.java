@@ -36,6 +36,6 @@ public interface LocaleDORepoService {
      * @param status
      * @return
      */
-    List<LocaleBO> queryLocalesByStatus(String status);
+    List<LocaleBO> queryAllLocalesByStatus(String status);
 
 }

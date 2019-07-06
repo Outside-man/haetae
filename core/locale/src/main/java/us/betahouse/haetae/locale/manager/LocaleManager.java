@@ -27,5 +27,5 @@ public interface LocaleManager {
      * @param status
      * @return
      */
-    List<LocaleBO> findByStatus(String status);
+    List<LocaleBO> findAllByStatus(String status);
 }

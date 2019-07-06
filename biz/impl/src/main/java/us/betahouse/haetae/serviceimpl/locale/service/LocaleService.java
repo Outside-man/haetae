@@ -32,5 +32,5 @@ public interface LocaleService {
      * @param context
      * @return
      */
-    List<LocaleBO> findLocaleByStatus(LocaleManagerRequest request, OperateContext context);
+    List<LocaleBO> findAllLocaleByStatus(LocaleManagerRequest request, OperateContext context);
 }

@@ -47,6 +47,19 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     }
 
     /**
+     * 更新场地占用的状态
+     *
+     * @param localeAreaBO
+     * @return
+     */
+    @Override
+    public LocaleAreaBO updateLocaleArea(LocaleAreaBO localeAreaBO) {
+        LocaleAreaDO localeAreaDO = localeAreaDORepo.findByLocaleAreaId(localeAreaBO.getLocaleAreaId());
+        localeAreaDO.setStatus(localeAreaBO.getStatus());
+        return convert(localeAreaDORepo.save(localeAreaDO));
+    }
+
+    /**
      * 通过 场地id 日期 状态!=CANCEL 查询场地占用
      *
      * @param LocaleId

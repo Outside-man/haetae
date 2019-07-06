@@ -14,7 +14,7 @@ public class LocaleAreaDORepoTest {
 
     @Test
     public void test() {
-        System.out.println(localeAreaDORepo.findByLocaleIdAndTimeDateAndStatusNot("201907021741500068564001201964", "2019-07-02", "CANCEL"));
+        System.out.println(localeAreaDORepo.findByLocaleAreaId("201907021749246799444002201921"));
     }
 
 

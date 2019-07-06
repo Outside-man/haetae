@@ -53,8 +53,8 @@ public class LocaleController {
 
     /**
      * 获取可以使用的场地
-     * status=USABLE
      * 获取场地之前需要登录
+     * 需要传场地status USABLE DISABLE
      *
      * @param restRequest
      * @param httpServletRequest
@@ -64,7 +64,7 @@ public class LocaleController {
     @GetMapping(value = "/locales")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<LocaleBO>> getAll(LocaleRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取特定组织或全部物资信息", restRequest, new RestOperateCallBack<List<LocaleBO>>() {
+        return RestOperateTemplate.operate(LOGGER, "获取状态对应的场地", restRequest, new RestOperateCallBack<List<LocaleBO>>() {
 
             @Override
             public void before() {
@@ -77,12 +77,13 @@ public class LocaleController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 LocaleManagerRequestBuilder builder = LocaleManagerRequestBuilder.getInstance();
-                // 添加场地状态
+
+                // 填充状态选择条件
                 if (StringUtils.isNotBlank(restRequest.getStatus())) {
                     builder.withStatus(restRequest.getStatus());
                 }
 
-                return RestResultUtil.buildSuccessResult(localeService.findLocaleByStatus(builder.build(), context), "获取全部场地成功");
+                return RestResultUtil.buildSuccessResult(localeService.findAllLocaleByStatus(builder.build(), context), "获取全部场地成功");
             }
         });
     }

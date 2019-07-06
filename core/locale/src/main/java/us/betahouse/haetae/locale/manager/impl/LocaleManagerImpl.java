@@ -32,8 +32,13 @@ public class LocaleManagerImpl implements LocaleManager {
         return localeDORepoService.queryAllLocales();
     }
 
+    /**
+     *
+     * @param status
+     * @return
+     */
     @Override
-    public List<LocaleBO> findByStatus(String status) {
-        return localeDORepoService.queryLocalesByStatus(status);
+    public List<LocaleBO> findAllByStatus(String status) {
+        return localeDORepoService.queryAllLocalesByStatus(status);
     }
 }

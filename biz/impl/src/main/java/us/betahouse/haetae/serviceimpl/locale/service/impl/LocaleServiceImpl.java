@@ -45,8 +45,8 @@ public class LocaleServiceImpl implements LocaleService {
      * @return
      */
     @Override
-    public List<LocaleBO> findLocaleByStatus(LocaleManagerRequest request, OperateContext context) {
-        List<LocaleBO> localeBOList = localeManager.findByStatus(request.getStatus());
+    public List<LocaleBO> findAllLocaleByStatus(LocaleManagerRequest request, OperateContext context) {
+        List<LocaleBO> localeBOList = localeManager.findAllByStatus(request.getStatus());
         return localeBOList;
     }
 }

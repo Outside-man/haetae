@@ -24,6 +24,8 @@ public interface LocaleAreaDORepoService {
      */
     LocaleAreaBO createLocaleArea(LocaleAreaBO localeAreaBO);
 
+    LocaleAreaBO updateLocaleArea(LocaleAreaBO localeAreaBO);
+
     /**
      * 通过 场地id 日期 状态!=CANCEL 查询场地占用
      *
