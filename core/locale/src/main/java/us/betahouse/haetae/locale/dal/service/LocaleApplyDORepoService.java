@@ -17,6 +17,7 @@ public interface LocaleApplyDORepoService {
 
     /**
      * 新建一个场地申请
+     *
      * @param localeApplyBO
      * @return
      */
@@ -28,4 +29,12 @@ public interface LocaleApplyDORepoService {
      * @return
      */
     List<LocaleApplyBO> queryAllLocaleApply();
+
+    /**
+     * 更新场地申请状态
+     *
+     * @param localeApplyBO
+     * @return
+     */
+    LocaleApplyBO updateLocaleApply(LocaleApplyBO localeApplyBO);
 }

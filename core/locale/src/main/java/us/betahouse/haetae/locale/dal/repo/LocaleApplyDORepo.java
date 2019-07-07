@@ -24,4 +24,12 @@ public interface LocaleApplyDORepo extends JpaRepository<LocaleApplyDO, Long> {
      */
     List<LocaleApplyDO> findAll();
 
+    /**
+     * 通过场地申请id查询
+     *
+     * @return
+     */
+    LocaleApplyDO findByLocaleApplyId(String localeApplyId);
+
+
 }

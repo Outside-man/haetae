@@ -42,4 +42,12 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
                 .withUserId(request.getUserId());
         return localeApplyDORepoService.createLocaleApply(localeApplyBOBuilder.build());
     }
+
+    @Override
+    public LocaleApplyBO update(LocaleApplyRequest request) {
+        LocaleApplyBOBuilder localeApplyBOBuilder = LocaleApplyBOBuilder.getInstance()
+                .withLocaleApplyId(request.getLocaleApplyId())
+                .withStatus(request.getStatus());
+        return localeApplyDORepoService.updateLocaleApply(localeApplyBOBuilder.build());
+    }
 }

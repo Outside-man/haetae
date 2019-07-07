@@ -60,6 +60,19 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 更新场地申请状态
+     *
+     * @param localeApplyBO
+     * @return
+     */
+    @Override
+    public LocaleApplyBO updateLocaleApply(LocaleApplyBO localeApplyBO) {
+        LocaleApplyDO localeApplyDO = localeApplyDORepo.findByLocaleApplyId(localeApplyBO.getLocaleApplyId());
+        localeApplyDO.setStatus(localeApplyBO.getStatus());
+        return convert(localeApplyDORepo.save(localeApplyDO));
+    }
+
 
     /**
      * 申请DO2BO

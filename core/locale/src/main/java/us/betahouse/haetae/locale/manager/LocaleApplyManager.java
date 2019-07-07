@@ -14,8 +14,18 @@ import us.betahouse.haetae.locale.request.LocaleApplyRequest;
  */
 public interface LocaleApplyManager {
     /**
+     * 创建场地申请
+     *
      * @param request
      * @return
      */
     LocaleApplyBO create(LocaleApplyRequest request);
+
+    /**
+     * 场地申请状态修改
+     *
+     * @param request
+     * @return
+     */
+    LocaleApplyBO update(LocaleApplyRequest request);
 }

@@ -6,7 +6,6 @@
 package us.betahouse.haetae.serviceimpl.locale.service;
 
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
-import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
 
@@ -16,11 +15,20 @@ import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
  */
 public interface LocaleApplyService {
     /**
+     * 创建场地申请
+     *
      * @param request
      * @param context
      * @return
      */
     LocaleApplyBO create(LocaleApplyManagerRequest request, OperateContext context);
 
-    PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context);
+    /**
+     * 更新场地申请状态
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context);
 }

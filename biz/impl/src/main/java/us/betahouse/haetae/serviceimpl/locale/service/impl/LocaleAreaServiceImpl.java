@@ -26,6 +26,8 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
     LocaleAreaManager localeAreaManager;
 
     /**
+     * 查询场地占用
+     *
      * @param request
      * @param context
      * @return
@@ -37,6 +39,8 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
     }
 
     /**
+     * 创建场地占用
+     *
      * @param request
      * @param context
      * @return
@@ -48,6 +52,8 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
     }
 
     /**
+     * 更新场地占用状态
+     *
      * @param request
      * @param context
      * @return
