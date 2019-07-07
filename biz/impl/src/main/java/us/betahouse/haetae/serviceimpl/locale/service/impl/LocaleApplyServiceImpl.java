@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.locale.manager.LocaleApplyManager;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
@@ -33,5 +34,10 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     public LocaleApplyBO create(LocaleApplyManagerRequest request, OperateContext context) {
         LocaleApplyBO localeApplyBO = localeApplyManager.create(request);
         return localeApplyBO;
+    }
+
+    @Override
+    public PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context) {
+        return null;
     }
 }

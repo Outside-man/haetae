@@ -30,8 +30,8 @@ public class LocaleApplyDO extends BaseDO {
     /**
      * 申请的用途
      */
-    @Column(name = "usage", length = 32)
-    private String usage;
+    @Column(name = "usages", length = 32)
+    private String usages;
     /**
      * 申请的备注
      */
@@ -95,12 +95,12 @@ public class LocaleApplyDO extends BaseDO {
         this.tel = tel;
     }
 
-    public String getUsage() {
-        return usage;
+    public String getUsages() {
+        return usages;
     }
 
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public void setUsages(String usages) {
+        this.usages = usages;
     }
 
     public String getRemark() {

@@ -22,6 +22,6 @@ public class LocalDoRepoTest {
     @Test
     public void test() {
         LocaleBO localeBO = new LocaleBO();
-        localeDORepoService.createLocale(localeBO);
+        System.out.println(localeDORepo.findAll());
     }
 }

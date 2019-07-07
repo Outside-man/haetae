@@ -5,6 +5,7 @@
 
 package us.betahouse.haetae.controller.locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class LocaleApplyController {
     @PostMapping("/apply")
     @Log(loggerName = LoggerName.FINANCE_DIGEST)
     public Result<LocaleApplyBO> submitApply(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
+        System.out.println(restRequest);
         return RestOperateTemplate.operate(LOGGER, "提交场地申请", restRequest, new RestOperateCallBack<LocaleApplyBO>() {
 
             @Override
@@ -71,7 +73,7 @@ public class LocaleApplyController {
 
                 LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
                         .withTel(restRequest.getTel())
-                        .withUsage(restRequest.getUsage())
+                        .withUsages(restRequest.getUsages())
                         .withRemark(restRequest.getRemark())
                         .withDocument(restRequest.getDocument())
                         .withLocaleCode(restRequest.getLocaleCode())
@@ -90,59 +92,94 @@ public class LocaleApplyController {
         });
     }
 
-    /**
-     * 场地申请查询 管理员
-     *
-     * @param restRequest
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/applyadmin")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<PageList<LocaleApplyBO>> getLocaleAreaAdmin(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return null;
-    }
+//    /**
+//     * 场地申请查询 管理员
+//     *
+//     * @param restRequest
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @GetMapping(value = "/applyadmin")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<PageList<LocaleApplyBO>> getLocaleAreaAdmin(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
+//        return RestOperateTemplate.operate(LOGGER, "获取活动列表", restRequest, new RestOperateCallBack<PageList<LocaleApplyBO>>() {
+//
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//            }
+//
+//            @Override
+//            public Result<PageList<LocaleApplyBO>> execute() {
+//                OperateContext context = new OperateContext();
+//                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+//
+//                LocaleApplyManagerRequestBuilder builder = LocaleApplyManagerRequestBuilder.getInstance();
+//
+//                if (StringUtils.isNotBlank(restRequest.getStatus())) {
+//                    builder.withStatus(restRequest.getStatus());
+//                }
+//
+////                //添加页码
+////                if(restRequest.getPage()!=null&&restRequest.getPage()!=0){
+////                    builder.withPage(restRequest.getPage());
+////                }
+////
+////                //添加每页条数
+////                if(restRequest.getLimit()!=null&&restRequest.getLimit()!=0){
+////                    builder.withLimit(restRequest.getLimit());
+////                }
+////
+////                //添加排序規則
+////                if(StringUtils.isBlank(restRequest.getOrderRule())){
+////                    builder.withOrderRule(restRequest.getOrderRule());
+////                }
+//
+//                return RestResultUtil.buildSuccessResult(localeApplyService.findAllByStatus(builder.build(), context), "获取活动列表成功");
+//            }
+//        });
+//    }
 
-    /**
-     * 场地申请查询 申请人
-     *
-     * @param restRequest
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/applyuser")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<PageList<LocaleApplyBO>> getLocaleAreaUser(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return null;
-    }
-
-    /**
-     * 场地申请状态修改 管理员 需要验证这个是不是管理员
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @PutMapping("/applyadmin")
-    @Log(loggerName = LoggerName.FINANCE_DIGEST)
-    public Result<LocaleApplyBO> changeApplyadmin(LocaleApplyRestRequest request, HttpServletRequest httpServletRequest) {
-        return null;
-    }
-
-    /**
-     * 用户自己取消 只需要验证是不是用户自己
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @PutMapping("/applyadmin")
-    @Log(loggerName = LoggerName.FINANCE_DIGEST)
-    public Result<LocaleApplyBO> changeApplyuser(LocaleApplyRestRequest request, HttpServletRequest httpServletRequest) {
-        return null;
-    }
+//    /**
+//     * 场地申请查询 申请人
+//     *
+//     * @param restRequest
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @GetMapping(value = "/applyuser")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<PageList<LocaleApplyBO>> getLocaleAreaUser(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
+//        return null;
+//    }
+//
+//    /**
+//     * 场地申请状态修改 管理员 需要验证这个是不是管理员
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @PutMapping("/applyadmin")
+//    @Log(loggerName = LoggerName.FINANCE_DIGEST)
+//    public Result<LocaleApplyBO> changeApplyadmin(LocaleApplyRestRequest request, HttpServletRequest httpServletRequest) {
+//        return null;
+//    }
+//
+//    /**
+//     * 用户自己取消 只需要验证是不是用户自己
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @PutMapping("/applyadmin")
+//    @Log(loggerName = LoggerName.FINANCE_DIGEST)
+//    public Result<LocaleApplyBO> changeApplyuser(LocaleApplyRestRequest request, HttpServletRequest httpServletRequest) {
+//        return null;
+//    }
 }

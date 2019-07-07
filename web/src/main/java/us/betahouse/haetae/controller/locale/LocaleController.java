@@ -69,6 +69,8 @@ public class LocaleController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地状态不能为空");
             }
 
             @Override
@@ -78,7 +80,7 @@ public class LocaleController {
 
                 LocaleManagerRequestBuilder builder = LocaleManagerRequestBuilder.getInstance();
 
-                // 填充状态选择条件
+                // 填充场地状态状态选择条件
                 if (StringUtils.isNotBlank(restRequest.getStatus())) {
                     builder.withStatus(restRequest.getStatus());
                 }

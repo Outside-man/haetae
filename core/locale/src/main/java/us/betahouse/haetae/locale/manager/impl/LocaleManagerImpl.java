@@ -33,6 +33,7 @@ public class LocaleManagerImpl implements LocaleManager {
     }
 
     /**
+     * 通过状态查看场地
      *
      * @param status
      * @return

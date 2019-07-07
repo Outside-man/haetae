@@ -48,7 +48,7 @@ public class LocaleAreaController {
     private LocaleAreaService localeAreaService;
 
     /**
-     * 通过 场地id 日期 状态 查询哪个时间段可用使用
+     * 通过 场地id 日期 状态 查询哪个时间段被占用
      *
      * @param restRequest
      * @param httpServletRequest
@@ -63,6 +63,9 @@ public class LocaleAreaController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(restRequest.getLocaleId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地Id不能为空");
+                AssertUtil.assertNotNull(restRequest.getTimeDate(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "日期不能为空");
             }
 
             @Override
@@ -81,9 +84,7 @@ public class LocaleAreaController {
                 if (StringUtils.isNotBlank(restRequest.getTimeDate())) {
                     builder.withTimeDate(restRequest.getTimeDate());
                 }
-
-
-                return RestResultUtil.buildSuccessResult(localeAreaService.findAllByLocaleIdAndTimeDateAndStatus(builder.build(), context), "获取全部场地成功");
+                return RestResultUtil.buildSuccessResult(localeAreaService.findAllByLocaleIdAndTimeDateAndStatus(builder.build(), context), "获取全部时间段成功");
 
 
             }
@@ -109,6 +110,9 @@ public class LocaleAreaController {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertNotNull(restRequest.getLocaleId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地id不能为空");
+                AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地状态不能为空");
+                AssertUtil.assertNotNull(restRequest.getTimeBucket(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地时间段不能为空");
+                AssertUtil.assertNotNull(restRequest.getTimeDate(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地日期不能为空");
             }
 
             @Override
@@ -125,7 +129,7 @@ public class LocaleAreaController {
                         .build();
 
                 LocaleAreaBO localeAreaBO = localeAreaService.create(localeAreaManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeAreaBO, "场地占用创建");
+                return RestResultUtil.buildSuccessResult(localeAreaBO, "场地占用创建成功");
 
             }
         });
@@ -147,6 +151,8 @@ public class LocaleAreaController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地状态不能为空");
+                AssertUtil.assertNotNull(restRequest.getLocaleAreaId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地占用id不能为空");
             }
 
             @Override
@@ -162,7 +168,7 @@ public class LocaleAreaController {
                         .withUserId(restRequest.getUserId())
                         .build();
                 LocaleAreaBO localeAreaBO = localeAreaService.update(localeAreaManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeAreaBO, "更新场地占用");
+                return RestResultUtil.buildSuccessResult(localeAreaBO, "更新场地占用成功");
             }
         });
     }

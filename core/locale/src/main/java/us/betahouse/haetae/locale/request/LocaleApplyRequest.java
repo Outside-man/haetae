@@ -21,7 +21,7 @@ public class LocaleApplyRequest extends BaseRequest {
      * 申请的用途
      */
 
-    private String usage;
+    private String usages;
     /**
      * 申请的备注
      */
@@ -81,12 +81,12 @@ public class LocaleApplyRequest extends BaseRequest {
         this.tel = tel;
     }
 
-    public String getUsage() {
-        return usage;
+    public String getUsages() {
+        return usages;
     }
 
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public void setUsages(String usages) {
+        this.usages = usages;
     }
 
     public String getRemark() {

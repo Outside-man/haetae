@@ -42,6 +42,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public LocaleApplyBO createLocaleApply(LocaleApplyBO localeApplyBO) {
         localeApplyBO.setLocaleApplyId(localBizFactory.getLocaleApplyId());
+        System.out.println(convert(localeApplyBO) + "localeApplyDO");
         return convert(localeApplyDORepo.save(convert(localeApplyBO)));
     }
 
@@ -73,7 +74,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         }
         LocaleApplyBO localeApplyBO = new LocaleApplyBO();
         localeApplyBO.setTel(localeApplyDO.getTel());
-        localeApplyBO.setUsage(localeApplyDO.getUsage());
+        localeApplyBO.setUsages(localeApplyDO.getUsages());
         localeApplyBO.setRemark(localeApplyDO.getRemark());
         localeApplyBO.setDocument(localeApplyDO.getDocument());
         localeApplyBO.setStatus(localeApplyDO.getStatus());
@@ -99,7 +100,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         }
         LocaleApplyDO localeApplyDO = new LocaleApplyDO();
         localeApplyDO.setTel(localeApplyBO.getTel());
-        localeApplyDO.setUsage(localeApplyBO.getUsage());
+        localeApplyDO.setUsages(localeApplyBO.getUsages());
         localeApplyDO.setRemark(localeApplyBO.getRemark());
         localeApplyDO.setDocument(localeApplyBO.getDocument());
         localeApplyDO.setStatus(localeApplyBO.getStatus());

@@ -30,10 +30,16 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
     public LocaleApplyBO create(LocaleApplyRequest request) {
         LocaleApplyBOBuilder localeApplyBOBuilder = LocaleApplyBOBuilder.getInstance()
                 .withLocaleId(request.getLocaleId())
+                .withLocaleAreaId(request.getLocaleAreaId())
+                .withLocaleCode(request.getLocaleCode())
+                .withStatus(request.getStatus())
+                .withDocument(request.getDocument())
+                .withTel(request.getTel())
+                .withRemark(request.getRemark())
+                .withUsages(request.getUsages())
                 .withTimeDate(request.getTimeDate())
                 .withTimeBucket(request.getTimeBucket())
-                .withUserId(request.getUserId())
-                .withStatus(request.getStatus());
+                .withUserId(request.getUserId());
         return localeApplyDORepoService.createLocaleApply(localeApplyBOBuilder.build());
     }
 }

@@ -25,7 +25,7 @@ public final class LocaleApplyBOBuilder {
      * 申请的用途
      */
 
-    private String usage;
+    private String usages;
     /**
      * 申请的备注
      */
@@ -94,8 +94,8 @@ public final class LocaleApplyBOBuilder {
         return this;
     }
 
-    public LocaleApplyBOBuilder withUsage(String usage) {
-        this.usage = usage;
+    public LocaleApplyBOBuilder withUsages(String usages) {
+        this.usages = usages;
         return this;
     }
 
@@ -158,7 +158,7 @@ public final class LocaleApplyBOBuilder {
     public LocaleApplyBO build() {
         LocaleApplyBO localeApplyBO = new LocaleApplyBO();
         localeApplyBO.setTel(tel);
-        localeApplyBO.setUsage(usage);
+        localeApplyBO.setUsages(usages);
         localeApplyBO.setRemark(remark);
         localeApplyBO.setDocument(document);
         localeApplyBO.setLocaleAreaId(localeAreaId);

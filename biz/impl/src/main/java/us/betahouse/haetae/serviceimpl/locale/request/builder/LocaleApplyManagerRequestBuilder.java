@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class LocaleApplyManagerRequestBuilder {
     private String tel;
-    private String usage;
+    private String usages;
     private String remark;
     private String document;
     private String status;
@@ -41,8 +41,8 @@ public final class LocaleApplyManagerRequestBuilder {
         return this;
     }
 
-    public LocaleApplyManagerRequestBuilder withUsage(String usage) {
-        this.usage = usage;
+    public LocaleApplyManagerRequestBuilder withUsages(String usages) {
+        this.usages = usages;
         return this;
     }
 
@@ -104,7 +104,7 @@ public final class LocaleApplyManagerRequestBuilder {
     public LocaleApplyManagerRequest build() {
         LocaleApplyManagerRequest localeApplyManagerRequest = new LocaleApplyManagerRequest();
         localeApplyManagerRequest.setTel(tel);
-        localeApplyManagerRequest.setUsage(usage);
+        localeApplyManagerRequest.setUsages(usages);
         localeApplyManagerRequest.setRemark(remark);
         localeApplyManagerRequest.setDocument(document);
         localeApplyManagerRequest.setLocaleAreaId(localeAreaId);
