@@ -20,7 +20,7 @@ public interface LocaleDORepo extends JpaRepository<LocaleDO, Long> {
     /**
      * 查询所有场地(不管能不能用)
      *
-     * @return
+     * @return List<LocaleDO>
      */
     List<LocaleDO> findAll();
 
@@ -28,7 +28,7 @@ public interface LocaleDORepo extends JpaRepository<LocaleDO, Long> {
      * 通过场地状态查询场地 可用 不可用
      *
      * @param status
-     * @return
+     * @return List<LocaleDO>
      */
     List<LocaleDO> findAllByStatus(String status);
 

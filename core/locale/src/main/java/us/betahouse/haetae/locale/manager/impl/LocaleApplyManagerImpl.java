@@ -11,6 +11,7 @@ import us.betahouse.haetae.locale.builder.LocaleApplyBOBuilder;
 import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.manager.LocaleApplyManager;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.locale.request.LocaleApplyRequest;
 
 /**
@@ -43,11 +44,34 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
         return localeApplyDORepoService.createLocaleApply(localeApplyBOBuilder.build());
     }
 
+    /**
+     * 更新场地申请状态
+     *
+     * @param request
+     * @return
+     */
     @Override
     public LocaleApplyBO update(LocaleApplyRequest request) {
         LocaleApplyBOBuilder localeApplyBOBuilder = LocaleApplyBOBuilder.getInstance()
                 .withLocaleApplyId(request.getLocaleApplyId())
                 .withStatus(request.getStatus());
         return localeApplyDORepoService.updateLocaleApply(localeApplyBOBuilder.build());
+    }
+
+    /**
+     * 查询场地申请
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public PageList<LocaleApplyBO> find(LocaleApplyRequest request) {
+        //順序
+        String asc = "ASC";
+        if (asc.equals(request.getOrderRule())) {
+            return localeApplyDORepoService.queryLocaleApplyByStatusAndPagerASC(request.getStatus(), request.getPage(), request.getLimit());
+        } else {
+            return localeApplyDORepoService.queryLocaleApplyByStatusAndPagerDESC(request.getStatus(), request.getPage(), request.getLimit());
+        }
     }
 }

@@ -124,7 +124,44 @@ public class LocaleApplyController {
     @GetMapping(value = "/applyuser")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<LocaleApplyBO>> getLocaleAreaUser(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return null;
+        return RestOperateTemplate.operate(LOGGER, "获取场地申请列表", restRequest, new RestOperateCallBack<PageList<LocaleApplyBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<PageList<LocaleApplyBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                LocaleApplyManagerRequestBuilder builder = LocaleApplyManagerRequestBuilder.getInstance();
+
+                // 填充状态选择条件
+                if (StringUtils.isNotBlank(restRequest.getStatus())) {
+                    builder.withStatus(restRequest.getStatus());
+                }
+
+                //添加页码
+                if (restRequest.getPage() != null && restRequest.getPage() != 0) {
+                    builder.withPage(restRequest.getPage());
+                }
+
+                //添加每页条数
+                if (restRequest.getLimit() != null && restRequest.getLimit() != 0) {
+                    builder.withLimit(restRequest.getLimit());
+                }
+
+                //添加排序規則
+                if (StringUtils.isBlank(restRequest.getOrderRule())) {
+                    builder.withOrderRule(restRequest.getOrderRule());
+                }
+                return RestResultUtil.buildSuccessResult(localeApplyService.findAll(builder.build(), context), "获取场地申请列表成功");
+            }
+
+        });
     }
 
 

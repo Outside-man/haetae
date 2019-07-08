@@ -19,14 +19,14 @@ public interface LocaleDORepoService {
      * 新建一个场地
      *
      * @param localeBO
-     * @return
+     * @return LocaleBO
      */
     LocaleBO createLocale(LocaleBO localeBO);
 
     /**
      * 查询所有场地
      *
-     * @return
+     * @return List<LocaleBO>
      */
     List<LocaleBO> queryAllLocales();
 
@@ -34,7 +34,7 @@ public interface LocaleDORepoService {
      * 通过 状态 查询场地
      *
      * @param status
-     * @return
+     * @return List<LocaleBO>
      */
     List<LocaleBO> queryAllLocalesByStatus(String status);
 

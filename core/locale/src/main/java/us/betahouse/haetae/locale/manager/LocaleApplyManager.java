@@ -6,6 +6,7 @@
 package us.betahouse.haetae.locale.manager;
 
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.locale.request.LocaleApplyRequest;
 
 /**
@@ -28,4 +29,12 @@ public interface LocaleApplyManager {
      * @return
      */
     LocaleApplyBO update(LocaleApplyRequest request);
+
+    /**
+     * 查找场地申请
+     *
+     * @param request
+     * @return
+     */
+    PageList<LocaleApplyBO> find(LocaleApplyRequest request);
 }

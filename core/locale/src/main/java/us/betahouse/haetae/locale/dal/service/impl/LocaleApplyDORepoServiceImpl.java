@@ -5,12 +5,15 @@
 package us.betahouse.haetae.locale.dal.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.locale.dal.model.LocaleApplyDO;
 import us.betahouse.haetae.locale.dal.repo.LocaleApplyDORepo;
 import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;
@@ -42,7 +45,6 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public LocaleApplyBO createLocaleApply(LocaleApplyBO localeApplyBO) {
         localeApplyBO.setLocaleApplyId(localBizFactory.getLocaleApplyId());
-        System.out.println(convert(localeApplyBO) + "localeApplyDO");
         return convert(localeApplyDORepo.save(convert(localeApplyBO)));
     }
 
@@ -61,6 +63,35 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     }
 
     /**
+     * 通过申请状态查询数据 DESC
+     *
+     * @param status 状态
+     * @param page   页面
+     * @param limit  每页行数
+     * @return
+     */
+    @Override
+    public PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerDESC(String status, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(localeApplyDORepo.findAllByStatusContainsOrderByLocaleApplyIdDesc(pageable, status), this::convert);
+    }
+
+    /**
+     * 通过申请状态查询数据 ASC
+     *
+     * @param status 状态
+     * @param page   页面
+     * @param limit  每页行数
+     * @return
+     */
+    @Override
+    public PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerASC(String status, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(localeApplyDORepo.findAllByStatusContains(pageable, status), this::convert);
+    }
+
+
+    /**
      * 更新场地申请状态
      *
      * @param localeApplyBO
@@ -71,6 +102,16 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         LocaleApplyDO localeApplyDO = localeApplyDORepo.findByLocaleApplyId(localeApplyBO.getLocaleApplyId());
         localeApplyDO.setStatus(localeApplyBO.getStatus());
         return convert(localeApplyDORepo.save(localeApplyDO));
+    }
+
+    private Object convert(Object o) {
+        if (o instanceof LocaleApplyDO) {
+            return convert((LocaleApplyDO) o);
+        } else if (o instanceof LocaleApplyBO) {
+            return convert((LocaleApplyBO) o);
+        } else {
+            return null;
+        }
     }
 
 

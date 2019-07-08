@@ -15,63 +15,101 @@ public class LocaleApplyRequest extends BaseRequest {
     /**
      * 申请者的联系方式
      */
-
     private String tel;
+
     /**
      * 申请的用途
      */
-
     private String usages;
+
     /**
      * 申请的备注
      */
-
     private String remark;
+
     /**
      * 申请的附件
      */
-
     private String document;
+
     /**
      * 是否状况 三种：提交申请 申请中 取消
      */
-
     private String status;
+
     /**
      * 场地使用日期
      */
-
     private String timeDate;
+
     /**
      * 场地使用时间段
      */
-
     private String timeBucket;
+
     /**
      * 场地代号
      */
-
     private String localeCode;
+
     /**
      * 占用ID
      */
-
     private String localeAreaId;
+
     /**
      * 场地ID
      */
-
     private String localeId;
+
     /**
      * 场地借用者ID
      */
-
     private String userId;
+
     /**
      * 申请ID
      */
-
     private String localeApplyId;
+
+    /**
+     * 每页条数
+     */
+    private Integer limit;
+
+    /**
+     * 页数
+     */
+    private Integer page;
+
+    /**
+     * 排序方式
+     */
+    private String orderRule;
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public String getOrderRule() {
+        return orderRule;
+    }
+
+    public void setOrderRule(String orderRule) {
+        this.orderRule = orderRule;
+    }
 
     public String getTel() {
         return tel;

@@ -4,6 +4,8 @@
  */
 package us.betahouse.haetae.locale.dal.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.locale.dal.model.LocaleApplyDO;
@@ -20,16 +22,32 @@ public interface LocaleApplyDORepo extends JpaRepository<LocaleApplyDO, Long> {
     /**
      * 查询所有场地申请
      *
-     * @return
+     * @return List<LocaleApplyDO>
      */
     List<LocaleApplyDO> findAll();
 
     /**
      * 通过场地申请id查询
      *
-     * @return
+     * @return LocaleApplyDO
      */
     LocaleApplyDO findByLocaleApplyId(String localeApplyId);
+
+    /**
+     * 通过场地申请状态查询
+     *
+     * @param pageable 分页工具
+     * @param status   场地申请状态
+     * @return Page<LocaleApplyDO>
+     */
+    Page<LocaleApplyDO> findAllByStatusContainsOrderByLocaleApplyIdDesc(Pageable pageable, String status);
+
+    /**
+     * @param pageable 分页工具
+     * @param status   场地申请状态
+     * @return Page<LocaleApplyDO>
+     */
+    Page<LocaleApplyDO> findAllByStatusContains(Pageable pageable, String status);
 
 
 }

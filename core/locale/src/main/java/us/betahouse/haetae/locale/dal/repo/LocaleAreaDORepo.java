@@ -20,22 +20,23 @@ public interface LocaleAreaDORepo extends JpaRepository<LocaleAreaDO, Long> {
     /**
      * 查询所有场地占用
      *
-     * @return
+     * @return List<LocaleAreaDO>
      */
     List<LocaleAreaDO> findAll();
 
     /**
      * 查询某个场地某天有没有被占用
      *
-     * @return
+     * @return List<LocaleAreaDO>
      */
 
     List<LocaleAreaDO> findAllByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status);
 
     /**
      * 通过LocaleAreaId查询
+     *
      * @param localeAreaId
-     * @return
+     * @return LocaleAreaDO
      */
     LocaleAreaDO findByLocaleAreaId(String localeAreaId);
 

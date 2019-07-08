@@ -5,6 +5,7 @@
 package us.betahouse.haetae.locale.dal.service;
 
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.locale.model.common.PageList;
 
 import java.util.List;
 
@@ -19,22 +20,43 @@ public interface LocaleApplyDORepoService {
      * 新建一个场地申请
      *
      * @param localeApplyBO
-     * @return
+     * @return LocaleApplyBO
      */
     LocaleApplyBO createLocaleApply(LocaleApplyBO localeApplyBO);
 
     /**
      * 查询所有场地申请
      *
-     * @return
+     * @return List<LocaleApplyBO>
      */
     List<LocaleApplyBO> queryAllLocaleApply();
+
+    /**
+     * 通过状态 分页查询 分页
+     *
+     * @param status 状态
+     * @param page   页面
+     * @param limit  每页行数
+     * @return PageList<LocaleApplyBO>
+     */
+    PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerDESC(String status, Integer page, Integer limit);
+
+    /**
+     * 通过状态 分页查询 分页
+     *
+     * @param status 状态
+     * @param page   页面
+     * @param limit  每页行数
+     * @return PageList<LocaleApplyBO>
+     */
+    PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerASC(String status, Integer page, Integer limit);
+
 
     /**
      * 更新场地申请状态
      *
      * @param localeApplyBO
-     * @return
+     * @return LocaleApplyBO
      */
     LocaleApplyBO updateLocaleApply(LocaleApplyBO localeApplyBO);
 }

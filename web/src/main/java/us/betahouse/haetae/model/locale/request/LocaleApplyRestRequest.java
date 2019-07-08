@@ -74,6 +74,45 @@ public class LocaleApplyRestRequest extends RestRequest {
      */
     private String localeApplyId;
 
+    /**
+     * 每页条数
+     */
+    private Integer limit;
+
+    /**
+     * 页数
+     */
+    private Integer page;
+
+    /**
+     * 排序方式
+     */
+    private String orderRule;
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public String getOrderRule() {
+        return orderRule;
+    }
+
+    public void setOrderRule(String orderRule) {
+        this.orderRule = orderRule;
+    }
+
     public String getTel() {
         return tel;
     }

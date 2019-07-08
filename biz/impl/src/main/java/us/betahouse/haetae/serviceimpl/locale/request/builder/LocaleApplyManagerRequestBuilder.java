@@ -28,6 +28,9 @@ public final class LocaleApplyManagerRequestBuilder {
     private String userId;
     private String localeApplyId;
     private Map<String, String> extInfo = new HashMap<>();
+    private Integer limit;
+    private Integer page;
+    private String orderRule;
 
     private LocaleApplyManagerRequestBuilder() {
     }
@@ -101,6 +104,22 @@ public final class LocaleApplyManagerRequestBuilder {
         return this;
     }
 
+    public LocaleApplyManagerRequestBuilder withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withPage(Integer page) {
+        this.page = page;
+        return this;
+    }
+
+    public LocaleApplyManagerRequestBuilder withOrderRule(String orderRule) {
+        this.orderRule = orderRule;
+        return this;
+    }
+
+
     public LocaleApplyManagerRequest build() {
         LocaleApplyManagerRequest localeApplyManagerRequest = new LocaleApplyManagerRequest();
         localeApplyManagerRequest.setTel(tel);
@@ -116,6 +135,9 @@ public final class LocaleApplyManagerRequestBuilder {
         localeApplyManagerRequest.setLocaleApplyId(localeApplyId);
         localeApplyManagerRequest.setStatus(status);
         localeApplyManagerRequest.setExtInfo(extInfo);
+        localeApplyManagerRequest.setLimit(limit);
+        localeApplyManagerRequest.setPage(page);
+        localeApplyManagerRequest.setOrderRule(orderRule);
         return localeApplyManagerRequest;
     }
 }
