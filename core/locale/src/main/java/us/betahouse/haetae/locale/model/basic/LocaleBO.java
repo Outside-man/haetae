@@ -26,13 +26,11 @@ public class LocaleBO extends ToString {
     /**
      * 场地名称 例如：笃行楼501
      */
-
     private String localeName;
 
     /**
      * 场地代号 例如：DUXING501
      */
-
     private String localeCode;
 
     /**
@@ -40,13 +38,11 @@ public class LocaleBO extends ToString {
      *
      * @see LocaleStatusEnum
      */
-
     private String status;
 
     /**
      * 场地额外信息
      */
-
     private Map<String, String> extInfo = new HashMap<>();
 
     public String fetchExtInfo(String key) {

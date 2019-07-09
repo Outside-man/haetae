@@ -16,19 +16,21 @@ public class LocaleRequest extends BaseRequest {
      * 场地ID
      */
     private String localeId;
+
     /**
      * 场地名称 例如：笃行楼501
      */
     private String localeName;
+
     /**
      * 场地代号 例如：DUXING501
      */
     private String localeCode;
+
     /**
      * 是否可借用 两种：可借 USABLE 不可借 DISABLE
      */
     private String status;
-
 
     public String getLocaleId() {
         return localeId;

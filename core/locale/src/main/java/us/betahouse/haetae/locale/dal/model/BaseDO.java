@@ -24,7 +24,10 @@ import java.util.Date;
 public abstract class BaseDO extends ToString {
 
 
-    private static final long serialVersionUID = -8664157585187122290L;
+    private static final long serialVersionUID = 2757181457727834503L;
+    /**
+     * id
+     */
     @Id
     @GeneratedValue
     private Long id;

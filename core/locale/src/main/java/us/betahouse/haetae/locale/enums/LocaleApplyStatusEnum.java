@@ -17,7 +17,6 @@ public enum LocaleApplyStatusEnum {
     PASS("PASS", "团学审批"),
     CANCEL("CANCEL", "已取消");
 
-
     public static LocaleApplyStatusEnum getByCode(String code) {
         if (StringUtils.isBlank(code)) {
             return null;

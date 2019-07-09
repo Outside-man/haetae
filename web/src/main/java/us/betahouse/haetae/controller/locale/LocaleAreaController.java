@@ -85,8 +85,6 @@ public class LocaleAreaController {
                     builder.withTimeDate(restRequest.getTimeDate());
                 }
                 return RestResultUtil.buildSuccessResult(localeAreaService.findAllByLocaleIdAndTimeDateAndStatus(builder.build(), context), "获取全部时间段成功");
-
-
             }
         });
 
@@ -130,7 +128,6 @@ public class LocaleAreaController {
 
                 LocaleAreaBO localeAreaBO = localeAreaService.create(localeAreaManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeAreaBO, "场地占用创建成功");
-
             }
         });
     }

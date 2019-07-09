@@ -29,3 +29,5 @@
 /**/target
 logs/
 /**/logs
+.DS_Store
+web/src/main/resources/config/application.yml

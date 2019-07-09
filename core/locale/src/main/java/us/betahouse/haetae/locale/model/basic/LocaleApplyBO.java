@@ -15,67 +15,66 @@ import java.util.Map;
  */
 
 public class LocaleApplyBO extends ToString {
-    private static final long serialVersionUID = 8054300729751912489L;
 
+    private static final long serialVersionUID = 1305031373217182020L;
     /**
      * 申请者的联系方式
      */
-
     private String tel;
+
     /**
      * 申请的用途
      */
-
     private String usages;
+
     /**
      * 申请的备注
      */
-
     private String remark;
+
     /**
      * 申请的附件
      */
-
     private String document;
+
     /**
      * 是否状况 三种：提交申请 申请中 取消
      */
-
     private String status;
+
     /**
      * 场地使用日期
      */
-
     private String timeDate;
+
     /**
      * 场地使用时间段
      */
-
     private String timeBucket;
+
     /**
      * 场地代号
      */
-
     private String localeCode;
+
     /**
      * 占用ID
      */
-
     private String localeAreaId;
+
     /**
      * 场地ID
      */
-
     private String localeId;
+
     /**
      * 场地借用者ID
      */
-
     private String userId;
+
     /**
      * 申请ID
      */
-
     private String localeApplyId;
 
 

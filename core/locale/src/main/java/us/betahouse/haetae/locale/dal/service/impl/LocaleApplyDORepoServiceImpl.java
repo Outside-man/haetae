@@ -118,7 +118,6 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         return new PageList<>(localeApplyDORepo.findAllByUserIdContainsOrderByLocaleApplyId(pageable, userId), this::convert);
     }
 
-
     /**
      * 更新场地申请状态
      *
@@ -141,7 +140,6 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
             return null;
         }
     }
-
 
     /**
      * 申请DO2BO

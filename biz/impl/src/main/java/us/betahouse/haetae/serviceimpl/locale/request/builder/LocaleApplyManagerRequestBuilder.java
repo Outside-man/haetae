@@ -119,7 +119,6 @@ public final class LocaleApplyManagerRequestBuilder {
         return this;
     }
 
-
     public LocaleApplyManagerRequest build() {
         LocaleApplyManagerRequest localeApplyManagerRequest = new LocaleApplyManagerRequest();
         localeApplyManagerRequest.setTel(tel);

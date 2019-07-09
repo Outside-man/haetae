@@ -21,22 +21,26 @@ import javax.persistence.*;
         })
 public class LocaleDO extends BaseDO {
 
+
     private static final long serialVersionUID = -107533285115723579L;
     /**
      * 场地ID
      */
     @Column(name = "locale_id", length = 32, updatable = false)
     private String localeId;
+
     /**
      * 场地名称 例如：笃行楼501
      */
     @Column(name = "locale_name", length = 32)
     private String localeName;
+
     /**
      * 场地代号 例如：DUXING501
      */
     @Column(name = "locale_code", length = 32)
     private String localeCode;
+
     /**
      * 是否可借用 两种：可借 USABLE 不可借 DISABLE
      */

@@ -31,6 +31,5 @@ public interface BizIdFactory {
      *
      * @return
      */
-
     String getLocaleApplyId();
 }

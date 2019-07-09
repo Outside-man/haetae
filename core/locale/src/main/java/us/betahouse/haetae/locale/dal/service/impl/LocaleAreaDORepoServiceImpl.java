@@ -43,7 +43,6 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     public LocaleAreaBO createLocaleArea(LocaleAreaBO localeAreaBO) {
         localeAreaBO.setLocaleAreaId(localBizFactory.getLocaleAreaId());
         return convert(localeAreaDORepo.save(convert(localeAreaBO)));
-
     }
 
     /**
@@ -95,7 +94,6 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
         localeAreaBO.setTimeDate(localeAreaDO.getTimeDate());
         localeAreaBO.setTimeBucket(localeAreaDO.getTimeBucket());
         localeAreaBO.setStatus(localeAreaDO.getStatus());
-
         return localeAreaBO;
     }
 
@@ -114,9 +112,6 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
         localeAreaDO.setTimeDate(localeAreaBO.getTimeDate());
         localeAreaDO.setTimeBucket(localeAreaBO.getTimeBucket());
         localeAreaDO.setStatus(localeAreaBO.getStatus());
-
         return localeAreaDO;
     }
-
-
 }

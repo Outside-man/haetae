@@ -76,7 +76,6 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * 场地DO2BO
      *
@@ -113,5 +112,4 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
         LocaleDO.setStatus(localeBO.getStatus());
         return LocaleDO;
     }
-
 }

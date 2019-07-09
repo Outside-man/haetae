@@ -22,32 +22,38 @@ import javax.persistence.*;
         })
 public class LocaleAreaDO extends BaseDO {
 
+
     private static final long serialVersionUID = -1623506878883657729L;
     /**
      * 占用ID
      */
     @Column(name = "locale_area_id", length = 32, updatable = false)
     private String localeAreaId;
+
     /**
      * 场地ID
      */
     @Column(name = "locale_id", length = 32, updatable = false)
     private String localeId;
+
     /**
      * 场地借用者
      */
     @Column(name = "user_id")
     private String userId;
+
     /**
      * 场地使用日期
      */
     @Column(name = "time_date")
     private String timeDate;
+
     /**
      * 场地使用时间段
      */
     @Column(name = "time_bucket")
     private String timeBucket;
+
     /**
      * 是否状况 三种：提交申请 申请中 取消
      */
