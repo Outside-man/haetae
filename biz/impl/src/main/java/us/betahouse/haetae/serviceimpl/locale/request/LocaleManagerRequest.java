@@ -13,5 +13,5 @@ import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
  */
 
 public class LocaleManagerRequest extends LocaleRequest {
-
+    private static final long serialVersionUID = 2331187397619433055L;
 }

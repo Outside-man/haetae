@@ -23,8 +23,9 @@ public class RoleRepoServiceTest {
     @Test
     public void createRole() {
         RoleBO roleBO = new RoleBO();
-        roleBO.setRoleName("测试权限");
-        roleBO.setRoleDesc("测试权限");
+        roleBO.setRoleCode("LEAGUE_MANAGER");
+        roleBO.setRoleName("团委管理员");
+//        roleBO.setRoleDesc("测试权限");
         System.out.println(roleRepoService.createRole(roleBO));
     }
 

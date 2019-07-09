@@ -12,4 +12,5 @@ import us.betahouse.haetae.locale.request.LocaleAreaRequest;
  * @version :  2019-07-05 19:26 NathanDai
  */
 public class LocaleAreaManagerRequest extends LocaleAreaRequest {
+    private static final long serialVersionUID = -2568737136318069213L;
 }

@@ -69,6 +69,21 @@ public enum UserRoleCode implements RoleCode {
      * 非学生用户
      */
     NOT_STUDENT("NOT_STUDENT", "非学生用户"),
+
+    /**
+     * 团委管理员
+     */
+    LEAGUE_MANAGER("LEAGUE_MANAGER", "团委管理员"),
+
+    /**
+     * 学工部管理员
+     */
+    LEARNING_MANAGER("LEARNING_MANAGER", "学工部管理员"),
+
+    /**
+     * 场地申请人
+     */
+    LOCALE_MEMBER("LOCALE_MEMBER", "场地申请人"),
     ;
 
     public static UserRoleCode getByCode(String code) {
