@@ -86,7 +86,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 //        return new PageList<ActivityEntry>(activityEntryBOPageList,this::convert);
 
         for (ActivityEntryBO activityEntryBO : activityEntryBOPageList.getContent()) {
-            long seconds = activityEntryBO.getStart().getTime() - new Date().getTime();
+            long seconds = (activityEntryBO.getStart().getTime() - new Date().getTime())/1000;
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
 
             String status = "";
@@ -94,7 +94,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             {
                 status = "0";
                 if (new Date().before(activityEntryBO.getStart())) {
-                    if (0 < seconds && seconds < 3600000) status = "1";         //倒计时
+                    if (0 < seconds && seconds < 3600) status = "1";         //倒计时
                 } else if (DateUtil.nowIsBetween(activityEntryBO.getStart(), activityEntryBO.getEnd())) {
                     status = "2";             //报名中
                 }
@@ -106,14 +106,14 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
                     } else if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(activityEntryBO.getActivityEntryId())) {
                         status = "4"; //人已满
                     } else {
-                        status = "5";  //已结束(报名结束，活动未结束)
+                        status = "2";  //报名中
                     }
                 }
 
                 if (ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState())) {
-                    status = "6";            //已过期(活动过期)
+                    status = "5";            //已结束
                 } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
-                    status = "7";            //已取消
+                    status = "6";            //已取消
                 }
             }
 
@@ -124,7 +124,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             activityEntry.setActivityType(activityEntryBO.getType());
             activityEntry.setDescription(activityBO.getDescription());
             activityEntry.setLocation(activityBO.getLocation());
-            activityEntry.setSecond(seconds / 1000);
+            activityEntry.setSecond(seconds);
             activityEntry.setStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
             activityEntry.setStatus(status);
             activityEntryList.add(activityEntry);
@@ -198,7 +198,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      */
     @Override
     public ActivityEntryList registeredActivityEntryQuery(ActivityEntryQueryRequest request, String userID) {
-        //默认值 学期不限 状态不限 类型不限 第0页 每页十条 逆序
+        //默认值 学期不限  类型不限
         String term="";
         String type="";
         if(StringUtils.isNotBlank(request.getTerm())){
@@ -214,7 +214,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
         }
 
 
-        String status = "";
+
         List<ActivityEntry> activityEntryList = new ArrayList<>();
         List<ActivityEntryRecordBO> activityEntryRecordBOList = activityEntryRecordRepoService.findAllByUserId(userID);
 
@@ -226,11 +226,11 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
             long seconds = (activityEntryBO.getStart().getTime() - new Date().getTime())/1000;
 
-            status = "3";  //默认已报名
+            String status = status = "3";  //默认已报名
             if (ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState())) {
-                status = "6";            //已过期(活动过期)
+                status = "5";            //已结束
             } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
-                status = "7";            //已取消
+                status = "6";            //已取消
             }
 
 
@@ -252,7 +252,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
                 .filter((ActivityEntry a)->a.typeAndStatusAndTermFilter(activityType,null,activityTerm))
                 .collect(Collectors.toList());
         Long totalElements = Long.parseLong(""+newList.size());
-
+        //为了一致，假分页数据
         return new ActivityEntryList(totalElements,1,Integer.valueOf(""+totalElements),
                 0,Integer.valueOf(""+totalElements) ,true,true,newList);
     }
