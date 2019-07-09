@@ -18,19 +18,10 @@ import java.util.List;
 @Repository
 public interface LocaleDORepo extends JpaRepository<LocaleDO, Long> {
     /**
-     * 查询所有场地(忽略状态)
-     *
-     * @return List<LocaleDO>
-     */
-    List<LocaleDO> findAll();
-
-    /**
      * 通过场地状态查询所有场地
      *
      * @param status
      * @return List<LocaleDO>
      */
     List<LocaleDO> findAllByStatus(String status);
-
-
 }

@@ -133,7 +133,7 @@ public class LocaleAreaController {
     }
 
     /**
-     * 修改占用场地的状态
+     * 修改占用场地的状态 场地占用id 修改的状态
      *
      * @param restRequest
      * @param httpServletRequest

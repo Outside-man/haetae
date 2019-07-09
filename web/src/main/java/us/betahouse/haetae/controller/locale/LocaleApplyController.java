@@ -14,6 +14,7 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.model.locale.request.LocaleApplyRestRequest;
@@ -27,7 +28,6 @@ import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -63,7 +63,6 @@ public class LocaleApplyController {
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地状态不能为空");
                 AssertUtil.assertNotNull(restRequest.getTel(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请电话不能为空");
                 AssertUtil.assertNotNull(restRequest.getUsages(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请用途不能为空");
                 AssertUtil.assertNotNull(restRequest.getRemark(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请备注不能为空");
@@ -103,7 +102,7 @@ public class LocaleApplyController {
     }
 
     /**
-     * 场地申请查询 管理员
+     * 场地申请查询 管理员 通过申请状态查询
      *
      * @param restRequest
      * @param httpServletRequest
@@ -154,7 +153,7 @@ public class LocaleApplyController {
     }
 
     /**
-     * 场地申请查询 申请人
+     * 场地申请查询 申请人 通过申请人id查询
      *
      * @param restRequest
      * @param httpServletRequest
@@ -227,9 +226,9 @@ public class LocaleApplyController {
 
             @Override
             public Result<LocaleApplyBO> execute() {
+
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                //获取组织的名字 断言工具判断更改的组织是否存在
 
                 LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
                         .withLocaleApplyId(restRequest.getLocaleApplyId())
@@ -265,9 +264,11 @@ public class LocaleApplyController {
 
             @Override
             public Result<LocaleApplyBO> execute() {
+
+                LocaleApplyStatusEnum status = LocaleApplyStatusEnum.getByCode(restRequest.getStatus());
+                AssertUtil.assertNotNull(status, "场地状态不存在");
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                //获取组织的名字 断言工具判断更改的组织是否存在
 
                 LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
                         .withLocaleApplyId(restRequest.getLocaleApplyId())
