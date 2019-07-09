@@ -22,7 +22,7 @@ public interface LocaleManager {
     List<LocaleBO> findAll();
 
     /**
-     * 通过状态查看场地
+     * 通过场地状态查询所有场地
      *
      * @param status
      * @return

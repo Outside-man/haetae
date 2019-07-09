@@ -90,6 +90,34 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         return new PageList<>(localeApplyDORepo.findAllByStatusContains(pageable, status), this::convert);
     }
 
+    /**
+     * 通过用户id查询数据 ASC
+     *
+     * @param userId
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public PageList<LocaleApplyBO> queryLocaleApplyByUserIdAndPagerASC(String userId, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(localeApplyDORepo.findAllByStatusContains(pageable, userId), this::convert);
+    }
+
+    /**
+     * 通过用户id查询数据 DESC
+     *
+     * @param userId
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public PageList<LocaleApplyBO> queryLocaleApplyByUserIdAndPagerDESC(String userId, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(localeApplyDORepo.findAllByUserIdContainsOrderByLocaleApplyId(pageable, userId), this::convert);
+    }
+
 
     /**
      * 更新场地申请状态

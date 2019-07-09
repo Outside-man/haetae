@@ -43,11 +43,30 @@ public interface LocaleApplyDORepo extends JpaRepository<LocaleApplyDO, Long> {
     Page<LocaleApplyDO> findAllByStatusContainsOrderByLocaleApplyIdDesc(Pageable pageable, String status);
 
     /**
+     * 通过场地申请状态查询
+     *
      * @param pageable 分页工具
      * @param status   场地申请状态
      * @return Page<LocaleApplyDO>
      */
     Page<LocaleApplyDO> findAllByStatusContains(Pageable pageable, String status);
 
+    /**
+     * 通过用户id查询
+     *
+     * @param pageable 分页工具
+     * @param userId   用户id
+     * @return
+     */
+    Page<LocaleApplyDO> findAllByUserIdContains(Pageable pageable, String userId);
+
+    /**
+     * 通过用户id查询
+     *
+     * @param pageable 分页工具
+     * @param userId   用户id
+     * @return
+     */
+    Page<LocaleApplyDO> findAllByUserIdContainsOrderByLocaleApplyId(Pageable pageable, String userId);
 
 }

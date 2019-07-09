@@ -62,7 +62,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     }
 
     /**
-     * 通过 状态 查询场地
+     * 通过场地状态查询所有场地
      *
      * @param Status
      * @return

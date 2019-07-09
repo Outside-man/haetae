@@ -51,19 +51,29 @@ public class LocaleApplyController {
      *
      * @param restRequest
      * @param httpServletRequest
-     * @return
+     * @return Result<LocaleApplyBO>
      */
     @CheckLogin
     @PostMapping("/apply")
     @Log(loggerName = LoggerName.FINANCE_DIGEST)
     public Result<LocaleApplyBO> submitApply(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        System.out.println(restRequest);
         return RestOperateTemplate.operate(LOGGER, "提交场地申请", restRequest, new RestOperateCallBack<LocaleApplyBO>() {
 
             @Override
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地状态不能为空");
+                AssertUtil.assertNotNull(restRequest.getTel(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请电话不能为空");
+                AssertUtil.assertNotNull(restRequest.getUsages(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请用途不能为空");
+                AssertUtil.assertNotNull(restRequest.getRemark(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请备注不能为空");
+                AssertUtil.assertNotNull(restRequest.getDocument(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请文件不能为空");
+                AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请状态不能为空");
+                AssertUtil.assertNotNull(restRequest.getTimeBucket(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请时间段不能为空");
+                AssertUtil.assertNotNull(restRequest.getTimeDate(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请日期不能为空");
+                AssertUtil.assertNotNull(restRequest.getLocaleCode(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地代码不能为空");
+                AssertUtil.assertNotNull(restRequest.getLocaleId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地ID不能为空");
+                AssertUtil.assertNotNull(restRequest.getLocaleAreaId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "占用场地ID不能为空");
             }
 
             @Override
@@ -86,7 +96,7 @@ public class LocaleApplyController {
                         .build();
 
                 LocaleApplyBO localeApplyBO = localeApplyService.create(localeApplyManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeApplyBO, "场地占用创建");
+                return RestResultUtil.buildSuccessResult(localeApplyBO, "场地申请成功创建");
 
             }
         });
@@ -97,33 +107,12 @@ public class LocaleApplyController {
      *
      * @param restRequest
      * @param httpServletRequest
-     * @return
+     * @return Result<PageList < LocaleApplyBO>>
      */
     @CheckLogin
     @GetMapping(value = "/applyadmin")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<LocaleApplyBO>> getLocaleAreaAdmin(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取活动列表", restRequest, new RestOperateCallBack<PageList<LocaleApplyBO>>() {
-
-
-            @Override
-            public Result<PageList<LocaleApplyBO>> execute() {
-                return null;
-            }
-        });
-    }
-
-    /**
-     * 场地申请查询 申请人
-     *
-     * @param restRequest
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/applyuser")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<PageList<LocaleApplyBO>> getLocaleAreaUser(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取场地申请列表", restRequest, new RestOperateCallBack<PageList<LocaleApplyBO>>() {
 
             @Override
@@ -158,7 +147,58 @@ public class LocaleApplyController {
                 if (StringUtils.isBlank(restRequest.getOrderRule())) {
                     builder.withOrderRule(restRequest.getOrderRule());
                 }
-                return RestResultUtil.buildSuccessResult(localeApplyService.findAll(builder.build(), context), "获取场地申请列表成功");
+                return RestResultUtil.buildSuccessResult(localeApplyService.findAllByStatus(builder.build(), context), "获取场地申请列表成功");
+            }
+
+        });
+    }
+
+    /**
+     * 场地申请查询 申请人
+     *
+     * @param restRequest
+     * @param httpServletRequest
+     * @return Result<PageList < LocaleApplyBO>>
+     */
+    @CheckLogin
+    @GetMapping(value = "/applyuser")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<LocaleApplyBO>> getLocaleAreaUser(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取场地申请列表", restRequest, new RestOperateCallBack<PageList<LocaleApplyBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<PageList<LocaleApplyBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                LocaleApplyManagerRequestBuilder builder = LocaleApplyManagerRequestBuilder.getInstance();
+
+                // 填充用户id选择条件
+                if (StringUtils.isNotBlank(restRequest.getUserId())) {
+                    builder.withUserId(restRequest.getUserId());
+                }
+
+                //添加页码
+                if (restRequest.getPage() != null && restRequest.getPage() != 0) {
+                    builder.withPage(restRequest.getPage());
+                }
+
+                //添加每页条数
+                if (restRequest.getLimit() != null && restRequest.getLimit() != 0) {
+                    builder.withLimit(restRequest.getLimit());
+                }
+
+                //添加排序規則
+                if (StringUtils.isBlank(restRequest.getOrderRule())) {
+                    builder.withOrderRule(restRequest.getOrderRule());
+                }
+                return RestResultUtil.buildSuccessResult(localeApplyService.findAllByUserId(builder.build(), context), "获取场地申请列表成功");
             }
 
         });
@@ -170,7 +210,7 @@ public class LocaleApplyController {
      *
      * @param restRequest
      * @param httpServletRequest
-     * @return
+     * @return Result<LocaleApplyBO>
      */
     @CheckLogin
     @PutMapping("/applyadmin")
@@ -208,7 +248,7 @@ public class LocaleApplyController {
      *
      * @param restRequest
      * @param httpServletRequest
-     * @return
+     * @return Result<LocaleApplyBO>
      */
     @CheckLogin
     @PutMapping("/applyuser")

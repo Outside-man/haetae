@@ -51,6 +51,25 @@ public interface LocaleApplyDORepoService {
      */
     PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerASC(String status, Integer page, Integer limit);
 
+    /**
+     * 通过用户id 分页查询 分页
+     *
+     * @param userId
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageList<LocaleApplyBO> queryLocaleApplyByUserIdAndPagerASC(String userId, Integer page, Integer limit);
+
+    /**
+     * 通过用户id 分页查询 分页
+     *
+     * @param userId
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageList<LocaleApplyBO> queryLocaleApplyByUserIdAndPagerDESC(String userId, Integer page, Integer limit);
 
     /**
      * 更新场地申请状态

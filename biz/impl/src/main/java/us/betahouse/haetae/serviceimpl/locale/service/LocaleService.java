@@ -26,7 +26,7 @@ public interface LocaleService {
     List<LocaleBO> findAllLocale(LocaleManagerRequest request, OperateContext context);
 
     /**
-     * 通过场地状态查询
+     * 通过场地状态查询所有场地
      *
      * @param request
      * @param context

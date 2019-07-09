@@ -31,10 +31,18 @@ public interface LocaleApplyManager {
     LocaleApplyBO update(LocaleApplyRequest request);
 
     /**
-     * 查找场地申请
+     * 查找场地申请 通过状态
      *
      * @param request
      * @return
      */
-    PageList<LocaleApplyBO> find(LocaleApplyRequest request);
+    PageList<LocaleApplyBO> findByStatus(LocaleApplyRequest request);
+
+    /**
+     * 查找场地申请 通过用户id
+     *
+     * @param request
+     * @return
+     */
+    PageList<LocaleApplyBO> findByUserId(LocaleApplyRequest request);
 }

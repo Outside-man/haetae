@@ -16,6 +16,7 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
+import us.betahouse.haetae.locale.enums.LocaleStatusEnum;
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.haetae.model.locale.request.LocaleRestRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -52,18 +53,18 @@ public class LocaleController {
     private LocaleService localeService;
 
     /**
-     * 获取可以使用的场地
+     * 获取场地
      * 获取场地之前需要登录
-     * 需要传场地status USABLE DISABLE
+     * 需要传场地status=USABLE/DISABLE
      *
      * @param restRequest
      * @param httpServletRequest
-     * @return
+     * @return Result<List < LocaleBO>>
      */
     @CheckLogin
     @GetMapping(value = "/locales")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<List<LocaleBO>> getAll(LocaleRestRequest restRequest, HttpServletRequest httpServletRequest) {
+    public Result<List<LocaleBO>> getAllLocales(LocaleRestRequest restRequest, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取状态对应的场地", restRequest, new RestOperateCallBack<List<LocaleBO>>() {
 
             @Override
@@ -75,6 +76,10 @@ public class LocaleController {
 
             @Override
             public Result<List<LocaleBO>> execute() {
+                //强校验场地状态
+                LocaleStatusEnum status = LocaleStatusEnum.getByCode(restRequest.getStatus());
+                AssertUtil.assertNotNull(status, "场地状态不存在");
+
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 

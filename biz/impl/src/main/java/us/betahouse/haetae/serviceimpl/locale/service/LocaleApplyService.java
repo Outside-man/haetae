@@ -33,6 +33,17 @@ public interface LocaleApplyService {
      */
     LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context);
 
-    PageList<LocaleApplyBO> findAll(LocaleApplyManagerRequest request, OperateContext context);
+    /**
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context);
 
+    /**
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<LocaleApplyBO> findAllByUserId(LocaleApplyManagerRequest request, OperateContext context);
 }

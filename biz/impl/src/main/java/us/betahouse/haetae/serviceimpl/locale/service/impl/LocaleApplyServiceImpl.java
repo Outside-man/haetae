@@ -62,7 +62,7 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
      * @return
      */
     @Override
-    public PageList<LocaleApplyBO> findAll(LocaleApplyManagerRequest request, OperateContext context) {
+    public PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context) {
         //默认值 学期不限 状态不限 类型不限 第0页 每页十条 逆序
         String status = "";
         Integer page = 0;
@@ -90,7 +90,39 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         re.setPage(page);
         re.setLimit(limit);
         re.setOrderRule(orderRule);
-        return localeApplyManager.find(re);
+        return localeApplyManager.findByStatus(re);
+    }
+
+    @Override
+    public PageList<LocaleApplyBO> findAllByUserId(LocaleApplyManagerRequest request, OperateContext context) {
+        //默认值 学期不限 状态不限 类型不限 第0页 每页十条 逆序
+        String userId = "";
+        Integer page = 0;
+        Integer limit = 10;
+        String orderRule = "DESC";
+
+        if (StringUtils.isNotBlank(request.getUserId())) {
+            userId = request.getUserId();
+        }
+        if (NumberUtils.isNotBlank(request.getPage())) {
+            page = request.getPage();
+        }
+        if (NumberUtils.isNotBlank(request.getLimit())) {
+            limit = request.getLimit();
+        }
+        if (StringUtils.isNotBlank(request.getOrderRule())) {
+            //顺序
+            String asc = "ASC";
+            if (asc.equals(request.getOrderRule())) {
+                orderRule = asc;
+            }
+        }
+        LocaleApplyRequest re = new LocaleApplyRequest();
+        re.setUserId(userId);
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        return localeApplyManager.findByUserId(re);
     }
 
 }

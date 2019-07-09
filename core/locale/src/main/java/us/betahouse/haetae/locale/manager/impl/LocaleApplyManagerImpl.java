@@ -24,6 +24,8 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
     LocaleApplyDORepoService localeApplyDORepoService;
 
     /**
+     * 创建场地申请
+     *
      * @param request
      * @return
      */
@@ -59,19 +61,35 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
     }
 
     /**
-     * 查询场地申请
+     * 查询场地申请 status
      *
      * @param request
      * @return
      */
     @Override
-    public PageList<LocaleApplyBO> find(LocaleApplyRequest request) {
+    public PageList<LocaleApplyBO> findByStatus(LocaleApplyRequest request) {
         //順序
         String asc = "ASC";
         if (asc.equals(request.getOrderRule())) {
             return localeApplyDORepoService.queryLocaleApplyByStatusAndPagerASC(request.getStatus(), request.getPage(), request.getLimit());
         } else {
             return localeApplyDORepoService.queryLocaleApplyByStatusAndPagerDESC(request.getStatus(), request.getPage(), request.getLimit());
+        }
+    }
+
+    /**
+     * 查询场地申请 userId
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public PageList<LocaleApplyBO> findByUserId(LocaleApplyRequest request) {
+        String asc = "ASC";
+        if (asc.equals(request.getOrderRule())) {
+            return localeApplyDORepoService.queryLocaleApplyByUserIdAndPagerASC(request.getUserId(), request.getPage(), request.getLimit());
+        } else {
+            return localeApplyDORepoService.queryLocaleApplyByUserIdAndPagerDESC(request.getUserId(), request.getPage(), request.getLimit());
         }
     }
 }
