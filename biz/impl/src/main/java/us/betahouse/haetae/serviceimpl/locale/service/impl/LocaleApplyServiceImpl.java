@@ -8,13 +8,18 @@ package us.betahouse.haetae.serviceimpl.locale.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
 import us.betahouse.haetae.locale.manager.LocaleApplyManager;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.locale.request.LocaleApplyRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
+import us.betahouse.haetae.serviceimpl.locale.constant.LocalePermType;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
+import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
 
 /**
@@ -36,7 +41,12 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
      * @return
      */
     @Override
+    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @Transactional(rollbackFor = Exception.class)
     public LocaleApplyBO create(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
         LocaleApplyBO localeApplyBO = localeApplyManager.create(request);
         return localeApplyBO;
     }
@@ -50,6 +60,9 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
      */
     @Override
     public LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
         LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
         return localeApplyBO;
     }
@@ -63,7 +76,10 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
      */
     @Override
     public PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context) {
-        //默认值 学期不限 状态不限 类型不限 第0页 每页十条 逆序
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
+        //默认值 状态不限 第0页 每页十条 逆序
         String status = "";
         Integer page = 0;
         Integer limit = 10;
@@ -85,17 +101,22 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
                 orderRule = asc;
             }
         }
-        LocaleApplyRequest re = new LocaleApplyRequest();
-        re.setStatus(status);
-        re.setPage(page);
-        re.setLimit(limit);
-        re.setOrderRule(orderRule);
-        return localeApplyManager.findByStatus(re);
+        LocaleApplyRequest localeApplyRequest = new LocaleApplyRequest();
+        localeApplyRequest.setStatus(status);
+        localeApplyRequest.setPage(page);
+        localeApplyRequest.setLimit(limit);
+        localeApplyRequest.setOrderRule(orderRule);
+        return localeApplyManager.findByStatus(localeApplyRequest);
     }
 
     @Override
+    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @Transactional(rollbackFor = Exception.class)
     public PageList<LocaleApplyBO> findAllByUserId(LocaleApplyManagerRequest request, OperateContext context) {
-        //默认值 学期不限 状态不限 类型不限 第0页 每页十条 逆序
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
+        //默认值 用户id不限 第0页 每页十条 逆序
         String userId = "";
         Integer page = 0;
         Integer limit = 10;
@@ -117,12 +138,12 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
                 orderRule = asc;
             }
         }
-        LocaleApplyRequest re = new LocaleApplyRequest();
-        re.setUserId(userId);
-        re.setPage(page);
-        re.setLimit(limit);
-        re.setOrderRule(orderRule);
-        return localeApplyManager.findByUserId(re);
+        LocaleApplyRequest localeApplyRequest = new LocaleApplyRequest();
+        localeApplyRequest.setUserId(userId);
+        localeApplyRequest.setPage(page);
+        localeApplyRequest.setLimit(limit);
+        localeApplyRequest.setOrderRule(orderRule);
+        return localeApplyManager.findByUserId(localeApplyRequest);
     }
 
 }

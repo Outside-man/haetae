@@ -84,6 +84,12 @@ public class LocaleAreaController {
                 if (StringUtils.isNotBlank(restRequest.getTimeDate())) {
                     builder.withTimeDate(restRequest.getTimeDate());
                 }
+
+                //鉴权的时候要用
+                if (StringUtils.isNotBlank(restRequest.getUserId())) {
+                    builder.withUserId(restRequest.getUserId());
+                }
+
                 return RestResultUtil.buildSuccessResult(localeAreaService.findAllByLocaleIdAndTimeDateAndStatus(builder.build(), context), "获取全部时间段成功");
             }
         });
@@ -122,6 +128,7 @@ public class LocaleAreaController {
                         .withLocaleId(restRequest.getLocaleId())
                         .withTimeDate(restRequest.getTimeDate())
                         .withTimeBucket(restRequest.getTimeBucket())
+                        //鉴定权限使用
                         .withUserId(restRequest.getUserId())
                         .withStatus(restRequest.getStatus())
                         .build();
@@ -156,7 +163,6 @@ public class LocaleAreaController {
             public Result<LocaleAreaBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                //获取组织的名字 断言工具判断更改的组织是否存在
 
                 LocaleAreaManagerRequest localeAreaManagerRequest = LocaleAreaManagerRequestBuilder.getInstance()
                         .withLocaleAreaId(restRequest.getLocaleAreaId())

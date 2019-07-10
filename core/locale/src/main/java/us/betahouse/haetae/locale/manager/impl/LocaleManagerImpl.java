@@ -23,16 +23,6 @@ public class LocaleManagerImpl implements LocaleManager {
     LocaleDORepoService localeDORepoService;
 
     /**
-     * 查询所有场地
-     *
-     * @return
-     */
-    @Override
-    public List<LocaleBO> findAll() {
-        return localeDORepoService.queryAllLocales();
-    }
-
-    /**
      * 通过场地状态查询所有场地
      *
      * @param status

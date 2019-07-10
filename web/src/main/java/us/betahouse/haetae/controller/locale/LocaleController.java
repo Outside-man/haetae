@@ -89,6 +89,10 @@ public class LocaleController {
                 if (StringUtils.isNotBlank(restRequest.getStatus())) {
                     builder.withStatus(restRequest.getStatus());
                 }
+                //鉴权的时候要用
+                if (StringUtils.isNotBlank(restRequest.getUserId())) {
+                    builder.withUserId(restRequest.getUserId());
+                }
 
                 return RestResultUtil.buildSuccessResult(localeService.findAllLocaleByStatus(builder.build(), context), "获取全部场地成功");
             }

@@ -21,6 +21,7 @@ public final class LocaleManagerRequestBuilder {
     private String localeName;
     private String localeCode;
     private String status;
+    private String userId;
     private Map<String, String> extInfo = new HashMap<>();
 
     private LocaleManagerRequestBuilder() {
@@ -50,6 +51,11 @@ public final class LocaleManagerRequestBuilder {
         return this;
     }
 
+    public LocaleManagerRequestBuilder withUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
     public LocaleManagerRequestBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
         return this;
@@ -61,6 +67,7 @@ public final class LocaleManagerRequestBuilder {
         localeManagerRequest.setLocaleName(localeName);
         localeManagerRequest.setLocaleCode(localeCode);
         localeManagerRequest.setStatus(status);
+        localeManagerRequest.setUserId(userId);
         localeManagerRequest.setExtInfo(extInfo);
         return localeManagerRequest;
     }

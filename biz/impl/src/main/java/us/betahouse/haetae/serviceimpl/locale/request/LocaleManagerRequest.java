@@ -12,6 +12,11 @@ import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
  * @version :  2019-07-03 21:24 NathanDai
  */
 
-public class LocaleManagerRequest extends LocaleRequest {
+public class LocaleManagerRequest extends LocaleRequest implements VerifyRequest {
     private static final long serialVersionUID = 2331187397619433055L;
+
+    @Override
+    public String getVerifyUserId() {
+        return getUserId();
+    }
 }

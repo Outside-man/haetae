@@ -6,9 +6,12 @@ package us.betahouse.haetae.serviceimpl.locale.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.locale.manager.LocaleManager;
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
+import us.betahouse.haetae.serviceimpl.locale.constant.LocalePermType;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleService;
 
@@ -25,26 +28,16 @@ public class LocaleServiceImpl implements LocaleService {
     LocaleManager localeManager;
 
     /**
-     * 查询所有可以用的场地
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    @Override
-    public List<LocaleBO> findAllLocale(LocaleManagerRequest request, OperateContext context) {
-        List<LocaleBO> localeBOList = localeManager.findAll();
-        return localeBOList;
-    }
-
-    /**
      * 通过场地状态查询所有场地
+     * 场地申请人角色
      *
      * @param request
      * @param context
      * @return
      */
     @Override
+    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @Transactional(rollbackFor = Exception.class)
     public List<LocaleBO> findAllLocaleByStatus(LocaleManagerRequest request, OperateContext context) {
         List<LocaleBO> localeBOList = localeManager.findAllByStatus(request.getStatus());
         return localeBOList;

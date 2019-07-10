@@ -14,12 +14,6 @@ import java.util.List;
  */
 
 public interface LocaleManager {
-    /**
-     * 查询所有场地
-     *
-     * @return
-     */
-    List<LocaleBO> findAll();
 
     /**
      * 通过场地状态查询所有场地

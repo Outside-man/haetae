@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface LocaleAreaService {
     /**
+     * 查询场地是否占用
+     *
      * @param request
      * @param context
      * @return
@@ -24,6 +26,8 @@ public interface LocaleAreaService {
     List<LocaleAreaBO> findAllByLocaleIdAndTimeDateAndStatus(LocaleAreaManagerRequest request, OperateContext context);
 
     /**
+     * 场地占用
+     *
      * @param request
      * @param context
      * @return
@@ -31,6 +35,8 @@ public interface LocaleAreaService {
     LocaleAreaBO create(LocaleAreaManagerRequest request, OperateContext context);
 
     /**
+     * 更新场地占用
+     *
      * @param request
      * @param context
      * @return

@@ -17,15 +17,6 @@ import java.util.List;
 
 public interface LocaleService {
     /**
-     * 查询所有的场地
-     *
-     * @param request
-     * @param context
-     * @return
-     */
-    List<LocaleBO> findAllLocale(LocaleManagerRequest request, OperateContext context);
-
-    /**
      * 通过场地状态查询所有场地
      *
      * @param request

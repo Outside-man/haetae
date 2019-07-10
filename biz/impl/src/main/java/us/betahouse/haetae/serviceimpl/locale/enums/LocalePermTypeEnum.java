@@ -16,11 +16,11 @@ import us.betahouse.haetae.user.enums.PermType;
 public enum LocalePermTypeEnum implements PermType {
 
     //场地权限相关
-    LOCALE_APPLY(LocalePermType.LOCALE_APPLY, "物资创建", true),
+    LOCALE_APPLY(LocalePermType.LOCALE_APPLY, "场地申请", true),
 
-    APPLY_FIRST_CHECK(LocalePermType.APPLY_FIRST_CHECK, "物资删除", true),
+    APPLY_FIRST_CHECK(LocalePermType.APPLY_FIRST_CHECK, "场地申请初步审核", true),
 
-    APPLY_CHECK(LocalePermType.APPLY_CHECK, "物资更新", true);
+    APPLY_CHECK(LocalePermType.APPLY_CHECK, "场地申请审核通过", true);
 
     private String code;
 
