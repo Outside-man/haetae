@@ -25,10 +25,10 @@
         <module>core/asset</module>
         <module>core/finance</module>
         <module>core/organization</module>
-        <module>biz/impl</module>
-        <module>web</module>
         <module>core/certificate</module>
         <module>core/locale</module>
+        <module>biz/impl</module>
+        <module>web</module>
     </modules>
 
     <dependencyManagement>

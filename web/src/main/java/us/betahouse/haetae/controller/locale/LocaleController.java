@@ -20,6 +20,7 @@ import us.betahouse.haetae.locale.enums.LocaleStatusEnum;
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.haetae.model.locale.request.LocaleRestRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.locale.request.LocaleManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.request.builder.LocaleManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleService;
 import us.betahouse.haetae.utils.IPUtil;
@@ -57,8 +58,8 @@ public class LocaleController {
      * 获取场地之前需要登录
      * 需要传场地status=USABLE/DISABLE
      *
-     * @param restRequest
-     * @param httpServletRequest
+     * @param restRequest        LocaleRestRequest
+     * @param httpServletRequest HttpServletRequest
      * @return Result<List < LocaleBO>>
      */
     @CheckLogin
@@ -83,18 +84,15 @@ public class LocaleController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
-                LocaleManagerRequestBuilder builder = LocaleManagerRequestBuilder.getInstance();
+                LocaleManagerRequest localeManagerRequest = LocaleManagerRequestBuilder.getInstance()
+                        //填充场地状态
+                        .withStatus(restRequest.getStatus())
+                        //鉴权的时候要用
+                        .withUserId(restRequest.getUserId())
+                        .build();
 
-                // 填充场地状态状态选择条件
-                if (StringUtils.isNotBlank(restRequest.getStatus())) {
-                    builder.withStatus(restRequest.getStatus());
-                }
-                //鉴权的时候要用
-                if (StringUtils.isNotBlank(restRequest.getUserId())) {
-                    builder.withUserId(restRequest.getUserId());
-                }
-
-                return RestResultUtil.buildSuccessResult(localeService.findAllLocaleByStatus(builder.build(), context), "获取全部场地成功");
+                List<LocaleBO> localeBOList = localeService.findAllLocaleByStatus(localeManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(localeBOList, "获取全部场地成功");
             }
         });
     }

@@ -73,24 +73,17 @@ public class LocaleAreaController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
-                LocaleAreaManagerRequestBuilder builder = LocaleAreaManagerRequestBuilder.getInstance();
+                LocaleAreaManagerRequest localeAreaManagerRequest = LocaleAreaManagerRequestBuilder.getInstance()
+                        //填充场地id
+                        .withLocaleId(restRequest.getLocaleId())
+                        //填充日期
+                        .withTimeDate(restRequest.getTimeDate())
+                        //鉴权的时候要用
+                        .withUserId(restRequest.getUserId())
+                        .build();
+                List<LocaleAreaBO> localeAreaBOList = localeAreaService.findAllByLocaleIdAndTimeDateAndStatus(localeAreaManagerRequest, context);
 
-                // 填充场地id选择条件
-                if (StringUtils.isNotBlank(restRequest.getLocaleId())) {
-                    builder.withLocaleId(restRequest.getLocaleId());
-                }
-
-                // 填充日期选择条件
-                if (StringUtils.isNotBlank(restRequest.getTimeDate())) {
-                    builder.withTimeDate(restRequest.getTimeDate());
-                }
-
-                //鉴权的时候要用
-                if (StringUtils.isNotBlank(restRequest.getUserId())) {
-                    builder.withUserId(restRequest.getUserId());
-                }
-
-                return RestResultUtil.buildSuccessResult(localeAreaService.findAllByLocaleIdAndTimeDateAndStatus(builder.build(), context), "获取全部时间段成功");
+                return RestResultUtil.buildSuccessResult(localeAreaBOList, "获取全部占用时间段成功");
             }
         });
 
@@ -99,8 +92,8 @@ public class LocaleAreaController {
     /**
      * 提交场地占用
      *
-     * @param restRequest
-     * @param httpServletRequest
+     * @param restRequest        LocaleAreaRestRequest
+     * @param httpServletRequest HttpServletRequest
      * @return
      */
     @CheckLogin
@@ -125,12 +118,18 @@ public class LocaleAreaController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 LocaleAreaManagerRequest localeAreaManagerRequest = LocaleAreaManagerRequestBuilder.getInstance()
+                        //填充场地id
                         .withLocaleId(restRequest.getLocaleId())
+                        //填充日期
                         .withTimeDate(restRequest.getTimeDate())
+                        //填充时间段
                         .withTimeBucket(restRequest.getTimeBucket())
                         //鉴定权限使用
                         .withUserId(restRequest.getUserId())
+                        //填充场地占用状态
                         .withStatus(restRequest.getStatus())
+                        //鉴权的时候要用
+                        .withUserId(restRequest.getUserId())
                         .build();
 
                 LocaleAreaBO localeAreaBO = localeAreaService.create(localeAreaManagerRequest, context);
@@ -142,9 +141,9 @@ public class LocaleAreaController {
     /**
      * 修改占用场地的状态 场地占用id 修改的状态
      *
-     * @param restRequest
-     * @param httpServletRequest
-     * @return
+     * @param restRequest        LocaleAreaRestRequest
+     * @param httpServletRequest HttpServletRequest
+     * @return Result<LocaleAreaBO>
      */
     @CheckLogin
     @PutMapping("/occupy")
@@ -165,11 +164,14 @@ public class LocaleAreaController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 LocaleAreaManagerRequest localeAreaManagerRequest = LocaleAreaManagerRequestBuilder.getInstance()
+                        //填充场地占用id
                         .withLocaleAreaId(restRequest.getLocaleAreaId())
+                        //填充场地占用状态
                         .withStatus(restRequest.getStatus())
                         //鉴权的时候要用
                         .withUserId(restRequest.getUserId())
                         .build();
+
                 LocaleAreaBO localeAreaBO = localeAreaService.update(localeAreaManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeAreaBO, "更新场地占用成功");
             }

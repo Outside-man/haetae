@@ -32,17 +32,18 @@ public class PermRepoServiceTest {
         PermBO permBO = new PermBO();
         permBO.setPermName("场地申请审核通过");
         permBO.setPermType("APPLY_CHECK");
-//        roleBO.setRoleDesc("测试权限");
         permRepoService.createPerm(permBO);
     }
 
     @Test
     public void roleBindPerms() {
-//        List<String> roleIds = new ArrayList<>();
+        List<String> roleIds = new ArrayList<>();
+        roleIds.add("201907092038360678461500020709");
+        roleRepoService.userBindRoles("201811302141486240790001201814", roleIds);
+
 //        roleIds.add("201907092037530476772500020709");
 //        roleIds.add("201907092038360678461500020709");
-        System.out.println(roleRepoService.queryRolesByUserId("201811302141488670160001201840"));
-        System.out.println(permRepoService.queryPermByUserId("201811302141488670160001201840"));
+
     }
 
 }

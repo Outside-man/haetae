@@ -59,6 +59,8 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
      * @return
      */
     @Override
+    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @Transactional(rollbackFor = Exception.class)
     public LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context) {
         LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
         AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
@@ -69,12 +71,15 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
 
     /**
      * 查询场地申请
+     * 学工 团委 查询
      *
      * @param request
      * @param context
      * @return
      */
     @Override
+    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @Transactional(rollbackFor = Exception.class)
     public PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context) {
         LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
         AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
@@ -109,6 +114,14 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         return localeApplyManager.findByStatus(localeApplyRequest);
     }
 
+    /**
+     * 查询场地申请
+     * 申请人查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
     @Override
     @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
     @Transactional(rollbackFor = Exception.class)

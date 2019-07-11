@@ -28,6 +28,7 @@ import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -122,31 +123,24 @@ public class LocaleApplyController {
 
             @Override
             public Result<PageList<LocaleApplyBO>> execute() {
+
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
-                LocaleApplyManagerRequestBuilder builder = LocaleApplyManagerRequestBuilder.getInstance();
+                LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
+                        //填充用户id选择条件
+                        .withStatus(restRequest.getStatus())
+                        //添加页码
+                        .withPage(restRequest.getPage())
+                        //添加每页条数
+                        .withLimit(restRequest.getLimit())
+                        //添加排序規則
+                        .withOrderRule(restRequest.getOrderRule())
+                        .build();
 
-                // 填充状态选择条件
-                if (StringUtils.isNotBlank(restRequest.getStatus())) {
-                    builder.withStatus(restRequest.getStatus());
-                }
+                PageList<LocaleApplyBO> localeApplyBOPageList = localeApplyService.findAllByStatus(localeApplyManagerRequest, context);
 
-                //添加页码
-                if (restRequest.getPage() != null && restRequest.getPage() != 0) {
-                    builder.withPage(restRequest.getPage());
-                }
-
-                //添加每页条数
-                if (restRequest.getLimit() != null && restRequest.getLimit() != 0) {
-                    builder.withLimit(restRequest.getLimit());
-                }
-
-                //添加排序規則
-                if (StringUtils.isBlank(restRequest.getOrderRule())) {
-                    builder.withOrderRule(restRequest.getOrderRule());
-                }
-                return RestResultUtil.buildSuccessResult(localeApplyService.findAllByStatus(builder.build(), context), "获取场地申请列表成功");
+                return RestResultUtil.buildSuccessResult(localeApplyBOPageList, "获取场地申请列表成功");
             }
 
         });
@@ -173,31 +167,23 @@ public class LocaleApplyController {
 
             @Override
             public Result<PageList<LocaleApplyBO>> execute() {
+
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
-                LocaleApplyManagerRequestBuilder builder = LocaleApplyManagerRequestBuilder.getInstance();
+                LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
+                        //填充用户id选择条件
+                        .withUserId(restRequest.getUserId())
+                        //添加页码
+                        .withPage(restRequest.getPage())
+                        //添加每页条数
+                        .withLimit(restRequest.getLimit())
+                        //添加排序規則
+                        .withOrderRule(restRequest.getOrderRule())
+                        .build();
 
-                // 填充用户id选择条件
-                if (StringUtils.isNotBlank(restRequest.getUserId())) {
-                    builder.withUserId(restRequest.getUserId());
-                }
-
-                //添加页码
-                if (restRequest.getPage() != null && restRequest.getPage() != 0) {
-                    builder.withPage(restRequest.getPage());
-                }
-
-                //添加每页条数
-                if (restRequest.getLimit() != null && restRequest.getLimit() != 0) {
-                    builder.withLimit(restRequest.getLimit());
-                }
-
-                //添加排序規則
-                if (StringUtils.isBlank(restRequest.getOrderRule())) {
-                    builder.withOrderRule(restRequest.getOrderRule());
-                }
-                return RestResultUtil.buildSuccessResult(localeApplyService.findAllByUserId(builder.build(), context), "获取场地申请列表成功");
+                PageList<LocaleApplyBO> localeApplyBOPageList = localeApplyService.findAllByUserId(localeApplyManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(localeApplyBOPageList, "获取场地申请列表成功");
             }
 
         });
@@ -231,11 +217,14 @@ public class LocaleApplyController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
+                        //填充场地申请id
                         .withLocaleApplyId(restRequest.getLocaleApplyId())
+                        //填充场地申请状态
                         .withStatus(restRequest.getStatus())
                         //鉴权的时候要用
                         .withUserId(restRequest.getUserId())
                         .build();
+
                 LocaleApplyBO localeApplyBO = localeApplyService.update(localeApplyManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeApplyBO, "更新场地占用成功");
             }
@@ -267,15 +256,19 @@ public class LocaleApplyController {
 
                 LocaleApplyStatusEnum status = LocaleApplyStatusEnum.getByCode(restRequest.getStatus());
                 AssertUtil.assertNotNull(status, "场地状态不存在");
+
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
+                        //填充场地申请id
                         .withLocaleApplyId(restRequest.getLocaleApplyId())
+                        //填充场地申请状态
                         .withStatus(restRequest.getStatus())
                         //鉴权的时候要用
                         .withUserId(restRequest.getUserId())
                         .build();
+
                 LocaleApplyBO localeApplyBO = localeApplyService.update(localeApplyManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeApplyBO, "更新场地占用成功");
             }
