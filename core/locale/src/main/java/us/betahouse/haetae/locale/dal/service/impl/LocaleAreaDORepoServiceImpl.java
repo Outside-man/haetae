@@ -89,7 +89,7 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     public LocaleAreaBO queryLocaleAreasByLocaleIdAndTimeDateAndTimeBucketAndStatusNot(String LocaleId, String TimeDate, String TimeBucket, String Status) {
         LocaleAreaDO localeAreaDO = localeAreaDORepo.findByLocaleIdAndTimeDateAndTimeBucketAndStatusNot(LocaleId, TimeDate, TimeBucket, Status);
 
-        return convert(localeAreaDORepo.save(localeAreaDO));
+        return convert(localeAreaDO);
     }
 
     /**

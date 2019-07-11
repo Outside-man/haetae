@@ -49,8 +49,8 @@ public class LocaleAreaController {
      * 通过 场地id 日期 状态 查询哪个时间段被占用
      * 使用角色 申请者
      *
-     * @param restRequest
-     * @param httpServletRequest
+     * @param restRequest LocaleAreaRestRequest
+     * @param httpServletRequest HttpServletRequest
      * @return
      */
     @CheckLogin
