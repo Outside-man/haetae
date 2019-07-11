@@ -32,7 +32,7 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
 
     /**
      * 查询场地占用
-     * 场地申请人角色
+     * 使用角色 申请者
      *
      * @param request
      * @param context
@@ -48,7 +48,7 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
 
     /**
      * 创建场地占用
-     * 场地申请人角色
+     * 使用角色 申请者
      *
      * @param request
      * @param context
@@ -71,7 +71,7 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
 
     /**
      * 更新场地占用状态
-     * 场地申请人角色
+     * 使用角色 申请者 学工 团委
      *
      * @param request
      * @param context

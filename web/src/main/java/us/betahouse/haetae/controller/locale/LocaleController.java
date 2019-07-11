@@ -53,14 +53,14 @@ public class LocaleController {
     private LocaleService localeService;
 
     /**
-     * 获取场地
-     * 获取场地之前需要登录
+     * 申请人获取可用的场地
+     * 获取场地之前申请人需要登录
      * 使用角色 申请者
      * 需要传场地status=USABLE/DISABLE
      *
      * @param restRequest        LocaleRestRequest
      * @param httpServletRequest HttpServletRequest
-     * @return Result<List < LocaleBO>>
+     * @return 状态对应的全部场地
      */
     @CheckLogin
     @GetMapping(value = "/locales")
@@ -92,7 +92,7 @@ public class LocaleController {
                         .build();
 
                 List<LocaleBO> localeBOList = localeService.findAllLocaleByStatus(localeManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeBOList, "获取全部场地成功");
+                return RestResultUtil.buildSuccessResult(localeBOList, "获取全部对应状态场地成功");
             }
         });
     }

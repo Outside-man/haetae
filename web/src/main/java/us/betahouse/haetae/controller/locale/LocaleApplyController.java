@@ -34,6 +34,11 @@ import javax.servlet.http.HttpServletRequest;
  * @author NathanDai
  * @version :  2019-07-04 22:10 NathanDai
  */
+
+/**
+ * 场地申请接口
+ * 场地申请状态 COMMIT(提交) FIRST(学工批准) PASS(团委批准) CANCEL(取消或未批准)
+ */
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/localeapply")
@@ -47,7 +52,8 @@ public class LocaleApplyController {
     LocaleApplyService localeApplyService;
 
     /**
-     * 提交场地申请
+     * 申请者提交场地申请
+     * 使用角色 申请者
      *
      * @param restRequest
      * @param httpServletRequest
@@ -102,7 +108,8 @@ public class LocaleApplyController {
     }
 
     /**
-     * 场地申请查询 管理员 通过申请状态查询
+     * 管理员 通过申请状态查询 场地申请
+     * 使用角色 学工 团委
      *
      * @param restRequest
      * @param httpServletRequest
@@ -146,7 +153,8 @@ public class LocaleApplyController {
     }
 
     /**
-     * 场地申请查询 申请人 通过申请人id查询
+     * 申请人 通过申请人id查询 场地申请
+     * 使用角色 申请人
      *
      * @param restRequest
      * @param httpServletRequest
@@ -191,6 +199,8 @@ public class LocaleApplyController {
 
     /**
      * 场地申请状态修改 管理员 需要验证这个是不是管理员
+     * 使用角色 学工 团委
+     * COMMIT->CANCEL FIRST->CANCEL COMMIT->FIRST FIRST->PASS
      *
      * @param restRequest
      * @param httpServletRequest
@@ -225,13 +235,15 @@ public class LocaleApplyController {
                         .build();
 
                 LocaleApplyBO localeApplyBO = localeApplyService.update(localeApplyManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeApplyBO, "更新场地占用成功");
+                return RestResultUtil.buildSuccessResult(localeApplyBO, "更新申请占用成功");
             }
         });
     }
 
     /**
      * 用户自己取消 只需要验证是不是用户自己
+     * 使用角色 申请人
+     * COMMIT->CANCEL FIRST->CANCEL
      *
      * @param restRequest
      * @param httpServletRequest

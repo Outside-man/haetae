@@ -54,7 +54,7 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
         AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
 
-        //更新场地占用状态
+        //更新场地占用状态 SUBMITING->APPLYING
         LocaleAreaManagerRequest localeAreaManagerRequest = LocaleAreaManagerRequestBuilder.getInstance()
                 //填充场地占用id
                 .withLocaleAreaId(request.getLocaleAreaId())
@@ -129,6 +129,7 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         localeApplyRequest.setPage(page);
         localeApplyRequest.setLimit(limit);
         localeApplyRequest.setOrderRule(orderRule);
+
         return localeApplyManager.findByStatus(localeApplyRequest);
     }
 

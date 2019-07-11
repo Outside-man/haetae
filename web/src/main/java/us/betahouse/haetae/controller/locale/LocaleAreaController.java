@@ -33,6 +33,11 @@ import java.util.List;
  * @author NathanDai
  * @version :  2019-07-04 22:10 NathanDai
  */
+
+/**
+ * 场地占用接口
+ * 场地占用状态 SUBMITING(临时占用) APPLYING(申请中) CANCEL(取消)
+ */
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/localearea")
@@ -46,12 +51,12 @@ public class LocaleAreaController {
     private LocaleAreaService localeAreaService;
 
     /**
-     * 通过 场地id 日期 状态 查询哪个时间段被占用
+     * 申请人提交 场地id 日期 查询哪个时间段被占用
      * 使用角色 申请者
      *
-     * @param restRequest LocaleAreaRestRequest
+     * @param restRequest        LocaleAreaRestRequest
      * @param httpServletRequest HttpServletRequest
-     * @return
+     * @return 被占用的时间段
      */
     @CheckLogin
     @GetMapping(value = "/areas")
@@ -89,7 +94,8 @@ public class LocaleAreaController {
     }
 
     /**
-     * 提交场地占用
+     * 申请者提交场地占用
+     * 需要检查场地是否占用
      * 使用角色 申请者
      *
      * @param restRequest        LocaleAreaRestRequest
@@ -139,7 +145,9 @@ public class LocaleAreaController {
     }
 
     /**
-     * 修改占用场地的状态 场地占用id 修改的状态
+     * 修改占用场地占用的状态 场地占用id 修改的状态
+     * SUBMITING->CANCEL
+     * 使用角色 申请者
      *
      * @param restRequest        LocaleAreaRestRequest
      * @param httpServletRequest HttpServletRequest

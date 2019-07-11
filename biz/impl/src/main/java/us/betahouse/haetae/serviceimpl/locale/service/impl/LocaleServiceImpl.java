@@ -29,7 +29,7 @@ public class LocaleServiceImpl implements LocaleService {
 
     /**
      * 通过场地状态查询所有场地
-     * 场地申请人角色
+     * 使用角色 申请者
      *
      * @param request
      * @param context
