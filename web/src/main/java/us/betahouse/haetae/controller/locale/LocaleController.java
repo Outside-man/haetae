@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.controller.locale;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +55,7 @@ public class LocaleController {
     /**
      * 获取场地
      * 获取场地之前需要登录
+     * 使用角色 申请者
      * 需要传场地status=USABLE/DISABLE
      *
      * @param restRequest        LocaleRestRequest
@@ -96,6 +96,4 @@ public class LocaleController {
             }
         });
     }
-
-
 }

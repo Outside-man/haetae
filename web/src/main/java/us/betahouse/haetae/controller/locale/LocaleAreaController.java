@@ -5,7 +5,6 @@
 
 package us.betahouse.haetae.controller.locale;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.locale.model.basic.LocaleAreaBO;
-import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.model.locale.request.LocaleAreaRestRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleAreaManagerRequest;
@@ -49,6 +47,7 @@ public class LocaleAreaController {
 
     /**
      * 通过 场地id 日期 状态 查询哪个时间段被占用
+     * 使用角色 申请者
      *
      * @param restRequest
      * @param httpServletRequest
@@ -91,6 +90,7 @@ public class LocaleAreaController {
 
     /**
      * 提交场地占用
+     * 使用角色 申请者
      *
      * @param restRequest        LocaleAreaRestRequest
      * @param httpServletRequest HttpServletRequest

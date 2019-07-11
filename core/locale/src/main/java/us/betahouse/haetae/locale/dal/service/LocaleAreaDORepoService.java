@@ -39,4 +39,15 @@ public interface LocaleAreaDORepoService {
      * @return List<LocaleAreaBO>
      */
     List<LocaleAreaBO> queryLocaleAreasByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status);
+
+    /**
+     * 校验场地是否被占用
+     *
+     * @param LocaleId
+     * @param TimeDate
+     * @param TimeBucket
+     * @param Status
+     * @return
+     */
+    LocaleAreaBO queryLocaleAreasByLocaleIdAndTimeDateAndTimeBucketAndStatusNot(String LocaleId, String TimeDate, String TimeBucket, String Status);
 }

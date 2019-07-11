@@ -61,6 +61,10 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
         LocaleAreaStatusEnum localeAreaStatusEnum = LocaleAreaStatusEnum.getByCode(request.getStatus());
         AssertUtil.assertNotNull(localeAreaStatusEnum, "场地类型不存在");
 
+        //再次确定场地是否被占用
+        LocaleAreaBO localeAreaBOCheck = localeAreaManager.findByLocaleIdAndTimeDateAndTimeBucketAndStatus(request.getLocaleId(), request.getTimeDate(), request.getTimeBucket(), "CANCEL");
+        AssertUtil.assertNull(localeAreaBOCheck, "场地已经被占用");
+
         LocaleAreaBO localeAreaBO = localeAreaManager.create(request);
         return localeAreaBO;
     }
@@ -78,7 +82,7 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
     @Transactional(rollbackFor = Exception.class)
     public LocaleAreaBO update(LocaleAreaManagerRequest request, OperateContext context) {
         LocaleAreaStatusEnum localeAreaStatusEnum = LocaleAreaStatusEnum.getByCode(request.getStatus());
-        AssertUtil.assertNotNull(localeAreaStatusEnum, "场地类型不存在");
+        AssertUtil.assertNotNull(localeAreaStatusEnum, "场地状态不存在");
 
         LocaleAreaBO localeAreaBO = localeAreaManager.update(request);
         return localeAreaBO;

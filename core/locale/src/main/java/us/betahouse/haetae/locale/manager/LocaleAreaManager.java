@@ -18,9 +18,9 @@ public interface LocaleAreaManager {
     /**
      * 查询场地占用
      *
-     * @param localeId
-     * @param timeDate
-     * @param status
+     * @param localeId 场地id
+     * @param timeDate 申请日期
+     * @param status   CANCEL
      * @return
      */
     List<LocaleAreaBO> findAllByLocaleIdAndTimeDateAndStatus(String localeId, String timeDate, String status);
@@ -40,4 +40,15 @@ public interface LocaleAreaManager {
      * @return
      */
     LocaleAreaBO update(LocaleAreaRequest localeAreaRequest);
+
+    /**
+     * 校验场地是否被占用
+     *
+     * @param localeId
+     * @param timeDate
+     * @param timeBucket
+     * @param status
+     * @return
+     */
+    LocaleAreaBO findByLocaleIdAndTimeDateAndTimeBucketAndStatus(String localeId, String timeDate, String timeBucket, String status);
 }

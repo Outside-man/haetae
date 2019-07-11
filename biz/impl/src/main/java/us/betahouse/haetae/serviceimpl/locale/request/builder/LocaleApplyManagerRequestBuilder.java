@@ -28,6 +28,7 @@ public final class LocaleApplyManagerRequestBuilder {
     private String userId;
     private String localeApplyId;
     private Map<String, String> extInfo = new HashMap<>();
+
     private Integer limit;
     private Integer page;
     private String orderRule;

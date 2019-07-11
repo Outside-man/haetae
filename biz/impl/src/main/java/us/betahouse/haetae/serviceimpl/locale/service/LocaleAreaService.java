@@ -30,16 +30,16 @@ public interface LocaleAreaService {
      *
      * @param request
      * @param context
-     * @return
+     * @return LocaleAreaBO
      */
     LocaleAreaBO create(LocaleAreaManagerRequest request, OperateContext context);
 
     /**
      * 更新场地占用
      *
-     * @param request
-     * @param context
-     * @return
+     * @param request LocaleAreaManagerRequest
+     * @param context OperateContext
+     * @return LocaleAreaBO
      */
     LocaleAreaBO update(LocaleAreaManagerRequest request, OperateContext context);
 }

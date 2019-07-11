@@ -67,4 +67,18 @@ public class LocaleAreaManagerImpl implements LocaleAreaManager {
                 .withStatus(request.getStatus());
         return localeAreaDORepoService.updateLocaleArea(localeAreaBOBuilder.build());
     }
+
+    /**
+     * 校验场地是否被占用
+     *
+     * @param localeId
+     * @param timeDate
+     * @param timeBucket
+     * @param status
+     * @return
+     */
+    @Override
+    public LocaleAreaBO findByLocaleIdAndTimeDateAndTimeBucketAndStatus(String localeId, String timeDate, String timeBucket, String status) {
+        return localeAreaDORepoService.queryLocaleAreasByLocaleIdAndTimeDateAndTimeBucketAndStatusNot(localeId, timeDate, timeBucket, status);
+    }
 }

@@ -77,6 +77,22 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     }
 
     /**
+     * 校验场地是否被占用
+     *
+     * @param LocaleId
+     * @param TimeDate
+     * @param TimeBucket
+     * @param Status
+     * @return
+     */
+    @Override
+    public LocaleAreaBO queryLocaleAreasByLocaleIdAndTimeDateAndTimeBucketAndStatusNot(String LocaleId, String TimeDate, String TimeBucket, String Status) {
+        LocaleAreaDO localeAreaDO = localeAreaDORepo.findByLocaleIdAndTimeDateAndTimeBucketAndStatusNot(LocaleId, TimeDate, TimeBucket, Status);
+
+        return convert(localeAreaDORepo.save(localeAreaDO));
+    }
+
+    /**
      * 场地占用DO转BO
      *
      * @param localeAreaDO
