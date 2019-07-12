@@ -91,7 +91,7 @@ public class LocaleController {
                         .withUserId(restRequest.getUserId())
                         .build();
 
-                List<LocaleBO> localeBOList = localeService.findAllLocaleByStatus(localeManagerRequest, context);
+                List<LocaleBO> localeBOList = localeService.findAllLocalesByStatus(localeManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeBOList, "获取全部对应状态场地成功");
             }
         });

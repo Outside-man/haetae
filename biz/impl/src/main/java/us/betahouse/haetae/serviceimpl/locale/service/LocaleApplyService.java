@@ -34,13 +34,37 @@ public interface LocaleApplyService {
     LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context);
 
     /**
+     *
      * @param request
      * @param context
      * @return
      */
-    PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context);
+    LocaleApplyBO findByLocaleApplyId(LocaleApplyManagerRequest request, OperateContext context);
 
     /**
+     * 查询场地申请
+     * 学工 查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<LocaleApplyBO> findAllByStatusFirst(LocaleApplyManagerRequest request, OperateContext context);
+
+    /**
+     * 查询场地申请
+     * 团委 查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<LocaleApplyBO> findAllByStatusSecond(LocaleApplyManagerRequest request, OperateContext context);
+
+    /**
+     * 查询场地申请
+     * 申请者 查询
+     *
      * @param request
      * @param context
      * @return

@@ -38,7 +38,7 @@ public class LocaleServiceImpl implements LocaleService {
     @Override
     @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
     @Transactional(rollbackFor = Exception.class)
-    public List<LocaleBO> findAllLocaleByStatus(LocaleManagerRequest request, OperateContext context) {
+    public List<LocaleBO> findAllLocalesByStatus(LocaleManagerRequest request, OperateContext context) {
         List<LocaleBO> localeBOList = localeManager.findAllByStatus(request.getStatus());
         return localeBOList;
     }

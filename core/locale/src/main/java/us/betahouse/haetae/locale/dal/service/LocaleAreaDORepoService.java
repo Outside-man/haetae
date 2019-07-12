@@ -25,6 +25,8 @@ public interface LocaleAreaDORepoService {
     LocaleAreaBO createLocaleArea(LocaleAreaBO localeAreaBO);
 
     /**
+     * 更新场地占用状态
+     *
      * @param localeAreaBO
      * @return LocaleAreaBO
      */

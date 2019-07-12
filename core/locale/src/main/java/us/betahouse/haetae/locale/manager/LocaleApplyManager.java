@@ -31,6 +31,13 @@ public interface LocaleApplyManager {
     LocaleApplyBO update(LocaleApplyRequest request);
 
     /**
+     * 查找场地申请 通过LocaleApplyId
+     * @param request
+     * @return
+     */
+    LocaleApplyBO findByLocaleApplyId(LocaleApplyRequest request);
+
+    /**
      * 查找场地申请 通过状态
      *
      * @param request

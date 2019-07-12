@@ -88,17 +88,30 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     }
 
     /**
-     * 查询场地申请
-     * 学工 团委 查询
+     * 通过LocaleApplyId查询
      *
      * @param request
      * @param context
      * @return
      */
     @Override
-    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    public LocaleApplyBO findByLocaleApplyId(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
+        return localeApplyBO;
+    }
+
+    /**
+     * 查询场地申请
+     * 学工 查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    @Override
+    @VerifyPerm(permType = LocalePermType.APPLY_FIRST_CHECK)
     @Transactional(rollbackFor = Exception.class)
-    public PageList<LocaleApplyBO> findAllByStatus(LocaleApplyManagerRequest request, OperateContext context) {
+    public PageList<LocaleApplyBO> findAllByStatusFirst(LocaleApplyManagerRequest request, OperateContext context) {
         LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
         AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
 
@@ -135,7 +148,53 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
 
     /**
      * 查询场地申请
-     * 申请人查询
+     * 团委 查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    @Override
+    @VerifyPerm(permType = LocalePermType.APPLY_CHECK)
+    @Transactional(rollbackFor = Exception.class)
+    public PageList<LocaleApplyBO> findAllByStatusSecond(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
+        //默认值 状态不限 第0页 每页十条 逆序
+        String status = "";
+        Integer page = 0;
+        Integer limit = 10;
+        String orderRule = "DESC";
+
+        if (StringUtils.isNotBlank(request.getStatus())) {
+            status = request.getStatus();
+        }
+        if (NumberUtils.isNotBlank(request.getPage())) {
+            page = request.getPage();
+        }
+        if (NumberUtils.isNotBlank(request.getLimit())) {
+            limit = request.getLimit();
+        }
+        if (StringUtils.isNotBlank(request.getOrderRule())) {
+            //顺序
+            String asc = "ASC";
+            if (asc.equals(request.getOrderRule())) {
+                orderRule = asc;
+            }
+        }
+        LocaleApplyRequest localeApplyRequest = new LocaleApplyRequest();
+        localeApplyRequest.setStatus(status);
+        localeApplyRequest.setPage(page);
+        localeApplyRequest.setLimit(limit);
+        localeApplyRequest.setOrderRule(orderRule);
+
+        return localeApplyManager.findByStatus(localeApplyRequest);
+    }
+
+    /**
+     * 查询场地申请
+     * 申请人 查询
      *
      * @param request
      * @param context
@@ -177,5 +236,4 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         localeApplyRequest.setOrderRule(orderRule);
         return localeApplyManager.findByUserId(localeApplyRequest);
     }
-
 }

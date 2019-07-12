@@ -24,11 +24,12 @@ public interface LocaleDORepoService {
     LocaleBO createLocale(LocaleBO localeBO);
 
     /**
-     * 查询所有场地
+     * 更新场地状态
      *
-     * @return List<LocaleBO>
+     * @param localeBO
+     * @return
      */
-    List<LocaleBO> queryAllLocales();
+    LocaleBO updateLocale(LocaleBO localeBO);
 
     /**
      * 通过 状态 查询场地

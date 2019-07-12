@@ -15,6 +15,7 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.model.locale.request.LocaleApplyRestRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -29,6 +30,7 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 /**
  * @author NathanDai
@@ -142,9 +144,13 @@ public class LocaleApplyController {
                         .withLimit(restRequest.getLimit())
                         //添加排序規則
                         .withOrderRule(restRequest.getOrderRule())
+                        //校验权限
+                        .withUserId(restRequest.getUserId())
                         .build();
 
-                PageList<LocaleApplyBO> localeApplyBOPageList = localeApplyService.findAllByStatus(localeApplyManagerRequest, context);
+                PageList<LocaleApplyBO> localeApplyBOPageList = restRequest.getStatus().equals("COMMIT")
+                        ? localeApplyService.findAllByStatusFirst(localeApplyManagerRequest, context)
+                        : localeApplyService.findAllByStatusSecond(localeApplyManagerRequest, context);
 
                 return RestResultUtil.buildSuccessResult(localeApplyBOPageList, "获取场地申请列表成功");
             }

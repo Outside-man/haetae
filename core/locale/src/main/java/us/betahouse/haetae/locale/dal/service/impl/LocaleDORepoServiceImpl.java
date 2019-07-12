@@ -48,21 +48,20 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     }
 
     /**
-     * 查询所有场地
+     * 更新场地状态
      *
+     * @param localeBO
      * @return
      */
     @Override
-    public List<LocaleBO> queryAllLocales() {
-        List<LocaleDO> localeDOList = localeDORepo.findAll();
-        return CollectionUtils.toStream(localeDOList)
-                .filter(Objects::nonNull)
-                .map(this::convert)
-                .collect(Collectors.toList());
+    public LocaleBO updateLocale(LocaleBO localeBO) {
+        LocaleDO localeDO = localeDORepo.findByLocaleId(localeBO.getLocaleId());
+        localeDO.setStatus(localeBO.getStatus());
+        return convert(localeDORepo.save(localeDO));
     }
 
     /**
-     * 通过场地状态查询所有场地
+     * 通过 场地状态 查询所有场地
      *
      * @param Status
      * @return
@@ -75,6 +74,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
+
 
     /**
      * 场地DO2BO

@@ -24,4 +24,12 @@ public interface LocaleDORepo extends JpaRepository<LocaleDO, Long> {
      * @return List<LocaleDO>
      */
     List<LocaleDO> findAllByStatus(String status);
+
+    /**
+     * 查询场地通过场地id
+     *
+     * @param localeId
+     * @return
+     */
+    LocaleDO findByLocaleId(String localeId);
 }
