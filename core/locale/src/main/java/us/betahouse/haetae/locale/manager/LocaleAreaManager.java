@@ -34,7 +34,7 @@ public interface LocaleAreaManager {
     LocaleAreaBO create(LocaleAreaRequest localeAreaRequest);
 
     /**
-     * 修改场地占用
+     * 取消场地占用
      *
      * @param localeAreaRequest
      * @return

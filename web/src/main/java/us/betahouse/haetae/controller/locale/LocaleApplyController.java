@@ -231,6 +231,13 @@ public class LocaleApplyController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
+
+                LocaleApplyManagerRequest localeApplyManagerRequestFirst = LocaleApplyManagerRequestBuilder.getInstance()
+                        //填充场地申请id
+                        .withLocaleApplyId(restRequest.getLocaleApplyId())
+                        .build();
+                LocaleApplyBO localeApplyBOFirst = localeApplyService.findByLocaleId(localeApplyManagerRequestFirst, context);
+
                 LocaleApplyManagerRequest localeApplyManagerRequest = LocaleApplyManagerRequestBuilder.getInstance()
                         //填充场地申请id
                         .withLocaleApplyId(restRequest.getLocaleApplyId())
@@ -240,7 +247,9 @@ public class LocaleApplyController {
                         .withUserId(restRequest.getUserId())
                         .build();
 
-                LocaleApplyBO localeApplyBO = localeApplyService.update(localeApplyManagerRequest, context);
+                LocaleApplyBO localeApplyBO = localeApplyBOFirst.getStatus().equals("COMMIT")
+                        ? localeApplyService.updateAdminFirst(localeApplyManagerRequest, context)
+                        : localeApplyService.updateAdminSecond(localeApplyManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeApplyBO, "更新申请占用成功");
             }
         });
@@ -259,7 +268,7 @@ public class LocaleApplyController {
     @PutMapping("/applyuser")
     @Log(loggerName = LoggerName.FINANCE_DIGEST)
     public Result<LocaleApplyBO> changeApplyUser(LocaleApplyRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "更新场地占用信息", restRequest, new RestOperateCallBack<LocaleApplyBO>() {
+        return RestOperateTemplate.operate(LOGGER, "取消场地申请成功", restRequest, new RestOperateCallBack<LocaleApplyBO>() {
 
             @Override
             public void before() {
@@ -286,8 +295,8 @@ public class LocaleApplyController {
                         .withUserId(restRequest.getUserId())
                         .build();
 
-                LocaleApplyBO localeApplyBO = localeApplyService.update(localeApplyManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeApplyBO, "更新场地占用成功");
+                LocaleApplyBO localeApplyBO = localeApplyService.updateUser(localeApplyManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(localeApplyBO, "取消场地申请成功");
             }
         });
     }

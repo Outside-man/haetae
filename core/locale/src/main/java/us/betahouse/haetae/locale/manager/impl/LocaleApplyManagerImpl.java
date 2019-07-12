@@ -60,9 +60,15 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
         return localeApplyDORepoService.updateLocaleApply(localeApplyBOBuilder.build());
     }
 
+    /**
+     * 通过场地申请id查询
+     *
+     * @param request
+     * @return
+     */
     @Override
     public LocaleApplyBO findByLocaleApplyId(LocaleApplyRequest request) {
-        return null;
+        return localeApplyDORepoService.queryByLocaleApplyId(request.getLocaleApplyId());
     }
 
     /**

@@ -62,7 +62,7 @@ public class LocaleAreaController {
     @GetMapping(value = "/areas")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<LocaleAreaBO>> getLocaleArea(LocaleAreaRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取状态对应的场地", restRequest, new RestOperateCallBack<List<LocaleAreaBO>>() {
+        return RestOperateTemplate.operate(LOGGER, "获取对应的场地的时间段", restRequest, new RestOperateCallBack<List<LocaleAreaBO>>() {
 
             @Override
             public void before() {
@@ -157,7 +157,7 @@ public class LocaleAreaController {
     @PutMapping("/occupy")
     @Log(loggerName = LoggerName.FINANCE_DIGEST)
     public Result<LocaleAreaBO> changeOccupy(LocaleAreaRestRequest restRequest, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "更新场地占用信息", restRequest, new RestOperateCallBack<LocaleAreaBO>() {
+        return RestOperateTemplate.operate(LOGGER, "取消场地占用", restRequest, new RestOperateCallBack<LocaleAreaBO>() {
 
             @Override
             public void before() {
@@ -181,7 +181,7 @@ public class LocaleAreaController {
                         .build();
 
                 LocaleAreaBO localeAreaBO = localeAreaService.update(localeAreaManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(localeAreaBO, "更新场地占用成功");
+                return RestResultUtil.buildSuccessResult(localeAreaBO, "取消场地占用");
             }
         });
     }

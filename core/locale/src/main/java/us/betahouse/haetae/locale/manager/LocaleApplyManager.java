@@ -32,6 +32,7 @@ public interface LocaleApplyManager {
 
     /**
      * 查找场地申请 通过LocaleApplyId
+     *
      * @param request
      * @return
      */

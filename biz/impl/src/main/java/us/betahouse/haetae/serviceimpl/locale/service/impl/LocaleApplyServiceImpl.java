@@ -71,15 +71,16 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
 
     /**
      * 更新场地申请状态
+     * 管理员 学工
      *
      * @param request
      * @param context
      * @return
      */
     @Override
-    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @VerifyPerm(permType = LocalePermType.APPLY_FIRST_CHECK)
     @Transactional(rollbackFor = Exception.class)
-    public LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context) {
+    public LocaleApplyBO updateAdminFirst(LocaleApplyManagerRequest request, OperateContext context) {
         LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
         AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
 
@@ -88,15 +89,53 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     }
 
     /**
-     * 通过LocaleApplyId查询
+     * 更新场地申请状态
+     * 管理员 团委
      *
      * @param request
      * @param context
      * @return
      */
     @Override
-    public LocaleApplyBO findByLocaleApplyId(LocaleApplyManagerRequest request, OperateContext context) {
+    @VerifyPerm(permType = LocalePermType.APPLY_CHECK)
+    @Transactional(rollbackFor = Exception.class)
+    public LocaleApplyBO updateAdminSecond(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
         LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
+        return localeApplyBO;
+    }
+
+    /**
+     * 更新场地申请状态
+     * 申请人
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    @Override
+    @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
+    @Transactional(rollbackFor = Exception.class)
+    public LocaleApplyBO updateUser(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+
+        LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
+        return localeApplyBO;
+    }
+
+    /**
+     * 通过场地申请id查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    @Override
+    public LocaleApplyBO findByLocaleId(LocaleApplyManagerRequest request, OperateContext context) {
+        LocaleApplyBO localeApplyBO = localeApplyManager.findByLocaleApplyId(request);
         return localeApplyBO;
     }
 
@@ -204,8 +243,6 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
     @Transactional(rollbackFor = Exception.class)
     public PageList<LocaleApplyBO> findAllByUserId(LocaleApplyManagerRequest request, OperateContext context) {
-        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
-        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
 
         //默认值 用户id不限 第0页 每页十条 逆序
         String userId = "";

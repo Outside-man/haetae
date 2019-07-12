@@ -55,7 +55,7 @@ public class LocaleAreaManagerImpl implements LocaleAreaManager {
     }
 
     /**
-     * 修改场地占用
+     * 取消场地占用
      *
      * @param request
      * @return

@@ -17,12 +17,15 @@ import java.util.List;
 
 @Repository
 public interface LocaleAreaDORepo extends JpaRepository<LocaleAreaDO, Long> {
+
     /**
      * 查询某个场地某天有没有被占用
      *
-     * @return List<LocaleAreaDO>
+     * @param LocaleId
+     * @param TimeDate
+     * @param Status
+     * @return
      */
-
     List<LocaleAreaDO> findAllByLocaleIdAndTimeDateAndStatusNot(String LocaleId, String TimeDate, String Status);
 
     /**

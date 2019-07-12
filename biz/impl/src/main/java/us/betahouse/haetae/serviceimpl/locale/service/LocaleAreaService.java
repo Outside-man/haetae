@@ -35,7 +35,7 @@ public interface LocaleAreaService {
     LocaleAreaBO create(LocaleAreaManagerRequest request, OperateContext context);
 
     /**
-     * 更新场地占用
+     * 取消场地占用
      *
      * @param request LocaleAreaManagerRequest
      * @param context OperateContext

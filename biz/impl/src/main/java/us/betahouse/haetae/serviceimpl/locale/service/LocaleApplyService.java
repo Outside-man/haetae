@@ -26,20 +26,42 @@ public interface LocaleApplyService {
 
     /**
      * 更新场地申请状态
+     * 管理员 学工
      *
      * @param request
      * @param context
      * @return
      */
-    LocaleApplyBO update(LocaleApplyManagerRequest request, OperateContext context);
+    LocaleApplyBO updateAdminFirst(LocaleApplyManagerRequest request, OperateContext context);
 
     /**
+     * 更新场地申请状态
+     * 管理员 团委
      *
      * @param request
      * @param context
      * @return
      */
-    LocaleApplyBO findByLocaleApplyId(LocaleApplyManagerRequest request, OperateContext context);
+    LocaleApplyBO updateAdminSecond(LocaleApplyManagerRequest request, OperateContext context);
+
+    /**
+     * 取消场地申请
+     * 申请人
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    LocaleApplyBO updateUser(LocaleApplyManagerRequest request, OperateContext context);
+
+    /**
+     * 通过场地申请id查询
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    LocaleApplyBO findByLocaleId(LocaleApplyManagerRequest request, OperateContext context);
 
     /**
      * 查询场地申请

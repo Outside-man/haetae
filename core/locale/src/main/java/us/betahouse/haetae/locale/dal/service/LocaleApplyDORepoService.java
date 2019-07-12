@@ -25,11 +25,11 @@ public interface LocaleApplyDORepoService {
     LocaleApplyBO createLocaleApply(LocaleApplyBO localeApplyBO);
 
     /**
-     * 查询所有场地申请
+     * 通过场地申请id查询
      *
      * @return List<LocaleApplyBO>
      */
-    List<LocaleApplyBO> queryAllLocaleApply();
+    LocaleApplyBO queryByLocaleApplyId(String localeApplyId);
 
     /**
      * 通过状态 分页查询 分页

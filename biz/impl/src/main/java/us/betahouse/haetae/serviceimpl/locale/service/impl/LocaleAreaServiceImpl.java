@@ -70,8 +70,8 @@ public class LocaleAreaServiceImpl implements LocaleAreaService {
     }
 
     /**
-     * 更新场地占用状态
-     * 使用角色 申请者 学工 团委
+     * 取消场地占用
+     * 使用角色 申请者
      *
      * @param request
      * @param context

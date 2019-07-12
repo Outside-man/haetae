@@ -49,18 +49,15 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     }
 
     /**
-     * 查询所有场地申请
+     * 通过场地申请id查询
      *
-     * @return
+     * @return List<LocaleApplyBO>
      */
     @Override
-    public List<LocaleApplyBO> queryAllLocaleApply() {
-        List<LocaleApplyDO> localeApplyDOList = localeApplyDORepo.findAll();
-        return CollectionUtils.toStream(localeApplyDOList)
-                .filter(Objects::nonNull)
-                .map(this::convert)
-                .collect(Collectors.toList());
+    public LocaleApplyBO queryByLocaleApplyId(String localeApplyId) {
+        return convert(localeApplyDORepo.findByLocaleApplyId(localeApplyId));
     }
+
 
     /**
      * 通过申请状态查询数据 DESC
