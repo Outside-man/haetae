@@ -39,6 +39,7 @@ Mysql
 |-- core  (独立的业务领域核心)
     |-- user        (用户领域核心)
     |-- activity    (活动领域核心)
+    |-- locale    	(场地领域核心)
     |-- asset       (物资领域核心)
     |-- finance     (财务领域核心)
     |-- organization(组织领域核心)
