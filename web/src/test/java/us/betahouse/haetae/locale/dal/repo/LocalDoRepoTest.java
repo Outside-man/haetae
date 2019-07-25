@@ -21,7 +21,7 @@ public class LocalDoRepoTest {
 
     @Test
     public void test() {
-        LocaleBO localeBO = new LocaleBO();
-        System.out.println(localeDORepo.findAll());
+//        LocaleBO localeBO = new LocaleBO();
+        System.out.println(localeDORepo.findByLocaleCode("DUXING501"));
     }
 }

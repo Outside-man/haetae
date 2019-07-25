@@ -24,4 +24,6 @@ public interface LocaleService {
      * @return
      */
     List<LocaleBO> findAllLocalesByStatus(LocaleManagerRequest request, OperateContext context);
+
+    LocaleBO findLocaleNameByLocaleCode(LocaleManagerRequest request, OperateContext context);
 }

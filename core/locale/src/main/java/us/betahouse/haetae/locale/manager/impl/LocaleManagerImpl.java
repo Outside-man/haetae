@@ -32,4 +32,15 @@ public class LocaleManagerImpl implements LocaleManager {
     public List<LocaleBO> findAllByStatus(String status) {
         return localeDORepoService.queryAllLocalesByStatus(status);
     }
+
+    /**
+     * 查询localeName
+     *
+     * @param localeCode
+     * @return
+     */
+    @Override
+    public LocaleBO findLocaleName(String localeCode) {
+        return localeDORepoService.findLocaleName(localeCode);
+    }
 }

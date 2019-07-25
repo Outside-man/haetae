@@ -61,6 +61,18 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     }
 
     /**
+     * 查询localeName
+     *
+     * @param localeCode
+     * @return
+     */
+    @Override
+    public LocaleBO findLocaleName(String localeCode) {
+        LocaleDO localeDO = localeDORepo.findByLocaleCode(localeCode);
+        return convert(localeDO);
+    }
+
+    /**
      * 通过 场地状态 查询所有场地
      *
      * @param Status

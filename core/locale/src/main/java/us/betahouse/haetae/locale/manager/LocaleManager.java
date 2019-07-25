@@ -22,4 +22,12 @@ public interface LocaleManager {
      * @return
      */
     List<LocaleBO> findAllByStatus(String status);
+
+    /**
+     * 查询localeName
+     *
+     * @param localeCode
+     * @return
+     */
+    LocaleBO findLocaleName(String localeCode);
 }

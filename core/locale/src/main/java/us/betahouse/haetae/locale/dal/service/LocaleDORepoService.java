@@ -27,9 +27,17 @@ public interface LocaleDORepoService {
      * 更新场地状态
      *
      * @param localeBO
-     * @return
+     * @return LocaleBO
      */
     LocaleBO updateLocale(LocaleBO localeBO);
+
+    /**
+     * 查询localeName
+     *
+     * @param localeCode
+     * @return LocaleBO
+     */
+    LocaleBO findLocaleName(String localeCode);
 
     /**
      * 通过 状态 查询场地

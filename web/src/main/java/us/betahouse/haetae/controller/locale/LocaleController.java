@@ -96,4 +96,39 @@ public class LocaleController {
             }
         });
     }
+
+    /**
+     * 通过场地代码查询场地名称
+     *
+     * @param restRequest
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @GetMapping(value = "/localename")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<LocaleBO> getLocalesName(LocaleRestRequest restRequest, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取状态对应的场地", restRequest, new RestOperateCallBack<LocaleBO>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(restRequest.getLocaleCode(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "场地代号不能为空");
+            }
+
+            @Override
+            public Result<LocaleBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                LocaleManagerRequest localeManagerRequest = LocaleManagerRequestBuilder.getInstance()
+                        .withLocaleCode(restRequest.getLocaleCode())
+                        .withUserId(restRequest.getUserId())
+                        .build();
+                LocaleBO localeBO = localeService.findLocaleNameByLocaleCode(localeManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(localeBO, "获取对应场地名称成功");
+            }
+        });
+    }
 }

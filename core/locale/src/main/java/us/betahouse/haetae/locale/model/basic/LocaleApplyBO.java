@@ -57,6 +57,12 @@ public class LocaleApplyBO extends ToString {
      */
     private String localeCode;
 
+
+    /**
+     * 场地名称 例如：笃行楼501
+     */
+    private String localeName;
+
     /**
      * 占用ID
      */

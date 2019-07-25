@@ -31,13 +31,13 @@ public class RoleRepoServiceTest {
 
     @Test
     public void addCertificateManager(){
-        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("17905711");
+        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("189050110");
         if(null==userInfoBO){
             System.out.println("账号不存在");
             return ;
         }
         else{
-            roleRepoService.userBindRolesByCode(userInfoBO.getUserId(), UserRoleCode.CERTIFICATE_MANAGER);
+            roleRepoService.userBindRolesByCode(userInfoBO.getUserId(), UserRoleCode.LOCALE_MEMBER);
             System.out.println("绑定成功");
         }
     }

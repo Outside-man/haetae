@@ -42,4 +42,16 @@ public class LocaleServiceImpl implements LocaleService {
         List<LocaleBO> localeBOList = localeManager.findAllByStatus(request.getStatus());
         return localeBOList;
     }
+
+    /**
+     * 用通过场地代号查询
+     * @param request
+     * @param context
+     * @return
+     */
+    @Override
+    public LocaleBO findLocaleNameByLocaleCode(LocaleManagerRequest request, OperateContext context) {
+        LocaleBO localeBO = localeManager.findLocaleName((request.getLocaleCode()));
+        return localeBO;
+    }
 }
