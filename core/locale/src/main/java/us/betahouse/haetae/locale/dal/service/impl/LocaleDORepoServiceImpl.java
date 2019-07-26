@@ -44,6 +44,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     @Override
     public LocaleBO createLocale(LocaleBO localeBO) {
         localeBO.setLocaleId(localBizFactory.getLocaleId());
+
         return convert(localeDORepo.save(convert(localeBO)));
     }
 
@@ -57,6 +58,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     public LocaleBO updateLocale(LocaleBO localeBO) {
         LocaleDO localeDO = localeDORepo.findByLocaleId(localeBO.getLocaleId());
         localeDO.setStatus(localeBO.getStatus());
+
         return convert(localeDORepo.save(localeDO));
     }
 
@@ -69,6 +71,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     @Override
     public LocaleBO findLocaleName(String localeCode) {
         LocaleDO localeDO = localeDORepo.findByLocaleCode(localeCode);
+
         return convert(localeDO);
     }
 
@@ -81,6 +84,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
     @Override
     public List<LocaleBO> queryAllLocalesByStatus(String Status) {
         List<LocaleDO> localeDOList = localeDORepo.findAllByStatus(Status);
+
         return CollectionUtils.toStream(localeDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)

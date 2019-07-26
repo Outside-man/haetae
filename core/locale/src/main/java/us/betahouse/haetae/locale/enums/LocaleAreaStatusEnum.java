@@ -25,6 +25,15 @@ public enum LocaleAreaStatusEnum {
      */
     CANCEL("CANCEL", "已取消");
 
+    /**
+     * 状态id
+     */
+    private final String code;
+    /**
+     * 描述
+     */
+    private final String desc;
+
     public static LocaleAreaStatusEnum getByCode(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
@@ -36,16 +45,6 @@ public enum LocaleAreaStatusEnum {
         }
         return null;
     }
-
-    /**
-     * 状态id
-     */
-    private final String code;
-
-    /**
-     * 描述
-     */
-    private final String desc;
 
     public String getCode() {
         return code;

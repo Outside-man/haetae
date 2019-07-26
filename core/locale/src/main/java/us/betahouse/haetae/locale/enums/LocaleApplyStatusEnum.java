@@ -12,10 +12,32 @@ import org.apache.commons.lang.StringUtils;
  */
 
 public enum LocaleApplyStatusEnum {
+    /**
+     * 申请提交
+     */
     COMMIT("COMMIT", "申请提交"),
+    /**
+     * 学工审批
+     */
     FIRST("FIRST", "学工审批"),
+    /**
+     * 团学审批
+     */
     PASS("PASS", "团学审批"),
+    /**
+     * 已取消
+     */
     CANCEL("CANCEL", "已取消");
+
+    /**
+     * 状态id
+     */
+    private final String code;
+
+    /**
+     * 描述
+     */
+    private final String desc;
 
     public static LocaleApplyStatusEnum getByCode(String code) {
         if (StringUtils.isBlank(code)) {
@@ -28,16 +50,6 @@ public enum LocaleApplyStatusEnum {
         }
         return null;
     }
-
-    /**
-     * 状态id
-     */
-    private final String code;
-
-    /**
-     * 描述
-     */
-    private final String desc;
 
     public String getCode() {
         return code;

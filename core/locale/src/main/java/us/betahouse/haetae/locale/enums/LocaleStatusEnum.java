@@ -20,6 +20,7 @@ public enum LocaleStatusEnum {
      * 不可用
      */
     DISABLE("DISABLE", "不可用");
+
     /**
      * 状态id
      */

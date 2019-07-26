@@ -42,6 +42,7 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     @Override
     public LocaleAreaBO createLocaleArea(LocaleAreaBO localeAreaBO) {
         localeAreaBO.setLocaleAreaId(localBizFactory.getLocaleAreaId());
+
         return convert(localeAreaDORepo.save(convert(localeAreaBO)));
     }
 
@@ -55,6 +56,7 @@ public class LocaleAreaDORepoServiceImpl implements LocaleAreaDORepoService {
     public LocaleAreaBO updateLocaleArea(LocaleAreaBO localeAreaBO) {
         LocaleAreaDO localeAreaDO = localeAreaDORepo.findByLocaleAreaId(localeAreaBO.getLocaleAreaId());
         localeAreaDO.setStatus(localeAreaBO.getStatus());
+
         return convert(localeAreaDORepo.save(localeAreaDO));
     }
 

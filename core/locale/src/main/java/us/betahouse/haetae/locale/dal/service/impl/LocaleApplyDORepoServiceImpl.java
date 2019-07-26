@@ -14,11 +14,6 @@ import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.common.PageList;
-import us.betahouse.util.utils.CollectionUtils;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author NathanDai
@@ -45,6 +40,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public LocaleApplyBO createLocaleApply(LocaleApplyBO localeApplyBO) {
         localeApplyBO.setLocaleApplyId(localBizFactory.getLocaleApplyId());
+
         return convert(localeApplyDORepo.save(convert(localeApplyBO)));
     }
 
@@ -70,6 +66,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerDESC(String status, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
+
         return new PageList<>(localeApplyDORepo.findAllByStatusContainsOrderByLocaleApplyIdDesc(pageable, status), this::convert);
     }
 
@@ -84,6 +81,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public PageList<LocaleApplyBO> queryLocaleApplyByStatusAndPagerASC(String status, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
+
         return new PageList<>(localeApplyDORepo.findAllByStatusContains(pageable, status), this::convert);
     }
 
@@ -98,6 +96,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public PageList<LocaleApplyBO> queryLocaleApplyByUserIdAndPagerASC(String userId, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
+
         return new PageList<>(localeApplyDORepo.findAllByStatusContains(pageable, userId), this::convert);
     }
 
@@ -112,6 +111,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public PageList<LocaleApplyBO> queryLocaleApplyByUserIdAndPagerDESC(String userId, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
+
         return new PageList<>(localeApplyDORepo.findAllByUserIdContainsOrderByLocaleApplyId(pageable, userId), this::convert);
     }
 
@@ -125,6 +125,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     public LocaleApplyBO updateLocaleApply(LocaleApplyBO localeApplyBO) {
         LocaleApplyDO localeApplyDO = localeApplyDORepo.findByLocaleApplyId(localeApplyBO.getLocaleApplyId());
         localeApplyDO.setStatus(localeApplyBO.getStatus());
+
         return convert(localeApplyDORepo.save(localeApplyDO));
     }
 

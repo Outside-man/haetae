@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.locale.idfactory;
 
-import org.springframework.stereotype.Service;
 
 /**
  * @author NathanDai
