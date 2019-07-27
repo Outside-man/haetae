@@ -163,6 +163,7 @@ public class ActivityStampController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @GetMapping(value = "/stamper")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -299,6 +300,7 @@ public class ActivityStampController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @PostMapping(value = "/importStamps")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -322,46 +324,5 @@ public class ActivityStampController {
         });
     }
 
-
-
-
-//
-//    /**
-//     * 批量导入活动盖章 json批量导入
-//     *
-//     * @param request
-//     * @param httpServletRequest
-//     * @return
-//     */
-//    @CheckLogin
-//    @PostMapping(value = "/test")
-//    @Log(loggerName = LoggerName.WEB_DIGEST)
-//    public Result<List<String>> importStamps(StamperRequest request, HttpServletRequest httpServletRequest) {
-//        System.out.println("");
-//        return null;
-//        return RestOperateTemplate.operate(LOGGER, "导入活动盖章", request, new RestOperateCallBack<List<String>>() {
-//            @Override
-//            public void before() {
-//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-//                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
-//            }
-//
-//            @Override
-//            public Result<List<String>> execute() {
-////                OperateContext context = new OperateContext();
-////                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-////                String json=httpServletRequest.toString();
-////                System.out.println(json);
-////                JSONArray jsonArray = JSONArray.parseArray(json);
-////                System.out.println("cp"+jsonArray.toString());
-////                ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
-////                        .withRequestId(request.getRequestId())
-////                        .withScannerUserId(request.getUserId());
-////
-////                List<ActivityBO> activityBOS = activityRecordService.batchStamp(builder.build(), context);
-//                return RestResultUtil.buildSuccessResult("批量盖章成功");
-//            }
-//        });
-//    }
 
 }

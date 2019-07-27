@@ -249,6 +249,7 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @PutMapping(value = "/pwdByStuId")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> modifyPasswordByStuId(UserRequest request, HttpServletRequest httpServletRequest) {

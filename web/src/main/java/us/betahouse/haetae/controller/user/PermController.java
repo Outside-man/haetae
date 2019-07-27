@@ -33,6 +33,7 @@ import java.util.List;
  * @author guofan.cp
  * @version : PermController.java 2019/08/23 8:42 guofan.cp
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/perm")
 public class PermController {
