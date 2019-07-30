@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
 import us.betahouse.haetae.locale.manager.LocaleApplyManager;
+import us.betahouse.haetae.locale.manager.LocaleManager;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
-import us.betahouse.haetae.locale.model.basic.LocaleAreaBO;
 import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.locale.request.LocaleApplyRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -25,6 +25,8 @@ import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleAreaService;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
+
+import java.util.List;
 
 /**
  * @author NathanDai
@@ -39,6 +41,9 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
 
     @Autowired
     private LocaleAreaService localeAreaService;
+
+    @Autowired
+    LocaleManager localeManager;
 
     /**
      * 创建场地申请
@@ -182,7 +187,14 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         localeApplyRequest.setLimit(limit);
         localeApplyRequest.setOrderRule(orderRule);
 
-        return localeApplyManager.findByStatus(localeApplyRequest);
+        PageList<LocaleApplyBO> localeApplyBOPageList = localeApplyManager.findByStatus(localeApplyRequest);
+        List<LocaleApplyBO> localeApplyBOList = localeApplyBOPageList.getContent();
+        for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
+            localeApplyBO.setLocaleName(localeManager.findLocaleName(localeApplyBO.getLocaleCode()).getLocaleName());
+        }
+        localeApplyBOPageList.setContent(localeApplyBOList);
+
+        return localeApplyBOPageList;
     }
 
     /**
@@ -228,7 +240,14 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         localeApplyRequest.setLimit(limit);
         localeApplyRequest.setOrderRule(orderRule);
 
-        return localeApplyManager.findByStatus(localeApplyRequest);
+        PageList<LocaleApplyBO> localeApplyBOPageList = localeApplyManager.findByStatus(localeApplyRequest);
+        List<LocaleApplyBO> localeApplyBOList = localeApplyBOPageList.getContent();
+        for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
+            localeApplyBO.setLocaleName(localeManager.findLocaleName(localeApplyBO.getLocaleCode()).getLocaleName());
+        }
+        localeApplyBOPageList.setContent(localeApplyBOList);
+
+        return localeApplyBOPageList;
     }
 
     /**
@@ -271,6 +290,14 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         localeApplyRequest.setPage(page);
         localeApplyRequest.setLimit(limit);
         localeApplyRequest.setOrderRule(orderRule);
-        return localeApplyManager.findByUserId(localeApplyRequest);
+
+        PageList<LocaleApplyBO> localeApplyBOPageList = localeApplyManager.findByUserId(localeApplyRequest);
+        List<LocaleApplyBO> localeApplyBOList = localeApplyBOPageList.getContent();
+        for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
+            localeApplyBO.setLocaleName(localeManager.findLocaleName(localeApplyBO.getLocaleCode()).getLocaleName());
+        }
+        localeApplyBOPageList.setContent(localeApplyBOList);
+
+        return localeApplyBOPageList;
     }
 }

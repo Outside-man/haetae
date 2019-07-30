@@ -165,6 +165,9 @@ public class PageList<E> {
         return content;
     }
 
+    public void setContent(List<E> content) {
+        this.content = content;
+    }
 
     /**
      * 转换stream 如果为空 返回空流 避免npe

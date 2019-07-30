@@ -206,4 +206,12 @@ public class LocaleApplyBO extends ToString {
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
     }
+
+    public String getLocaleName() {
+        return localeName;
+    }
+
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
+    }
 }

@@ -104,7 +104,6 @@ public class LocaleApplyController {
 
                 LocaleApplyBO localeApplyBO = localeApplyService.create(localeApplyManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeApplyBO, "场地申请成功创建");
-
             }
         });
     }
