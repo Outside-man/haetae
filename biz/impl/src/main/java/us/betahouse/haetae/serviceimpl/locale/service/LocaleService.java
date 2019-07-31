@@ -25,5 +25,12 @@ public interface LocaleService {
      */
     List<LocaleBO> findAllLocalesByStatus(LocaleManagerRequest request, OperateContext context);
 
+    /**
+     * 通过场地代号查询场地名称
+     *
+     * @param request
+     * @param context
+     * @return
+     */
     LocaleBO findLocaleNameByLocaleCode(LocaleManagerRequest request, OperateContext context);
 }

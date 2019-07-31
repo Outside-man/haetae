@@ -19,10 +19,13 @@ import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.enums.CertificatePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
 import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
+import us.betahouse.haetae.serviceimpl.locale.constant.LocalePermType;
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.serviceimpl.organization.enums.OrganizationPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
 import us.betahouse.haetae.serviceimpl.asset.enums.AssetPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.locale.enums.LocalePermTypeEnum;
+
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
@@ -67,6 +70,8 @@ public class InitService {
 
     private final static List<String> certificateConfirmPerm = new ArrayList<>();
 
+    private final static List<String> localeManagerPerm = new ArrayList<>();
+
 
     static {
         //活动
@@ -95,6 +100,11 @@ public class InitService {
         certificateManagerPerm.add(CertificatePermType.IMPORT_CERTIFICATE);
         certificateManagerPerm.add(CertificatePermType.MODIFY_CERTIFICATE);
         certificateManagerPerm.add(CertificatePermType.MANAGER_CONFIRM);
+        //场地
+        localeManagerPerm.add(LocalePermType.LOCALE_APPLY);
+        localeManagerPerm.add(LocalePermType.APPLY_CHECK);
+        localeManagerPerm.add(LocalePermType.APPLY_FIRST_CHECK);
+
     }
 
 
@@ -115,6 +125,15 @@ public class InitService {
 
         //物资权限
         for (PermType permType : AssetPermTypeEnum.values()) {
+            if (permType.isInit()) {
+                permBuilder.withPermType(permType.getCode())
+                        .withPermName(permType.getDesc());
+                initPermMap.put(permType.getCode(), permRepoService.initPerm(permBuilder.build()).getPermId());
+            }
+        }
+
+        //场地权限
+        for (PermType permType : LocalePermTypeEnum.values()) {
             if (permType.isInit()) {
                 permBuilder.withPermType(permType.getCode())
                         .withPermName(permType.getDesc());
@@ -230,9 +249,27 @@ public class InitService {
         }
         //初始化 证书审核员权限
         if (StringUtils.equals(role.getRoleCode(), UserRoleCode.CERTIFICATE_CONFIRM.getCode())) {
-            Set<String> permId=new HashSet<>();
-            certificateConfirmPerm.forEach(certificatePermType->permId.add(initPermMap.get(certificatePermType)));
-            permRepoService.roleBindPerms(role.getRoleId(),new ArrayList<>(permId));
+            Set<String> permId = new HashSet<>();
+            certificateConfirmPerm.forEach(certificatePermType -> permId.add(initPermMap.get(certificatePermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permId));
+        }
+        //初始化 团委管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.LEAGUE_MANAGER.getCode())) {
+            Set<String> permId = new HashSet<>();
+            localeManagerPerm.forEach(localePermType -> permId.add(initPermMap.get(localePermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permId));
+        }
+        //初始化 学工部管理员权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.LEARNING_MANAGER.getCode())) {
+            Set<String> permId = new HashSet<>();
+            localeManagerPerm.forEach(localePermType -> permId.add(initPermMap.get(localePermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permId));
+        }
+        //初始化 场地申请人权限
+        if (StringUtils.equals(role.getRoleCode(), UserRoleCode.LOCALE_MEMBER.getCode())) {
+            Set<String> permId = new HashSet<>();
+            localeManagerPerm.forEach(localePermType -> permId.add(initPermMap.get(localePermType)));
+            permRepoService.roleBindPerms(role.getRoleId(), new ArrayList<>(permId));
         }
     }
 }
