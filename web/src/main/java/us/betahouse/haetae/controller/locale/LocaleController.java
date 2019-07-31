@@ -32,13 +32,11 @@ import us.betahouse.util.utils.AssertUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-/**
- * @author NathanDai
- * @version :  2019-07-03 21:24 NathanDai
- */
 
 /**
  * 场地接口
+ * @author NathanDai
+ * @version :  2019-07-03 21:24 NathanDai
  */
 @CrossOrigin
 @RestController
@@ -126,6 +124,7 @@ public class LocaleController {
                         .withLocaleCode(restRequest.getLocaleCode())
                         .withUserId(restRequest.getUserId())
                         .build();
+
                 LocaleBO localeBO = localeService.findLocaleNameByLocaleCode(localeManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeBO, "获取对应场地名称成功");
             }

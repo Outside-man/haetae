@@ -12,6 +12,8 @@ import us.betahouse.haetae.serviceimpl.locale.request.LocaleAreaManagerRequest;
 import java.util.List;
 
 /**
+ * 场地占用业务
+ *
  * @author NathanDai
  * @version :  2019-07-05 05:32 NathanDai
  */

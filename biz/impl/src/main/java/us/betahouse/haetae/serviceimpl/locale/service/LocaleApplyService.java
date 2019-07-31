@@ -11,6 +11,8 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
 
 /**
+ * 场地申请业务
+ *
  * @author NathanDai
  * @version :  2019-07-05 05:32 NathanDai
  */
