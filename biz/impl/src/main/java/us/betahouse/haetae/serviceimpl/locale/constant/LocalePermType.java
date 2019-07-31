@@ -6,8 +6,10 @@
 package us.betahouse.haetae.serviceimpl.locale.constant;
 
 /**
+ * 场地权限常量
+ *
  * @author NathanDai
- * @version :  2019-07-09 21:25 NathanDai
+ * @version : LocalePermType.java 2019-07-09 21:25 NathanDai
  */
 public class LocalePermType {
     /**

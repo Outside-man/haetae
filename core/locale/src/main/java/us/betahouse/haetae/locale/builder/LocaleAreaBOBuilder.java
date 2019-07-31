@@ -19,32 +19,26 @@ public final class LocaleAreaBOBuilder {
      * 占用ID
      */
     private String localeAreaId;
-
     /**
      * 场地ID
      */
     private String localeId;
-
     /**
      * 场地借用者
      */
     private String userId;
-
     /**
      * 场地使用日期
      */
     private String timeDate;
-
     /**
      * 场地使用时间段
      */
     private String timeBucket;
-
     /**
      * 是否状况 三种：提交申请 申请中 取消
      */
     private String status;
-
     /**
      * 场地占用额外信息
      */
