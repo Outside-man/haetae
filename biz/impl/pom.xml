@@ -38,6 +38,10 @@
             <groupId>us.betahouse</groupId>
             <artifactId>haetae-certificate</artifactId>
         </dependency>
+        <dependency>
+            <groupId>us.betahouse</groupId>
+            <artifactId>haetae-locale</artifactId>
+        </dependency>
     </dependencies>
 
 

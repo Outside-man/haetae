@@ -20,13 +20,6 @@ public class RoleRepoServiceTest {
     @Autowired
     private UserInfoRepoService userInfoRepoService;
 
-    @Test
-    public void createRole() {
-        RoleBO roleBO = new RoleBO();
-        roleBO.setRoleName("测试权限");
-        roleBO.setRoleDesc("测试权限");
-        System.out.println(roleRepoService.createRole(roleBO));
-    }
 
     @Test
     public void addCertificateManager(){
@@ -36,7 +29,7 @@ public class RoleRepoServiceTest {
             return ;
         }
         else{
-            roleRepoService.userBindRolesByCode(userInfoBO.getUserId(), UserRoleCode.CERTIFICATE_MANAGER);
+            roleRepoService.userBindRolesByCode(userInfoBO.getUserId(), UserRoleCode.LOCALE_MEMBER);
             System.out.println("绑定成功");
         }
     }
