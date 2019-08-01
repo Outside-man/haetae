@@ -4,6 +4,7 @@
  */
 package us.betahouse.util.dictionary;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,27 +16,8 @@ import java.util.Map;
  */
 public class t1 {
     public static void main(String[] args) {
-        t1 obj1 = new t1();
-        System.out.println("======================");
-        ArrayList<String> list=new ArrayList<String>();
-        System.out.println(String2AlphaFirst("风竹话剧社","Uppercase"));
-        list.add("adisen");
-        list.add("bulsi");
-        list.add("Kobe");
-        list.add("布丁");
-        list.add("杜甫");
-        list.add("元方");
-        list.add("β-house");
-        list.add("z");
-        Map<String, ArrayList<String>> map=obj1.sort(list);
-        System.out.println("-------分组后的输出-----------");
-        System.out.println(map.get("A"));
-        System.out.println(map.get("B"));
-        System.out.println(map.get("C"));
-        System.out.println(map.get("D"));
-        System.out.println(map.get("Y"));
-        System.out.println(map.get("#"));
-        System.out.println(map);
+        String temp1="=IF(J{0}>=1,G{0}+4,G{0})";
+        System.out.println(MessageFormat.format(temp1, String.valueOf(2000)));
     }
     public t1() {
 

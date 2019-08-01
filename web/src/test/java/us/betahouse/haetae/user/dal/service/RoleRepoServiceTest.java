@@ -23,7 +23,7 @@ public class RoleRepoServiceTest {
 
     @Test
     public void addCertificateManager(){
-        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("16905312");
+        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("17909227");
         if(null==userInfoBO){
             System.out.println("账号不存在");
             return ;
