@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.locale.dal.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,12 @@ import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.common.PageList;
+import us.betahouse.util.utils.CollectionUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author NathanDai
@@ -52,6 +59,22 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     @Override
     public LocaleApplyBO queryByLocaleApplyId(String localeApplyId) {
         return convert(localeApplyDORepo.findByLocaleApplyId(localeApplyId));
+    }
+
+    /**
+     * 通过申请状态 查询
+     *
+     * @param status
+     * @return
+     */
+    @Override
+    public List<LocaleApplyBO> queryLocaleApplyByStatus(String status) {
+        List<LocaleApplyDO> localeApplyDOList = localeApplyDORepo.findAllByStatus(status);
+
+        return CollectionUtils.toStream(localeApplyDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
 
@@ -125,7 +148,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
     public LocaleApplyBO updateLocaleApply(LocaleApplyBO localeApplyBO) {
         LocaleApplyDO localeApplyDO = localeApplyDORepo.findByLocaleApplyId(localeApplyBO.getLocaleApplyId());
         localeApplyDO.setStatus(localeApplyBO.getStatus());
-
+        localeApplyDO.setExtInfo(JSON.toJSONString(localeApplyBO.getExtInfo()));
         return convert(localeApplyDORepo.save(localeApplyDO));
     }
 
@@ -151,6 +174,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
             return null;
         }
         LocaleApplyBO localeApplyBO = new LocaleApplyBO();
+        localeApplyBO.setCreate(localeApplyDO.getGmtCreate());
         localeApplyBO.setTel(localeApplyDO.getTel());
         localeApplyBO.setUsages(localeApplyDO.getUsages());
         localeApplyBO.setRemark(localeApplyDO.getRemark());
@@ -163,6 +187,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         localeApplyBO.setLocaleId(localeApplyDO.getLocaleId());
         localeApplyBO.setLocaleAreaId(localeApplyDO.getLocaleAreaId());
         localeApplyBO.setUserId(localeApplyDO.getUserId());
+        localeApplyBO.setExtInfo(JSON.parseObject(localeApplyDO.getExtInfo(), Map.class));
         return localeApplyBO;
     }
 
@@ -177,6 +202,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
             return null;
         }
         LocaleApplyDO localeApplyDO = new LocaleApplyDO();
+        localeApplyDO.setGmtCreate(localeApplyBO.getCreate());
         localeApplyDO.setTel(localeApplyBO.getTel());
         localeApplyDO.setUsages(localeApplyBO.getUsages());
         localeApplyDO.setRemark(localeApplyBO.getRemark());
@@ -189,6 +215,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         localeApplyDO.setLocaleId(localeApplyBO.getLocaleId());
         localeApplyDO.setLocaleAreaId(localeApplyBO.getLocaleAreaId());
         localeApplyDO.setUserId(localeApplyBO.getUserId());
+        localeApplyDO.setExtInfo(JSON.toJSONString(localeApplyBO.getExtInfo()));
         return localeApplyDO;
     }
 }

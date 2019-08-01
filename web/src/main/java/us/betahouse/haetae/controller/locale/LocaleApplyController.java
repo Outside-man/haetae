@@ -147,7 +147,7 @@ public class LocaleApplyController {
                         .withUserId(restRequest.getUserId())
                         .build();
 
-                PageList<LocaleApplyBO> localeApplyBOPageList = restRequest.getStatus().equals("COMMIT")
+                PageList<LocaleApplyBO> localeApplyBOPageList = restRequest.getStatus().equals(LocaleApplyStatusEnum.COMMIT.getCode())
                         ? localeApplyService.findAllByStatusFirst(localeApplyManagerRequest, context)
                         : localeApplyService.findAllByStatusSecond(localeApplyManagerRequest, context);
 
@@ -246,7 +246,7 @@ public class LocaleApplyController {
                         .withUserId(restRequest.getUserId())
                         .build();
 
-                LocaleApplyBO localeApplyBO = localeApplyBOFirst.getStatus().equals("COMMIT")
+                LocaleApplyBO localeApplyBO = localeApplyBOFirst.getStatus().equals(LocaleApplyStatusEnum.COMMIT.getCode())
                         ? localeApplyService.updateAdminFirst(localeApplyManagerRequest, context)
                         : localeApplyService.updateAdminSecond(localeApplyManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeApplyBO, "更新申请占用成功");

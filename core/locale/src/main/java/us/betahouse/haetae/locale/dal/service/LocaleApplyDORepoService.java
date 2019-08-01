@@ -32,6 +32,13 @@ public interface LocaleApplyDORepoService {
     LocaleApplyBO queryByLocaleApplyId(String localeApplyId);
 
     /**
+     * 通过申请状态 查询
+     * @param status
+     * @return
+     */
+    List<LocaleApplyBO> queryLocaleApplyByStatus(String status);
+
+    /**
      * 通过状态 分页查询 分页
      *
      * @param status 状态

@@ -12,6 +12,10 @@ import us.betahouse.haetae.locale.dal.model.LocaleApplyDO;
 import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.serviceimpl.locale.service.impl.LocaleApplyServiceImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,23 +26,16 @@ public class LocaleApplyDORepoTest {
     BizIdFactory localBizFactory;
     @Autowired
     LocaleApplyDORepoService localeApplyDORepoService;
+    @Autowired
+    LocaleApplyServiceImpl localeApplyService;
+
 
     @Test
     public void test() {
-        int page = 0;
-        int limit = 10;
-        Pageable pageable = PageRequest.of(page, limit);
-        Page<LocaleApplyDO> localeApplyDOPage = localeApplyDORepo.findAllByStatusContainsOrderByLocaleApplyIdDesc(pageable, "CANCEL");
-        localeApplyDOPage.forEach(System.out::println);
-        System.out.println(localeApplyDOPage.getTotalElements());
-        System.out.println(localeApplyDOPage.getTotalPages());
-        System.out.println(localeApplyDOPage.getNumber());
-        System.out.println(localeApplyDOPage.getNumberOfElements());
-        System.out.println(localeApplyDOPage.getSize());
-        System.out.println(localeApplyDOPage.isFirst());
-        System.out.println(localeApplyDOPage.isEmpty());
-        System.out.println(localeApplyDOPage.isLast());
-        System.out.println("-------------------------------------");
-
+        List<LocaleApplyBO> systemFinishLocaleApplies = new ArrayList<>();
+        systemFinishLocaleApplies = localeApplyService.systemFinishLocaleApply();
+        for (LocaleApplyBO localeApplyBO : systemFinishLocaleApplies) {
+            System.out.println(localeApplyBO);
+        }
     }
 }

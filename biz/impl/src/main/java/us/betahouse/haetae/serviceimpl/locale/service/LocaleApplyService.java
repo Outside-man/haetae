@@ -10,6 +10,8 @@ import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
 
+import java.util.List;
+
 /**
  * 场地申请业务
  *
@@ -94,4 +96,11 @@ public interface LocaleApplyService {
      * @return
      */
     PageList<LocaleApplyBO> findAllByUserId(LocaleApplyManagerRequest request, OperateContext context);
+
+    /**
+     * 结束可以结束的场地申请
+     *
+     * @return
+     */
+    List<LocaleApplyBO> systemFinishLocaleApply();
 }

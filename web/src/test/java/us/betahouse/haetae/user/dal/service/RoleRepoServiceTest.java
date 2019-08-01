@@ -20,18 +20,10 @@ public class RoleRepoServiceTest {
     @Autowired
     private UserInfoRepoService userInfoRepoService;
 
-    @Test
-    public void createRole() {
-        RoleBO roleBO = new RoleBO();
-        roleBO.setRoleCode("LEAGUE_MANAGER");
-        roleBO.setRoleName("团委管理员");
-//        roleBO.setRoleDesc("测试权限");
-        System.out.println(roleRepoService.createRole(roleBO));
-    }
 
     @Test
     public void addCertificateManager(){
-        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("189050110");
+        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("16905312");
         if(null==userInfoBO){
             System.out.println("账号不存在");
             return ;

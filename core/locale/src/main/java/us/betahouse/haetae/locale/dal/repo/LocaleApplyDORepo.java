@@ -26,6 +26,8 @@ public interface LocaleApplyDORepo extends JpaRepository<LocaleApplyDO, Long> {
      */
     LocaleApplyDO findByLocaleApplyId(String localeApplyId);
 
+    List<LocaleApplyDO> findAllByStatus(String status);
+
     /**
      * 通过场地申请状态查询
      *

@@ -6,8 +6,7 @@ package us.betahouse.haetae.locale.model.basic;
 
 import us.betahouse.util.common.ToString;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author NathanDai
@@ -17,6 +16,10 @@ import java.util.Map;
 public class LocaleApplyBO extends ToString {
 
     private static final long serialVersionUID = 1305031373217182020L;
+    /**
+     * 申请创建的时间
+     */
+    private Date create;
     /**
      * 申请者的联系方式
      */
@@ -101,6 +104,28 @@ public class LocaleApplyBO extends ToString {
             extInfo = new HashMap<>();
         }
         extInfo.put(key, value);
+    }
+
+    /**
+     * 判断是否可以结束
+     *
+     * @return
+     */
+    public boolean canFinish() {
+        Date now = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(now);
+        calendar.add(calendar.DATE, -2);
+        now = calendar.getTime();
+        return create.before(now);
+    }
+
+    public Date getCreate() {
+        return create;
+    }
+
+    public void setCreate(Date create) {
+        this.create = create;
     }
 
     public String getTel() {

@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
 import us.betahouse.haetae.locale.manager.LocaleApplyManager;
 import us.betahouse.haetae.locale.manager.LocaleManager;
@@ -26,6 +27,7 @@ import us.betahouse.haetae.serviceimpl.locale.service.LocaleAreaService;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,11 +38,19 @@ import java.util.List;
 @Service
 public class LocaleApplyServiceImpl implements LocaleApplyService {
 
+    /**
+     * 系统结束标志
+     */
+    private final static String SYSTEM_FINISH_SIGN = "systemFinish";
+
     @Autowired
     LocaleApplyManager localeApplyManager;
 
     @Autowired
     private LocaleAreaService localeAreaService;
+
+    @Autowired
+    private LocaleApplyDORepoService localeApplyDORepoService;
 
     @Autowired
     LocaleManager localeManager;
@@ -299,5 +309,24 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         localeApplyBOPageList.setContent(localeApplyBOList);
 
         return localeApplyBOPageList;
+    }
+
+    /**
+     * 结束可以结束的场地申请
+     * 申请超过两天还在COMMIT状态 退回
+     * @return
+     */
+    @Override
+    public List<LocaleApplyBO> systemFinishLocaleApply() {
+        List<LocaleApplyBO> localeApplyBOList = localeApplyDORepoService.queryLocaleApplyByStatus(LocaleApplyStatusEnum.COMMIT.getCode());
+        List<LocaleApplyBO> systemFinishLocaleApplies = new ArrayList<>();
+        for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
+            if (localeApplyBO.canFinish()) {
+                localeApplyBO.setStatus(LocaleApplyStatusEnum.CANCEL.getCode());
+                localeApplyBO.putExtInfo(SYSTEM_FINISH_SIGN, SYSTEM_FINISH_SIGN);
+                systemFinishLocaleApplies.add(localeApplyDORepoService.updateLocaleApply(localeApplyBO));
+            }
+        }
+        return systemFinishLocaleApplies;
     }
 }
