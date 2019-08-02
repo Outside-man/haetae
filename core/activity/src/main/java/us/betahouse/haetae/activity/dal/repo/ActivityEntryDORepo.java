@@ -35,6 +35,14 @@ public interface ActivityEntryDORepo extends JpaRepository<ActivityEntryDO, Long
     ActivityEntryDO findByActivityEntryId(String activityEntryId);
 
     /**
+     * 通过活动id查找报名信息
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityEntryDO> findAllByActivityId(String activityId);
+
+    /**
      * 通过报名状态查找报名信息
      *
      * @param state

@@ -3,6 +3,8 @@ package us.betahouse.haetae.serviceimpl.activity.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.activity.builder.ActivityEntryBOBuilder;
+import us.betahouse.haetae.activity.builder.ActivityEntryRecordBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
@@ -12,14 +14,14 @@ import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
 import us.betahouse.haetae.activity.model.common.PageList;
+import us.betahouse.haetae.activity.request.ActivityEntryRecordRequest;
+import us.betahouse.haetae.activity.request.ActivityEntryRequest;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntry;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
-import us.betahouse.haetae.serviceimpl.activity.request.ActivityEntryQueryRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
-import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.CollectionUtils;
-import us.betahouse.util.utils.DateUtil;
-import us.betahouse.util.utils.NumberUtils;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
+import us.betahouse.util.utils.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,15 +45,100 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
     @Autowired
     private ActivityEntryRecordRepoService activityEntryRecordRepoService;
 
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
+
 
     /**
-     * 获取报名信息
-     * @param request
-     * @param userID
+     * 通过活动id查找报名信息
+     *
+     * @param activityId
+     * @return
+     */
+    public ActivityEntryList activityEntryQueryByActivityId(String activityId){
+        List<ActivityEntryBO> activityEntryBOList = activityEntryRepoService.findAllByActivityId(activityId);
+        AssertUtil.assertTrue( !activityEntryBOList.isEmpty(),"无报名信息");
+        return new ActivityEntryList(Long.parseLong(""+activityEntryBOList.size()),
+                1,
+                activityEntryBOList.size(),
+                1,
+                activityEntryBOList.size(),
+                true,
+                true,
+                activityEntryBOList);
+    }
+
+//    /**
+//     * 通过报名信息id查找报名记录,返回Excel文件地址
+//     *
+//     * @param activityEntryId
+//     * @return
+//     */
+//    @Override
+//    public String getActivityEntryRecordFileByActivityEntryId(String activityEntryId) {
+//        List<ActivityEntryRecordBO> activityEntryRecordBOList = activityEntryRecordRepoService.findAllByActivityEntryId(activityEntryId);
+//        AssertUtil.assertTrue( !activityEntryRecordBOList.isEmpty(),"无报名记录");
+//
+//        String title = activityEntryRepoService.findByActivityEntryId(activityEntryId).getTitle();
+//        List<UserInfoBO> userInfoBOList = new ArrayList<>();
+//        for (ActivityEntryRecordBO activityEntryRecordBO:activityEntryRecordBOList) {
+//            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(activityEntryRecordBO.getUserId());
+//            if(userInfoBO == null) {
+//                UserInfoBO newuserInfoBO  = new UserInfoBO();
+//                newuserInfoBO.setStuId(activityEntryRecordBO.getUserId());
+//                userInfoBOList.add(newuserInfoBO);
+//            }else {
+//                userInfoBOList.add(userInfoBO);
+//            }
+//        }
+//
+//        return ExcelUtil.list2ExcelFile(userInfoBOList,null,title);
+//    }
+
+    /**
+     * 通过报名信息id查找报名记录,返回Excel文件地址
+     *
+     * @param activityEntryId
      * @return
      */
     @Override
-    public ActivityEntryList activityEntryQuery(ActivityEntryQueryRequest request, String userID){
+    public List<UserInfoBO> getActivityEntryRecordUserInfoFileByActivityEntryId(String activityEntryId) {
+        List<ActivityEntryRecordBO> activityEntryRecordBOList = activityEntryRecordRepoService.findAllByActivityEntryId(activityEntryId);
+        AssertUtil.assertTrue( !activityEntryRecordBOList.isEmpty(),"无报名记录");
+
+        List<UserInfoBO> userInfoBOList = new ArrayList<>();
+        for (ActivityEntryRecordBO activityEntryRecordBO:activityEntryRecordBOList) {
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(activityEntryRecordBO.getUserId());
+            if(userInfoBO == null) {
+                UserInfoBO newuserInfoBO  = new UserInfoBO();
+                newuserInfoBO.setStuId(activityEntryRecordBO.getUserId());
+                userInfoBOList.add(newuserInfoBO);
+            }else {
+                userInfoBOList.add(userInfoBO);
+            }
+        }
+        return userInfoBOList;
+    }
+
+
+    /**
+     * 获取报名信息title
+     * @param activityEntryId
+     * @return
+     */
+    @Override
+    public String getActivityEntryTitle(String activityEntryId) {
+        return activityEntryRepoService.findByActivityEntryId(activityEntryId).getTitle();
+    }
+
+    /**
+     * 获取报名信息
+     * @param request;
+     * @param userID;
+     * @return ActivityEntryList;
+     */
+    @Override
+    public ActivityEntryList activityEntryQuery(ActivityEntryRequest request, String userID){
 
         //默认值 学期不限 状态不限 类型不限 第0页 每页五条
         String term="";
@@ -89,7 +176,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             long seconds = (activityEntryBO.getStart().getTime() - new Date().getTime())/1000;
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
 
-            String status = "";
+            String status;
             //状态转换
             {
                 status = "0";
@@ -109,11 +196,15 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
                         status = "2";  //报名中
                     }
                 }
-
-                if (ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState())) {
+                if (new Date().after(activityEntryBO.getEnd())) {
                     status = "5";            //已结束
-                } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
-                    status = "6";            //已取消
+                    if (!ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState()) &&
+                            !ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
+                        activityEntryBO.setState(ActivityEntryStateEnum.FINISHED.getCode());
+                        activityEntryRepoService.updateActivityEntryByActivityEntryId(activityEntryBO);
+                    } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
+                        status = "6";            //已取消
+                    }
                 }
             }
 
@@ -187,17 +278,14 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 //    }
 
 
-
-
-
     /**
      * 获取已报名状态的报名信息
-     * @param request
-     * @param userID
-     * @return
+     * @param request;
+     * @param userID;
+     * @return ActivityEntryList;
      */
     @Override
-    public ActivityEntryList registeredActivityEntryQuery(ActivityEntryQueryRequest request, String userID) {
+    public ActivityEntryList registeredActivityEntryQuery(ActivityEntryRequest request, String userID) {
         //默认值 学期不限  类型不限
         String term="";
         String type="";
@@ -226,7 +314,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
             long seconds = (activityEntryBO.getStart().getTime() - new Date().getTime())/1000;
 
-            String status = status = "3";  //默认已报名
+            String status = "3";  //默认已报名
             if (ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState())) {
                 status = "5";            //已结束
             } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
@@ -256,6 +344,66 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
         return new ActivityEntryList(totalElements,1,Integer.valueOf(""+totalElements),
                 0,Integer.valueOf(""+totalElements) ,true,true,newList);
     }
+
+    /**
+     * 创建报名
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityEntryBO createActivityEntry(ActivityEntryRequest request) {
+        if (request.getStart() == null) {
+            request.setStart(0L);
+        }
+        if (request.getEnd() == null) {
+            request.setEnd(0L);
+        }
+        ActivityEntryBOBuilder builder = ActivityEntryBOBuilder.getInstance()
+                .withActivityEntryId(request.getActivityEntryId())
+                .withActivityId(request.getActivityId())
+                .withType(activityRepoService.queryActivityByActivityId(request.getActivityId()).getType())
+                .withTerm(activityRepoService.queryActivityByActivityId(request.getActivityId()).getTerm())
+                .withState(ActivityEntryStateEnum.APPROVED.getCode())
+                .withTitle(request.getTitle())
+                .withNumber(request.getNumber())
+                .withLinkman(request.getLinkman())
+                .withContact(request.getContact())
+                .withStart(new Date(request.getStart()))
+                .withEnd(new Date(request.getEnd()))
+                .withChoose(request.getChoose())
+                .withTop(request.getTop())
+                .withNote(request.getNote())
+                .withExtInfo(request.getExtInfo());
+        return activityEntryRepoService.createActivityEntry(builder.build());
+    }
+
+    /**
+     * 活动报名
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public synchronized ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordRequest request) {
+        ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
+        AssertUtil.assertNotNull(activityEntryBO,"报名信息id不存在");
+        if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(request.getActivityEntryId())) {
+            return null;
+        }else{
+            ActivityEntryRecordBOBuilder builder = ActivityEntryRecordBOBuilder.getInstance()
+                    .withActivityEntryRecordId(request.getActivityEntryRecordId())
+                    .withActivityEntryId(request.getActivityEntryId())
+                    .withUserId(request.getUserId())
+                    .withAttend(request.getAttend())
+                    .withNote(request.getNote())
+                    .withChoose(request.getChoose())
+                    .withExtInfo(request.getExtInfo());
+            return activityEntryRecordRepoService.createActivityEntryRecord(builder.build());
+        }
+    }
+
+
 
 
 }

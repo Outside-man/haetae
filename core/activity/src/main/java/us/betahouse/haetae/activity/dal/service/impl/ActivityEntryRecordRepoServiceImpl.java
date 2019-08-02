@@ -1,11 +1,13 @@
 package us.betahouse.haetae.activity.dal.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.activity.dal.model.ActivityEntryRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityEntryRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRecordRepoService;
+import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
 import us.betahouse.util.utils.CollectionUtils;
 
@@ -25,6 +27,12 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
 
     @Autowired
     private ActivityEntryRecordDORepo activityEntryRecordDORepo;
+
+    /**
+     * id工厂
+     */
+    @Autowired
+    private BizIdFactory activityBizFactory;
 
     /**
      * 通过用户id查找报名记录
@@ -63,6 +71,19 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
         return convert(activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryId,userId));
     }
 
+    /**
+     * 新增报名记录
+     *
+     * @param activityEntryRecordBO
+     * @return
+     */
+    @Override
+    public ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordBO activityEntryRecordBO) {
+        if (StringUtils.isBlank(activityEntryRecordBO.getActivityEntryRecordId())) {
+            activityEntryRecordBO.setActivityEntryRecordId(activityBizFactory.getActivityEntryRecordId());
+        }
+        return convert(activityEntryRecordDORepo.save(convert(activityEntryRecordBO)));
+    }
 
 
     /**
@@ -94,5 +115,26 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
         activityEntryRecordBO.setChoose(activityEntryRecordDO.getChoose());
         activityEntryRecordBO.setExtInfo(JSON.parseObject(activityEntryRecordDO.getExtInfo(), Map.class));
         return activityEntryRecordBO;
+    }
+
+    /**
+     * 报名记录BO2DO
+     *
+     * @param activityEntryRecordBO
+     * @return
+     */
+    private ActivityEntryRecordDO convert(ActivityEntryRecordBO activityEntryRecordBO) {
+        if (activityEntryRecordBO == null) {
+            return null;
+        }
+        ActivityEntryRecordDO activityEntryRecordDO = new ActivityEntryRecordDO();
+        activityEntryRecordDO.setActivityEntryRecordId(activityEntryRecordBO.getActivityEntryRecordId());
+        activityEntryRecordDO.setActivityEntryId(activityEntryRecordBO.getActivityEntryId());
+        activityEntryRecordDO.setUserId(activityEntryRecordBO.getUserId());
+        activityEntryRecordDO.setAttend(activityEntryRecordBO.getAttend());
+        activityEntryRecordDO.setNote(activityEntryRecordBO.getNote());
+        activityEntryRecordDO.setChoose(activityEntryRecordBO.getChoose());
+        activityEntryRecordDO.setExtInfo(JSON.toJSONString(activityEntryRecordBO.getExtInfo()));
+        return activityEntryRecordDO;
     }
 }

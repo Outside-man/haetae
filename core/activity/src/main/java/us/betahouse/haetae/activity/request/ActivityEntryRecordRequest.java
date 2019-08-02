@@ -1,20 +1,15 @@
-package us.betahouse.haetae.activity.model.basic;
-
-import us.betahouse.util.common.ToString;
+package us.betahouse.haetae.activity.request;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 活动报名记录领域对象
- *
  * @author zjb
- * @version : ActivityEntryRecordBO.java 2019/7/7 15:40 zjb
+ * @version : ActivityEntryRecordRequest.java 2019/8/1 12:54 zjb
  */
-public class ActivityEntryRecordBO extends ToString {
+public class ActivityEntryRecordRequest extends BaseRequest{
 
-
-    private static final long serialVersionUID = -2348173932566634278L;
+    private static final long serialVersionUID = -1874954318001026716L;
     /**
      * 报名记录id
      */
@@ -44,26 +39,6 @@ public class ActivityEntryRecordBO extends ToString {
      * 报名选项(预留)
      */
     private String choose;
-
-    /**
-     * 拓展信息
-     */
-    private Map<String, String> extInfo = new HashMap<>();
-
-    public String fetchExtInfo(String key) {
-        if (extInfo == null) {
-            return null;
-        }
-        return extInfo.get(key);
-    }
-
-    public void putExtInfo(String key, String value) {
-        if (extInfo == null) {
-            extInfo = new HashMap<>();
-        }
-        extInfo.put(key, value);
-    }
-
 
     public String getActivityEntryRecordId() {
         return activityEntryRecordId;
@@ -111,13 +86,5 @@ public class ActivityEntryRecordBO extends ToString {
 
     public void setChoose(String choose) {
         this.choose = choose;
-    }
-
-    public Map<String, String> getExtInfo() {
-        return extInfo;
-    }
-
-    public void setExtInfo(Map<String, String> extInfo) {
-        this.extInfo = extInfo;
     }
 }

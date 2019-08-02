@@ -37,5 +37,18 @@ public interface BizIdFactory {
      */
     String getPositionRecordId();
 
+
     String getPastActivityId();
+
+    /**
+     * 生成活动报名信息id
+     * @return
+     */
+    String getActivityEntryId();
+
+    /**
+     * 生成活动报名记录id
+     * @return
+     */
+    String getActivityEntryRecordId();
 }

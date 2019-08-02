@@ -38,6 +38,14 @@ public interface ActivityEntryRepoService {
     List<ActivityEntryBO> findAllByState(String state);
 
     /**
+     * 通过活动id查找报名信息
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityEntryBO> findAllByActivityId(String activityId);
+
+    /**
      * 通过报名状态查找报名信息并按活动id逆序
      *
      * @param state
@@ -56,5 +64,22 @@ public interface ActivityEntryRepoService {
      * @return PageList<ActivityEntryBO>
      */
     PageList<ActivityEntryBO> queryActivityEntryByTermAndStateAndTypePagerASC(String term, String status, String type, Integer page, Integer limit);
+
+    /**
+     * 创建活动报名信息
+     * @param activityEntryBO;
+     * @return
+     */
+    ActivityEntryBO createActivityEntry(ActivityEntryBO activityEntryBO);
+
+    /**
+     * 更新活动报名信息
+     *
+     * @param activityEntryBO;
+     * @return
+     */
+    ActivityEntryBO updateActivityEntryByActivityEntryId( ActivityEntryBO activityEntryBO);
+
+
 
 }

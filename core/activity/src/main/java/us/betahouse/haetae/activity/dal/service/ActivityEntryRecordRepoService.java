@@ -43,4 +43,12 @@ public interface ActivityEntryRecordRepoService {
      * @return
      */
     Long countByActivityEntryId(String activityEntryId);
+
+    /**
+     * 新增报名记录
+     *
+     * @param activityEntryRecordBO
+     * @return
+     */
+    ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordBO activityEntryRecordBO);
 }
