@@ -7,6 +7,7 @@ package us.betahouse.haetae.serviceimpl.activity.manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import us.betahouse.haetae.activity.dal.service.ActivityEntryRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
@@ -34,6 +35,9 @@ public class StampManager {
 
     @Autowired
     private ActivityRepoService activityRepoService;
+
+    @Autowired
+    private ActivityEntryRecordRepoService activityEntryRecordRepoService;
 
     /**
      * 章服务
@@ -72,6 +76,10 @@ public class StampManager {
         }
         request.setType(type.getCode());
         stampServices.get(type.getCode()).batchStamp(request, userIds, activityBO);
+        for(String userId:userIds){
+            activityEntryRecordRepoService.attend(activityBO.getActivityId(),userId);
+        }
+
     }
 
     public void setStampServices(Map<String, StampService> stampServices) {

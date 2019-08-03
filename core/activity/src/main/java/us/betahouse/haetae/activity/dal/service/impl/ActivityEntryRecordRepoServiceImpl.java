@@ -2,15 +2,25 @@ package us.betahouse.haetae.activity.dal.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.model.ActivityEntryRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityEntryRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRecordRepoService;
+import us.betahouse.haetae.activity.dal.service.ActivityEntryRepoService;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
+import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.LoggerUtil;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +34,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRepoService {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ActivityEntryRecordRepoServiceImpl.class);
+
+    @Autowired
+    private ActivityEntryRepoService activityEntryRepoService;
 
     @Autowired
     private ActivityEntryRecordDORepo activityEntryRecordDORepo;
@@ -83,6 +98,28 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
             activityEntryRecordBO.setActivityEntryRecordId(activityBizFactory.getActivityEntryRecordId());
         }
         return convert(activityEntryRecordDORepo.save(convert(activityEntryRecordBO)));
+    }
+
+
+    /**
+     * 标记出席
+     *
+     * @param activityId
+     * @return
+     */
+    @Override
+    @Transactional
+    public List<ActivityEntryRecordBO> attend(String userId,String activityId) {
+        List<ActivityEntryRecordBO> activityEntryRecordBOList = new ArrayList<>();
+        for(ActivityEntryBO activityEntryBO:activityEntryRepoService.findAllByActivityId(activityId)){
+            ActivityEntryRecordDO activityEntryRecordDO =activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryBO.getActivityEntryId(),userId);
+            if (activityEntryRecordDO != null) {
+                activityEntryRecordDO.setAttend(true);
+                activityEntryRecordBOList.add(convert(activityEntryRecordDORepo.save(activityEntryRecordDO)));
+            }
+
+        }
+        return activityEntryRecordBOList;
     }
 
 

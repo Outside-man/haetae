@@ -44,6 +44,7 @@ public interface ActivityEntryRecordRepoService {
      */
     Long countByActivityEntryId(String activityEntryId);
 
+
     /**
      * 新增报名记录
      *
@@ -51,4 +52,13 @@ public interface ActivityEntryRecordRepoService {
      * @return
      */
     ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordBO activityEntryRecordBO);
+
+    /**
+     * 标记出席
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityEntryRecordBO> attend(String userId,String activityId);
+
 }
