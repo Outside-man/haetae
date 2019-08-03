@@ -8,10 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import us.betahouse.haetae.activity.enums.ActivityEntryStateEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.activity.request.ActivityEntryRequest;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -34,6 +32,7 @@ import us.betahouse.util.utils.ExcelUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -162,6 +161,50 @@ public class ActivityEntryController {
 
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             return new ResponseEntity<byte[]>(excel.getBytes(), headers, HttpStatus.OK);
+    }
+
+
+    /**
+     * 更新报名信息
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @PutMapping
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityEntryBO> update(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "操作活动", request, new RestOperateCallBack<ActivityEntryBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名信息id不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+//                AssertUtil.assertStringNotBlank(request.getOperation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "操作不能为空");
+            }
+
+            @Override
+            public Result<ActivityEntryBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityEntryRequest activityEntryRequest = ActivityEntryRequestBuilder.anActivityEntryRequest()
+                        .withActivityEntryId(request.getActivityEntryId())
+                        .withState(request.getState())
+                        .withTitle(request.getTitle())
+                        .withNumber(request.getNumber())
+                        .withLinkman(request.getLinkman())
+                        .withContact(request.getContact())
+                        .withStart(request.getStart())
+                        .withEnd(request.getEnd())
+                        .withChoose(request.getChoose())
+                        .withTop(request.getTop())
+                        .withNote(request.getNote())
+                        .build();
+                ActivityEntryBO activityEntryBO = activityEntryService.updateActivityEntry(activityEntryRequest);
+                return RestResultUtil.buildSuccessResult(activityEntryBO, "报名信息更新成功");
+            }
+        });
     }
 
 }

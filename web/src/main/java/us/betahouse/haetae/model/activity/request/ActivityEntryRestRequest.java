@@ -19,6 +19,7 @@ public class ActivityEntryRestRequest extends RestRequest {
 
     /**
      * 报名状态
+     * @see us.betahouse.haetae.activity.enums.ActivityEntryStateEnum
      */
     private String state;
 

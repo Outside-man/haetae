@@ -151,8 +151,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             term=request.getTerm();
         }
         if(StringUtils.isNotBlank(request.getState())){
-            ActivityEntryStateEnum aese = ActivityEntryStateEnum.getByCode(request.getState());
-            AssertUtil.assertNotNull(aese, "报名状态不存在");
+            AssertUtil.assertNotNull(ActivityEntryStateEnum.getByCode(request.getState()), "报名状态不存在");
             state=request.getState();
         }
         if(StringUtils.isNotBlank(request.getType())){
@@ -376,6 +375,34 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
                 .withNote(request.getNote())
                 .withExtInfo(request.getExtInfo());
         return activityEntryRepoService.createActivityEntry(builder.build());
+    }
+
+    /**
+     * 更新报名信息
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityEntryBO updateActivityEntry(ActivityEntryRequest request) {
+        ActivityEntryBO activityEntryBO =activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
+        AssertUtil.assertTrue((activityEntryBO.getState() == ActivityEntryStateEnum.APPROVED.getCode()),"当前状态不允许更新信息");
+        if(StringUtils.isNotBlank(request.getState())){
+            AssertUtil.assertNotNull(ActivityEntryStateEnum.getByCode(request.getState()), "报名状态不存在");
+        }
+        ActivityEntryBOBuilder builder = ActivityEntryBOBuilder.getInstance()
+                .withActivityEntryId(request.getActivityEntryId())
+                .withState(request.getState())
+                .withTitle(request.getTitle())
+                .withNumber(request.getNumber())
+                .withLinkman(request.getLinkman())
+                .withContact(request.getContact())
+                .withStart(new Date(request.getStart()))
+                .withEnd(new Date(request.getEnd()))
+                .withChoose(request.getChoose())
+                .withTop(request.getTop())
+                .withNote(request.getNote())
+                .withExtInfo(request.getExtInfo());
+        return activityEntryRepoService.updateActivityEntryByActivityEntryId(builder.build());
     }
 
     /**

@@ -66,12 +66,19 @@ public interface ActivityEntryService {
     ActivityEntryList registeredActivityEntryQuery(ActivityEntryRequest request, String userID);
 
     /**
-     * 创建报名
+     * 创建报名信息
      *
      * @param request
      * @return
      */
     ActivityEntryBO createActivityEntry(ActivityEntryRequest request);
+
+    /**
+     * 更新报名信息
+     * @param request
+     * @return
+     */
+    ActivityEntryBO updateActivityEntry(ActivityEntryRequest request);
 
     /**
      * 活动报名
