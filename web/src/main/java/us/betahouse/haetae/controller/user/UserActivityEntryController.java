@@ -48,7 +48,7 @@ public class UserActivityEntryController {
     @Autowired
     private ActivityEntryService activityEntryService;
 
-//    @CheckLogin
+    @CheckLogin
     @GetMapping("/registeredActivityEntry")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityEntryList> queryUserRegisteredActivityEntry(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
@@ -56,7 +56,7 @@ public class UserActivityEntryController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-//                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
             }
 
             @Override
@@ -84,7 +84,7 @@ public class UserActivityEntryController {
      * @param httpServletRequest
      * @return
      */
-//    @CheckLogin
+    @CheckLogin
     @PostMapping("/signUp")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityEntryRecordBO> signUp(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
@@ -92,7 +92,7 @@ public class UserActivityEntryController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-//                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名信息id不能为空");
             }
 

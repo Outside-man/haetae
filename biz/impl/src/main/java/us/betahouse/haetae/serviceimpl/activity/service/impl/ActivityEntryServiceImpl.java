@@ -113,7 +113,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
         List<UserInfoBO> userInfoBOList = new ArrayList<>();
         for (ActivityEntryRecordBO activityEntryRecordBO:activityEntryRecordBOList) {
-            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(activityEntryRecordBO.getUserId());
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByUserId(activityEntryRecordBO.getUserId());
             if(userInfoBO == null) {
                 UserInfoBO newuserInfoBO  = new UserInfoBO();
                 newuserInfoBO.setStuId(activityEntryRecordBO.getUserId());
@@ -357,6 +357,9 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      */
     @Override
     public ActivityEntryBO createActivityEntry(ActivityEntryRequest request) {
+        if (StringUtils.isBlank(request.getTitle() )) {
+            request.setTitle(activityRepoService.queryActivityByActivityId(request.getActivityId()).getActivityName());
+        }
         if (request.getStart() == null) {
             request.setStart(0L);
         }
