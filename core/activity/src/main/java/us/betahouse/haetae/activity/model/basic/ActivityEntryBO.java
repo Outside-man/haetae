@@ -1,5 +1,6 @@
 package us.betahouse.haetae.activity.model.basic;
 
+import org.apache.commons.lang.StringUtils;
 import us.betahouse.haetae.activity.enums.ActivityEntryStateEnum;
 import us.betahouse.util.common.ToString;
 
@@ -106,6 +107,18 @@ public class ActivityEntryBO extends ToString {
             extInfo = new HashMap<>();
         }
         extInfo.put(key, value);
+    }
+
+    /**
+     * 判断是否可以结束
+     *
+     * @return
+     */
+    public boolean canFinish() {
+        if(StringUtils.equals(state, ActivityEntryStateEnum.PUBLISHED.getCode()) && end.before(new Date())) {
+            return true;
+        }
+        return false;
     }
 
     public static long getSerialVersionUID() {

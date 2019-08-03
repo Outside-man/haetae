@@ -36,6 +36,11 @@ import java.util.stream.Collectors;
 @Service
 public class ActivityEntryServiceImpl implements ActivityEntryService {
 
+    /**
+     * 系统结束标志
+     */
+    private final static String SYSTEM_FINISH_SIGN = "systemFinish";
+
     @Autowired
     private ActivityEntryRepoService activityEntryRepoService;
 
@@ -431,6 +436,24 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
     }
 
 
+    /**
+     * 结束可以结束的活动
+     *
+     * @return
+     */
+    @Override
+    public List<ActivityEntryBO> systemFinishActivityEntry() {
+        List<ActivityEntryBO> activityEntryBOList = activityEntryRepoService.findAllByState(ActivityEntryStateEnum.PUBLISHED.getCode());
+        List<ActivityEntryBO> systemFinishActivityEntries = new ArrayList<>();
+        for (ActivityEntryBO activityEntryBO : activityEntryBOList) {
+            if (activityEntryBO.canFinish()) {
+                activityEntryBO.setState(ActivityEntryStateEnum.FINISHED.getCode());
+                activityEntryBO.putExtInfo(SYSTEM_FINISH_SIGN, SYSTEM_FINISH_SIGN);
+                systemFinishActivityEntries.add(activityEntryRepoService.updateActivityEntryByActivityEntryId(activityEntryBO));
+            }
+        }
+        return systemFinishActivityEntries;
+    }
 
 
 }

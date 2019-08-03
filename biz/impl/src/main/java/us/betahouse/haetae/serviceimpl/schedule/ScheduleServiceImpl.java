@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntry;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
@@ -30,6 +33,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private ActivityEntryService activityEntryService;
+
     /**
      * 结束活动
      */
@@ -39,6 +45,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<ActivityBO> finishActivities = activityService.systemFinishActivity();
         if (!CollectionUtils.isEmpty(finishActivities)) {
             LoggerUtil.info(LOGGER, "系统结束活动, activities={0}", finishActivities);
+        }
+    }
+
+
+    /**
+     * 结束报名
+     */
+    @Override
+    @Scheduled(cron = ScheduleConstant.AM_TWO_OF_THE_CLOCK)
+    public void finishActivityEntries() {
+        List<ActivityEntryBO> finishActivityEntryList = activityEntryService.systemFinishActivityEntry();
+        if (!CollectionUtils.isEmpty(finishActivityEntryList)) {
+            LoggerUtil.info(LOGGER, "系统结束报名, activityEntries={0}", finishActivityEntryList);
         }
     }
 }

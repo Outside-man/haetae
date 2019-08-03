@@ -87,4 +87,11 @@ public interface ActivityEntryService {
      * @return
      */
     ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordRequest request);
+
+    /**
+     * 结束可以结束的报名
+     *
+     * @return
+     */
+    List<ActivityEntryBO> systemFinishActivityEntry();
 }
