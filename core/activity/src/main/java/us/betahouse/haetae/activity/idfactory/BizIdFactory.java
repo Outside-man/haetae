@@ -51,4 +51,10 @@ public interface BizIdFactory {
      * @return
      */
     String getActivityEntryRecordId();
+
+    /**
+     * 生成活动黑名单id
+     * @return
+     */
+    String getActivityBlacklistId();
 }

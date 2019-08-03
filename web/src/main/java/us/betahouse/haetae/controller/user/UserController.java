@@ -16,6 +16,7 @@ import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.converter.UserVOConverter;
 import us.betahouse.haetae.model.user.request.UserRequest;
 import us.betahouse.haetae.model.user.vo.UserVO;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityBlacklistService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
@@ -49,6 +50,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ActivityBlacklistService activityBlacklistService;
 
     /**
      * 登陆
@@ -166,6 +170,34 @@ public class UserController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 UserVO userVO = UserVOConverter.convert(userService.fetchUser(builder.build(), context));
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
+            }
+        });
+    }
+
+
+    /**
+     * 获取信用分
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @GetMapping
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<Long> getCreditScore(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取信用分", request, new RestOperateCallBack<Long>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<Long> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                return RestResultUtil.buildSuccessResult(activityBlacklistService.getCreditScoreByUserIdAndTerm(request.getUserId(),request.getTerm()), "查询信用分成功");
             }
         });
     }

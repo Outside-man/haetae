@@ -57,6 +57,11 @@ public class UserRequest extends RestRequest {
      */
     private String grade;
 
+    /**
+     * 学期
+     */
+    private String term;
+
     public String getUsername() {
         return username;
     }
@@ -119,5 +124,13 @@ public class UserRequest extends RestRequest {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
     }
 }

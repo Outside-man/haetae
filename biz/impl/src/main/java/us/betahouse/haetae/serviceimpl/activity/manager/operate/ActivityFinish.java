@@ -7,6 +7,7 @@ package us.betahouse.haetae.serviceimpl.activity.manager.operate;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.activity.dal.service.ActivityBlacklistRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
@@ -35,6 +36,9 @@ public class ActivityFinish extends CommonActivityOperate {
 
     @Autowired
     private PermManager permManager;
+
+    @Autowired
+    private ActivityBlacklistRepoService activityBlacklistRepoService;
 
     @Override
     protected boolean canOperate(ActivityBO activityBO) {
@@ -95,6 +99,7 @@ public class ActivityFinish extends CommonActivityOperate {
             // 保留两个权限 其他都移除
             permManager.batchUsersUnbindPerms(buildUnbindRequest(activityPermId, CollectionUtils.subSuffixList(userIds, 2)));
         }
+        activityBlacklistRepoService.addBlacklistByActivityId(activityBO.getActivityId());
         return activityRepoService.updateActivity(activityBO);
     }
 
