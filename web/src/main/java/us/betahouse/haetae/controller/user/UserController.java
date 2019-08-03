@@ -182,7 +182,7 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
-    @GetMapping
+    @GetMapping("/creditScore")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<Long> getCreditScore(UserRequest request, HttpServletRequest httpServletRequest) {
