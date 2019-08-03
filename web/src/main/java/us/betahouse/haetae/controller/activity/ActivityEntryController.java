@@ -171,7 +171,7 @@ public class ActivityEntryController {
      * @param httpServletRequest
      * @return
      */
-    @CheckLogin
+//    @CheckLogin
     @PutMapping
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityEntryBO> update(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {

@@ -389,8 +389,16 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      */
     @Override
     public ActivityEntryBO updateActivityEntry(ActivityEntryRequest request) {
-        ActivityEntryBO activityEntryBO =activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
-        AssertUtil.assertTrue((activityEntryBO.getState() == ActivityEntryStateEnum.APPROVED.getCode()),"当前状态不允许更新信息");
+        ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
+        AssertUtil.assertNotNull(activityEntryBO, "报名信息不存在");
+        //发布报名  发布的同时不能修改报名信息
+        if(activityEntryBO.getState() == ActivityEntryStateEnum.APPROVED.getCode()||request.getState() == ActivityEntryStateEnum.PUBLISHED.getCode()){
+            activityEntryBO.setState(ActivityEntryStateEnum.PUBLISHED.getCode());
+            return activityEntryRepoService.updateActivityEntryByActivityEntryId(activityEntryBO);
+        }
+
+        //只有发布前可以修改报名信息
+        AssertUtil.assertTrue((activityEntryBO.getState() == ActivityEntryStateEnum.APPROVED.getCode()),"当前状态不允许更新报名信息");
         if(StringUtils.isNotBlank(request.getState())){
             AssertUtil.assertNotNull(ActivityEntryStateEnum.getByCode(request.getState()), "报名状态不存在");
         }
