@@ -5,8 +5,12 @@
 package us.betahouse.haetae.serviceimpl.user.service;
 
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.user.request.RoleRequest;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
 import us.betahouse.haetae.user.request.RoleManageRequest;
+
+import java.util.List;
 
 /**
  * 角色服务
@@ -15,6 +19,14 @@ import us.betahouse.haetae.user.request.RoleManageRequest;
  * @version : RoleService.java 2018/11/23 10:30 AM dango.yxm
  */
 public interface RoleService {
+
+
+    /**
+     * 获取所有用户角色
+     *
+     * @return
+     */
+    List<RoleBO> findAllRole();
 
     /**
      * 创建角色
@@ -32,7 +44,7 @@ public interface RoleService {
      * @param context
      * @return
      */
-    void bindUsers(RoleManageRequest request, OperateContext context);
+    void bindUsers(RoleRequest request, OperateContext context);
 
     /**
      * 解绑用户
@@ -41,6 +53,13 @@ public interface RoleService {
      * @param context
      * @return
      */
-    void unbindUsers(RoleManageRequest request, OperateContext context);
+    void unbindUsers(RoleRequest request, OperateContext context);
+
+
+    /**
+     * 获取所有用户以及所有用户的角色
+     * @return
+     */
+    List<UserRoleRelationBO> findAllUserRelationRole();
 
 }

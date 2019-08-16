@@ -38,6 +38,16 @@ public class UserRoleRelationBO extends ToString {
     private String roleId;
 
     /**
+     * 用户名字
+     */
+    private String userNama;
+
+    /**
+     * 角色名字
+     */
+    private String roleName;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -72,5 +82,21 @@ public class UserRoleRelationBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getUserNama() {
+        return userNama;
+    }
+
+    public void setUserNama(String userNama) {
+        this.userNama = userNama;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

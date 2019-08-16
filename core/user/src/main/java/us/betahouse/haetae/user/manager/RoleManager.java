@@ -7,6 +7,8 @@ package us.betahouse.haetae.user.manager;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.request.RoleManageRequest;
 
+import java.util.List;
+
 /**
  * 角色管理器
  *
@@ -51,4 +53,11 @@ public interface RoleManager {
      * @param request
      */
     void batchUsersUnbindRole(RoleManageRequest request);
+
+    /**
+     * 获取所有角色信息
+     *
+     * @return
+     */
+    List<RoleBO> findAllRole();
 }

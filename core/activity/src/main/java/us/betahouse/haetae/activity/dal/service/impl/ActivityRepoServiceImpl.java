@@ -76,6 +76,15 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ActivityBO> findFirst10OrOrderByStart() {
+        List<ActivityDO> activityDOList =activityDORepo.findFirst10OrOrderByStart();
+        return CollectionUtils.toStream(activityDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 通过类型查询活动
      *

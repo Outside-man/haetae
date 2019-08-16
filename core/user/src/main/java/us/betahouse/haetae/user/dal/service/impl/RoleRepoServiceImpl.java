@@ -254,4 +254,13 @@ public class RoleRepoServiceImpl implements RoleRepoService {
         }
         return EntityConverter.convert(roleDO);
     }
+
+    @Override
+    public List<RoleBO> findAllRole() {
+        List<RoleDO> roledos=roleDORepo.findAll();
+        return CollectionUtils.toStream(roledos)
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert)
+                .collect(Collectors.toList());
+    }
 }

@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
@@ -32,6 +33,12 @@ public interface ActivityRepoService {
      */
     List<ActivityBO> queryActivitiesByState(String state);
 
+    /**
+     * 查询最近十个活动
+     *
+     * @return
+     */
+    List<ActivityBO> findFirst10OrOrderByStart();
     /**
      * 通过类型查询活动
      *
