@@ -58,27 +58,27 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!--docker打包插件-->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>nathandai1998/haetae-docker</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
-            </plugin>
+            <!--&lt;!&ndash;docker打包插件&ndash;&gt;-->
+            <!--<plugin>-->
+                <!--<groupId>com.spotify</groupId>-->
+                <!--<artifactId>dockerfile-maven-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>default</id>-->
+                        <!--<goals>-->
+                            <!--<goal>build</goal>-->
+                            <!--<goal>push</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<repository>nathandai1998/haetae-docker</repository>-->
+                    <!--<tag>${project.version}</tag>-->
+                    <!--<buildArgs>-->
+                        <!--<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>-->
+                    <!--</buildArgs>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

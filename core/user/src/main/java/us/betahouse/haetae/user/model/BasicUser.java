@@ -7,6 +7,8 @@ package us.betahouse.haetae.user.model;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.common.ToString;
 
+import java.util.List;
+
 /**
  * 基础用户模型
  *
@@ -26,6 +28,8 @@ public class BasicUser extends ToString {
      * 登陆凭证
      */
     private String token;
+
+//    private List<TripartiteLoginBO>
 
     /**
      * 用户信息

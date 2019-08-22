@@ -44,8 +44,9 @@ import java.util.List;
  * @author dango.yxm
  * @version : ActivityStampController.java 2018/11/25 3:28 PM dango.yxm
  */
-@RequestMapping(value = "/activityStamp")
+@CrossOrigin
 @RestController
+@RequestMapping(value = "/activityStamp")
 public class ActivityStampController {
 
     @Autowired

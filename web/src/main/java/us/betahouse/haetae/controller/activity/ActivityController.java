@@ -44,6 +44,7 @@ import java.util.List;
  * @author MessiahJK
  * @version : ActivityController.java 2018/11/25 13:16 MessiahJK
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/activity")
 public class ActivityController {

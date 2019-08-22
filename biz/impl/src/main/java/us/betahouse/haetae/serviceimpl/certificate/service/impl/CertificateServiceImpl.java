@@ -4,11 +4,9 @@
  */
 package us.betahouse.haetae.serviceimpl.certificate.service.impl;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 import us.betahouse.haetae.certificate.dal.service.CompetitionRepoService;
 import us.betahouse.haetae.certificate.dal.service.QualificationsRepoService;
 import us.betahouse.haetae.certificate.dal.service.SkillRepoService;
@@ -33,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 证书服务实现

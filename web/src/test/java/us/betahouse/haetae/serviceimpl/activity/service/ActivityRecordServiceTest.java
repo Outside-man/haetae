@@ -54,7 +54,7 @@ public class ActivityRecordServiceTest {
     private ActivityRepoService activityRepoService;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\5.26数据导入(1).csv";
+        String url = "C:\\Users\\j10k\\Desktop\\6.28数据导入.csv";
 
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
@@ -118,7 +118,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importCXJC(){
-        String url = "C:\\Users\\j10k\\Desktop\\5.18初心剧场后台导入名单.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\初心剧场考核章导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -134,7 +134,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importLastPartyRecord(){
-        String url =  "C:\\Users\\j10k\\Desktop\\2017-2018学年第二学期考核卡盖章情况汇总.csv";
+        String url =  "C:\\Users\\j10k\\Desktop\\2017B、2018A、2018B考核卡(1).csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -143,6 +143,7 @@ public class ActivityRecordServiceTest {
             activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             activityRecordDO.setScannerUserId("201812010040554783180001201835");
             activityRecordDO.setType(ActivityTypeEnum.PARTY_ACTIVITY.getCode());
+            activityRecordDO.setTime(0);
             activityRecordDO.setStatus("ENABLE");
             activityRecordDO.setTerm(csv[i][3]);
             activityRecordDORepo.save(activityRecordDO);
@@ -151,7 +152,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importOneHour(){
-        String url =  "C:\\Users\\j10k\\Desktop\\交换一小时.csv";
+        String url =  "C:\\Users\\j10k\\Desktop\\交换一小时考核章导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -169,7 +170,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\2019“三位一体”志愿活动.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019暑期社会实践出征仪式志愿.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -252,7 +253,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\2018-2019学年第一学期考核卡盖章情况.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\6.28数据导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {
@@ -312,7 +313,7 @@ public class ActivityRecordServiceTest {
         String temp4="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((H{0}>7),(F{0}+K{0})<8),AND((F{0}<8),(H{0}<8),(F{0}+K{0})<8,(H{0}+K{0})>7),AND((H{0}+K{0})<8,(F{0}+K{0})<8)),8-F{0}-K{0},0))";
         String temp5="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((F{0}>7),(H{0}+K{0})<8),AND((H{0}<8),(F{0}<8),(F{0}+K{0})<8,(F{0}+K{0})>7),AND((F{0}+K{0})<8,(H{0}+K{0})<8)),8-H{0}-K{0},0))";
         String temp6="=IF((M{0}+N{0})<(16-L{0}),(16-L{0}),(M{0}+N{0}))";
-        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出12.csv", ',', Charset.forName("GBK"));
+        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\小方喵喵喵.csv", ',', Charset.forName("GBK"));
         String[] headers ={"学号", "姓名","专业","年级","班级","讲座(实际)","讲座活动次数","校园活动(实际)","校园活动次数","社会实践次数","尚未分配活动章","总章数","最少讲座章","最少活动章","最少总章数"};
 
 

@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
@@ -40,14 +41,16 @@ public class ActivityServiceTest {
         activityService.initPastActivity();
     }
 
+    //@Transactional
     @Test
     public void initPastActivityRecord(){
-        String url = "C:\\Users\\j10k\\Desktop\\16数据修改2.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\17级数据修改.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         PastActivityBO pastActivityBO;
         ActivityRequest activityRequest=new ActivityRequest();
         for (int i = 1; i < csv.length; i++) {
             String[] acsv = csv[i];
+            System.out.println(acsv[4]);
             activityRequest.setStuId(acsv[4]);
             pastActivityBO = activityManager.findPast(activityRequest);
             pastActivityBO.setPastLectureActivity(0L);
@@ -55,7 +58,7 @@ public class ActivityServiceTest {
             pastActivityBO.setPastPracticeActivity(Long.valueOf(acsv[7]));
             pastActivityBO.setPastSchoolActivity(0L);
             pastActivityBO.setUndistributedStamp(Long.valueOf(acsv[5]));
-            System.out.println(pastActivityBO);
+            //System.out.println(pastActivityBO);
             activityRepoService.updatePastActivity(pastActivityBO.getUserId(), pastActivityBO);
         }
     }
