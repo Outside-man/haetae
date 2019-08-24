@@ -9,17 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
-import us.betahouse.haetae.serviceimpl.user.request.RoleRequest;
+import us.betahouse.haetae.serviceimpl.user.request.RoleUserPermRequest;
 import us.betahouse.haetae.serviceimpl.user.service.RoleService;
 import us.betahouse.haetae.user.dal.convert.EntityConverter;
-import us.betahouse.haetae.user.dal.model.perm.RoleDO;
 import us.betahouse.haetae.user.dal.model.perm.UserRoleRelationDO;
 import us.betahouse.haetae.user.dal.repo.perm.RoleDORepo;
 import us.betahouse.haetae.user.dal.repo.perm.UserRoleRelationDORepo;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.dal.service.UserRepoService;
 import us.betahouse.haetae.user.manager.RoleManager;
-import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
 import us.betahouse.haetae.user.request.RoleManageRequest;
@@ -40,6 +37,10 @@ import java.util.stream.Collectors;
 @Service
 public class RoleServiceImpl implements RoleService {
 
+    //创建角色 默认role_code
+    private static final String roleCode = "MANAGE_CREATE";
+
+
     @Autowired
     private RoleManager roleManager;
     @Autowired
@@ -55,13 +56,32 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleBO createRole(RoleManageRequest request, OperateContext context) {
-        return roleManager.createRole(request);
+    public RoleBO createRole(RoleUserPermRequest request, OperateContext context) {
+        //创建permBO 判断权限是否存在  useid是否存在
+        RoleManageRequest roleManageRequest = new RoleManageRequest();
+        RoleBO roleBO = new RoleBO();
+        roleBO.setRoleName(request.getRoleName());
+        roleBO.setRoleDesc(request.getRoleDescribe());
+        roleBO.setRoleCode(roleCode);
+        roleManageRequest.setRole(roleBO);
+        if (request.getPermIds() != null) {
+            roleManageRequest.setPermIds(request.getPermIds());
+        }
+        List<String> userIds=new ArrayList<>();
+        if (request.getStuIds() != null) {
+            for (String stuId : request.getStuIds()) {
+                String useId=userInfoRepoService.queryUserInfoByStuId(stuId).getUserId();
+                AssertUtil.assertNotNull(stuId+"学号不存在");
+                userIds.add(useId);
+            }
+            roleManageRequest.setUserIds(userIds);
+        }
+        return roleManager.createRole(roleManageRequest);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void bindUsers(RoleRequest request, OperateContext context) {
+    public void bindUsers(RoleUserPermRequest request, OperateContext context) {
         List<String> useIds = new ArrayList<>();
         List<String> stuids = request.getStuIds();
         //获取useid
@@ -81,15 +101,15 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void unbindUsers(RoleRequest request, OperateContext context) {
+    public void unbindUsers(RoleUserPermRequest request, OperateContext context) {
         List<String> useids = request.getUserIds();
         List<String> stuids = request.getStuIds();
         String userId;
-        if (useids==null && stuids==null) {
+        if (useids == null && stuids == null) {
             AssertUtil.assertNotNull("解绑用户主体不存在");
         }
-        if (useids==null){
-            useids=new ArrayList<String>();
+        if (useids == null) {
+            useids = new ArrayList<String>();
         }
         if (stuids.size() != 0) {
             for (int i = 0; i < stuids.size(); i++) {

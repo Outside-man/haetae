@@ -66,4 +66,5 @@ public interface PermDORepo extends JpaRepository<PermDO, Long> {
      * @param permId
      */
     void deleteByPermId(String permId);
+
 }
