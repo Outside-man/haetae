@@ -215,6 +215,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
             ActivityEntry activityEntry = new ActivityEntry();
             activityEntry.setActivityId(activityEntryBO.getActivityId());
+            activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
             activityEntry.setActivityName(activityBO.getActivityName());
             activityEntry.setActivityType(activityEntryBO.getType());
             activityEntry.setDescription(activityBO.getDescription());
@@ -271,6 +272,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 //
 //        ActivityEntry activityEntry = new ActivityEntry();
 //        activityEntry.setActivityId(activityEntryBO.getActivityId());
+//        activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
 //        activityEntry.setActivityName(activityBO.getActivityName());
 //        activityEntry.setDescription(activityBO.getDescription());
 //        activityEntry.setLocation(activityBO.getLocation());
@@ -328,6 +330,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
             ActivityEntry activityEntry = new ActivityEntry();
             activityEntry.setActivityId(activityEntryBO.getActivityId());
+            activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
             activityEntry.setActivityName(activityBO.getActivityName());
             activityEntry.setActivityType(activityEntryBO.getType());
             activityEntry.setDescription(activityBO.getDescription());

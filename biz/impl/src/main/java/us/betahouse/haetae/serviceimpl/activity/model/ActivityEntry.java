@@ -19,6 +19,11 @@ public class ActivityEntry extends ToString {
     private String activityId;
 
     /**
+     * 活动报名信息id
+     */
+    private String activityEntryId;
+
+    /**
      * 活动名称
      */
     private String activityName;
@@ -122,7 +127,15 @@ public class ActivityEntry extends ToString {
         this.second = second;
     }
 
-    public boolean typeAndStatusAndTermFilter (String type, String status,String term){
+    public String getActivityEntryId() {
+        return activityEntryId;
+    }
+
+    public void setActivityEntryId(String activityEntryId) {
+        this.activityEntryId = activityEntryId;
+    }
+
+    public boolean typeAndStatusAndTermFilter (String type, String status, String term){
         boolean flag = false;
         if("".equals(type) || type == null){
             if( "".equals(status)|| status == null || this.status.equals(status)){
