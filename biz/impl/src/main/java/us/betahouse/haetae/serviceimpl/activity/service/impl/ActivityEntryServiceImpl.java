@@ -74,7 +74,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
     }
 
 //    /**
-//     * 通过报名信息id查找报名记录,返回Excel文件地址
+//     * 通过报名信息id查找报名记录对应用户信息,返回Excel文件地址
 //     *
 //     * @param activityEntryId
 //     * @return
@@ -101,7 +101,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 //    }
 
     /**
-     * 通过报名信息id查找报名记录,返回Excel文件地址
+     * 通过报名信息id查找报名记录对应用户信息
      *
      * @param activityEntryId
      * @return
@@ -451,7 +451,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
 
     /**
-     * 结束可以结束的活动
+     * 结束可以结束的报名
      *
      * @return
      */

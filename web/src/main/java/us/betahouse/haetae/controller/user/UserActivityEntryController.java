@@ -19,9 +19,10 @@ import us.betahouse.haetae.model.activity.request.ActivityEntryRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityEntryRecordRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityEntryRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
-import us.betahouse.haetae.serviceimpl.activity.request.ActivityEntryQueryRequest;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityBlacklistService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -47,6 +48,9 @@ public class UserActivityEntryController {
 
     @Autowired
     private ActivityEntryService activityEntryService;
+
+    @Autowired
+    private ActivityBlacklistService activityBlacklistService;
 
     @CheckLogin
     @GetMapping("/registeredActivityEntry")
@@ -100,6 +104,8 @@ public class UserActivityEntryController {
             public Result<ActivityEntryRecordBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                if( 0 >= activityBlacklistService.getCreditScoreByUserIdAndTerm(request.getUserId(),TermUtil.getNowTerm()))
+                    return RestResultUtil.buildSuccessResult(null, "信用分不足，不允许报名");
                 ActivityEntryRecordRequest activityEntryRecordRequest = ActivityEntryRecordRequestBuilder.anActivityEntryRecordRequest()
                         .withActivityEntryId(request.getActivityEntryId())
                         .withActivityEntryRecordId(request.getActivityEntryRecordId())
