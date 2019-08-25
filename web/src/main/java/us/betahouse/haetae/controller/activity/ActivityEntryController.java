@@ -22,6 +22,7 @@ import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityEntryQueryRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -35,6 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 活动报名信息接口
@@ -102,7 +104,7 @@ public class ActivityEntryController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                 AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
                 AssertUtil.assertStringNotBlank(request.getTitle(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名标题不能为空");
-                AssertUtil.assertTrue(request.getNumber()<=0,  "报名人数不符合要求");
+                AssertUtil.assertTrue(request.getNumber()>0,  "报名人数不符合要求");
                 AssertUtil.assertNotNull(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
                 AssertUtil.assertNotNull(request.getEnd(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动结束时间不能为空");
                 boolean validateTime = new Date(request.getStart()).before(new Date(request.getEnd()));
@@ -137,28 +139,27 @@ public class ActivityEntryController {
      * @param httpServletRequest
      * @return
      */
-    @CheckLogin
+//    @CheckLogin
     @GetMapping(value = "activityEntryRecordFile",produces = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<byte[]> getActivityEntryRecordFileByActivityEntryId(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
 
-            AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-            AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-            AssertUtil.assertStringNotBlank(request.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名信息id不能为空");
+        AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//            AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+        AssertUtil.assertStringNotBlank(request.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名信息id不能为空");
 
-            OperateContext context = new OperateContext();
-            context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+        OperateContext context = new OperateContext();
+        context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+        List<UserInfoBO> x=  activityEntryService.getActivityEntryRecordUserInfoFileByActivityEntryId(request.getActivityEntryId());
+        HSSFWorkbook excel = ExcelUtil.createExcel(x);
+        HttpHeaders headers = new HttpHeaders();
+        try {
+            headers.setContentDispositionFormData("attachment", new String( (activityEntryService.getActivityEntryTitle(request.getActivityEntryId())+ ".xls").getBytes("UTF-8"), "ISO8859-1"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-            HSSFWorkbook excel = ExcelUtil.createExcel(activityEntryService.getActivityEntryRecordUserInfoFileByActivityEntryId(request.getActivityEntryId()));
-            HttpHeaders headers = new HttpHeaders();
-
-            try {
-                headers.setContentDispositionFormData("attachment", new String( (activityEntryService.getActivityEntryTitle(request.getActivityEntryId())+ ".xls").getBytes("UTF-8"), "ISO8859-1"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            return new ResponseEntity<byte[]>(excel.getBytes(), headers, HttpStatus.OK);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        return new ResponseEntity<byte[]>(excel.getBytes(), headers, HttpStatus.OK);
     }
 
 

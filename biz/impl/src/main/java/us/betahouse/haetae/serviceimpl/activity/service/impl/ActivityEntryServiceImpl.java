@@ -360,6 +360,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      */
     @Override
     public ActivityEntryBO createActivityEntry(ActivityEntryRequest request) {
+        AssertUtil.assertTrue(activityEntryRepoService.findAllByActivityId(request.getActivityId())==null,"一个活动只允许发起一次报名");
         if (StringUtils.isBlank(request.getTitle() )) {
             request.setTitle(activityRepoService.queryActivityByActivityId(request.getActivityId()).getActivityName());
         }
@@ -397,14 +398,14 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
     public ActivityEntryBO updateActivityEntry(ActivityEntryRequest request) {
         ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
         AssertUtil.assertNotNull(activityEntryBO, "报名信息不存在");
-        //发布报名  发布的同时不能修改报名信息
-        if(activityEntryBO.getState() == ActivityEntryStateEnum.APPROVED.getCode()||request.getState() == ActivityEntryStateEnum.PUBLISHED.getCode()){
+        //发布报名  发布的同时不能修改其他报名信息,仅可改状态
+        if(activityEntryBO.getState().equals(ActivityEntryStateEnum.APPROVED.getCode()) || request.getState().equals(ActivityEntryStateEnum.PUBLISHED.getCode())){
             activityEntryBO.setState(ActivityEntryStateEnum.PUBLISHED.getCode());
             return activityEntryRepoService.updateActivityEntryByActivityEntryId(activityEntryBO);
         }
 
         //只有发布前可以修改报名信息
-        AssertUtil.assertTrue((activityEntryBO.getState() == ActivityEntryStateEnum.APPROVED.getCode()),"当前状态不允许更新报名信息");
+        AssertUtil.assertTrue((activityEntryBO.getState().equals(ActivityEntryStateEnum.APPROVED.getCode())),"当前状态不允许更新报名信息");
         if(StringUtils.isNotBlank(request.getState())){
             AssertUtil.assertNotNull(ActivityEntryStateEnum.getByCode(request.getState()), "报名状态不存在");
         }
@@ -437,6 +438,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
         if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(request.getActivityEntryId())) {
             return null;
         }else{
+            AssertUtil.assertTrue(activityEntryRecordRepoService.findByActivityEntryIdAndUserId(request.getActivityEntryId(),request.getUserId()) == null,"您已报名");
             ActivityEntryRecordBOBuilder builder = ActivityEntryRecordBOBuilder.getInstance()
                     .withActivityEntryRecordId(request.getActivityEntryRecordId())
                     .withActivityEntryId(request.getActivityEntryId())
