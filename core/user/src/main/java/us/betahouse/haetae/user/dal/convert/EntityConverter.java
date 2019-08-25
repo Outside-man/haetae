@@ -135,6 +135,27 @@ final public class EntityConverter {
         return userInfoBO;
     }
 
+
+    /**
+     * 用户信息保存专业和年级
+     *
+     * @param userInfoDO
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static UserInfoBO majorConvert(UserInfoDO userInfoDO) {
+        if (userInfoDO == null) {
+            return null;
+        }
+        UserInfoBO userInfoBO = new UserInfoBO();
+        userInfoBO.setMajor(userInfoDO.getMajorId());
+        userInfoBO.setGrade(userInfoDO.getGrade());
+        userInfoBO.setEnrollDate(userInfoDO.getEnrollDate());
+        userInfoBO.setExtInfo(JSON.parseObject(userInfoDO.getExtInfo(), Map.class));
+        return userInfoBO;
+    }
+
+
     /**
      * 用户信息 BO2DO
      *

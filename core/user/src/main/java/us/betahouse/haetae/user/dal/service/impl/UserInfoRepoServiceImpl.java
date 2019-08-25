@@ -21,9 +21,7 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -128,5 +126,14 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
                 .filter(Objects::nonNull)
                 .map(EntityConverter::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserInfoBO> queryAllMajorAndGrade() {
+        List<UserInfoBO> userInfoBOS = CollectionUtils.toStream(userInfoDORepo.findAll())
+                .filter(Objects::nonNull)
+                .map(EntityConverter::majorConvert)
+                .collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getGrade() + ";" + o.getMajor()))), ArrayList::new));
+        return userInfoBOS;
     }
 }
