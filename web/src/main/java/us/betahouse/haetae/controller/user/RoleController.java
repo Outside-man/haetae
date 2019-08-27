@@ -36,6 +36,7 @@ import java.util.List;
  * @author guofan.cp
  * @version : RoleController.java 2019/08/16 9:26 guofan.cp
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/role")
 public class RoleController {
