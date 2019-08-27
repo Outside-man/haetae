@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.serviceimpl.user.service.MajorService;
 import us.betahouse.haetae.user.manager.MajorManager;
 import us.betahouse.haetae.user.model.basic.MajorBO;
+import us.betahouse.util.yiban.YibanUtil;
 
 import java.util.List;
 
@@ -20,9 +21,16 @@ import java.util.List;
 public class MajorServiceImpl implements MajorService {
     @Autowired
     private MajorManager majorManager;
+    @Autowired
+    private YibanUtil yibanUtil;
 
     @Override
     public List<MajorBO> getAllMajor() {
         return majorManager.getAllMajor();
+    }
+
+    @Override
+    public void t1() {
+
     }
 }

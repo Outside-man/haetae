@@ -7,6 +7,7 @@ package us.betahouse.haetae.controller.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author dango.yxm
  * @version : UserStampController.java 2018/11/25 1:07 PM dango.yxm
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/user")
 public class UserActivityStampController {

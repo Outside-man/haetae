@@ -54,17 +54,23 @@ public class UserManagerTest {
 
     @Test
     public void batchBindRole() {
-        for(int i=1;i<=10;i++) {
-            String stuId=0+""+i;
-            List<String> userIds = Arrays.asList((userInfoRepoService.queryUserInfoByStuId(stuId).getUserId()));
-            //List<String> userIds =Arrays.asList("201811302142187096510001201817");
-            for (String userId : userIds) {
-                UserManageRequest request = new UserManageRequest();
-                request.setUserId(userId);
-                request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
-                userManager.batchBindRolByCode(request);
-            }
-        }
+            String stuId=0+""+3;
+            String userId = (userInfoRepoService.queryUserInfoByStuId(stuId).getUserId());
+            UserManageRequest request = new UserManageRequest();
+            request.setUserId(userId);
+            request.setRoleCode(UserRoleCode.LEAGUE_MANAGER);
+            userManager.batchBindRolByCode(request);
+//        for(int i=1;i<=10;i++) {
+//            String stuId=0+""+i;
+//            List<String> userIds = Arrays.asList((userInfoRepoService.queryUserInfoByStuId(stuId).getUserId()));
+//            //List<String> userIds =Arrays.asList("201811302142187096510001201817");
+//            for (String userId : userIds) {
+//                UserManageRequest request = new UserManageRequest();
+//                request.setUserId(userId);
+//                request.setRoleCode(UserRoleCode.ACTIVITY_MANAGER);
+//                userManager.batchBindRolByCode(request);
+//            }
+//        }
     }
 
     @Test

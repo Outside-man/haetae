@@ -38,13 +38,13 @@ public class LocaleApplyDO extends BaseDO {
     /**
      * 申请的备注
      */
-    @Column(name = "remark", length = 32)
+    @Column(name = "remark", length =256)
     private String remark;
 
     /**
      * 申请的附件
      */
-    @Column(name = "document", length = 32)
+    @Column(name = "document",columnDefinition="text", length = 32)
     private String document;
 
     /**

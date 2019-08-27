@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.locale.dal.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.util.utils.CollectionUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -108,6 +110,7 @@ public class LocaleDORepoServiceImpl implements LocaleDORepoService {
         localeBO.setLocaleName(localeDO.getLocaleName());
         localeBO.setLocaleCode(localeDO.getLocaleCode());
         localeBO.setStatus(localeDO.getStatus());
+        localeBO.setExtInfo(JSON.parseObject(localeDO.getExtInfo(),Map.class));
         return localeBO;
     }
 

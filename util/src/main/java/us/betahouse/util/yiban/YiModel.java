@@ -4,11 +4,13 @@
  */
 package us.betahouse.util.yiban;
 
+import us.betahouse.util.common.ToString;
+
 /**
  * @author MessiahJK
  * @version : YiModel.java 2019/07/04 8:57 MessiahJK
  */
-public class YiModel {
+public class YiModel extends ToString {
 
     /**
      * 访问令牌

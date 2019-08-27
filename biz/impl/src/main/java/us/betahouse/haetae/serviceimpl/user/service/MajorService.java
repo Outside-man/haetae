@@ -16,4 +16,5 @@ public interface MajorService {
 
     List<MajorBO> getAllMajor();
 
+    void t1();
 }
