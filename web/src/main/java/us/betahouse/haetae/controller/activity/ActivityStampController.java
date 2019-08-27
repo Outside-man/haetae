@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.controller.activity;
 
-import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,6 @@ import us.betahouse.util.utils.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
