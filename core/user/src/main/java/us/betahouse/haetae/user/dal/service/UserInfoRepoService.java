@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.dal.service;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户信息仓储服务
@@ -64,5 +65,13 @@ public interface UserInfoRepoService {
      * @return
      */
     List<UserInfoBO> queryAllUser();
+
+
+    /**
+     * 获取所有年级和专业
+     *
+     * @return
+     */
+    List<UserInfoBO> queryAllMajorAndGrade();
 
 }

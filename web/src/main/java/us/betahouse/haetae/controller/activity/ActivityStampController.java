@@ -4,12 +4,14 @@
  */
 package us.betahouse.haetae.controller.activity;
 
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -36,6 +38,7 @@ import us.betahouse.util.utils.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -289,4 +292,78 @@ public class ActivityStampController {
             }
         });
     }
+
+
+    /**
+     * 导入活动盖章
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PostMapping(value = "/importStamps")
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<String>> importStamps(@RequestBody importModel[] importModels, StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "导入活动盖章", request, new RestOperateCallBack<List<String>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
+            }
+
+            @Override
+            public Result<List<String>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityStampRequest activityStampRequest=new ActivityStampRequest();
+                activityStampRequest.setUserId(request.getUserId());
+                List<String> unbathRows=activityRecordService.batchStampJson(importModels,activityStampRequest,context);
+                return RestResultUtil.buildSuccessResult(unbathRows, "导入活动盖章成功");
+            }
+        });
+    }
+
+
+
+
+//
+//    /**
+//     * 批量导入活动盖章 json批量导入
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @PostMapping(value = "/test")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<List<String>> importStamps(StamperRequest request, HttpServletRequest httpServletRequest) {
+//        System.out.println("");
+//        return null;
+//        return RestOperateTemplate.operate(LOGGER, "导入活动盖章", request, new RestOperateCallBack<List<String>>() {
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
+//            }
+//
+//            @Override
+//            public Result<List<String>> execute() {
+////                OperateContext context = new OperateContext();
+////                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+////                String json=httpServletRequest.toString();
+////                System.out.println(json);
+////                JSONArray jsonArray = JSONArray.parseArray(json);
+////                System.out.println("cp"+jsonArray.toString());
+////                ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
+////                        .withRequestId(request.getRequestId())
+////                        .withScannerUserId(request.getUserId());
+////
+////                List<ActivityBO> activityBOS = activityRecordService.batchStamp(builder.build(), context);
+//                return RestResultUtil.buildSuccessResult("批量盖章成功");
+//            }
+//        });
+//    }
+
 }

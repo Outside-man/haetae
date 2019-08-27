@@ -103,7 +103,6 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         //解除绑定
         List<String> userid = new ArrayList<>();
         userid.add(userInfoBO.getUserId());
-        System.out.println("cp" + userid.get(0) + " " + roleId);
         roleRepoService.usersUnbindRole(userid, roleId);
     }
 

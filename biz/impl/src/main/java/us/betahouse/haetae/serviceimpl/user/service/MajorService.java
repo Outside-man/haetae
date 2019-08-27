@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.user.service;
 
 import us.betahouse.haetae.user.model.basic.MajorBO;
+import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
 import java.util.List;
 
@@ -17,4 +18,10 @@ public interface MajorService {
     List<MajorBO> getAllMajor();
 
     void t1();
+    /**
+     * 获取所有的专业和年级
+     * @return
+     */
+    List<UserInfoBO> queryAllMajorAndGrade();
+
 }
