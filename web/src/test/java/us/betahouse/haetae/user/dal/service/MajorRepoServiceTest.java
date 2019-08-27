@@ -1,5 +1,6 @@
 package us.betahouse.haetae.user.dal.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,16 @@ public class MajorRepoServiceTest {
     MajorRepoService majorRepoService;
 
 
-//    @Transactional
+    //    @Transactional
     @Test
     public void create() {
         String csv[][] = CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\专业列表.csv");
-        MajorBO majorBO=new MajorBO();
+        MajorBO majorBO = new MajorBO();
         for (int i = 1; i < csv.length; i++) {
             majorBO.setMajorName(csv[i][0]);
             majorRepoService.create(majorBO);
         }
-        List<MajorBO> majorBOList=majorRepoService.findAll();
+        List<MajorBO> majorBOList = majorRepoService.findAll();
         majorBOList.forEach(System.out::println);
     }
 
