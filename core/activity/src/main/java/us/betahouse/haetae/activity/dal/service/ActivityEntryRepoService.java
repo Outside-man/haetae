@@ -63,7 +63,7 @@ public interface ActivityEntryRepoService {
      * @param limit 每页行数
      * @return PageList<ActivityEntryBO>
      */
-    PageList<ActivityEntryBO> queryActivityEntryByTermAndStateAndTypePagerASC(String term, String status, String type, Integer page, Integer limit);
+    PageList<ActivityEntryBO> queryActivityEntryByTermAndStateAndTypeOrderByStartPager(String term, String status, String type, Integer page, Integer limit);
 
     /**
      * 创建活动报名信息

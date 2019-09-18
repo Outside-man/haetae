@@ -2,6 +2,8 @@ package us.betahouse.haetae.serviceimpl.activity.model;
 
 import us.betahouse.util.common.ToString;
 
+import java.util.Date;
+
 /**
  *
  * 活动报名信息
@@ -24,6 +26,55 @@ public class ActivityEntry extends ToString {
     private String activityEntryId;
 
     /**
+     * 活动报名标题
+     */
+    private String title;
+
+    /**
+     * 活动报名开始时间
+     */
+    private String activityEntryStart;
+
+    /**
+     * 活动报名结束时间
+     */
+    private String activityEntryEnd;
+
+    /**
+     * 报名状态
+     */
+    private String status;
+
+    /**
+     * 距报名开始秒数
+     */
+    private Long second;
+    /**
+     * 报名名额
+     */
+    private Integer number;
+
+    /**
+     * 报名对应联系人
+     */
+    private String linkman;
+
+    /**
+     * 报名对应联系方式
+     */
+    private String contact;
+
+    /**
+     * 报名选项
+     */
+    private String choose;
+
+    /**
+     * 报名优先级
+     */
+    private Integer top;
+
+    /**
      * 活动名称
      */
     private String activityName;
@@ -34,9 +85,14 @@ public class ActivityEntry extends ToString {
     private String activityType;
 
     /**
-     * 报名开始时间
+     * 活动开始时间
      */
     private String start;
+
+    /**
+     * 活动结束时间
+     */
+    private String end;
 
     /**
      * 活动地点
@@ -48,20 +104,6 @@ public class ActivityEntry extends ToString {
      */
     private String description;
 
-    /**
-     * 报名状态
-     */
-    private String status;
-
-    /**
-     * 距报名开始秒数
-     */
-    private Long second;
-
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getActivityId() {
         return activityId;
@@ -69,6 +111,94 @@ public class ActivityEntry extends ToString {
 
     public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public String getActivityEntryId() {
+        return activityEntryId;
+    }
+
+    public void setActivityEntryId(String activityEntryId) {
+        this.activityEntryId = activityEntryId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getActivityEntryStart() {
+        return activityEntryStart;
+    }
+
+    public void setActivityEntryStart(String activityEntryStart) {
+        this.activityEntryStart = activityEntryStart;
+    }
+
+    public String getActivityEntryEnd() {
+        return activityEntryEnd;
+    }
+
+    public void setActivityEntryEnd(String activityEntryEnd) {
+        this.activityEntryEnd = activityEntryEnd;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getSecond() {
+        return second;
+    }
+
+    public void setSecond(Long second) {
+        this.second = second;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(String linkman) {
+        this.linkman = linkman;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getChoose() {
+        return choose;
+    }
+
+    public void setChoose(String choose) {
+        this.choose = choose;
+    }
+
+    public Integer getTop() {
+        return top;
+    }
+
+    public void setTop(Integer top) {
+        this.top = top;
     }
 
     public String getActivityName() {
@@ -95,6 +225,14 @@ public class ActivityEntry extends ToString {
         this.start = start;
     }
 
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -109,30 +247,6 @@ public class ActivityEntry extends ToString {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Long getSecond() {
-        return second;
-    }
-
-    public void setSecond(Long second) {
-        this.second = second;
-    }
-
-    public String getActivityEntryId() {
-        return activityEntryId;
-    }
-
-    public void setActivityEntryId(String activityEntryId) {
-        this.activityEntryId = activityEntryId;
     }
 
     public boolean typeAndStatusAndTermFilter (String type, String status, String term){

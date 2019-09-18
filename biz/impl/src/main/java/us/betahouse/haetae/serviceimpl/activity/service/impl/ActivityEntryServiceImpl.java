@@ -16,6 +16,7 @@ import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityEntryRecordRequest;
 import us.betahouse.haetae.activity.request.ActivityEntryRequest;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityEntryStatusType;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntry;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
@@ -55,7 +56,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
 
     /**
-     * 通过活动id查找报名信息
+     * 通过报名id查找报名信息
      *
      * @param activityId
      * @return
@@ -173,7 +174,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
         List<ActivityEntry> activityEntryList = new ArrayList<>();
         PageList<ActivityEntryBO> activityEntryBOPageList =
-                activityEntryRepoService.queryActivityEntryByTermAndStateAndTypePagerASC(term, state, type, page, limit);
+                activityEntryRepoService.queryActivityEntryByTermAndStateAndTypeOrderByStartPager(term, state, type, page, limit);
 //        return new PageList<ActivityEntry>(activityEntryBOPageList,this::convert);
 
         for (ActivityEntryBO activityEntryBO : activityEntryBOPageList.getContent()) {
@@ -183,31 +184,31 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             String status;
             //状态转换
             {
-                status = "0";
+                status = ActivityEntryStatusType.APPROVED.getCode();
                 if (new Date().before(activityEntryBO.getStart())) {
-                    if (0 < seconds && seconds < 3600) status = "1";         //倒计时
+                    if (0 < seconds && seconds < 3600) status = ActivityEntryStatusType.COUNTDOWN.getCode();         //倒计时
                 } else if (DateUtil.nowIsBetween(activityEntryBO.getStart(), activityEntryBO.getEnd())) {
-                    status = "2";             //报名中
+                    status = ActivityEntryStatusType.REGISTRATION.getCode();             //报名中
                 }
 
                 if (new Date().after(activityEntryBO.getStart())) {
                     ActivityEntryRecordBO activityEntryRecordBO = activityEntryRecordRepoService.findByActivityEntryIdAndUserId(activityEntryBO.getActivityEntryId(), userID);
                     if (activityEntryRecordBO != null) {
-                        status = "3";    //已报名
+                        status = ActivityEntryStatusType.REGISTERED.getCode();    //已报名
                     } else if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(activityEntryBO.getActivityEntryId())) {
-                        status = "4"; //人已满
+                        status = ActivityEntryStatusType.EXCEED.getCode(); //人已满
                     } else {
-                        status = "2";  //报名中
+                        status = ActivityEntryStatusType.REGISTRATION.getCode();  //报名中
                     }
                 }
                 if (new Date().after(activityEntryBO.getEnd())) {
-                    status = "5";            //已结束
+                    status = ActivityEntryStatusType.FINISHED.getCode();            //已结束
                     if (!ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState()) &&
                             !ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
                         activityEntryBO.setState(ActivityEntryStateEnum.FINISHED.getCode());
                         activityEntryRepoService.updateActivityEntryByActivityEntryId(activityEntryBO);
                     } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
-                        status = "6";            //已取消
+                        status = ActivityEntryStatusType.CANCELED.getCode();            //已取消
                     }
                 }
             }
@@ -216,12 +217,20 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             ActivityEntry activityEntry = new ActivityEntry();
             activityEntry.setActivityId(activityEntryBO.getActivityId());
             activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
+            activityEntry.setTitle(activityEntryBO.getTitle());
+            activityEntry.setActivityEntryStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+            activityEntry.setActivityEntryEnd(DateUtil.format(activityEntryBO.getEnd(), "yyyy年MM月dd日 HH:mm:ss"));
             activityEntry.setActivityName(activityBO.getActivityName());
             activityEntry.setActivityType(activityEntryBO.getType());
-            activityEntry.setDescription(activityBO.getDescription());
+            activityEntry.setDescription(activityEntryBO.getNote());
             activityEntry.setLocation(activityBO.getLocation());
             activityEntry.setSecond(seconds);
-            activityEntry.setStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+            activityEntry.setNumber(activityEntryBO.getNumber());
+            activityEntry.setLinkman(activityEntryBO.getLinkman());
+            activityEntry.setContact(activityEntryBO.getContact());
+            activityEntry.setChoose(activityEntryBO.getChoose());
+            activityEntry.setTop(activityEntryBO.getTop());
+            activityEntry.setStart(DateUtil.format(activityBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
             activityEntry.setStatus(status);
             activityEntryList.add(activityEntry);
         }
@@ -252,33 +261,43 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 //            return null;
 //        }
 //        long seconds =0;
-//        String status = "0";
+//        String status = ActivityEntryStatusType.APPROVED.getCode();
 //        ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
 //
 //
 //        if( new Date().before(activityEntryBO.getStart())){
 //            seconds = new Date().getTime() - activityEntryBO.getStart().getTime();
-//            if(0 < seconds && seconds <3600000) status = "1";         //倒计时
+//            if(0 < seconds && seconds <3600000) status = ActivityEntryStatusType.COUNTDOWN.getCode();         //倒计时
 //        }else if( DateUtil.nowIsBetween(activityEntryBO.getStart(),activityEntryBO.getEnd() )){
-//            status = "2";             //报名中
+//            status = ActivityEntryStatusType.REGISTRATION.getCode();             //报名中
 //            ActivityEntryRecordBO activityEntryRecordBO =activityEntryRecordRepoService.findByActivityEntryIdAndUserId(activityEntryBO.getActivityEntryId(),userID);
-//            if(activityEntryRecordBO != null)  status = "3";          //已报名
-//            if(activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(activityEntryBO.getActivityEntryId())) status = "4"; //人已满
+//            if(activityEntryRecordBO != null)  status = ActivityEntryStatusType.REGISTERED.getCode();          //已报名
+//            if(activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(activityEntryBO.getActivityEntryId())) status = ActivityEntryStatusType.EXCEED.getCode(); //人已满
 //        }else if(activityEntryBO.getState() == ActivityEntryStateEnum.FINISHED.getCode()){
-//            status = "5";            //已过期
+//            status = ActivityEntryStatusType.FINISHED.getCode();            //已结束
 //        }else if(activityEntryBO.getState() == ActivityEntryStateEnum.CANCELED.getCode()){
-//            status = "6";            //已取消
+//            status = ActivityEntryStatusType.CANCELED.getCode();            //已取消
 //        }
 //
 //        ActivityEntry activityEntry = new ActivityEntry();
 //        activityEntry.setActivityId(activityEntryBO.getActivityId());
 //        activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
+//        activityEntry.setTitle(activityEntryBO.getTitle());
+//        activityEntry.setActivityEntryStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+//        activityEntry.setActivityEntryEnd(DateUtil.format(activityEntryBO.getEnd(), "yyyy年MM月dd日 HH:mm:ss"));
 //        activityEntry.setActivityName(activityBO.getActivityName());
-//        activityEntry.setDescription(activityBO.getDescription());
+//        activityEntry.setActivityType(activityEntryBO.getType());
+//        activityEntry.setDescription(activityEntryBO.getNote());
 //        activityEntry.setLocation(activityBO.getLocation());
-//        activityEntry.setSecond(seconds/1000);
-//        activityEntry.setStart(DateUtil.format(activityEntryBO.getStart(),"yyyy年mm月dd日 hh时mm分ss秒"));
+//        activityEntry.setSecond(seconds);
+//        activityEntry.setNumber(activityEntryBO.getNumber());
+//        activityEntry.setLinkman(activityEntryBO.getLinkman());
+//        activityEntry.setContact(activityEntryBO.getContact());
+//        activityEntry.setChoose(activityEntryBO.getChoose());
+//        activityEntry.setTop(activityEntryBO.getTop());
+//        activityEntry.setStart(DateUtil.format(activityBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
 //        activityEntry.setStatus(status);
+//        activityEntryList.add(activityEntry);
 //
 //        return activityEntry;
 //    }
@@ -299,7 +318,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             term=request.getTerm();
         }
         if(StringUtils.isNotBlank(request.getState())){
-                AssertUtil.assertTrue("REGISTERED".equals(request.getState()),"活动状态异常");
+                AssertUtil.assertTrue("REGISTERED".equals(request.getState()),"报名状态异常");
         }
         if(StringUtils.isNotBlank(request.getType())){
             ActivityTypeEnum typeEnum=ActivityTypeEnum.getByCode(request.getType());
@@ -320,23 +339,31 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
             ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
             long seconds = (activityEntryBO.getStart().getTime() - new Date().getTime())/1000;
 
-            String status = "3";  //默认已报名
+            String status = ActivityEntryStatusType.REGISTERED.getCode();  //默认已报名
             if (ActivityEntryStateEnum.FINISHED.getCode().equals(activityEntryBO.getState())) {
-                status = "5";            //已结束
+                status = ActivityEntryStatusType.FINISHED.getCode();            //已结束
             } else if (ActivityEntryStateEnum.CANCELED.getCode().equals(activityEntryBO.getState())) {
-                status = "6";            //已取消
+                status = ActivityEntryStatusType.CANCELED.getCode();            //已取消
             }
 
 
             ActivityEntry activityEntry = new ActivityEntry();
             activityEntry.setActivityId(activityEntryBO.getActivityId());
             activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
+            activityEntry.setTitle(activityEntryBO.getTitle());
+            activityEntry.setActivityEntryStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+            activityEntry.setActivityEntryEnd(DateUtil.format(activityEntryBO.getEnd(), "yyyy年MM月dd日 HH:mm:ss"));
             activityEntry.setActivityName(activityBO.getActivityName());
             activityEntry.setActivityType(activityEntryBO.getType());
-            activityEntry.setDescription(activityBO.getDescription());
+            activityEntry.setDescription(activityEntryBO.getNote());
             activityEntry.setLocation(activityBO.getLocation());
             activityEntry.setSecond(seconds);
-            activityEntry.setStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+            activityEntry.setNumber(activityEntryBO.getNumber());
+            activityEntry.setLinkman(activityEntryBO.getLinkman());
+            activityEntry.setContact(activityEntryBO.getContact());
+            activityEntry.setChoose(activityEntryBO.getChoose());
+            activityEntry.setTop(activityEntryBO.getTop());
+            activityEntry.setStart(DateUtil.format(activityBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
             activityEntry.setStatus(status);
             activityEntryList.add(activityEntry);
         }

@@ -67,6 +67,6 @@ public interface ActivityEntryDORepo extends JpaRepository<ActivityEntryDO, Long
      * @param type 类型
      * @return Page<ActivityDO>
      */
-    Page<ActivityEntryDO> findAllByTermContainsAndStateContainsAndTypeContains(Pageable pageable, String term, String status, String type);
+    Page<ActivityEntryDO> findAllByTermContainsAndStateContainsAndTypeContainsOrderByStart(Pageable pageable, String term, String status, String type);
 
 }

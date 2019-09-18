@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 public enum ActivityEntryStateEnum {
 
     /**
-     * 通过
+     * 待发布
      */
     APPROVED("APPROVED", "待发布"),
 

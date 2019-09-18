@@ -92,7 +92,7 @@ public class UserActivityEntryController {
     @PostMapping("/signUp")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityEntryRecordBO> signUp(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "新增活动", request, new RestOperateCallBack<ActivityEntryRecordBO>() {
+        return RestOperateTemplate.operate(LOGGER, "活动报名", request, new RestOperateCallBack<ActivityEntryRecordBO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");

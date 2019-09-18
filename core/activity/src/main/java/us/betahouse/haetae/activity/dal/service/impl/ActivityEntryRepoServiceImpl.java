@@ -16,9 +16,11 @@ import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
+import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -111,9 +113,9 @@ public class ActivityEntryRepoServiceImpl implements ActivityEntryRepoService {
 
 
     @Override
-    public PageList<ActivityEntryBO> queryActivityEntryByTermAndStateAndTypePagerASC(String term, String status, String type, Integer page, Integer limit) {
+    public PageList<ActivityEntryBO> queryActivityEntryByTermAndStateAndTypeOrderByStartPager(String term, String status, String type, Integer page, Integer limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        return new PageList<>(activityEntryDORepo.findAllByTermContainsAndStateContainsAndTypeContains(pageable, term, status, type), this::convert);
+        return new PageList<>(activityEntryDORepo.findAllByTermContainsAndStateContainsAndTypeContainsOrderByStart(pageable, term, status, type), this::convert);
     }
 
     @Override
@@ -126,6 +128,8 @@ public class ActivityEntryRepoServiceImpl implements ActivityEntryRepoService {
 
     @Override
     public ActivityEntryBO updateActivityEntryByActivityEntryId(ActivityEntryBO activityEntryBO) {
+        boolean validateTime = activityEntryBO.getStart().before(activityEntryBO.getEnd());
+        AssertUtil.assertTrue(validateTime, "报名开始时间必须早于结束时间");
         ActivityEntryDO activityEntryDO = activityEntryDORepo.findByActivityEntryId(activityEntryBO.getActivityEntryId());
         if (activityEntryDO == null) {
             LoggerUtil.error(LOGGER, "更新的报名信息不存在 ActivityEntryBO={0}", activityEntryDO);
