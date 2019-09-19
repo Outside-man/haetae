@@ -387,7 +387,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      */
     @Override
     public ActivityEntryBO createActivityEntry(ActivityEntryRequest request) {
-        AssertUtil.assertTrue(activityEntryRepoService.findAllByActivityId(request.getActivityId())==null,"一个活动只允许发起一次报名");
+        AssertUtil.assertTrue(activityEntryRepoService.findAllByActivityId(request.getActivityId()).isEmpty(),"一个活动只允许发起一次报名");
         if (StringUtils.isBlank(request.getTitle() )) {
             request.setTitle(activityRepoService.queryActivityByActivityId(request.getActivityId()).getActivityName());
         }
@@ -402,7 +402,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
                 .withActivityId(request.getActivityId())
                 .withType(activityRepoService.queryActivityByActivityId(request.getActivityId()).getType())
                 .withTerm(activityRepoService.queryActivityByActivityId(request.getActivityId()).getTerm())
-                .withState(ActivityEntryStateEnum.APPROVED.getCode())
+                .withState(ActivityEntryStateEnum.PUBLISHED.getCode())
                 .withTitle(request.getTitle())
                 .withNumber(request.getNumber())
                 .withLinkman(request.getLinkman())

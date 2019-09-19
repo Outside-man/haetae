@@ -79,6 +79,8 @@ id      | desc              | id     | desc
 ----    | ----              | ----   | ----
 1001    | activity          | 1002   | activity record
 1003    | organization      | 1004   | position record
+1006    | activity entry    | 1007   | activity entry record
+1008    | activity blacklist
 
 #### asset 模块
 id      | desc                   | id     | desc

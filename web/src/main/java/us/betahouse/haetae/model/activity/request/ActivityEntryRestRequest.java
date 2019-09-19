@@ -56,12 +56,12 @@ public class ActivityEntryRestRequest extends RestRequest {
     /**
      * 报名开始时间
      */
-    private Long start;
+    private String start;
 
     /**
      * 报名结束时间
      */
-    private Long end;
+    private String end;
 
     /**
      * 报名选项 以“|”分隔选项(预留)
@@ -179,19 +179,19 @@ public class ActivityEntryRestRequest extends RestRequest {
         this.contact = contact;
     }
 
-    public Long getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(Long start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public Long getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Long end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

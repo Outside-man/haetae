@@ -26,6 +26,7 @@ import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.DateUtil;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -104,10 +105,10 @@ public class ActivityEntryController {
                 AssertUtil.assertTrue(request.getNumber()>0,  "报名人数不符合要求");
                 AssertUtil.assertStringNotBlank(request.getLinkman(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "联系人不能为空");
                 AssertUtil.assertStringNotBlank(request.getContact(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "手机号不能为空");
-                AssertUtil.assertTrue(request.getContact().matches("^(13[0-9]|14[5-9]|15[0-3,5-9]|16[2,5,6,7]|17[0-8]|18[0-9]|19[1,3,5,8,9])\\\\d{8}$"),"手机号码格式错误");
+                AssertUtil.assertTrue(request.getContact().matches("^(13[0-9]|14[5-9]|15[0-3,5-9]|16[2,5,6,7]|17[0-8]|18[0-9]|19[1,3,5,8,9])\\d{8}$"),"手机号码格式错误");
                 AssertUtil.assertNotNull(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名开始时间不能为空");
                 AssertUtil.assertNotNull(request.getEnd(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名结束时间不能为空");
-                boolean validateTime = new Date(request.getStart()).before(new Date(request.getEnd()));
+                boolean validateTime = DateUtil.parse(request.getStart(),"yyyy-MM-dd hh:mm:ss").before(DateUtil.parse(request.getEnd(),"yyyy-MM-dd hh:mm:ss"));
                 AssertUtil.assertTrue(validateTime, "报名开始时间设置必须早于结束时间");
                 AssertUtil.assertStringNotBlank(request.getNote(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名说明不能为空");
             }
@@ -122,8 +123,8 @@ public class ActivityEntryController {
                         .withNumber(request.getNumber())
                         .withLinkman(request.getLinkman())
                         .withContact(request.getContact())
-                        .withStart(request.getStart())
-                        .withEnd(request.getEnd())
+                        .withStart(DateUtil.parse(request.getStart(),"yyyy-MM-dd hh:mm:ss").getTime())
+                        .withEnd(DateUtil.parse(request.getEnd(),"yyyy-MM-dd hh:mm:ss").getTime())
                         .withChoose(request.getChoose())
                         .withTop(request.getTop())
                         .withNote(request.getNote())
@@ -207,8 +208,8 @@ public class ActivityEntryController {
                         .withNumber(request.getNumber())
                         .withLinkman(request.getLinkman())
                         .withContact(request.getContact())
-                        .withStart(request.getStart())
-                        .withEnd(request.getEnd())
+                        .withStart(DateUtil.parse(request.getStart(),"yyyy-MM-dd hh:mm:ss").getTime())
+                        .withEnd(DateUtil.parse(request.getEnd(),"yyyy-MM-dd hh:mm:ss").getTime())
                         .withChoose(request.getChoose())
                         .withTop(request.getTop())
                         .withNote(request.getNote())
