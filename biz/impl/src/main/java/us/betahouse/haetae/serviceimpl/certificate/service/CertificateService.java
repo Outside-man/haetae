@@ -5,7 +5,6 @@
 package us.betahouse.haetae.serviceimpl.certificate.service;
 
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
-import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 

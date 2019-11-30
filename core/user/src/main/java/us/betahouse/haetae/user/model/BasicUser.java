@@ -7,8 +7,6 @@ package us.betahouse.haetae.user.model;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.common.ToString;
 
-import java.util.List;
-
 /**
  * 基础用户模型
  *

@@ -12,26 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.controller.user.UserController;
-import us.betahouse.haetae.converter.UserVOConverter;
-import us.betahouse.haetae.model.user.vo.UserVO;
-import us.betahouse.haetae.organization.model.OrganizationMemberBO;
-import us.betahouse.haetae.serviceimpl.common.OperateContext;
-import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
-import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
-import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.aliyun.AliyunOssUtil;
 import us.betahouse.util.common.Result;
-import us.betahouse.util.enums.RestResultCode;
-import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.CollectionUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author MessiahJK

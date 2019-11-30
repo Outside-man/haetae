@@ -16,7 +16,6 @@ import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.finance.request.FinanceRequest;
 import us.betahouse.haetae.finance.request.builder.FinanceRequestBuilder;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
-import us.betahouse.haetae.organization.manager.OrganizationManager;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;

@@ -1,27 +1,19 @@
 package us.betahouse.haetae.activity.dal.repo;
 
-import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
-import us.betahouse.haetae.user.dal.repo.perm.UserDORepo;
 import us.betahouse.util.utils.CsvUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 
 import java.util.Collections;
 

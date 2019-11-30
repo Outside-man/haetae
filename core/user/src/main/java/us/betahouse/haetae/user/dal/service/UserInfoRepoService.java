@@ -7,7 +7,6 @@ package us.betahouse.haetae.user.dal.service;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 用户信息仓储服务

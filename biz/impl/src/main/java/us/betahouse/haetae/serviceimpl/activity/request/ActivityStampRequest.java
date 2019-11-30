@@ -4,8 +4,8 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.request;
 
-import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.haetae.activity.enums.ActivityRecordExtInfoKey;
+import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 
 import java.util.List;

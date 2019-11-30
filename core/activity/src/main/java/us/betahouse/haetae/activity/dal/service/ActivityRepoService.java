@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
-import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;

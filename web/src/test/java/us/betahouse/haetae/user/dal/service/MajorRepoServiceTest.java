@@ -1,6 +1,5 @@
 package us.betahouse.haetae.user.dal.service;
 
-import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.user.model.basic.MajorBO;
 import us.betahouse.util.utils.CsvUtil;
 
-import javax.transaction.Transactional;
-
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.activity.manager;
 
-import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 

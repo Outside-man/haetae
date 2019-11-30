@@ -5,7 +5,6 @@
 
 package us.betahouse.haetae.locale.manager;
 
-import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.basic.LocaleAreaBO;
 import us.betahouse.haetae.locale.request.LocaleAreaRequest;
 

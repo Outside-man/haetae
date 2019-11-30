@@ -10,7 +10,6 @@ import us.betahouse.haetae.activity.builder.ActivityRecordBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
-import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.request.ActivityRecordRequest;
 import us.betahouse.util.utils.AssertUtil;

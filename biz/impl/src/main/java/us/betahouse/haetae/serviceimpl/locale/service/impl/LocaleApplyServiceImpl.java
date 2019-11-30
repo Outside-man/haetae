@@ -26,7 +26,6 @@ import us.betahouse.haetae.serviceimpl.locale.request.LocaleAreaManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.request.builder.LocaleAreaManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleAreaService;
-import us.betahouse.haetae.user.manager.UserManager;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;

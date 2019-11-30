@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.controller.user;
 
-import org.apache.catalina.manager.ManagerServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +11,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import us.betahouse.haetae.asset.model.common.PageList;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
-import us.betahouse.haetae.model.organization.OrganizationVO;
 import us.betahouse.haetae.model.user.request.UserRequest;
-import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.service.MajorService;
-import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
-import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.MajorBO;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;

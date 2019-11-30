@@ -8,7 +8,6 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.request.RoleUserPermRequest;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
-import us.betahouse.haetae.user.request.RoleManageRequest;
 
 import java.util.List;
 

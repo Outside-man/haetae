@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.locale.dal.service.LocaleDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
-import us.betahouse.haetae.locale.model.basic.LocaleBO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -4,8 +4,6 @@
  */
 package us.betahouse.haetae.asset.request;
 
-import java.util.Date;
-
 /**
  * @author yiyuk.hxy
  * @version : AssetLoanRecordRequest.java 2019/01/23 23:33 yiyuk.hxy

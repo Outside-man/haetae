@@ -5,7 +5,6 @@
 package us.betahouse.haetae.serviceimpl.activity.service;
 
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
-import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;

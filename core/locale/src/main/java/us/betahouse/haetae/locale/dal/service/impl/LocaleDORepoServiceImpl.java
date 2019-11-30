@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.locale.dal.model.LocaleDO;
 import us.betahouse.haetae.locale.dal.repo.LocaleDORepo;
 import us.betahouse.haetae.locale.dal.service.LocaleDORepoService;
 import us.betahouse.haetae.locale.idfactory.BizIdFactory;
-import us.betahouse.haetae.locale.dal.model.LocaleDO;
 import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.util.utils.CollectionUtils;
 
