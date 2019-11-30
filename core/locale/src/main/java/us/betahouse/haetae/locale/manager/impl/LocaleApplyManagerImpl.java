@@ -42,7 +42,8 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
                 .withUsages(request.getUsages())
                 .withTimeDate(request.getTimeDate())
                 .withTimeBucket(request.getTimeBucket())
-                .withUserId(request.getUserId());
+                .withUserId(request.getUserId())
+                .withOrganizationName(request.getOrganizationName());
         return localeApplyDORepoService.createLocaleApply(localeApplyBOBuilder.build());
     }
 
@@ -54,10 +55,14 @@ public class LocaleApplyManagerImpl implements LocaleApplyManager {
      */
     @Override
     public LocaleApplyBO update(LocaleApplyRequest request) {
-        LocaleApplyBOBuilder localeApplyBOBuilder = LocaleApplyBOBuilder.getInstance()
+        LocaleApplyBO localeApplyBO = LocaleApplyBOBuilder.getInstance()
                 .withLocaleApplyId(request.getLocaleApplyId())
-                .withStatus(request.getStatus());
-        return localeApplyDORepoService.updateLocaleApply(localeApplyBOBuilder.build());
+                .withStatus(request.getStatus()).build();
+        localeApplyBO.setFailureMessage(request.getFailureMessage());
+        System.out.println("_________");
+        System.out.println(localeApplyBO);
+        System.out.println("_________");
+        return localeApplyDORepoService.updateLocaleApply(localeApplyBO);
     }
 
     /**

@@ -11,6 +11,7 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.HttpUtils;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ public class YibanUtil {
     private final String YIBAN_ACCESS_TOKEN_URL ="https://openapi.yiban.cn/oauth/access_token";
 
     private final String YIBAN_USER_OTHER="https://openapi.yiban.cn/user/other?access_token={0}&yb_userid={1}";
+
+    private final String YIBAN_VERIFY_ME="https://openapi.yiban.cn/user/verify_me?access_token={0}";
 
 
     @Value("${Yiban.appId}")
@@ -50,7 +53,6 @@ public class YibanUtil {
             throw new BetahouseException(e, CommonResultCode.SYSTEM_ERROR.getCode(), "易班服务器请求失败, 网络异常");
         }
         JSONObject jsonObject = JSONObject.parseObject(result);
-        System.out.println(result);
         System.out.println(jsonObject);
         YiModel yiModel=new YiModel();
         yiModel.setUserId(jsonObject.getString("userid"));
@@ -58,10 +60,17 @@ public class YibanUtil {
         return yiModel;
     }
 
-    public YiModel getUserMessage(YiModel yiModel){
-
-
-        return  null;
+    public String getStuId(YiModel yiModel){
+        String url=MessageFormat.format(YIBAN_VERIFY_ME, yiModel.getAccessToken());
+        String result;
+        try {
+            result = HttpUtils.doGet(url);
+        } catch (Exception e) {
+            throw new BetahouseException(e, CommonResultCode.SYSTEM_ERROR.getCode(), "易班服务器请求失败, 网络异常");
+        }
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        System.out.println(jsonObject);
+        return jsonObject.getJSONObject("info").getString("yb_studentid");
     }
 
 }

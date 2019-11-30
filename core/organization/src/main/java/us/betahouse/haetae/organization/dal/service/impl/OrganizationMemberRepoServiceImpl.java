@@ -171,6 +171,7 @@ public class OrganizationMemberRepoServiceImpl implements OrganizationMemberRepo
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public void disband(String organizationId) {
         AssertUtil.assertStringNotBlank(organizationId, "组织id不能为空");

@@ -95,6 +95,13 @@ public class LocaleApplyDO extends BaseDO {
     @Column(name = "locale_apply_id", length = 32, updatable = false)
     private String localeApplyId;
 
+
+    /**
+     * 组织名
+     */
+    @Column(name = "locale_organization_name", length = 32, updatable = false)
+    private String organizationName;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -193,5 +200,13 @@ public class LocaleApplyDO extends BaseDO {
 
     public void setLocaleApplyId(String localeApplyId) {
         this.localeApplyId = localeApplyId;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 }

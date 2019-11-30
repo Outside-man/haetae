@@ -18,7 +18,7 @@ public class CommonUserRequest extends UserManageRequest {
     private static final long serialVersionUID = 652627597728059422L;
 
     /**
-     * 微信小程序code
+     * 微信小程序code/易班code
      */
     private String code;
 

@@ -30,16 +30,15 @@ public class ActivityRepoServiceTest {
     @Test
     public void createActivity() {
         ActivityBO activityBO = ActivityBOBuilder.getInstance()
-                .withActivityName("校园活动")
-                .withType("xyhd")
-                .withDescription("test")
-                .withLocation("格致楼")
+                .withActivityName("2019义工")
+                .withType(ActivityTypeEnum.VOLUNTEER_WORK.getCode())
+                .withDescription("2019年义工")
+                .withLocation("杭电信工")
                 .withEnd(new Date())
                 .withStart(new Date())
-                .withOrganizationMessage("o")
-                .withScore(12L)
-                .withCreatorId("17905219")
-                .withTerm("2018A")
+                .withOrganizationMessage("团学办公室")
+                .withCreatorId("201811302141587352590001201845")
+                .withTerm("2019A")
                 .build();
         System.out.println(activityRepoService.createActivity(activityBO));
     }

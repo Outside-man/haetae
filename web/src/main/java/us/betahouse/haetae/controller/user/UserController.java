@@ -16,12 +16,16 @@ import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.converter.UserVOConverter;
 import us.betahouse.haetae.model.user.request.UserRequest;
 import us.betahouse.haetae.model.user.vo.UserVO;
+import us.betahouse.haetae.organization.model.OrganizationMemberBO;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
+import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
+import us.betahouse.haetae.serviceimpl.organization.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -29,8 +33,12 @@ import us.betahouse.util.common.Result;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户接口
@@ -38,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author dango.yxm
  * @version : UserController.java 2018/11/21 6:19 PM dango.yxm
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -49,7 +58,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private OrganizationService organizationService;
     /**
      * 登陆
      *
@@ -78,11 +88,47 @@ public class UserController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
+                OrganizationRequest organizationRequest=new OrganizationRequest();
+                organizationRequest.setMemberId(userVO.getUserId());
+                List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
+                userVO.setJobInfo(list);
+
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
     }
 
+    /**
+     * 易班登陆
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PostMapping(value = "/yiLogin")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<UserVO> yiLogin(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户易班登录", null, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getCode(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "易班code不能为空");
+            }
+            @Override
+            public Result<UserVO> execute() {
+                CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
+                        .withCode(request.getCode());
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                UserVO userVO = UserVOConverter.convert(userService.yiLogin(builder.build(), context));
+                OrganizationRequest organizationRequest=new OrganizationRequest();
+                organizationRequest.setMemberId(userVO.getUserId());
+                List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
+                userVO.setJobInfo(list);
+                return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
+            }
+        });
+    }
     @DeleteMapping(value = "/openId")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -135,6 +181,10 @@ public class UserController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
+                OrganizationRequest organizationRequest=new OrganizationRequest();
+                organizationRequest.setMemberId(userVO.getUserId());
+                List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
+                userVO.setJobInfo(list);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
@@ -165,6 +215,10 @@ public class UserController {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 UserVO userVO = UserVOConverter.convert(userService.fetchUser(builder.build(), context));
+                OrganizationRequest organizationRequest=new OrganizationRequest();
+                organizationRequest.setMemberId(userVO.getUserId());
+                List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
+                userVO.setJobInfo(list);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });

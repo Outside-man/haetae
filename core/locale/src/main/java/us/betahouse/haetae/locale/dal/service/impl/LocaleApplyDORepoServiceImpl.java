@@ -187,6 +187,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         localeApplyBO.setLocaleId(localeApplyDO.getLocaleId());
         localeApplyBO.setLocaleAreaId(localeApplyDO.getLocaleAreaId());
         localeApplyBO.setUserId(localeApplyDO.getUserId());
+        localeApplyBO.setOrganizationName(localeApplyDO.getOrganizationName());
         localeApplyBO.setExtInfo(JSON.parseObject(localeApplyDO.getExtInfo(), Map.class));
         return localeApplyBO;
     }
@@ -206,6 +207,7 @@ public class LocaleApplyDORepoServiceImpl implements LocaleApplyDORepoService {
         localeApplyDO.setTel(localeApplyBO.getTel());
         localeApplyDO.setUsages(localeApplyBO.getUsages());
         localeApplyDO.setRemark(localeApplyBO.getRemark());
+        localeApplyDO.setOrganizationName(localeApplyBO.getOrganizationName());
         localeApplyDO.setDocument(localeApplyBO.getDocument());
         localeApplyDO.setStatus(localeApplyBO.getStatus());
         localeApplyDO.setTimeDate(localeApplyBO.getTimeDate());

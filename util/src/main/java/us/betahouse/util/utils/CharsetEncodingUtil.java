@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 public class CharsetEncodingUtil {
 
     private static final Charset GBK = Charset.forName("GBK");
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     /**
      * 是否可以转换成GBK编码
@@ -26,5 +27,15 @@ public class CharsetEncodingUtil {
      */
     public static boolean canEncodeGBK(String str) {
         return StringUtils.isNotBlank(str) && GBK.newEncoder().canEncode(str);
+    }
+
+    /**
+     * 是否可以转换成UTF-8编码
+     *
+     * @param str
+     * @return
+     */
+    public static boolean canEncodeUTF8(String str) {
+        return StringUtils.isNotBlank(str) && UTF_8.newEncoder().canEncode(str);
     }
 }

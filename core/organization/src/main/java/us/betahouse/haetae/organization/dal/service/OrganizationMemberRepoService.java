@@ -74,6 +74,7 @@ public interface OrganizationMemberRepoService {
      */
     List<OrganizationMemberBO> queryOrganizations(String memberId);
 
+
     /**
      * 解散组织
      *

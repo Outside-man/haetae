@@ -89,6 +89,16 @@ public class LocaleApplyRestRequest extends RestRequest {
      */
     private String orderRule;
 
+    /**
+     * 组织名
+     */
+    private String organizationName;
+
+    /**
+     * 失败信息
+     */
+    private String failureMessage;
+
     public Integer getLimit() {
         return limit;
     }
@@ -201,4 +211,19 @@ public class LocaleApplyRestRequest extends RestRequest {
         this.localeApplyId = localeApplyId;
     }
 
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getFailureMessage() {
+        return failureMessage;
+    }
+
+    public void setFailureMessage(String failureMessage) {
+        this.failureMessage = failureMessage;
+    }
 }

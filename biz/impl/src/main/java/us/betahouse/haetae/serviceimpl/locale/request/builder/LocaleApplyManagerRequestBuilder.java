@@ -32,6 +32,7 @@ public final class LocaleApplyManagerRequestBuilder {
     private Integer limit;
     private Integer page;
     private String orderRule;
+    private String organizationName;
 
     private LocaleApplyManagerRequestBuilder() {
     }
@@ -120,6 +121,10 @@ public final class LocaleApplyManagerRequestBuilder {
         return this;
     }
 
+    public LocaleApplyManagerRequestBuilder withOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+        return this;
+    }
     public LocaleApplyManagerRequest build() {
         LocaleApplyManagerRequest localeApplyManagerRequest = new LocaleApplyManagerRequest();
         localeApplyManagerRequest.setTel(tel);
@@ -138,6 +143,7 @@ public final class LocaleApplyManagerRequestBuilder {
         localeApplyManagerRequest.setLimit(limit);
         localeApplyManagerRequest.setPage(page);
         localeApplyManagerRequest.setOrderRule(orderRule);
+        localeApplyManagerRequest.setOrganizationName(organizationName);
         return localeApplyManagerRequest;
     }
 }

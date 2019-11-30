@@ -48,6 +48,8 @@ final public class UserInfoBOBuilder {
      */
     private Date enrollDate;
 
+    private String grade;
+
     /**
      * 拓展信息
      */
@@ -65,6 +67,7 @@ final public class UserInfoBOBuilder {
         userInfoBO.setRealName(realName);
         userInfoBO.setSex(sex);
         userInfoBO.setStuId(stuId);
+        userInfoBO.setGrade(grade);
         if (extInfo != null) {
             userInfoBO.setExtInfo(extInfo);
         }
@@ -100,6 +103,10 @@ final public class UserInfoBOBuilder {
 
     public UserInfoBOBuilder withClassId(String classId) {
         this.classId = classId;
+        return this;
+    }
+    public UserInfoBOBuilder withGrade(String grade) {
+        this.grade = grade;
         return this;
     }
 

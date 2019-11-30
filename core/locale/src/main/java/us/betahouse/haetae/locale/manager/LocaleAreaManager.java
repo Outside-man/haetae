@@ -5,6 +5,7 @@
 
 package us.betahouse.haetae.locale.manager;
 
+import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.basic.LocaleAreaBO;
 import us.betahouse.haetae.locale.request.LocaleAreaRequest;
 
@@ -40,6 +41,14 @@ public interface LocaleAreaManager {
      * @return
      */
     LocaleAreaBO update(LocaleAreaRequest localeAreaRequest);
+
+    /**
+     * 取消场地占用
+     *
+     * @param localeAreaId
+     * @return
+     */
+    LocaleAreaBO cancel(String localeAreaId);
 
     /**
      * 校验场地是否被占用

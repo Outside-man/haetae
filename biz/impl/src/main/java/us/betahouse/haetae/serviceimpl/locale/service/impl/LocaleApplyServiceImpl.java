@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.locale.dal.service.LocaleApplyDORepoService;
 import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
+import us.betahouse.haetae.locale.enums.LocaleAreaStatusEnum;
 import us.betahouse.haetae.locale.manager.LocaleApplyManager;
+import us.betahouse.haetae.locale.manager.LocaleAreaManager;
 import us.betahouse.haetae.locale.manager.LocaleManager;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.locale.model.common.PageList;
@@ -24,6 +26,8 @@ import us.betahouse.haetae.serviceimpl.locale.request.LocaleAreaManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.request.builder.LocaleAreaManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleAreaService;
+import us.betahouse.haetae.user.manager.UserManager;
+import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.NumberUtils;
 
@@ -44,7 +48,10 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     private final static String SYSTEM_FINISH_SIGN = "systemFinish";
 
     @Autowired
-    LocaleApplyManager localeApplyManager;
+    private LocaleApplyManager localeApplyManager;
+
+    @Autowired
+    private LocaleAreaManager localeAreaManager;
 
     @Autowired
     private LocaleAreaService localeAreaService;
@@ -53,7 +60,10 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     private LocaleApplyDORepoService localeApplyDORepoService;
 
     @Autowired
-    LocaleManager localeManager;
+    private LocaleManager localeManager;
+
+    @Autowired
+    private UserBasicService userBasicService;
 
     /**
      * 创建场地申请
@@ -74,14 +84,13 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
                 //填充场地占用id
                 .withLocaleAreaId(request.getLocaleAreaId())
                 //填充场地占用状态
-                .withStatus("APPLYING")
+                .withStatus(LocaleAreaStatusEnum.APPLYING.getCode())
                 //鉴权的时候要用
                 .withUserId(request.getUserId())
                 .build();
         localeAreaService.update(localeAreaManagerRequest, context);
 
-        LocaleApplyBO localeApplyBO = localeApplyManager.create(request);
-        return localeApplyBO;
+        return localeApplyManager.create(request);
     }
 
     /**
@@ -96,11 +105,12 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     @VerifyPerm(permType = LocalePermType.APPLY_FIRST_CHECK)
     @Transactional(rollbackFor = Exception.class)
     public LocaleApplyBO updateAdminFirst(LocaleApplyManagerRequest request, OperateContext context) {
-        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
-        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
-
-        LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
-        return localeApplyBO;
+        if(StringUtils.isNotBlank(request.getFailureMessage())){
+            request.setFailureMessage("第一轮审批未过:"+request.getFailureMessage());
+        }else{
+            request.setFailureMessage("第一轮审批未过");
+        }
+        return updateStatus(request);
     }
 
     /**
@@ -115,11 +125,12 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     @VerifyPerm(permType = LocalePermType.APPLY_CHECK)
     @Transactional(rollbackFor = Exception.class)
     public LocaleApplyBO updateAdminSecond(LocaleApplyManagerRequest request, OperateContext context) {
-        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
-        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
-
-        LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
-        return localeApplyBO;
+        if(StringUtils.isNotBlank(request.getFailureMessage())){
+            request.setFailureMessage("第二轮审批未过:"+request.getFailureMessage());
+        }else{
+            request.setFailureMessage("第二轮审批未过");
+        }
+        return updateStatus(request);
     }
 
     /**
@@ -133,12 +144,13 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
     @Override
     @VerifyPerm(permType = LocalePermType.LOCALE_APPLY)
     @Transactional(rollbackFor = Exception.class)
-    public LocaleApplyBO updateUser(LocaleApplyManagerRequest request, OperateContext context) {
-        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
-        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
-
-        LocaleApplyBO localeApplyBO = localeApplyManager.update(request);
-        return localeApplyBO;
+    public LocaleApplyBO updateStatusByUser(LocaleApplyManagerRequest request, OperateContext context) {
+        if(StringUtils.isNotBlank(request.getFailureMessage())){
+            request.setFailureMessage("自己取消:"+request.getFailureMessage());
+        }else{
+            request.setFailureMessage("自己取消");
+        }
+         return updateStatus(request);
     }
 
     /**
@@ -201,6 +213,7 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         List<LocaleApplyBO> localeApplyBOList = localeApplyBOPageList.getContent();
         for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
             localeApplyBO.setLocaleName(localeManager.findLocaleName(localeApplyBO.getLocaleCode()).getLocaleName());
+            localeApplyBO.setUserName(userBasicService.getByUserId(localeApplyBO.getUserId()).getUserInfo().getRealName());
         }
         localeApplyBOPageList.setContent(localeApplyBOList);
 
@@ -254,6 +267,7 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         List<LocaleApplyBO> localeApplyBOList = localeApplyBOPageList.getContent();
         for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
             localeApplyBO.setLocaleName(localeManager.findLocaleName(localeApplyBO.getLocaleCode()).getLocaleName());
+            localeApplyBO.setUserName(userBasicService.getByUserId(localeApplyBO.getUserId()).getUserInfo().getRealName());
         }
         localeApplyBOPageList.setContent(localeApplyBOList);
 
@@ -305,6 +319,7 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
         List<LocaleApplyBO> localeApplyBOList = localeApplyBOPageList.getContent();
         for (LocaleApplyBO localeApplyBO : localeApplyBOList) {
             localeApplyBO.setLocaleName(localeManager.findLocaleName(localeApplyBO.getLocaleCode()).getLocaleName());
+            localeApplyBO.setUserName(userBasicService.getByUserId(localeApplyBO.getUserId()).getUserInfo().getRealName());
         }
         localeApplyBOPageList.setContent(localeApplyBOList);
 
@@ -328,5 +343,16 @@ public class LocaleApplyServiceImpl implements LocaleApplyService {
             }
         }
         return systemFinishLocaleApplies;
+    }
+
+    private LocaleApplyBO updateStatus(LocaleApplyManagerRequest request){
+        LocaleApplyStatusEnum localeApplyStatusEnum = LocaleApplyStatusEnum.getByCode(request.getStatus());
+        AssertUtil.assertNotNull(localeApplyStatusEnum, "申请场地状态不存在");
+        if(localeApplyStatusEnum.getCode().equals(LocaleAreaStatusEnum.CANCEL.getCode())){
+            localeAreaManager.cancel(request.getLocaleAreaId());
+        }else{
+            request.setFailureMessage(null);
+        }
+        return localeApplyManager.update(request);
     }
 }

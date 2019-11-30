@@ -115,6 +115,13 @@ public class OrganizationManagerImpl implements OrganizationManager {
     }
 
     @Override
+    public List<OrganizationMemberBO> queryOrganizationMemberByMemberId(String memberId) {
+        return CollectionUtils.toStream(organizationMemberRepoService.queryOrganizations(memberId))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrganizationBO> queryAllOrganization() {
         return CollectionUtils.toStream(organizationRepoService.queryAllOrganization())
                 .filter(Objects::nonNull)
@@ -179,6 +186,7 @@ public class OrganizationManagerImpl implements OrganizationManager {
     private OrganizationMemberBO parseMember(OrganizationManageRequest request) {
         OrganizationMemberBO memberBO = new OrganizationMemberBO();
         memberBO.setOrganizationId(request.getOrganizationId());
+        memberBO.setOrganizationName(organizationRepoService.queryByOrganizationId(request.getOrganizationId()).getOrganizationName());
         memberBO.setMemberId(request.getMemberId());
         memberBO.setMemberType(request.getMemberType().getType());
         // 是否传入称呼描述

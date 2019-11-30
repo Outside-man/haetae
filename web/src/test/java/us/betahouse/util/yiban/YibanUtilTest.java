@@ -15,6 +15,7 @@ public class YibanUtilTest {
 
     @Test
     public void getAccessToken() {
-        yibanUtil.getAccessToken("cf5d95407670c9b969f2ff3c4970cf1ba411feaf");
+        YiModel yiModel=yibanUtil.getAccessToken("ce59b884d08ce4caa8999448581f4133e59fb4c6");
+        System.out.println(yibanUtil.getStuId(yiModel));
     }
 }

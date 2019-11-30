@@ -85,7 +85,7 @@ public class ActivityServiceImpl implements ActivityService {
     private OrganizationRepoService organizationRepoService;
 
     @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+//    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional(rollbackFor = Exception.class)
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());

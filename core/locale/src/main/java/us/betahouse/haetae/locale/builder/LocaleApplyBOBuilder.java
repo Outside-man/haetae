@@ -64,6 +64,10 @@ public final class LocaleApplyBOBuilder {
      */
     private String localeApplyId;
     /**
+     * 组织名
+     */
+    private String organizationName;
+    /**
      * 场地申请额外信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -141,6 +145,10 @@ public final class LocaleApplyBOBuilder {
         return this;
     }
 
+    public LocaleApplyBOBuilder withOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+        return this;
+    }
     public LocaleApplyBO build() {
         LocaleApplyBO localeApplyBO = new LocaleApplyBO();
         localeApplyBO.setTel(tel);
@@ -156,6 +164,7 @@ public final class LocaleApplyBOBuilder {
         localeApplyBO.setStatus(status);
         localeApplyBO.setLocaleApplyId(localeApplyId);
         localeApplyBO.setExtInfo(extInfo);
+        localeApplyBO.setOrganizationName(organizationName);
         return localeApplyBO;
     }
 }

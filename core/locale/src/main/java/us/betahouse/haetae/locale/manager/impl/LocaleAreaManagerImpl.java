@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.locale.builder.LocaleAreaBOBuilder;
 import us.betahouse.haetae.locale.dal.service.LocaleAreaDORepoService;
+import us.betahouse.haetae.locale.enums.LocaleAreaStatusEnum;
 import us.betahouse.haetae.locale.manager.LocaleAreaManager;
 import us.betahouse.haetae.locale.model.basic.LocaleAreaBO;
 import us.betahouse.haetae.locale.request.LocaleAreaRequest;
@@ -55,7 +56,7 @@ public class LocaleAreaManagerImpl implements LocaleAreaManager {
     }
 
     /**
-     * 取消场地占用
+     * 修改场地占用状态
      *
      * @param request
      * @return
@@ -66,6 +67,20 @@ public class LocaleAreaManagerImpl implements LocaleAreaManager {
                 .withLocaleAreaId(request.getLocaleAreaId())
                 .withStatus(request.getStatus());
         return localeAreaDORepoService.updateLocaleArea(localeAreaBOBuilder.build());
+    }
+
+    /**
+     * 取消场地占用
+     *
+     * @param localeAreaId
+     * @return
+     */
+    @Override
+    public LocaleAreaBO cancel(String localeAreaId) {
+        LocaleAreaBOBuilder localeAreaBOBuilder = LocaleAreaBOBuilder.getInstance()
+                .withLocaleAreaId(localeAreaId)
+                .withStatus(LocaleAreaStatusEnum.CANCEL.getCode());
+        return null;
     }
 
     /**

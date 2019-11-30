@@ -1,5 +1,6 @@
 package us.betahouse.haetae.serviceimpl.activity.service;
 
+import com.alibaba.fastjson.JSON;
 import com.csvreader.CsvWriter;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
+import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
+import us.betahouse.haetae.activity.dal.repo.PastActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
@@ -26,8 +29,12 @@ import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.utils.CsvUtil;
+import us.betahouse.util.utils.DateUtil;
 
+import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.*;
@@ -52,10 +59,11 @@ public class ActivityRecordServiceTest {
     private ActivityRecordManager activityRecordManager;
     @Autowired
     private ActivityRepoService activityRepoService;
+    @Autowired
+    private PastActivityDORepo pastActivityDORepo;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\6.28数据导入.csv";
-
+        String url = "C:\\Users\\j10k\\Desktop\\第四届课外体育三项赛录入名单.csv";
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -84,7 +92,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importVolunteerWork(){
-        String url = "C:\\Users\\j10k\\Desktop\\义工活动1条数据.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019云栖大会志愿活动录入名单(2).csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -152,7 +160,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importOneHour(){
-        String url =  "C:\\Users\\j10k\\Desktop\\交换一小时考核章导入.csv";
+        String url =  "C:\\Users\\j10k\\Desktop\\党建活动(1).csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -168,9 +176,11 @@ public class ActivityRecordServiceTest {
             System.out.println(i+" "+activityRecordDO);
         }
     }
+
+
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\2019暑期社会实践出征仪式志愿.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019云栖大会志愿活动录入名单(2).csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -222,8 +232,9 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importPracticeActivity2() {
-        String url = "C:\\Users\\j10k\\Desktop\\2019年回访母校寒假社会实践活动.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019暑期社会实践考核成绩第二课堂导入名单（补）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
+
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
             activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
@@ -234,7 +245,7 @@ public class ActivityRecordServiceTest {
             activityRecordDO.setType("practiceActivity");
             activityRecordDO.setStatus("ENABLE");
             activityRecordDO.setTerm(TermUtil.getNowTerm());
-            switch (csv[i][3]) {
+            switch (csv[i][5]) {
                 case "优秀":
                     activityRecordDO.setGrades(GradesConstant.EXCELLENT);
                     break;
@@ -253,7 +264,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\6.28数据导入.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\2019暑期社会实践考核成绩第二课堂导入名单（补）.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {
@@ -313,7 +324,7 @@ public class ActivityRecordServiceTest {
         String temp4="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((H{0}>7),(F{0}+K{0})<8),AND((F{0}<8),(H{0}<8),(F{0}+K{0})<8,(H{0}+K{0})>7),AND((H{0}+K{0})<8,(F{0}+K{0})<8)),8-F{0}-K{0},0))";
         String temp5="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((F{0}>7),(H{0}+K{0})<8),AND((H{0}<8),(F{0}<8),(F{0}+K{0})<8,(F{0}+K{0})>7),AND((F{0}+K{0})<8,(H{0}+K{0})<8)),8-H{0}-K{0},0))";
         String temp6="=IF((M{0}+N{0})<(16-L{0}),(16-L{0}),(M{0}+N{0}))";
-        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\小方喵喵喵.csv", ',', Charset.forName("GBK"));
+        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出"+DateUtil.getYearMonthDay(new Date())+".csv", ',', Charset.forName("GBK"));
         String[] headers ={"学号", "姓名","专业","年级","班级","讲座(实际)","讲座活动次数","校园活动(实际)","校园活动次数","社会实践次数","尚未分配活动章","总章数","最少讲座章","最少活动章","最少总章数"};
 
 
@@ -346,5 +357,112 @@ public class ActivityRecordServiceTest {
         }
         csvWriter.close();
     }
+    @Test
+    public void fetchUserRecordStatistics3() throws IOException {
+        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\导出12.csv", ',', Charset.forName("GBK"));
+        String[] headers = {"学号", "姓名", "校园活动次数", "讲座活动次数", "社会实践次数", "志愿活动次数", "志愿活动时长", "义工活动次数", "义工活动时长","年级","专业","班级"};
+        csvWriter.writeRecord(headers);
+        List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
+        for (UserInfoBO userInfoBO : userInfoBOList) {
+            ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId(),"2018B");
+            PastActivityBO pastActivityBO=activityRepoService.getPastByUserId(userInfoBO.getUserId());
+            Map<String, Integer> map = activityRecordStatistics.getStatistics();
+            String[] content = new String[12];
+            content[0] = activityRecordStatistics.getStuId();
+            content[1] = activityRecordStatistics.getRealName();
+            content[2] = String.valueOf((Long.valueOf(map.get(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode()))));
+            content[3] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.LECTURE_ACTIVITY.getCode())));
+            content[4] =String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode())));
+            content[5] = map.get(ActivityTypeEnum.VOLUNTEER_ACTIVITY.getCode()).toString();
+            content[6] = String.format("%.1f", (double) (map.get("volunteerActivityTime")) / 10.0);
+            content[7] = map.get(ActivityTypeEnum.VOLUNTEER_WORK.getCode()).toString();
+            content[8] = String.format("%.1f", Double.valueOf(map.get("volunteerWorkTime")) / 10.0);
+            content[9]=userInfoBO.getGrade();
+            content[10]=userInfoBO.getMajor();
+            content[11]=userInfoBO.getClassId();
+            System.out.println(activityRecordStatistics);
+            csvWriter.writeRecord(content);
+        }
+        csvWriter.close();
+    }
 
+    @Test
+    public void t11()throws IOException{
+        Map<Object,Object[]> t1=new HashMap<>();//LECTURE_ACTIVITY
+        Map<Object,Object[]> t2=new HashMap<>();//SCHOOL_ACTIVITY
+        Map<Object,Object[]> t3=new HashMap<>();//PRACTICE_ACTIVITY
+            for (Object[] objects : activityRecordDORepo.findGroupByActivityTypeAndUserId()) {
+                if(objects[3].equals(ActivityTypeEnum.LECTURE_ACTIVITY.getCode())){
+                    t1.put(objects[2],objects );
+                }
+                if(objects[3].equals(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode())){
+                    t2.put(objects[2],objects );
+                }
+                if(objects[3].equals(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode())){
+                    t3.put(objects[2],objects );
+                }
+                System.out.println(JSON.toJSONString(objects));
+            }
+        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\1导出"+DateUtil.getYearMonthDay(new Date())+".csv", ',', Charset.forName("GBK"));
+        String[] headers ={"学号", "姓名","专业","年级","班级","讲座(实际)","讲座活动次数","校园活动(实际)","校园活动次数","社会实践次数","尚未分配活动章","总章数","最少讲座章","最少活动章","最少总章数"};
+        csvWriter.writeRecord(headers);
+        List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
+        List<PastActivityDO> pastActivityDOList=pastActivityDORepo.findAll();
+        Map<Object,PastActivityDO> t4=new HashMap<>();
+        for (PastActivityDO pastActivityDO : pastActivityDOList) {
+            t4.put(pastActivityDO.getUserId(), pastActivityDO);
+        }
+        String temp1="=IF(J{0}>=1,G{0}+4,G{0})";
+        String temp2="=I{0}+J{0}*4";
+        String temp3="=F{0}+I{0}+J{0}*4+K{0}";
+        String temp4="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((H{0}>7),(F{0}+K{0})<8),AND((F{0}<8),(H{0}<8),(F{0}+K{0})<8,(H{0}+K{0})>7),AND((H{0}+K{0})<8,(F{0}+K{0})<8)),8-F{0}-K{0},0))";
+        String temp5="=IF(IF(OR(AND((F{0}>7),(H{0}>7)),(K{0}>16),AND((F{0}>7),(H{0}+K{0})>7),AND((H{0}>7),((F{0}+K{0})>7)),AND((F{0}<8),(H{0}<8),(F{0}+H{0}+K{0})>15)),0,1)=0,0,IF(OR(AND((F{0}>7),(H{0}+K{0})<8),AND((H{0}<8),(F{0}<8),(F{0}+K{0})<8,(F{0}+K{0})>7),AND((F{0}+K{0})<8,(H{0}+K{0})<8)),8-H{0}-K{0},0))";
+        String temp6="=IF((M{0}+N{0})<(16-L{0}),(16-L{0}),(M{0}+N{0}))";
+
+
+
+
+        int i=1;
+        for (UserInfoBO userInfoBO : userInfoBOList) {
+            i++;
+//            ActivityRecordStatistics activityRecordStatistics = activityRecordService.fetchUserRecordStatistics(userInfoBO.getUserId());
+//            PastActivityBO pastActivityBO=activityRepoService.getPastByUserId(userInfoBO.getUserId());
+//            Map<String, Integer> map = activityRecordStatistics.getStatistics();
+            PastActivityDO pastActivityDO=t4.get(userInfoBO.getUserId());
+            String[] content = new String[15];
+            content[0] = userInfoBO.getStuId();
+            content[1] = userInfoBO.getRealName();
+            content[2] = userInfoBO.getMajor();
+            content[3] = userInfoBO.getGrade();
+            content[4] = userInfoBO.getClassId();
+            content[5] = MessageFormat.format(temp1, String.valueOf(i));
+            content[6] = String.valueOf(getLongValue(t1, userInfoBO.getUserId(), 0)+pastActivityDO.getPastLectureActivity());
+            //content[6] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.LECTURE_ACTIVITY.getCode()))+pastActivityBO.getPastLectureActivity());
+            content[7] = MessageFormat.format(temp2, String.valueOf(i));
+            content[8] = String.valueOf((getLongValue(t2, userInfoBO.getUserId(), 0)+pastActivityDO.getPastSchoolActivity()));
+            content[9] = String.valueOf(getLongValue(t3, userInfoBO.getUserId(), 0)+pastActivityDO.getPastPracticeActivity());
+            //content[8] = String.valueOf((Long.valueOf(map.get(ActivityTypeEnum.SCHOOL_ACTIVITY.getCode()))+pastActivityBO.getPastSchoolActivity()));
+            //content[9] = String.valueOf(Long.valueOf( map.get(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode()))+pastActivityBO.getPastPracticeActivity());
+            content[10] = pastActivityDO.getUndistributedStamp().toString();
+            content[11] = MessageFormat.format(temp3, String.valueOf(i));
+            content[12] = MessageFormat.format(temp4, String.valueOf(i));
+            content[13] = MessageFormat.format(temp5, String.valueOf(i));
+            content[14] = MessageFormat.format(temp6, String.valueOf(i));
+//            System.out.println(activityRecordStatistics);
+//            System.out.println(JSON.toJSONString(content));
+            System.out.println(userInfoBO.getUserId());
+            csvWriter.writeRecord(content);
+        }
+        csvWriter.close();
+    }
+
+    private Long getLongValue(Map<Object, Object[]> map, Object key, int No){
+        if(map.get(key)==null)
+            return 0L;
+        else{
+//            System.out.println(map.get(key)[No]);
+            BigDecimal ans=(BigDecimal)map.get(key)[No];
+            return ans.longValue();
+        }
+    }
 }

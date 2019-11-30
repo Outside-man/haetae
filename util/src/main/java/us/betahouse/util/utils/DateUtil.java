@@ -22,6 +22,8 @@ public class DateUtil {
 
     private static final String MONTH_DAY = "MMdd";
 
+    private static final String YEAR_MONTH_DAY="yyyy-MM-dd";
+
     private static final String DAY = "dd";
 
 
@@ -38,6 +40,8 @@ public class DateUtil {
     public static Date getDateByShortDatesSt(String str) {
         return parse(str, SHORT_TIME);
     }
+
+
 
     /**
      * 获取年份
@@ -59,6 +63,9 @@ public class DateUtil {
         return format(date, MONTH_DAY);
     }
 
+    public static String getYearMonthDay(Date date){
+        return format(date, YEAR_MONTH_DAY);
+    }
     /**
      * 获取日
      *

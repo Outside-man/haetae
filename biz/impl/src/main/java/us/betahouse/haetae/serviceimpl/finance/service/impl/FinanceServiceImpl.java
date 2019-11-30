@@ -95,7 +95,7 @@ public class FinanceServiceImpl implements FinanceService {
         FinanceMessageBO financeMessageBO=FinanceMessageBOBuilder
                 .aFinanceMessageBO()
                 .withApplicantUserId(request.getUserId())
-                .withApplicantName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
+                .withApplicantName(userBasicService.getByUserId(request.getUserId()).getUserInfo().getRealName())
                 .withOrganizationId(request.getOrganizationId())
                 .withOrganizationName(organizationRepoService.queryByOrganizationId(request.getOrganizationId()).getOrganizationName())
                 .withFinanceName(request.getFinanceName())
@@ -139,7 +139,7 @@ public class FinanceServiceImpl implements FinanceService {
     public FinanceMessageBO checkMessage(FinanceManagerRequest request, OperateContext context) {
         FinanceMessageBO financeMessageBO=financeManager.findMessageByFinanceMessageId(request.getFinanceMessageId());
         financeMessageBO.setAuditorUserId(request.getUserId());
-        financeMessageBO.setAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName());
+        financeMessageBO.setAuditorName(userBasicService.getByUserId(request.getUserId()).getUserInfo().getRealName());
         financeMessageBO.setTrueMoney(request.getTrueMoney());
 
         return financeManager.check(financeMessageBO);
@@ -149,7 +149,7 @@ public class FinanceServiceImpl implements FinanceService {
     public FinanceMessageBO tally(FinanceManagerRequest request, OperateContext context) {
         FinanceMessageBO financeMessageBO=FinanceMessageBOBuilder
                 .aFinanceMessageBO()
-                .withAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
+                .withAuditorName(userBasicService.getByUserId(request.getUserId()).getUserInfo().getRealName())
                 .withAuditorUserId(request.getUserId())
                 .withOrganizationId(request.getOrganizationId())
 //                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())

@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.locale.model.basic;
 
+import org.apache.commons.lang.StringUtils;
 import us.betahouse.util.common.ToString;
 
 import java.util.*;
@@ -14,6 +15,8 @@ import java.util.*;
  */
 
 public class LocaleApplyBO extends ToString {
+
+    private static final String FAILURE_MESSAGE ="failureMessage";
 
     private static final long serialVersionUID = 1305031373217182020L;
     /**
@@ -85,7 +88,15 @@ public class LocaleApplyBO extends ToString {
      * 申请ID
      */
     private String localeApplyId;
+    /**
+     * 组织名
+     */
+    private String organizationName;
 
+    /**
+     * 场地借用者姓名
+     */
+    private String userName;
 
     /**
      * 场地申请额外信息
@@ -101,7 +112,7 @@ public class LocaleApplyBO extends ToString {
 
     public void putExtInfo(String key, String value) {
         if (extInfo == null) {
-            extInfo = new HashMap<>();
+            extInfo = new HashMap<>(4);
         }
         extInfo.put(key, value);
     }
@@ -115,7 +126,7 @@ public class LocaleApplyBO extends ToString {
         Date now = new Date();
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(now);
-        calendar.add(calendar.DATE, -2);
+        calendar.add(Calendar.DATE, -2);
         now = calendar.getTime();
         return create.before(now);
     }
@@ -238,5 +249,33 @@ public class LocaleApplyBO extends ToString {
 
     public void setLocaleName(String localeName) {
         this.localeName = localeName;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getFailureMessage() {
+        return fetchExtInfo(FAILURE_MESSAGE);
+    }
+
+    public void setFailureMessage(String failureMessage) {
+        if(StringUtils.isNotBlank(failureMessage)){
+            putExtInfo(FAILURE_MESSAGE,failureMessage);
+        }else{
+            extInfo.remove(FAILURE_MESSAGE);
+        }
     }
 }

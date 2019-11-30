@@ -30,7 +30,7 @@ public interface LocaleApplyService {
 
     /**
      * 更新场地申请状态
-     * 管理员 学工
+     * 管理员 一轮审批
      *
      * @param request
      * @param context
@@ -40,7 +40,7 @@ public interface LocaleApplyService {
 
     /**
      * 更新场地申请状态
-     * 管理员 团委
+     * 管理员 二轮审批
      *
      * @param request
      * @param context
@@ -56,7 +56,7 @@ public interface LocaleApplyService {
      * @param context
      * @return
      */
-    LocaleApplyBO updateUser(LocaleApplyManagerRequest request, OperateContext context);
+    LocaleApplyBO updateStatusByUser(LocaleApplyManagerRequest request, OperateContext context);
 
     /**
      * 通过场地申请id查询

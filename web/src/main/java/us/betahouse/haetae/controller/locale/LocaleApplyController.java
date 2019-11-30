@@ -15,13 +15,13 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.locale.enums.LocaleApplyStatusEnum;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
-import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.haetae.locale.model.common.PageList;
 import us.betahouse.haetae.model.locale.request.LocaleApplyRestRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.locale.request.LocaleApplyManagerRequest;
 import us.betahouse.haetae.serviceimpl.locale.request.builder.LocaleApplyManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
+import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -30,7 +30,6 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
 
 /**
  * @author NathanDai
@@ -52,6 +51,8 @@ public class LocaleApplyController {
 
     @Autowired
     LocaleApplyService localeApplyService;
+    @Autowired
+    UserService userService;
 
     /**
      * 申请者提交场地申请
@@ -71,9 +72,9 @@ public class LocaleApplyController {
             public void before() {
                 AssertUtil.assertNotNull(restRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(restRequest.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(restRequest.getOrganizationName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "组织名不能为空");
                 AssertUtil.assertNotNull(restRequest.getTel(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请电话不能为空");
                 AssertUtil.assertNotNull(restRequest.getUsages(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请用途不能为空");
-                AssertUtil.assertNotNull(restRequest.getRemark(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请备注不能为空");
                 AssertUtil.assertNotNull(restRequest.getDocument(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请文件不能为空");
                 AssertUtil.assertNotNull(restRequest.getStatus(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请状态不能为空");
                 AssertUtil.assertNotNull(restRequest.getTimeBucket(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请时间段不能为空");
@@ -100,6 +101,7 @@ public class LocaleApplyController {
                         .withTimeBucket(restRequest.getTimeBucket())
                         .withUserId(restRequest.getUserId())
                         .withStatus(restRequest.getStatus())
+                        .withOrganizationName(restRequest.getOrganizationName())
                         .build();
 
                 LocaleApplyBO localeApplyBO = localeApplyService.create(localeApplyManagerRequest, context);
@@ -245,7 +247,7 @@ public class LocaleApplyController {
                         //鉴权的时候要用
                         .withUserId(restRequest.getUserId())
                         .build();
-
+                localeApplyManagerRequest.setFailureMessage(restRequest.getFailureMessage());
                 LocaleApplyBO localeApplyBO = localeApplyBOFirst.getStatus().equals(LocaleApplyStatusEnum.COMMIT.getCode())
                         ? localeApplyService.updateAdminFirst(localeApplyManagerRequest, context)
                         : localeApplyService.updateAdminSecond(localeApplyManagerRequest, context);
@@ -293,8 +295,8 @@ public class LocaleApplyController {
                         //鉴权的时候要用
                         .withUserId(restRequest.getUserId())
                         .build();
-
-                LocaleApplyBO localeApplyBO = localeApplyService.updateUser(localeApplyManagerRequest, context);
+                localeApplyManagerRequest.setFailureMessage(restRequest.getFailureMessage());
+                LocaleApplyBO localeApplyBO = localeApplyService.updateStatusByUser(localeApplyManagerRequest, context);
                 return RestResultUtil.buildSuccessResult(localeApplyBO, "取消场地申请成功");
             }
         });

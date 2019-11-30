@@ -13,11 +13,15 @@ import org.apache.commons.lang.StringUtils;
  * @version : MemberType.java 2019/03/25 23:48 dango.yxm
  */
 public enum MemberType {
-    PRINCIPAL("PRINCIPAL", "主管"),
+    PRINCIPAL("PRINCIPAL", "负责人"),
 
     ADMIN("ADMIN", "管理员"),
 
-    MEMBER("MEMBER", "成员");
+    MEMBER("MEMBER", "成员"),
+
+    ASSOCIATION_LEADER("ASSOCIATION_LEADER","社长")
+
+    ;
 
 
     public static MemberType getByType(String type) {

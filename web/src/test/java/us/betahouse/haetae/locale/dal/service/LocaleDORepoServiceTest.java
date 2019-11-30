@@ -18,8 +18,8 @@ public class LocaleDORepoServiceTest {
     @Test
     public void createLocale() {
         LocaleBO localeBO=new LocaleBO();
-        localeBO.setLocaleCode("dx505");
-        localeBO.setLocaleName("笃行楼505");
+        localeBO.setLocaleCode("gz527");
+        localeBO.setLocaleName("格致楼527");
         localeBO.setStatus("USABLE");
         localeDORepoService.createLocale(localeBO);
     }

@@ -41,8 +41,22 @@ public interface UserBasicService {
      * @param userId
      * @return
      */
-    CommonUser getUserId(String userId);
+    CommonUser getByUserId(String userId);
 
+    /**
+     * 放置token
+     *
+     * @param commonUser
+     * @return
+     */
+    CommonUser setToken(CommonUser commonUser);
+    /**
+     * 通过学号获取用户通用模型
+     *
+     * @param stuId
+     * @return
+     */
+    CommonUser getByStuId(String stuId);
     /**
      * 检测登陆 带ip
      *

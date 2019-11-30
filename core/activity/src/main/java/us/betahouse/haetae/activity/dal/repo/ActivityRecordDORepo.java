@@ -5,10 +5,12 @@
 package us.betahouse.haetae.activity.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 活动记录仓储
@@ -79,4 +81,9 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
      * @return
      */
     ActivityRecordDO findByActivityRecordId(String activityRecordId);
+
+
+
+    @Query(value = "SELECT sum( 1 ), sum( activity_record.time ),activity_record.user_id,activity_record.type FROM activity_record GROUP BY activity_record.user_id,activity_record.type", nativeQuery = true)
+    List<Object[]>  findGroupByActivityTypeAndUserId();
 }

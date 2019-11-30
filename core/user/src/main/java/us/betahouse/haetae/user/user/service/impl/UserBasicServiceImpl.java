@@ -77,14 +77,26 @@ public class UserBasicServiceImpl implements UserBasicService {
         userBO.setSessionId(EncryptUtil.parseToken(token));
         userRepoService.updateUserByUserId(userBO);
 
-        CommonUser user = getUserId(userBO.getUserId());
+        CommonUser user = getByUserId(userBO.getUserId());
         // 存储登陆凭证
         user.setToken(token);
         return user;
     }
 
     @Override
-    public CommonUser getUserId(String userId) {
+    public CommonUser setToken(CommonUser commonUser){
+        UserBO userBO = userRepoService.queryByUserId(commonUser.getUserId());
+        String token = UUID.randomUUID().toString();
+        userBO.setSessionId(EncryptUtil.parseToken(token));
+        userRepoService.updateUserByUserId(userBO);
+        CommonUser user = getByUserId(userBO.getUserId());
+        // 存储登陆凭证
+        user.setToken(token);
+        return user;
+    }
+
+    @Override
+    public CommonUser getByUserId(String userId) {
         CommonUser user = new CommonUser();
         // 获取 用户id
         user.setUserId(userId);
@@ -96,6 +108,15 @@ public class UserBasicServiceImpl implements UserBasicService {
         // fetch 用户角色
         userHelper.fillRole(user);
         return user;
+    }
+
+    @Override
+    public CommonUser getByStuId(String stuId) {
+        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
+        if(userInfoBO==null){
+            return null;
+        }
+        return getByUserId(userInfoBO.getUserId());
     }
 
     @Override
