@@ -57,6 +57,13 @@ public interface SkillRepoService {
     CertificateBO queryByCertificateId(String certificateId);
 
     /**
+     * 查询全部证书
+     *
+     * @return
+     */
+    List<CertificateBO> queryAll();
+
+    /**
      * 查询证书 通过用户id
      *
      * @param userId

@@ -116,6 +116,14 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
+    public List<CertificateBO> queryAll() {
+        return CollectionUtils.toStream(skillDORepo.findAll())
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<CertificateBO> queryByUserId(String userId) {
         return CollectionUtils.toStream(skillDORepo.findAllByUserId(userId))
                 .filter(Objects::nonNull)

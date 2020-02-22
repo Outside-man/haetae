@@ -11,6 +11,10 @@ package us.betahouse.haetae.serviceimpl.certificate.constant;
 public class CertificatePermType {
     //=================总管理权限 start=================
     /**
+     * 后台管理员（最高权限）
+     */
+    public final static String CERTIFICATE_MANAGER = "CERTIFICATE_MANAGER";
+    /**
      * 管理审核员
      */
     public final static String MANAGER_CONFIRM = "MANAGER_CONFIRM";

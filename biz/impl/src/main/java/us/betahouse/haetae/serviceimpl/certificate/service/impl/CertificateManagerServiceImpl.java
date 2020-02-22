@@ -13,6 +13,7 @@ import us.betahouse.haetae.certificate.dal.service.SkillRepoService;
 import us.betahouse.haetae.certificate.enums.CertificateStateEnum;
 import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.haetae.certificate.request.CertificateManagerRequest;
 import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
@@ -120,6 +121,16 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     @Override
     public List<String> importCertificate(String url) {
         return null;
+    }
+
+    @Override
+    @VerifyPerm(permType = CertificatePermType.CERTIFICATE_MANAGER)
+    public List<CertificateBO> fetchAllCertificateList(CertificateManagerRequest request, OperateContext context) {
+        List<CertificateBO> certificateBOS = new ArrayList<>();
+        certificateBOS.addAll(qualificationsRepoService.queryAllCET46());
+        certificateBOS.addAll(qualificationsRepoService.queryAllQualificate());
+        certificateBOS.addAll(skillRepoService.queryAll());
+        return certificateBOS;
     }
 
     @Override

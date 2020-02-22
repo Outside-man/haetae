@@ -48,6 +48,11 @@ public interface QualificationsRepoService {
      */
     CertificateBO queryByCertificateId(String certificateId);
 
+    /**
+     * 查询全部四六级证书
+     * @return
+     */
+    List<CertificateBO> queryAllCET46();
 
     /**
      * 查询四六级证书
@@ -55,6 +60,13 @@ public interface QualificationsRepoService {
      * @return
      */
     List<CertificateBO> queryCET46(String userId);
+
+    /**
+     * 查询全部资格证书（不包括四六级证书）
+     *
+     * @return
+     */
+    List<CertificateBO> queryAllQualificate();
 
     /**
      * 查询资格证书（不包括四六级证书）

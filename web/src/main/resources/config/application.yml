@@ -11,9 +11,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/haetae?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3307/haetae?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
     username: root
-    password: root
+    password: 26564356
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,6 +27,20 @@ spring:
 
 logging:
   config: classpath:config/logback.xml
+
 wechat:
   appId:
   secret:
+
+aliyun:
+  oss:
+    endpoint: http://oss-cn-hangzhou.aliyuncs.com
+    keyid: LTAI4Fe8uyZKprYepZDedDyb
+    keysecret: jXDLDFeXELfln0V1pQE96iI0s0dtlc
+    bucketname: haetae
+    filehost: dev
+
+Yiban:
+  appId: 278961da0da49b2e
+  appSecret: fa224fb6224d096a957fd58ee66488c8
+  redirectUri: http://hupanyouth.cn:8000/page/perssion.html
