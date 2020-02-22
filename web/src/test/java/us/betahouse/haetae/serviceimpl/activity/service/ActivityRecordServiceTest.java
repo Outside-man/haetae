@@ -399,7 +399,7 @@ public class ActivityRecordServiceTest {
                 }
                 System.out.println(JSON.toJSONString(objects));
             }
-        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\1导出"+DateUtil.getYearMonthDay(new Date())+".csv", ',', Charset.forName("GBK"));
+        CsvWriter csvWriter = new CsvWriter("/Users/rade/Documents/dev-temp/haetae/1导出"+DateUtil.getYearMonthDay(new Date())+".csv", ',', Charset.forName("GBK"));
         String[] headers ={"学号", "姓名","专业","年级","班级","讲座(实际)","讲座活动次数","校园活动(实际)","校园活动次数","社会实践次数","尚未分配活动章","总章数","最少讲座章","最少活动章","最少总章数"};
         csvWriter.writeRecord(headers);
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();

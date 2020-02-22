@@ -112,9 +112,9 @@ public class UserManagerTest {
     @Test
     public void batchBindPerm() {
         UserManageRequest request=new UserManageRequest();
-        request.setUserId("201811302142043529750001201886");
+        request.setUserId("201811302142158144000001201894");
         List<String> list= new ArrayList<>();
-        list.add("201903121918214750212900040312");
+        list.add("202002221910514810655300040222");
         request.setPermIds(list);
         userManager.batchBindPerm(request);
     }
