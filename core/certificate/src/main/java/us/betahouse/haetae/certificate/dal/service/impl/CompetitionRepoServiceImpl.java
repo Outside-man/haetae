@@ -133,6 +133,14 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
     }
 
     @Override
+    public List<CertificateBO> queryAll() {
+        return CollectionUtils.toStream(competitionDORepo.findAll())
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<CertificateBO> queryByCompetitionName(String competitionName) {
         return CollectionUtils.toStream(competitionDORepo.findByCompetitionName(competitionName))
                 .filter(Objects::nonNull)

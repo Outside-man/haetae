@@ -165,6 +165,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         }
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(skillDO.getCertificateId())
+                .withUserID(skillDO.getUserId())
                 .withCertificateName(skillDO.getCertificateName())
                 .withCertificatePublishTime(skillDO.getCertificatePublishTime())
                 .withCertificateType(CertificateTypeEnum.SKILL.getCode())

@@ -129,6 +129,7 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         List<CertificateBO> certificateBOS = new ArrayList<>();
         certificateBOS.addAll(qualificationsRepoService.queryAllCET46());
         certificateBOS.addAll(qualificationsRepoService.queryAllQualificate());
+        certificateBOS.addAll(competitionRepoService.queryAll());
         certificateBOS.addAll(skillRepoService.queryAll());
         return certificateBOS;
     }
