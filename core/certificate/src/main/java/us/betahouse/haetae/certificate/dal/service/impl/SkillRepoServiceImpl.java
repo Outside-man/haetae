@@ -62,6 +62,11 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
+    public void deleteByCertificateId(String certificateId) {
+        skillDORepo.deleteByCertificateId(certificateId);
+    }
+
+    @Override
     public CertificateBO modify(CertificateBO certificateBO) {
         SkillDO skillDO = skillDORepo.findByCertificateId(certificateBO.getCertificateId());
         if (skillDO == null) {

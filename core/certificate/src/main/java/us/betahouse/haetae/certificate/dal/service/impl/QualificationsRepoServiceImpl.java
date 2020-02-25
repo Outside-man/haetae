@@ -56,6 +56,11 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDORepo.deleteByCertificateIdAndUserId(certificateId, userId);
     }
 
+    @Override
+    public void deleteByCertificateId(String certificateId) {
+        qualificationsDORepo.deleteByCertificateId(certificateId);
+    }
+
 
     @Override
     public CertificateBO modify(CertificateBO certificateBO) {

@@ -33,6 +33,14 @@ public interface QualificationsRepoService {
     void deleteByCertificateIdAndUserId(String certificateId, String userId);
 
     /**
+     * 删除资格证书
+     *
+     * @param certificateId
+     * @return
+     */
+    void deleteByCertificateId(String certificateId);
+
+    /**
      * 修改资格证书
      *
      * @param certificateBO
