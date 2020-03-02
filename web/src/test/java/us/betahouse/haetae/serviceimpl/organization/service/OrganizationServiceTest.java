@@ -8,11 +8,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.organization.dal.model.OrganizationDO;
 import us.betahouse.haetae.organization.dal.repo.OrganizationRepo;
 import us.betahouse.haetae.organization.enums.MemberType;
-import us.betahouse.haetae.organization.request.OrganizationManageRequest;
 import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
 import us.betahouse.util.utils.CsvUtil;
-
-import java.math.BigInteger;
 
 
 @RunWith(SpringRunner.class)

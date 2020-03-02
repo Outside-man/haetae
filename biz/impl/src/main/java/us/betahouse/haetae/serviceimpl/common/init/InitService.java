@@ -7,25 +7,22 @@ package us.betahouse.haetae.serviceimpl.common.init;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
 import us.betahouse.haetae.finance.manager.FinanceManager;
-
 import us.betahouse.haetae.finance.model.basic.FinanceTotalBO;
 import us.betahouse.haetae.organization.manager.OrganizationManager;
 import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
+import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
+import us.betahouse.haetae.serviceimpl.asset.enums.AssetPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.enums.CertificatePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
 import us.betahouse.haetae.serviceimpl.finance.enums.FinancePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.locale.constant.LocalePermType;
+import us.betahouse.haetae.serviceimpl.locale.enums.LocalePermTypeEnum;
 import us.betahouse.haetae.serviceimpl.organization.constant.OrganizationPermType;
 import us.betahouse.haetae.serviceimpl.organization.enums.OrganizationPermTypeEnum;
-import us.betahouse.haetae.serviceimpl.asset.constant.AssetPermType;
-import us.betahouse.haetae.serviceimpl.asset.enums.AssetPermTypeEnum;
-import us.betahouse.haetae.serviceimpl.locale.enums.LocalePermTypeEnum;
-
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;

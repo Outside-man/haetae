@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 活动记录仓储

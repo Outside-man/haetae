@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.user.dal.service;
 
-import org.springframework.stereotype.Service;
 import us.betahouse.haetae.user.model.basic.MajorBO;
 
 import java.util.List;

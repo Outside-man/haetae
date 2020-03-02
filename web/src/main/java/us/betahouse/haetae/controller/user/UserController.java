@@ -25,8 +25,6 @@ import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.RoleBO;
-import us.betahouse.haetae.user.user.builder.UserInfoBOBuilder;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -36,7 +34,6 @@ import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

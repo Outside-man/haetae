@@ -4,8 +4,6 @@
  */
 package us.betahouse.haetae.model.finance.vo;
 
-import java.math.BigDecimal;
-
 /**
  * @author MessiahJK
  * @version : FinanceVO.java 2019/02/21 1:24 MessiahJK

@@ -16,7 +16,6 @@ import us.betahouse.haetae.activity.dal.repo.PastActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
-import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
@@ -25,16 +24,13 @@ import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
-import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.utils.CsvUtil;
 import us.betahouse.util.utils.DateUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.*;
@@ -403,7 +399,7 @@ public class ActivityRecordServiceTest {
                 }
                 System.out.println(JSON.toJSONString(objects));
             }
-        CsvWriter csvWriter = new CsvWriter("C:\\Users\\j10k\\Desktop\\1导出"+DateUtil.getYearMonthDay(new Date())+".csv", ',', Charset.forName("GBK"));
+        CsvWriter csvWriter = new CsvWriter("/Users/rade/Documents/dev-temp/haetae/1导出"+DateUtil.getYearMonthDay(new Date())+".csv", ',', Charset.forName("GBK"));
         String[] headers ={"学号", "姓名","专业","年级","班级","讲座(实际)","讲座活动次数","校园活动(实际)","校园活动次数","社会实践次数","尚未分配活动章","总章数","最少讲座章","最少活动章","最少总章数"};
         csvWriter.writeRecord(headers);
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();

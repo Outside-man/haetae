@@ -1,12 +1,10 @@
 package us.betahouse.haetae.user.manager;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.builder.PastActivityBOBuilder;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.request.ActivityRequest;
@@ -114,9 +112,9 @@ public class UserManagerTest {
     @Test
     public void batchBindPerm() {
         UserManageRequest request=new UserManageRequest();
-        request.setUserId("201811302142043529750001201886");
+        request.setUserId("201904032054129780650001201994");
         List<String> list= new ArrayList<>();
-        list.add("201903121918214750212900040312");
+        list.add("202002221910514810655300040222");
         request.setPermIds(list);
         userManager.batchBindPerm(request);
     }

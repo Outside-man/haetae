@@ -56,6 +56,11 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDORepo.deleteByCertificateIdAndUserId(certificateId, userId);
     }
 
+    @Override
+    public void deleteByCertificateId(String certificateId) {
+        qualificationsDORepo.deleteByCertificateId(certificateId);
+    }
+
 
     @Override
     public CertificateBO modify(CertificateBO certificateBO) {
@@ -119,6 +124,16 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         return convert(qualificationsDORepo.findByCertificateId(certificateId));
     }
 
+    @Override
+    public List<CertificateBO> queryAllCET46() {
+        return CollectionUtils.toStream(qualificationsDORepo.findAll())
+                .filter(Objects::nonNull)
+                .filter(str -> str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .map(this::convert)
+                .map(this::changeType)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<CertificateBO> queryCET46(String userId) {
@@ -127,6 +142,16 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .filter(str -> str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
                 .map(this::convert)
                 .map(this::changeType)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CertificateBO> queryAllQualificate() {
+        return CollectionUtils.toStream(qualificationsDORepo.findAll())
+                .filter(Objects::nonNull)
+                //拦截四六级证书
+                .filter(qualificationsDO -> !qualificationsDO.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .map(this::convert)
                 .collect(Collectors.toList());
     }
 

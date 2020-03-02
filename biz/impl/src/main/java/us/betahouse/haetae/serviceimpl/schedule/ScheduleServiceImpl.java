@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
-import us.betahouse.haetae.locale.model.basic.LocaleBO;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
 import us.betahouse.util.utils.CollectionUtils;

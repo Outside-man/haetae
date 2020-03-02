@@ -180,13 +180,13 @@ public class CertificateServiceImpl implements CertificateService {
         //证书类型异常抛出
         CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
         //证书存在异常抛出
-        CertificateBO certificateBO = judgeIsExit(request);
+        CertificateBO certificateBO = judgeIsExitManager(request);
         switch (certificateTypeEnum) {
             //四六级证书 删除
             case CET_4_6:
                 //资格证书
             case QUALIFICATIONS: {
-                qualificationsRepoService.deleteByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
+                qualificationsRepoService.deleteByCertificateId(request.getCertificateId());
                 break;
             }
             //竞赛证书
@@ -198,7 +198,7 @@ public class CertificateServiceImpl implements CertificateService {
             }
             //技能证书
             case SKILL: {
-                skillRepoService.deleteByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
+                skillRepoService.deleteByCertificateId(request.getCertificateId());
                 break;
             }
             //异常
@@ -317,6 +317,47 @@ public class CertificateServiceImpl implements CertificateService {
             case SKILL: {
                 //同资格证书
                 certificateBO = skillRepoService.queryByCertificateIdAndUserId(request.getCertificateId(), request.getUserId());
+                break;
+            }
+            //异常
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
+            }
+        }
+        //证书非空判断
+        AssertUtil.assertNotNull(certificateBO, "证书不存在");
+        return certificateBO;
+    }
+
+    /**
+     * 判断证书存在性抛出异常
+     * 返回证书实体
+     *
+     * @param request
+     * @return
+     */
+    private CertificateBO judgeIsExitManager(CertificateRequest request) {
+        //判断证书类型抛出异常
+        CertificateTypeEnum certificateTypeEnum = judgeCertificateType(request);
+        CertificateBO certificateBO;
+        switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:
+                //资格证书
+            case QUALIFICATIONS: {
+                //证书存在判断
+                certificateBO = qualificationsRepoService.queryByCertificateId(request.getCertificateId());
+                break;
+            }
+            //竞赛证书
+            case COMPETITION: {
+                certificateBO = competitionRepoService.queryByCertificateId(request.getCertificateId());
+                break;
+            }
+            //技能证书
+            case SKILL: {
+                //同资格证书
+                certificateBO = skillRepoService.queryByCertificateId(request.getCertificateId());
                 break;
             }
             //异常

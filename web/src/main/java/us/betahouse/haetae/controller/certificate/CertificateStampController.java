@@ -13,7 +13,6 @@ import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
-import us.betahouse.haetae.model.certificate.request.CertificateRestRequest;
 import us.betahouse.haetae.model.user.request.ConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateConfirmRequestBuilder;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
@@ -23,15 +22,11 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
-import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
-
-import static us.betahouse.haetae.certificate.enums.CertificateExtInfoKey.DESCRIPTION;
 
 /**
  * 证书审核员 接口

@@ -5,10 +5,7 @@
 package us.betahouse.haetae.serviceimpl.certificate.builder;
 
 
-import us.betahouse.haetae.certificate.request.CertificateRecordRequest;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
-
-import java.util.List;
 
 /**
  * 证书盖章请求构造器

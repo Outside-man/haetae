@@ -62,6 +62,11 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
+    public void deleteByCertificateId(String certificateId) {
+        skillDORepo.deleteByCertificateId(certificateId);
+    }
+
+    @Override
     public CertificateBO modify(CertificateBO certificateBO) {
         SkillDO skillDO = skillDORepo.findByCertificateId(certificateBO.getCertificateId());
         if (skillDO == null) {
@@ -116,6 +121,14 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
+    public List<CertificateBO> queryAll() {
+        return CollectionUtils.toStream(skillDORepo.findAll())
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<CertificateBO> queryByUserId(String userId) {
         return CollectionUtils.toStream(skillDORepo.findAllByUserId(userId))
                 .filter(Objects::nonNull)
@@ -157,6 +170,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         }
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(skillDO.getCertificateId())
+                .withUserID(skillDO.getUserId())
                 .withCertificateName(skillDO.getCertificateName())
                 .withCertificatePublishTime(skillDO.getCertificatePublishTime())
                 .withCertificateType(CertificateTypeEnum.SKILL.getCode())

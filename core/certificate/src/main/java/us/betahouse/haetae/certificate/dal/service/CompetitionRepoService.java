@@ -65,6 +65,13 @@ public interface CompetitionRepoService {
     List<CertificateBO> queryByUserId(String userId);
 
     /**
+     * 查询全部证书
+     *
+     * @return
+     */
+    List<CertificateBO> queryAll();
+
+    /**
      * 通过证书名字查找证书
      *
      * @param competitionName

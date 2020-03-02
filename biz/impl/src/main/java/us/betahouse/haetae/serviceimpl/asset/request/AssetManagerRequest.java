@@ -7,8 +7,6 @@ package us.betahouse.haetae.serviceimpl.asset.request;
 import us.betahouse.haetae.asset.request.AssetRequest;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 
-import java.io.Serializable;
-
 /**
  * @author guofan.cp
  * @version : AssetManagerRequest.java 2019/01/21 9:13 guofan.cp
