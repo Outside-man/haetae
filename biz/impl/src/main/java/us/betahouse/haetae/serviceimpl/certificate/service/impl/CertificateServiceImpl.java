@@ -192,7 +192,7 @@ public class CertificateServiceImpl implements CertificateService {
             //竞赛证书
             case COMPETITION: {
                 //判断接受参数获取团队id  和获取证书记录团队id是否相同
-//                AssertUtil.assertTrue(certificateBO.getTeamId().equals(request.getTeamId()), "竞赛团队id不存在");
+                AssertUtil.assertTrue(certificateBO.getTeamId().equals(request.getTeamId()), "竞赛团队id不存在");
                 competitionRepoService.deleteAllByTeamId(request.getTeamId());
                 break;
             }

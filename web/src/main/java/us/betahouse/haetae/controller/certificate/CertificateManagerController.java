@@ -116,6 +116,7 @@ public class CertificateManagerController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
                         .withCertificateId(request.getCertificateId())
+                        .withTeamId(request.getTeamId())
                         .withCertificateType(request.getCertificateType());
                 certificateService.delete(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("删除记录成功");
