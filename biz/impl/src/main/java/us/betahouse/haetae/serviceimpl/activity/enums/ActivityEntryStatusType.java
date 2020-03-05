@@ -26,9 +26,14 @@ public enum ActivityEntryStatusType {
     REGISTRATION("REGISTRATION", "报名"),
 
     /**
-     * 已报名 人已满 已结束 已取消
+     * 已报名
      */
     REGISTERED("REGISTERED", "已报名"),
+
+    /**
+     * 取消报名
+     */
+    CANCEL_REGISTERED("CANCEL_REGISTERED", "取消报名"),
 
     /**
      * 人已满

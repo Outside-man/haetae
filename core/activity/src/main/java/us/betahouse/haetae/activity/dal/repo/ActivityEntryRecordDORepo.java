@@ -2,6 +2,7 @@ package us.betahouse.haetae.activity.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.model.ActivityEntryRecordDO;
 
 import java.util.List;
@@ -32,13 +33,20 @@ public interface ActivityEntryRecordDORepo extends JpaRepository<ActivityEntryRe
     List<ActivityEntryRecordDO> findAllByActivityEntryId(String activityEntryId);
 
     /**
-     * 通过报名信息id和用户id获取报名信息
+     * 通过报名信息id和用户id获取报名记录
      * @param activityEntryId
      * @param userId
      * @return
      */
     ActivityEntryRecordDO findByActivityEntryIdAndUserId(String activityEntryId, String userId);
 
+    /**
+     * 通过报名信息id和用户id删除报名记录
+     * @param activityEntryId
+     * @param userId
+     */
+    @Transactional
+    void deleteByActivityEntryIdAndUserId(String activityEntryId, String userId);
 
     /**
      * 通过报名信息id查找报名记录数量

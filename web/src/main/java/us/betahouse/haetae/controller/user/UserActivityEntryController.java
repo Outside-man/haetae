@@ -3,10 +3,7 @@ package us.betahouse.haetae.controller.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
 import us.betahouse.haetae.activity.request.ActivityEntryRecordRequest;
 import us.betahouse.haetae.activity.request.ActivityEntryRequest;
@@ -61,6 +58,8 @@ public class UserActivityEntryController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertNotNull(request.getPage(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "page参数不能为空");
+                AssertUtil.assertNotNull(request.getLimit(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "limit参数不能为空");
             }
 
             @Override
@@ -104,8 +103,9 @@ public class UserActivityEntryController {
             public Result<ActivityEntryRecordBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                if( 0 >= activityBlacklistService.getCreditScoreByUserIdAndTerm(request.getUserId(),TermUtil.getNowTerm()))
+                if( 0 >= activityBlacklistService.getCreditScoreByUserIdAndTerm(request.getUserId(),TermUtil.getNowTerm())) {
                     return RestResultUtil.buildSuccessResult(null, "信用分不足，不允许报名");
+                }
                 ActivityEntryRecordRequest activityEntryRecordRequest = ActivityEntryRecordRequestBuilder.anActivityEntryRecordRequest()
                         .withActivityEntryId(request.getActivityEntryId())
                         .withActivityEntryRecordId(request.getActivityEntryRecordId())
@@ -123,5 +123,45 @@ public class UserActivityEntryController {
         });
     }
 
+
+    /**
+     * 活动取消报名
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CheckLogin
+    @DeleteMapping("/undoSignUp")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityEntryRecordBO> undoSignUp(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "活动取消报名", request, new RestOperateCallBack<ActivityEntryRecordBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名信息id不能为空");
+            }
+
+            @Override
+            public Result<ActivityEntryRecordBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityEntryRecordRequest activityEntryRecordRequest = ActivityEntryRecordRequestBuilder.anActivityEntryRecordRequest()
+                        .withActivityEntryId(request.getActivityEntryId())
+                        .withActivityEntryRecordId(request.getActivityEntryRecordId())
+                        .withUserId(request.getUserId())
+                        .withNote(request.getRecordNote())
+                        .withChoose(request.getRecordChoose())
+                        .build();
+                Integer result = activityEntryService.deleteActivityEntryRecord(activityEntryRecordRequest);
+                if(result == 1){
+                    return RestResultUtil.buildSuccessResult(null, "取消报名成功");
+                }else{
+                    return RestResultUtil.buildSuccessResult(null, "取消报名失败");
+                }
+            }
+        });
+    }
 
 }

@@ -81,9 +81,31 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
     }
 
 
+    /**
+     * 通过报名信息id和用户id获取报名记录
+     * @param activityEntryId
+     * @param userId
+     * @return
+     */
     @Override
     public ActivityEntryRecordBO findByActivityEntryIdAndUserId(String activityEntryId, String userId) {
         return convert(activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryId,userId));
+    }
+
+
+    /**
+     * 通过报名信息id和用户id删除报名记录
+     * @param activityEntryId
+     * @param userId
+     */
+    @Override
+    public Integer deleteByActivityEntryIdAndUserId(String activityEntryId, String userId) {
+        activityEntryRecordDORepo.deleteByActivityEntryIdAndUserId(activityEntryId,userId);
+        if(activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryId,userId)==null){
+            return 1;
+        }else{
+            return 0;
+        }
     }
 
     /**

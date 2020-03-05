@@ -30,6 +30,13 @@ public interface ActivityEntryRecordRepoService {
     ActivityEntryRecordBO findByActivityEntryIdAndUserId(String activityEntryId, String userId);
 
     /**
+     * 通过报名信息id和用户id删除报名记录
+     * @param activityEntryId
+     * @param userId
+     */
+    Integer deleteByActivityEntryIdAndUserId(String activityEntryId, String userId);
+
+    /**
      * 通过用户id查找报名记录
      *
      * @param userId

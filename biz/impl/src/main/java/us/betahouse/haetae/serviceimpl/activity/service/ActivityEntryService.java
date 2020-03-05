@@ -89,6 +89,13 @@ public interface ActivityEntryService {
     ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordRequest request);
 
     /**
+     * 取消报名
+     * @param request
+     * @return
+     */
+    Integer deleteActivityEntryRecord(ActivityEntryRecordRequest request);
+
+    /**
      * 结束可以结束的报名
      *
      * @return
