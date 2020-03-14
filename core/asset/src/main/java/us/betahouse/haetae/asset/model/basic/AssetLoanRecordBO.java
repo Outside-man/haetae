@@ -6,7 +6,6 @@ package us.betahouse.haetae.asset.model.basic;
 
 import us.betahouse.util.common.ToString;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

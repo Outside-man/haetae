@@ -8,11 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.user.model.basic.MajorBO;
 import us.betahouse.util.utils.CsvUtil;
 
-import javax.transaction.Transactional;
-
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,16 +18,16 @@ public class MajorRepoServiceTest {
     MajorRepoService majorRepoService;
 
 
-//    @Transactional
+    //    @Transactional
     @Test
     public void create() {
         String csv[][] = CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\专业列表.csv");
-        MajorBO majorBO=new MajorBO();
+        MajorBO majorBO = new MajorBO();
         for (int i = 1; i < csv.length; i++) {
             majorBO.setMajorName(csv[i][0]);
             majorRepoService.create(majorBO);
         }
-        List<MajorBO> majorBOList=majorRepoService.findAll();
+        List<MajorBO> majorBOList = majorRepoService.findAll();
         majorBOList.forEach(System.out::println);
     }
 

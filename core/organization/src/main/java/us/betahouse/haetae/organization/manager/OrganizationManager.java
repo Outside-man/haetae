@@ -5,6 +5,7 @@
 package us.betahouse.haetae.organization.manager;
 
 import us.betahouse.haetae.organization.model.OrganizationBO;
+import us.betahouse.haetae.organization.model.OrganizationMemberBO;
 import us.betahouse.haetae.organization.request.OrganizationManageRequest;
 
 import java.util.List;
@@ -48,5 +49,17 @@ public interface OrganizationManager {
      */
     List<OrganizationBO> queryOrganizationByMemberId(String memberId);
 
+    /**
+     * 查询用户所在所有组织及关系
+     *
+     * @param memberId
+     * @return
+     */
+    List<OrganizationMemberBO> queryOrganizationMemberByMemberId(String memberId);
+    /**
+     * 查询所有组织
+     *
+     * @return
+     */
     List<OrganizationBO> queryAllOrganization();
 }

@@ -15,6 +15,8 @@ import us.betahouse.haetae.user.request.RoleManageRequest;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
+import java.util.List;
+
 
 /**
  * 角色管理器实现
@@ -79,5 +81,10 @@ public class RoleManagerImpl implements RoleManager {
         AssertUtil.assertStringNotBlank(request.getRole().getRoleId());
         AssertUtil.assertNotNull(request.getUserIds());
         roleRepoService.usersUnbindRole(request.getUserIds(), request.getRole().getRoleId());
+    }
+
+    @Override
+    public List<RoleBO> findAllRole() {
+        return roleRepoService.findAllRole();
     }
 }

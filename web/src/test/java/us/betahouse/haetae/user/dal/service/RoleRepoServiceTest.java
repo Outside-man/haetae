@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 
 import java.util.Collections;
 
@@ -20,23 +19,16 @@ public class RoleRepoServiceTest {
     @Autowired
     private UserInfoRepoService userInfoRepoService;
 
-    @Test
-    public void createRole() {
-        RoleBO roleBO = new RoleBO();
-        roleBO.setRoleName("测试权限");
-        roleBO.setRoleDesc("测试权限");
-        System.out.println(roleRepoService.createRole(roleBO));
-    }
 
     @Test
     public void addCertificateManager(){
-        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("17905711");
+        UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId("17909227");
         if(null==userInfoBO){
             System.out.println("账号不存在");
             return ;
         }
         else{
-            roleRepoService.userBindRolesByCode(userInfoBO.getUserId(), UserRoleCode.CERTIFICATE_MANAGER);
+            roleRepoService.userBindRolesByCode(userInfoBO.getUserId(), UserRoleCode.LOCALE_MEMBER);
             System.out.println("绑定成功");
         }
     }
@@ -58,6 +50,7 @@ public class RoleRepoServiceTest {
 
     @Test
     public void userBindRolesByCode() {
+
     }
 
     @Test

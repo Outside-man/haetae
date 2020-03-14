@@ -62,6 +62,11 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     }
 
     @Override
+    public void deleteByCertificateId(String certificateId) {
+        skillDORepo.deleteByCertificateId(certificateId);
+    }
+
+    @Override
     public CertificateBO modify(CertificateBO certificateBO) {
         SkillDO skillDO = skillDORepo.findByCertificateId(certificateBO.getCertificateId());
         if (skillDO == null) {
@@ -74,7 +79,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
             skillDO.setCertificateName(newSkillDO.getCertificateName());
         }
         //更新证书等级
-        if(newSkillDO.getRank()!=null){
+        if (newSkillDO.getRank() != null) {
             skillDO.setRank(newSkillDO.getRank());
         }
         //有效时间
@@ -98,8 +103,12 @@ public class SkillRepoServiceImpl implements SkillRepoService {
             skillDO.setStatus(newSkillDO.getStatus());
         }
         //更新审核员信息
-        if(newSkillDO.getConfirmUserId()!=null){
+        if (newSkillDO.getConfirmUserId() != null) {
             skillDO.setConfirmUserId(newSkillDO.getConfirmUserId());
+        }
+        //更新图片路径
+        if (newSkillDO.getPictureUrl() != null) {
+            skillDO.setPictureUrl(newSkillDO.getPictureUrl());
         }
         //更新修改时间
         skillDO.setGmtModified(new Date());
@@ -109,6 +118,14 @@ public class SkillRepoServiceImpl implements SkillRepoService {
     @Override
     public CertificateBO queryByCertificateId(String certificateId) {
         return convert(skillDORepo.findByCertificateId(certificateId));
+    }
+
+    @Override
+    public List<CertificateBO> queryAll() {
+        return CollectionUtils.toStream(skillDORepo.findAll())
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -153,12 +170,14 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         }
         CertificateBOBuilder builder = CertificateBOBuilder.getInstance();
         builder.withCertificateId(skillDO.getCertificateId())
+                .withUserID(skillDO.getUserId())
                 .withCertificateName(skillDO.getCertificateName())
                 .withCertificatePublishTime(skillDO.getCertificatePublishTime())
                 .withCertificateType(CertificateTypeEnum.SKILL.getCode())
                 .withCertificateNumber(skillDO.getCertificateNumber())
                 .withStatus(skillDO.getStatus())
                 .withRank(skillDO.getRank())
+                .withCertificatePictureUrl(skillDO.getPictureUrl())
                 .withExpirationTime(skillDO.getExpirationTime())
                 .withExtInfo(JSONObject.parseObject(skillDO.getExtInfo(), Map.class));
         return builder.build();
@@ -185,6 +204,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         skillDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         skillDO.setStatus(certificateBO.getStatus());
         skillDO.setRank(certificateBO.getRank());
+        skillDO.setPictureUrl(certificateBO.getPictureUrl());
         return skillDO;
     }
 }

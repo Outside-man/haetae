@@ -32,6 +32,7 @@ import us.betahouse.util.utils.AssertUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * 组织管理服务实现
@@ -212,5 +213,11 @@ public class OrganizationServiceImpl implements OrganizationService {
         permRepoService.deletePerm(orgMemberTypeManagePermId);
         // 删除组织
         organizationManager.disbandOrganization(request);
+    }
+
+    @Override
+    public List<OrganizationMemberBO> queryOrganizationMemberByMemberId(OrganizationRequest request) {
+        organizationManager.queryOrganizationMemberByMemberId(request.getMemberId()).forEach(System.out::println);
+        return organizationManager.queryOrganizationMemberByMemberId(request.getMemberId());
     }
 }

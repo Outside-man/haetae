@@ -96,7 +96,7 @@ public class PastActivityVO {
         pastActivityVO.setUndistributedStamp(pastActivityBO.getUndistributedStamp());
         pastActivityVO.setPastSchoolActivity(pastActivityBO.getPastSchoolActivity());
         pastActivityVO.setPastLectureActivity(pastActivityBO.getPastLectureActivity());
-        pastActivityVO.setPastVolunteerActivityTime((double) (pastActivityBO.getPastVolunteerActivityTime()/10));
+        pastActivityVO.setPastVolunteerActivityTime(pastActivityBO.getPastVolunteerActivityTime()*1.0/10);
         pastActivityVO.setPastPracticeActivity(pastActivityBO.getPastPracticeActivity());
         return pastActivityVO;
 

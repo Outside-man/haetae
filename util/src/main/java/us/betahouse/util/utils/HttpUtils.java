@@ -95,7 +95,7 @@ public class HttpUtils {
      * @return
      * @throws Exception
      */
-    public String doPost(String url, Map parameterMap) throws Exception {
+    public static String doPost(String url, Map parameterMap) throws Exception {
 
         /* Translate parameter map to parameter date string */
         StringBuffer parameterBuffer = new StringBuffer();

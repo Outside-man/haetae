@@ -6,10 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.haetae.organization.enums.MemberType;
+import us.betahouse.haetae.organization.model.OrganizationMemberBO;
 import us.betahouse.haetae.organization.request.OrganizationManageRequest;
 import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
+import us.betahouse.haetae.serviceimpl.organization.service.OrganizationService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
+import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.CsvUtil;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RunWith(SpringRunner.class)
@@ -20,6 +26,8 @@ public class OrganizationManagerTest {
     private OrganizationManager organizationManager;
     @Autowired
     private UserInfoRepoService userInfoRepoService;
+    @Autowired
+    private OrganizationService organizationService;
 
     @Test
     public void createOrganization(){
@@ -31,13 +39,13 @@ public class OrganizationManagerTest {
     }
     @Test
     public void createOrganizations(){
-        OrganizationManageRequest request = new OrganizationManageRequest();
-        String filepath = "C:\\Users\\j10k\\Desktop\\activity_organization.csv";
+
+        String filepath = "C:\\Users\\j10k\\Desktop\\1.csv";
         String[][] csv = CsvUtil.getWithoutHeader(filepath);
-        request.setMemberId(userInfoRepoService.queryUserInfoByStuId("system").getUserId());
         for (String[] aCsv : csv) {
-            request.setOrganizationName(aCsv[1]);
-            request.setOrganizationId(aCsv[0]);
+            OrganizationManageRequest request = new OrganizationManageRequest();
+            request.setMemberId(userInfoRepoService.queryUserInfoByStuId("system").getUserId());
+            request.setOrganizationName(aCsv[0]);
             organizationManager.createOrganization(request);
         }
     }
@@ -45,11 +53,30 @@ public class OrganizationManagerTest {
     @Test
     public void manageMember(){
         OrganizationManageRequest request = new OrganizationManageRequest();
-        request.setOrganizationId("201903260031563848110011201940");
-        request.setMemberType(MemberType.PRINCIPAL);
-        request.setMemberDesc("部长");
-        request.setMemberId("11111");
+        request.setOrganizationId("201811302159427109255010032018");
+        request.setMemberType(MemberType.MEMBER);
+        request.setMemberDesc("社员");
+        request.setMemberId("201811302142079964900001201864");
         organizationManager.manageMember(request);
     }
 
+    @Test
+    public void queryOrganizationByMemberId() {
+        organizationManager.queryOrganizationByMemberId("201811302142079964900001201864").forEach(System.out::println);
+    }
+
+    @Test
+    public void queryOrganizationMemberByMemberId() {
+        organizationManager.queryOrganizationMemberByMemberId("201811302142079964900001201864").forEach(System.out::println);
+
+    }
+
+    @Test
+    public void t1(){
+        OrganizationRequest organizationRequest=new OrganizationRequest();
+        organizationRequest.setMemberId("201811302142079964900001201864");
+        System.out.println("_________________");
+        List list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
+        list.forEach(System.out::println);
+    }
 }

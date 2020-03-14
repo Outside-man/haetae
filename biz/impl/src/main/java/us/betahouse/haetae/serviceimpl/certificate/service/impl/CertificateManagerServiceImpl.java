@@ -7,14 +7,13 @@ package us.betahouse.haetae.serviceimpl.certificate.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.certificate.dal.repo.SkillDORepo;
 import us.betahouse.haetae.certificate.dal.service.CompetitionRepoService;
 import us.betahouse.haetae.certificate.dal.service.QualificationsRepoService;
 import us.betahouse.haetae.certificate.dal.service.SkillRepoService;
 import us.betahouse.haetae.certificate.enums.CertificateStateEnum;
 import us.betahouse.haetae.certificate.enums.CertificateTypeEnum;
-import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.haetae.certificate.request.CertificateManagerRequest;
 import us.betahouse.haetae.serviceimpl.certificate.constant.CertificatePermType;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
@@ -23,14 +22,12 @@ import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
-import us.betahouse.haetae.user.dal.model.perm.RoleDO;
 import us.betahouse.haetae.user.dal.model.perm.UserRoleRelationDO;
 import us.betahouse.haetae.user.dal.repo.perm.RoleDORepo;
 import us.betahouse.haetae.user.dal.repo.perm.UserRoleRelationDORepo;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
@@ -103,7 +100,6 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         //解除绑定
         List<String> userid = new ArrayList<>();
         userid.add(userInfoBO.getUserId());
-        System.out.println("cp" + userid.get(0) + " " + roleId);
         roleRepoService.usersUnbindRole(userid, roleId);
     }
 
@@ -125,6 +121,17 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
     @Override
     public List<String> importCertificate(String url) {
         return null;
+    }
+
+    @Override
+    @VerifyPerm(permType = CertificatePermType.CERTIFICATE_MANAGER)
+    public List<CertificateBO> fetchAllCertificateList(CertificateManagerRequest request, OperateContext context) {
+        List<CertificateBO> certificateBOS = new ArrayList<>();
+        certificateBOS.addAll(qualificationsRepoService.queryAllCET46());
+        certificateBOS.addAll(qualificationsRepoService.queryAllQualificate());
+        certificateBOS.addAll(competitionRepoService.queryAll());
+        certificateBOS.addAll(skillRepoService.queryAll());
+        return certificateBOS;
     }
 
     @Override

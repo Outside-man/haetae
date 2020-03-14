@@ -23,6 +23,7 @@ import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
 
 /**
  * 会话服务
@@ -63,7 +64,8 @@ public class SessionService extends RestAop {
         if (StringUtils.isBlank(token)) {
             return RestResultUtil.buildResult(RestResultCode.UNAUTHORIZED, "用户未登录");
         }
-
+        BigInteger bigInteger =new BigInteger("123");
+        bigInteger.mod(BigInteger.ONE);
         // 检测登录态
         UserBO userBO = userBasicService.checkLogin(token, IPUtil.getIpAddr(httpServletRequest));
         if (userBO == null) {

@@ -4,16 +4,20 @@
  */
 package us.betahouse.haetae.user.dal.convert;
 import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import us.betahouse.haetae.user.dal.model.MajorDO;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.model.perm.PermDO;
 import us.betahouse.haetae.user.dal.model.perm.RoleDO;
 import us.betahouse.haetae.user.dal.model.perm.UserDO;
+import us.betahouse.haetae.user.dal.model.perm.UserRoleRelationDO;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.MajorBO;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
+import us.betahouse.haetae.user.model.basic.perm.UserRoleRelationBO;
 
 import java.util.Map;
 
@@ -24,6 +28,9 @@ import java.util.Map;
  * @version : EntityConverter.java 2018/11/23 11:09 AM dango.yxm
  */
 final public class EntityConverter {
+
+    @Autowired
+    UserInfoRepoService userInfoRepoService;
 
     /**
      * 权限DO2BO
@@ -128,6 +135,27 @@ final public class EntityConverter {
         return userInfoBO;
     }
 
+
+    /**
+     * 用户信息保存专业和年级
+     *
+     * @param userInfoDO
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static UserInfoBO majorConvert(UserInfoDO userInfoDO) {
+        if (userInfoDO == null) {
+            return null;
+        }
+        UserInfoBO userInfoBO = new UserInfoBO();
+        userInfoBO.setMajor(userInfoDO.getMajorId());
+        userInfoBO.setGrade(userInfoDO.getGrade());
+        userInfoBO.setEnrollDate(userInfoDO.getEnrollDate());
+        userInfoBO.setExtInfo(JSON.parseObject(userInfoDO.getExtInfo(), Map.class));
+        return userInfoBO;
+    }
+
+
     /**
      * 用户信息 BO2DO
      *
@@ -151,6 +179,25 @@ final public class EntityConverter {
         userInfoDO.setExtInfo(JSON.toJSONString(userInfoBO.getExtInfo()));
         return userInfoDO;
     }
+
+    /**
+     * 用户角色关联DO2BO
+     *
+     * @param userRoleRelationDO
+     * @return
+     */
+    public static UserRoleRelationBO convert(UserRoleRelationDO userRoleRelationDO){
+        if(userRoleRelationDO==null){
+            return null;
+        }
+        UserRoleRelationBO userRoleRelationBO=new UserRoleRelationBO();
+        userRoleRelationBO.setRoleId(userRoleRelationDO.getRoleId());
+        userRoleRelationBO.setUserId(userRoleRelationDO.getUserId());
+        userRoleRelationBO.setUserRoleId(userRoleRelationDO.getUserRoleId());
+        return userRoleRelationBO;
+    }
+
+
 
     /**
      * DO2BO

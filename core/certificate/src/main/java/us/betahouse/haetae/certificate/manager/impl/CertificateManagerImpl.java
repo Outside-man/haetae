@@ -4,7 +4,6 @@
  */
 package us.betahouse.haetae.certificate.manager.impl;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,9 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 资格证书管理器实现
@@ -58,6 +59,8 @@ public class CertificateManagerImpl implements CertificateManager {
         //设置证书状态  待审核
         certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         certificateBO = setExtInfos(certificateBO, request);
+        //设置证书图片路径
+        certificateBO.setPictureUrl(request.getPictureUrl());
         switch (typeEnum) {
             //国际资格证书  参数同普通证书相同
             case INTERNATIONAL_QUALIFICATIONS:
@@ -104,6 +107,8 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setWorkUserId(request.getWorkUserId());
         certificateBO.setRank(request.getRank());
+        //证书图片路径
+        certificateBO.setPictureUrl(request.getPictureUrl());
         //设置证书状态 待审核
         certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //放入拓展信息
@@ -139,6 +144,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setRank(request.getRank());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
+        certificateBO.setPictureUrl(request.getPictureUrl());
         //设置状态 待审核
         certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //额外信息插入extinfo
@@ -165,6 +171,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setRank(request.getRank());
         certificateBO.setConfirmUserId(request.getConfirmUserId());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
+        certificateBO.setPictureUrl(request.getPictureUrl());
         certificateBO = setExtInfos(certificateBO, request);
         switch (certificateTypeEnum) {
             //国际资格证书  参数同普通证书相同
@@ -213,6 +220,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setWorkUserId(request.getWorkUserId());
         certificateBO.setTeamId(request.getTeamId());
         certificateBO.setConfirmUserId(request.getConfirmUserId());
+        certificateBO.setPictureUrl(request.getPictureUrl());
         //放入拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //放入指导老师信息
@@ -272,6 +280,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setCertificatePublishTime(new Date(request.getCertificatePublishTime()));
         certificateBO.setRank(request.getRank());
         certificateBO.setConfirmUserId(request.getConfirmUserId());
+        certificateBO.setPictureUrl(request.getPictureUrl());
         //设置拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //技能证书有效期

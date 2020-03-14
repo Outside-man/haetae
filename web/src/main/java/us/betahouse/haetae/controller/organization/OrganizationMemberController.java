@@ -112,7 +112,7 @@ public class OrganizationMemberController {
     }
 
     /**
-     * 修改成员身份
+     * 移出成员
      *
      * @param request
      * @param httpServletRequest

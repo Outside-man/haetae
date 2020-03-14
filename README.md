@@ -39,6 +39,7 @@ Mysql
 |-- core  (独立的业务领域核心)
     |-- user        (用户领域核心)
     |-- activity    (活动领域核心)
+    |-- locale    	(场地领域核心)
     |-- asset       (物资领域核心)
     |-- finance     (财务领域核心)
     |-- organization(组织领域核心)
@@ -98,6 +99,16 @@ id      | desc                 | id     | desc
 ----    | ----                 | ----   | ----
 0011    | organization         | 0012   | organization member relation
 0013    | organization relation
+
+#### locale 模块
+
+id      | desc                 | id     | desc
+----    | ----                 | ----   | ----
+4001    | locale   | 4002 | locale area 
+4003    | locale apply ||
+
+
+
 
 <br/>
 <br/>

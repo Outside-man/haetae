@@ -4,14 +4,13 @@
  */
 package us.betahouse.haetae.serviceimpl.certificate.service;
 
-import us.betahouse.haetae.certificate.manager.CertificateManager;
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
+import us.betahouse.haetae.certificate.request.CertificateManagerRequest;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateConfirmRequest;
 import us.betahouse.haetae.serviceimpl.certificate.request.CertificateRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
-import java.security.cert.Certificate;
 import java.util.List;
 
 /**
@@ -72,6 +71,16 @@ public interface CertificateManagerService {
      * @return  未导入证书的学生id
      */
     List<String> importCertificate(String url);
+
+    /**
+     * 获取全部证书
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<CertificateBO> fetchAllCertificateList(CertificateManagerRequest request, OperateContext context);
+
     /**
      * 获取用户全部证书
      *

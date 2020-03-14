@@ -81,6 +81,10 @@ public class CertificateRestRequest extends RestRequest {
      * 成绩
      */
     private String certificateGrade;
+    /**
+     * 图片路径
+     */
+    private String pictureUrl;
 
     public String getCertificateId() {
         return certificateId;
@@ -210,4 +214,11 @@ public class CertificateRestRequest extends RestRequest {
         this.certificateGrade = certificateGrade;
     }
 
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 }

@@ -7,7 +7,6 @@ package us.betahouse.haetae.user.dal.repo.perm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.user.dal.model.perm.PermDO;
-import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
 import java.util.List;
 
@@ -66,4 +65,5 @@ public interface PermDORepo extends JpaRepository<PermDO, Long> {
      * @param permId
      */
     void deleteByPermId(String permId);
+
 }

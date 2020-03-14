@@ -66,4 +66,9 @@ public abstract class BaseDO extends ToString {
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

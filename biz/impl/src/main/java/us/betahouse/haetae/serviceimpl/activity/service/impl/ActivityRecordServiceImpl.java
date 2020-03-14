@@ -10,12 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
+import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
+import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
+import us.betahouse.haetae.activity.dal.repo.ActivityRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
+import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.manager.ActivityRecordManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermExInfoKey;
@@ -29,6 +35,8 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
+import us.betahouse.haetae.user.dal.model.UserInfoDO;
+import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -65,6 +73,18 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Autowired
     private UserInfoRepoService userInfoRepoService;
 
+    @Autowired
+    private ActivityDORepo activityDORepo;
+
+    @Autowired
+    ActivityRecordDORepo activityRecordDORepo;
+
+    @Autowired
+    UserInfoDORepo userInfoDORepo;
+
+    @Autowired
+    private BizIdFactory activityBizFactory;
+
     /**
      * 章管理器
      */
@@ -92,6 +112,46 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         stampManager.batchStamp(request, new ArrayList<>(userIds));
         return notStampStuIds;
     }
+
+    @Override
+    public List<String> batchStampJson(importModel[] importModels,ActivityStampRequest request, OperateContext context) {
+        List<String> unStampRow = new ArrayList<>();
+        for (int i = 0; i < importModels.length; i++) {
+            //设置活动id
+            ActivityRecordDO activityRecordDO = new ActivityRecordDO();
+            ActivityDO activityDO = activityDORepo.findByActivityName(importModels[i].getActivityName());
+            if (activityDO == null) {
+                unStampRow.add(importModels[i].getRownum());
+                continue;
+            }
+            activityRecordDO.setActivityId(activityDO.getActivityId());
+            //设置useid 和scanner_userid
+            UserInfoDO userInfoDO = userInfoDORepo.findByStuId(importModels[i].getStuId());
+            if (userInfoDO == null) {
+                unStampRow.add(importModels[i].getRownum());
+                continue;
+            }
+            activityRecordDO.setUserId(userInfoDO.getUserId());
+            //设置审核员id
+            activityRecordDO.setScannerUserId(request.getUserId());
+            //设置活动类型
+            activityRecordDO.setType(activityDO.getType());
+            //设置学期
+            activityRecordDO.setTerm(TermUtil.getNowTerm());
+            //设置时长
+            if (importModels[i].getTime() == null) {
+                activityRecordDO.setTime(Double.valueOf(0).intValue());
+            }else {
+                activityRecordDO.setTime(Double.valueOf(importModels[i].getTime()).intValue());
+            }
+            activityRecordDO.setActivityRecordId(activityBizFactory.getActivityRecordId());
+            activityRecordDO.setStatus("ENABLE");
+            activityRecordDO.setGmtCreate(new Date());
+            activityRecordDORepo.save(activityRecordDO);
+        }
+        return unStampRow;
+    }
+
 
     @Override
     public StampRecord getUserStamps(ActivityStampRequest request, OperateContext context) {
@@ -129,8 +189,8 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
         ActivityStampBuilder stampBuilder = ActivityStampBuilder.getInstance();
         for (ActivityRecordBO record : activityRecords) {
-            if(StringUtils.isBlank(record.getScannerName())){
-                String scannerName=userInfoRepoService.queryUserInfoByUserId(record.getScannerUserId()).getRealName();
+            if (StringUtils.isBlank(record.getScannerName())) {
+                String scannerName = userInfoRepoService.queryUserInfoByUserId(record.getScannerUserId()).getRealName();
                 activityRecordManager.updateScannerName(record.getActivityRecordId(), scannerName);
                 record.setScannerName(scannerName);
             }
@@ -175,9 +235,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][2]);
         List<String> notStampStuIds = new ArrayList<>();
 
-        for(int i=1;i<csv.length;i++){
-            System.out.println(i+" "+csv[i][0]);
-            if(StringUtils.isBlank(csv[i][0])){
+        for (int i = 1; i < csv.length; i++) {
+            System.out.println(i + " " + csv[i][0]);
+            if (StringUtils.isBlank(csv[i][0])) {
                 break;
             }
             ActivityStampRequest request = new ActivityStampRequest();
@@ -185,7 +245,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
             activityBO.setState(ActivityStateEnum.RESTARTED.getCode());
             activityRepoService.updateActivity(activityBO);
             request.setActivityId(activityBO.getActivityId());
-            String stuId=csv[i][1];
+            String stuId = csv[i][1];
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(stuId);
             if (userInfoBO == null) {
                 notStampStuIds.add(stuId);
@@ -194,7 +254,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
             request.setScannerUserId("201812010040554783180001201835");
             request.setStatus("ENABLE");
             request.setTerm(activityBO.getTerm());
-            List<String> inList=new ArrayList<>();
+            List<String> inList = new ArrayList<>();
             inList.add(userInfoBO.getUserId());
             stampManager.batchStamp(request, inList);
             activityBO.setState(ActivityStateEnum.FINISHED.getCode());

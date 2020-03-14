@@ -57,6 +57,11 @@ public class OrganizationMemberDO extends BaseDO {
     private String memberDescription;
 
     /**
+     * 组织名称
+     */
+    @Column(name = "organization_name", nullable = false)
+    private String organizationName;
+    /**
      * 拓展信息
      */
     @Column(length = 2000)
@@ -108,5 +113,13 @@ public class OrganizationMemberDO extends BaseDO {
 
     public void setExtInfo(String extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 }

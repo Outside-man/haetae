@@ -33,6 +33,12 @@ public interface ActivityRepoService {
     List<ActivityBO> queryActivitiesByState(String state);
 
     /**
+     * 查询最近十个活动
+     *
+     * @return
+     */
+    List<ActivityBO> findFirst10OrOrderByStart();
+    /**
      * 通过类型查询活动
      *
      * @param type 类型

@@ -25,9 +25,10 @@
         <module>core/asset</module>
         <module>core/finance</module>
         <module>core/organization</module>
+        <module>core/certificate</module>
+        <module>core/locale</module>
         <module>biz/impl</module>
         <module>web</module>
-        <module>core/certificate</module>
     </modules>
 
     <dependencyManagement>
@@ -63,6 +64,11 @@
             <dependency>
                 <groupId>us.betahouse</groupId>
                 <artifactId>haetae-organization</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-locale</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!--biz 层-->
@@ -133,6 +139,12 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>5.2.0.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.10</version>
             </dependency>
             <!--三方包 end-->
 

@@ -5,8 +5,8 @@
 package us.betahouse.util.utils;
 
 import org.springframework.web.multipart.MultipartFile;
-import us.betahouse.util.enums.FileEnums;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.FileEnums;
 
 import java.io.*;
 

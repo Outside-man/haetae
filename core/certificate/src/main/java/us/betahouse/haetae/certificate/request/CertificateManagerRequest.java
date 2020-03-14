@@ -102,7 +102,10 @@ public class CertificateManagerRequest extends BaseRequest {
      * 指导老师
      */
     private List<Map<String, String>> teacher;
-
+    /**
+     * 图片路径
+     */
+    private String pictureUrl;
     public String getCertificateId() {
         return certificateId;
     }
@@ -125,6 +128,14 @@ public class CertificateManagerRequest extends BaseRequest {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public String getType() {

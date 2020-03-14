@@ -76,6 +76,7 @@ final public class EntityConverter {
         memberBO.setOrganizationId(memberDO.getOrganizationId());
         memberBO.setMemberType(memberDO.getMemberType());
         memberBO.setMemberDescription(memberDO.getMemberDescription());
+        memberBO.setOrganizationName(memberDO.getOrganizationName());
         memberBO.setExtInfo(JSON.parseObject(memberDO.getExtInfo(), Map.class));
         return memberBO;
     }
@@ -94,6 +95,7 @@ final public class EntityConverter {
         memberDO.setOrganizationMemberId(memberBO.getOrganizationMemberId());
         memberDO.setMemberId(memberBO.getMemberId());
         memberDO.setOrganizationId(memberBO.getOrganizationId());
+        memberDO.setOrganizationName(memberBO.getOrganizationName());
         memberDO.setMemberType(memberBO.getMemberType());
         memberDO.setMemberDescription(memberBO.getMemberDescription());
         memberDO.setExtInfo(JSON.toJSONString(memberBO.getExtInfo()));

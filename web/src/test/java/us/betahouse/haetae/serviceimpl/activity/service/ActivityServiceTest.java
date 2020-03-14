@@ -14,7 +14,6 @@ import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.manager.UserManager;
 import us.betahouse.util.utils.CsvUtil;
 
 @RunWith(SpringRunner.class)
@@ -40,20 +39,24 @@ public class ActivityServiceTest {
         activityService.initPastActivity();
     }
 
+    //@Transactional
     @Test
     public void initPastActivityRecord(){
-        String url = "C:\\Users\\j10k\\Desktop\\【17级专升本小绿本】.csv";
+        String url = "C:\\Users\\j10k\\Desktop\\17级数据修改.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         PastActivityBO pastActivityBO;
         ActivityRequest activityRequest=new ActivityRequest();
         for (int i = 1; i < csv.length; i++) {
             String[] acsv = csv[i];
+            System.out.println(acsv[4]);
             activityRequest.setStuId(acsv[4]);
             pastActivityBO = activityManager.findPast(activityRequest);
-            pastActivityBO.setPastLectureActivity(Long.valueOf(acsv[5]));
+            pastActivityBO.setPastLectureActivity(0L);
             pastActivityBO.setPastVolunteerActivityTime(Long.valueOf(acsv[6]));
             pastActivityBO.setPastPracticeActivity(Long.valueOf(acsv[7]));
-            System.out.println(pastActivityBO);
+            pastActivityBO.setPastSchoolActivity(0L);
+            pastActivityBO.setUndistributedStamp(Long.valueOf(acsv[5]));
+            //System.out.println(pastActivityBO);
             activityRepoService.updatePastActivity(pastActivityBO.getUserId(), pastActivityBO);
         }
     }

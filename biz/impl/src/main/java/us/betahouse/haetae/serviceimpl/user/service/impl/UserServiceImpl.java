@@ -14,6 +14,7 @@ import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
+import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.manager.UserManager;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
@@ -26,6 +27,7 @@ import us.betahouse.haetae.user.utils.EncryptUtil;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.validator.MultiValidator;
 import us.betahouse.util.wechat.WeChatLoginUtil;
+import us.betahouse.util.yiban.YibanUtil;
 
 import java.util.Map;
 import java.util.UUID;
@@ -56,6 +58,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserBasicService userBasicService;
+    @Autowired
+    private YibanUtil yibanUtil;
 
     /**
      * 密码规则校验器
@@ -80,8 +84,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public CommonUser yiLogin(CommonUserRequest request, OperateContext context) {
+        String yiStuId=yibanUtil.getStuId(yibanUtil.getAccessToken(request.getCode()));
+        AssertUtil.assertNotNull(yiStuId, UserErrorCode.USER_NOT_EXIST);
+        CommonUser commonUser=userBasicService.getByStuId(yiStuId);
+        AssertUtil.assertNotNull(commonUser, UserErrorCode.USER_NOT_EXIST);
+        return userBasicService.setToken(commonUser);
+    }
+
+    @Override
     public CommonUser fetchUser(CommonUserRequest request, OperateContext context) {
-        return userBasicService.getUserId(request.getUserId());
+        return userBasicService.getByUserId(request.getUserId());
     }
 
     @Override

@@ -56,6 +56,11 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDORepo.deleteByCertificateIdAndUserId(certificateId, userId);
     }
 
+    @Override
+    public void deleteByCertificateId(String certificateId) {
+        qualificationsDORepo.deleteByCertificateId(certificateId);
+    }
+
 
     @Override
     public CertificateBO modify(CertificateBO certificateBO) {
@@ -105,6 +110,10 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getConfirmUserId() != null) {
             qualificationsDO.setConfirmUserId(newQualificationDO.getConfirmUserId());
         }
+        //更新证书图片路径
+        if (newQualificationDO.getPictureUrl() != null) {
+            qualificationsDO.setPictureUrl(newQualificationDO.getPictureUrl());
+        }
         //更新修改时间
         qualificationsDO.setGmtModified(new Date());
         return convert(qualificationsDORepo.save(qualificationsDO));
@@ -115,6 +124,16 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         return convert(qualificationsDORepo.findByCertificateId(certificateId));
     }
 
+    @Override
+    public List<CertificateBO> queryAllCET46() {
+        return CollectionUtils.toStream(qualificationsDORepo.findAll())
+                .filter(Objects::nonNull)
+                .filter(str -> str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .map(this::convert)
+                .map(this::changeType)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<CertificateBO> queryCET46(String userId) {
@@ -123,6 +142,16 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .filter(str -> str.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
                 .map(this::convert)
                 .map(this::changeType)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CertificateBO> queryAllQualificate() {
+        return CollectionUtils.toStream(qualificationsDORepo.findAll())
+                .filter(Objects::nonNull)
+                //拦截四六级证书
+                .filter(qualificationsDO -> !qualificationsDO.getType().equals(CertificateTypeEnum.CET_4_6.getCode()))
+                .map(this::convert)
                 .collect(Collectors.toList());
     }
 
@@ -179,6 +208,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .withStatus(qualificationsDO.getStatus())
                 .withType(qualificationsDO.getType())
                 .withRank(qualificationsDO.getRank())
+                .withCertificatePictureUrl(qualificationsDO.getPictureUrl())
                 //四六级证书成绩
                 .withCertificateGrade(qualificationsDO.getCertificateGrade())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
@@ -207,6 +237,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setType(certificateBO.getType());
         qualificationsDO.setRank(certificateBO.getRank());
         qualificationsDO.setStatus(certificateBO.getStatus());
+        qualificationsDO.setPictureUrl(certificateBO.getPictureUrl());
         //四六级证书成绩
         qualificationsDO.setCertificateGrade(certificateBO.getCertificateGrade());
         return qualificationsDO;

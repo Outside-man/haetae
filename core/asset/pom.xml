@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>haetae-asset</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
 

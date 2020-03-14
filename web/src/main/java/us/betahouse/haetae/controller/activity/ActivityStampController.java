@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -44,8 +45,9 @@ import java.util.List;
  * @author dango.yxm
  * @version : ActivityStampController.java 2018/11/25 3:28 PM dango.yxm
  */
-@RequestMapping(value = "/activityStamp")
+@CrossOrigin
 @RestController
+@RequestMapping(value = "/activityStamp")
 public class ActivityStampController {
 
     @Autowired
@@ -161,6 +163,7 @@ public class ActivityStampController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @GetMapping(value = "/stamper")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -288,4 +291,38 @@ public class ActivityStampController {
             }
         });
     }
+
+
+    /**
+     * 导入活动盖章
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CrossOrigin
+    @PostMapping(value = "/importStamps")
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<String>> importStamps(@RequestBody importModel[] importModels, StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "导入活动盖章", request, new RestOperateCallBack<List<String>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
+            }
+
+            @Override
+            public Result<List<String>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityStampRequest activityStampRequest=new ActivityStampRequest();
+                activityStampRequest.setUserId(request.getUserId());
+                List<String> unbathRows=activityRecordService.batchStampJson(importModels,activityStampRequest,context);
+                return RestResultUtil.buildSuccessResult(unbathRows, "导入活动盖章成功");
+            }
+        });
+    }
+
+
 }

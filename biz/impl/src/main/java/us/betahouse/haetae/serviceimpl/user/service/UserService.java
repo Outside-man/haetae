@@ -32,13 +32,22 @@ public interface UserService {
 
 
     /**
-     * 登陆
+     * 登录
      *
      * @param request
      * @param context
      * @return
      */
     CommonUser login(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 易班登录
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    CommonUser yiLogin(CommonUserRequest request, OperateContext context);
 
     /**
      * 登陆 by token
@@ -98,6 +107,13 @@ public interface UserService {
      * @param context
      */
     void modifyPwdByStuId(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 修改用户的专业 班级 年级
+     *
+     * @param request
+     * @param context
+     */
     void modifyUserMajorAndClassAndGrade(CommonUserRequest request, OperateContext context);
 }
 

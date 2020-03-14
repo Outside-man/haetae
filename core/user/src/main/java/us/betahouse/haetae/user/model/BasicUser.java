@@ -27,6 +27,8 @@ public class BasicUser extends ToString {
      */
     private String token;
 
+//    private List<TripartiteLoginBO>
+
     /**
      * 用户信息
      */

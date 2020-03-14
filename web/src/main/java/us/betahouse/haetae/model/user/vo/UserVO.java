@@ -20,11 +20,21 @@ public class UserVO extends BasicUser {
 
     private List<String> roleInfo;
 
+    public List<String> jobInfo;
+
     public List<String> getRoleInfo() {
         return roleInfo;
     }
 
     public void setRoleInfo(List<String> roleInfo) {
         this.roleInfo = roleInfo;
+    }
+
+    public List<String> getJobInfo() {
+        return jobInfo;
+    }
+
+    public void setJobInfo(List<String> jobInfo) {
+        this.jobInfo = jobInfo;
     }
 }

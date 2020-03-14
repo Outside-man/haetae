@@ -25,7 +25,6 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
-import us.betahouse.util.utils.NumberUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -70,6 +69,15 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     @Override
     public List<ActivityBO> queryActivitiesByState(String state) {
         List<ActivityDO> activityDOList = activityDORepo.findAllByState(state);
+        return CollectionUtils.toStream(activityDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ActivityBO> findFirst10OrOrderByStart() {
+        List<ActivityDO> activityDOList =activityDORepo.findFirst10OrOrderByStart();
         return CollectionUtils.toStream(activityDOList)
                 .filter(Objects::nonNull)
                 .map(this::convert)

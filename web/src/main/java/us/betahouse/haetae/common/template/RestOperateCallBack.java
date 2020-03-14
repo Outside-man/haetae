@@ -6,6 +6,8 @@ package us.betahouse.haetae.common.template;
 
 import us.betahouse.util.common.Result;
 
+import java.io.IOException;
+
 /**
  * 操作模板
  *
@@ -19,7 +21,7 @@ public interface RestOperateCallBack<T> {
 
     ;
 
-    Result<T> execute();
+    Result<T> execute() throws IOException;
 
     default void after() {
     }

@@ -42,4 +42,6 @@ public interface UserInfoDORepo extends JpaRepository<UserInfoDO, Long> {
      * @return
      */
     List<UserInfoDO> findAllByUserIdIn(List<String> userIds);
+
+
 }

@@ -89,7 +89,7 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityBlacklistRepoService activityBlacklistRepoService;
 
     @Override
-    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+//    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional(rollbackFor = Exception.class)
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
@@ -269,7 +269,11 @@ public class ActivityServiceImpl implements ActivityService {
                 .withUndistributedStamp(0L)
                 ;
         List<UserInfoBO> userInfoBOList = userInfoRepoService.queryAllUser();
-        userInfoBOList.forEach(userInfoBO -> activityManager.createPast(boBuilder.withStuId(userInfoBO.getStuId()).withUserId(userInfoBO.getUserId()).build()));
+        ActivityRequest activityRequest=new ActivityRequest();
+        userInfoBOList.forEach(userInfoBO -> {
+            activityRequest.setUserId(userInfoBO.getUserId());
+            if(activityManager.findPast(activityRequest)==null){
+            activityManager.createPast(boBuilder.withStuId(userInfoBO.getStuId()).withUserId(userInfoBO.getUserId()).build());}});
     }
 
     @Override

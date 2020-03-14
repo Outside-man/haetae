@@ -48,10 +48,11 @@ public abstract class BaseCommonDO extends BaseDO {
      */
     @Column(name = "confirm_user_id", length = 32)
     private String confirmUserId;
-
     /**
-     * 准考证号
+     * 图片路径
      */
+    @Column(name = "picture_url", length = 128)
+    private String pictureUrl;
 
     public String getCertificateId() {
         return certificateId;
@@ -85,6 +86,14 @@ public abstract class BaseCommonDO extends BaseDO {
         this.certificatePublishTime = certificatePublishTime;
     }
 
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     public int getGrade() {
         return grade;
     }
@@ -100,4 +109,5 @@ public abstract class BaseCommonDO extends BaseDO {
     public void setConfirmUserId(String confirmUserId) {
         this.confirmUserId = confirmUserId;
     }
+
 }

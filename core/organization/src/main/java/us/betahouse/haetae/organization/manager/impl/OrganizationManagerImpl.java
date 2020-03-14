@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import us.betahouse.haetae.organization.dal.convert.EntityConverter;
 import us.betahouse.haetae.organization.dal.service.OrganizationMemberRepoService;
 import us.betahouse.haetae.organization.dal.service.OrganizationRelationRepoService;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
@@ -115,6 +114,13 @@ public class OrganizationManagerImpl implements OrganizationManager {
     }
 
     @Override
+    public List<OrganizationMemberBO> queryOrganizationMemberByMemberId(String memberId) {
+        return CollectionUtils.toStream(organizationMemberRepoService.queryOrganizations(memberId))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrganizationBO> queryAllOrganization() {
         return CollectionUtils.toStream(organizationRepoService.queryAllOrganization())
                 .filter(Objects::nonNull)
@@ -179,6 +185,7 @@ public class OrganizationManagerImpl implements OrganizationManager {
     private OrganizationMemberBO parseMember(OrganizationManageRequest request) {
         OrganizationMemberBO memberBO = new OrganizationMemberBO();
         memberBO.setOrganizationId(request.getOrganizationId());
+        memberBO.setOrganizationName(organizationRepoService.queryByOrganizationId(request.getOrganizationId()).getOrganizationName());
         memberBO.setMemberId(request.getMemberId());
         memberBO.setMemberType(request.getMemberType().getType());
         // 是否传入称呼描述

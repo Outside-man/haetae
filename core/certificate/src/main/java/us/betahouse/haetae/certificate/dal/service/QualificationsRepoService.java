@@ -6,7 +6,6 @@ package us.betahouse.haetae.certificate.dal.service;
 
 import us.betahouse.haetae.certificate.model.basic.CertificateBO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +33,14 @@ public interface QualificationsRepoService {
     void deleteByCertificateIdAndUserId(String certificateId, String userId);
 
     /**
+     * 删除资格证书
+     *
+     * @param certificateId
+     * @return
+     */
+    void deleteByCertificateId(String certificateId);
+
+    /**
      * 修改资格证书
      *
      * @param certificateBO
@@ -49,6 +56,11 @@ public interface QualificationsRepoService {
      */
     CertificateBO queryByCertificateId(String certificateId);
 
+    /**
+     * 查询全部四六级证书
+     * @return
+     */
+    List<CertificateBO> queryAllCET46();
 
     /**
      * 查询四六级证书
@@ -56,6 +68,13 @@ public interface QualificationsRepoService {
      * @return
      */
     List<CertificateBO> queryCET46(String userId);
+
+    /**
+     * 查询全部资格证书（不包括四六级证书）
+     *
+     * @return
+     */
+    List<CertificateBO> queryAllQualificate();
 
     /**
      * 查询资格证书（不包括四六级证书）

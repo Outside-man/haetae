@@ -16,7 +16,6 @@ import us.betahouse.haetae.finance.model.common.PageList;
 import us.betahouse.haetae.finance.request.FinanceRequest;
 import us.betahouse.haetae.finance.request.builder.FinanceRequestBuilder;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
-import us.betahouse.haetae.organization.manager.OrganizationManager;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermExInfoKey;
@@ -95,7 +94,7 @@ public class FinanceServiceImpl implements FinanceService {
         FinanceMessageBO financeMessageBO=FinanceMessageBOBuilder
                 .aFinanceMessageBO()
                 .withApplicantUserId(request.getUserId())
-                .withApplicantName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
+                .withApplicantName(userBasicService.getByUserId(request.getUserId()).getUserInfo().getRealName())
                 .withOrganizationId(request.getOrganizationId())
                 .withOrganizationName(organizationRepoService.queryByOrganizationId(request.getOrganizationId()).getOrganizationName())
                 .withFinanceName(request.getFinanceName())
@@ -139,7 +138,7 @@ public class FinanceServiceImpl implements FinanceService {
     public FinanceMessageBO checkMessage(FinanceManagerRequest request, OperateContext context) {
         FinanceMessageBO financeMessageBO=financeManager.findMessageByFinanceMessageId(request.getFinanceMessageId());
         financeMessageBO.setAuditorUserId(request.getUserId());
-        financeMessageBO.setAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName());
+        financeMessageBO.setAuditorName(userBasicService.getByUserId(request.getUserId()).getUserInfo().getRealName());
         financeMessageBO.setTrueMoney(request.getTrueMoney());
 
         return financeManager.check(financeMessageBO);
@@ -149,7 +148,7 @@ public class FinanceServiceImpl implements FinanceService {
     public FinanceMessageBO tally(FinanceManagerRequest request, OperateContext context) {
         FinanceMessageBO financeMessageBO=FinanceMessageBOBuilder
                 .aFinanceMessageBO()
-                .withAuditorName(userBasicService.getUserId(request.getUserId()).getUserInfo().getRealName())
+                .withAuditorName(userBasicService.getByUserId(request.getUserId()).getUserInfo().getRealName())
                 .withAuditorUserId(request.getUserId())
                 .withOrganizationId(request.getOrganizationId())
 //                .withOrganizationName(organizationManager.findOrganizationByOrganizationId(request.getOrganizationId()).getOrganizationName())

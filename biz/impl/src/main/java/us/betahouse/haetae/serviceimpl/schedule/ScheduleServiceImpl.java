@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
-import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
-import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntry;
-import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
+import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
+import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
@@ -34,7 +33,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ActivityService activityService;
 
     @Autowired
-    private ActivityEntryService activityEntryService;
+    private LocaleApplyService localeApplyService;
 
     /**
      * 结束活动
@@ -45,6 +44,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<ActivityBO> finishActivities = activityService.systemFinishActivity();
         if (!CollectionUtils.isEmpty(finishActivities)) {
             LoggerUtil.info(LOGGER, "系统结束活动, activities={0}", finishActivities);
+        }
+        List<LocaleApplyBO> finishLocaleApplies = localeApplyService.systemFinishLocaleApply();
+        if (!CollectionUtils.isEmpty(finishLocaleApplies)) {
+            LoggerUtil.info(LOGGER, "系统结束场地申请, localeApplies={0}", finishLocaleApplies);
         }
     }
 

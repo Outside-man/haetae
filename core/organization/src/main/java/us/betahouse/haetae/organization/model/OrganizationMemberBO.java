@@ -6,6 +6,7 @@ package us.betahouse.haetae.organization.model;
 
 import us.betahouse.util.common.ToString;
 
+import javax.persistence.Column;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +39,13 @@ public class OrganizationMemberBO extends ToString {
      * 成员类型
      */
     private String memberType;
+
+
+    /**
+     * 组织名称
+     */
+    @Column(name = "organization_name", nullable = false)
+    private String organizationName;
 
     /**
      * 成员描述
@@ -92,5 +100,17 @@ public class OrganizationMemberBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String findJob(){
+        return this.organizationName+this.memberDescription;
     }
 }

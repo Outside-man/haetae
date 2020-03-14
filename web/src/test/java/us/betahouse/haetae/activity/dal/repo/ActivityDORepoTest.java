@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
+import us.betahouse.HaetaeWebApplication;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
@@ -24,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = HaetaeWebApplication.class)
 public class ActivityDORepoTest {
 
     @Autowired
@@ -42,9 +43,10 @@ public class ActivityDORepoTest {
         String[][] csv = CsvUtil.getWithHeader(filepath);
         for (int i = 1; i < csv.length; i++) {
             //22/11/2018 10:43:09.463
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-            Date date = sdf.parse(csv[i][2]);
-            Date end = sdf.parse(csv[i][3]);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = sdf.parse(csv[i][1]);
+            Date end = sdf.parse(csv[i][2]);
+            //Date d=new Date();
             ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance()
                     .withUserId("201812010040554783180001201835")
                     .withActivityName(csv[i][0])
@@ -54,7 +56,7 @@ public class ActivityDORepoTest {
                     .withTerm(TermUtil.getNowTerm())
                     // 以下是可选参数
                     // 描述
-                    .withDescription("2018暑期社会实践")
+                    .withDescription("2019暑期社会实践")
                     .withType(ActivityTypeEnum.PRACTICE_ACTIVITY.getCode());
             activityService.create(builder.build(), new OperateContext());
         }

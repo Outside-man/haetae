@@ -65,4 +65,12 @@ public interface UserInfoRepoService {
      */
     List<UserInfoBO> queryAllUser();
 
+
+    /**
+     * 获取所有年级和专业
+     *
+     * @return
+     */
+    List<UserInfoBO> queryAllMajorAndGrade();
+
 }

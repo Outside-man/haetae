@@ -101,4 +101,11 @@ public interface RoleRepoService {
      * @return
      */
     RoleBO initRole(RoleBO roleBO);
+
+    /**
+     * 获取所有的角色
+     *
+     * @return
+     */
+    List<RoleBO> findAllRole();
 }

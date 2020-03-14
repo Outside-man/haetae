@@ -15,11 +15,20 @@ import us.betahouse.util.enums.CommonResultCode;
  */
 public enum UserErrorCode implements ResultCode {
 
+    /**
+     * 用户名或密码错误
+     */
     USERNAME_PASSWORD_NOT_RIGHT(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户名或密码错误"),
 
+    /**
+     * 用户不存在
+     */
     USER_NOT_EXIST(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不存在"),
 
-    USER_NOT_LOGIN(CommonResultCode.UNAUTHORIZED.getCode(), "用户未登陆"),;
+    /**
+     * 用户不存在
+     */
+    USER_NOT_LOGIN(CommonResultCode.UNAUTHORIZED.getCode(), "用户不存在"),;
 
     private String code;
 

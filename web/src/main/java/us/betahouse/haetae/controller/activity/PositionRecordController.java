@@ -7,6 +7,7 @@ package us.betahouse.haetae.controller.activity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ import java.util.List;
  * @author MessiahJK
  * @version : PositionRecordController.java 2018/11/25 15:25 MessiahJK
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/positionRecord")
 public class PositionRecordController {

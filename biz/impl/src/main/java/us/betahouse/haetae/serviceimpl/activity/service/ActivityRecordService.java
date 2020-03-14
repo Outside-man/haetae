@@ -5,7 +5,7 @@
 package us.betahouse.haetae.serviceimpl.activity.service;
 
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
-import us.betahouse.haetae.activity.model.basic.ActivityRecordBO;
+import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
 import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
@@ -29,6 +29,14 @@ public interface ActivityRecordService {
      * @return 未盖上章的id
      */
     List<String> batchStamp(ActivityStampRequest request, OperateContext context);
+
+    /**
+     * 批量盖章（导入json）
+     *
+     * @param context
+     * @return
+     */
+    List<String> batchStampJson(importModel[] importModels,ActivityStampRequest request, OperateContext context);
 
     /**
      * 获取用户活动章

@@ -7,7 +7,6 @@ package us.betahouse.haetae.asset.request;
 import org.hibernate.validator.constraints.NotBlank;
 import us.betahouse.util.common.ToString;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
