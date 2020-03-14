@@ -50,4 +50,17 @@ public class ScheduleServiceImpl implements ScheduleService {
             LoggerUtil.info(LOGGER, "系统结束场地申请, localeApplies={0}", finishLocaleApplies);
         }
     }
+
+
+    /**
+     * 结束报名
+     */
+    @Override
+    @Scheduled(cron = ScheduleConstant.AM_TWO_OF_THE_CLOCK)
+    public void finishActivityEntries() {
+        List<ActivityEntryBO> finishActivityEntryList = activityEntryService.systemFinishActivityEntry();
+        if (!CollectionUtils.isEmpty(finishActivityEntryList)) {
+            LoggerUtil.info(LOGGER, "系统结束报名, activityEntries={0}", finishActivityEntryList);
+        }
+    }
 }

@@ -17,4 +17,9 @@ public interface ScheduleService {
      * 结束活动
      */
     void finishActivity();
+
+    /**
+     * 结束报名
+     */
+    void finishActivityEntries();
 }

@@ -50,6 +50,12 @@
             <artifactId>haetae-service-impl</artifactId>
         </dependency>
 
+        <!--第三方工具库-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.6.6</version>
+        </dependency>
     </dependencies>
 
     <build>

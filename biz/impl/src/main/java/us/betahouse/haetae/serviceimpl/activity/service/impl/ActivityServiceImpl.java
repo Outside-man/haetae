@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.builder.PastActivityBOBuilder;
+import us.betahouse.haetae.activity.dal.service.ActivityBlacklistRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
@@ -83,6 +84,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private OrganizationRepoService organizationRepoService;
+
+    @Autowired
+    private ActivityBlacklistRepoService activityBlacklistRepoService;
 
     @Override
 //    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
@@ -231,6 +235,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    @Transactional
     public List<ActivityBO> systemFinishActivity() {
         List<ActivityBO> activityBOList = activityRepoService.queryActivitiesByState(ActivityStateEnum.PUBLISHED.getCode());
         List<ActivityBO> systemFinishActivities = new ArrayList<>();
@@ -245,6 +250,7 @@ public class ActivityServiceImpl implements ActivityService {
                     // 保留两个权限 其他都移除
                     permManager.batchUsersUnbindPerms(buildUnbindRequest(activityPermId, CollectionUtils.subSuffixList(userIds, 2)));
                 }
+                activityBlacklistRepoService.addBlacklistByActivityId(activityBO.getActivityId());
                 systemFinishActivities.add(activityRepoService.updateActivity(activityBO));
             }
 

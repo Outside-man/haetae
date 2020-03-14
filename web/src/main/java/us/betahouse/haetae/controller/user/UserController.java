@@ -55,6 +55,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+  
     @Autowired
     private OrganizationService organizationService;
     /**
@@ -217,6 +218,34 @@ public class UserController {
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
+            }
+        });
+    }
+
+
+    /**
+     * 获取信用分
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @GetMapping("/creditScore")
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<Long> getCreditScore(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取信用分", request, new RestOperateCallBack<Long>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<Long> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                return RestResultUtil.buildSuccessResult(activityBlacklistService.getCreditScoreByUserIdAndTerm(request.getUserId(),request.getTerm() == null ? TermUtil.getNowTerm() : request.getTerm()), "查询信用分成功");
             }
         });
     }

@@ -33,7 +33,20 @@ public enum IdTypeEnum {
      */
     Past_Activity_ID("1005","以往活动记录id"),
 
-    ;
+    /**
+     * 活动报名信息id
+     */
+    Activity_Entry_ID("1006", "活动报名信息id"),
+
+    /**
+     * 活动报名记录id
+     */
+    Activity_Entry_Record_ID("1007", "活动报名记录id"),
+
+    /**
+     * 活动黑名单id
+     */
+    Activity_Blacklist_ID("1008", "活动黑名单id");
 
 
     /**
