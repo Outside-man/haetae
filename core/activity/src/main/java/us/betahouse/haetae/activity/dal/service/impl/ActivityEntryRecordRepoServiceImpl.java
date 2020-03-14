@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.model.ActivityEntryRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityEntryRecordDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRepoService;
+import us.betahouse.haetae.activity.enums.ActivityEntryRecordStateEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
@@ -94,18 +96,44 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
 
 
     /**
-     * 通过报名信息id和用户id删除报名记录
-     * @param activityEntryId
-     * @param userId
+     * 更新报名记录
+     * @param activityEntryRecordBO
+     * @return
      */
     @Override
-    public Integer deleteByActivityEntryIdAndUserId(String activityEntryId, String userId) {
-        activityEntryRecordDORepo.deleteByActivityEntryIdAndUserId(activityEntryId,userId);
-        if(activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryId,userId)==null){
-            return 1;
-        }else{
-            return 0;
+    public ActivityEntryRecordBO updateActivityEntryRecord(ActivityEntryRecordBO activityEntryRecordBO) {
+        if (StringUtils.isBlank(activityEntryRecordBO.getActivityEntryId()) && StringUtils.isBlank(activityEntryRecordBO.getUserId())
+                &&!activityEntryRecordDORepo.existsActivityEntryRecordDOByActivityEntryIdAndUserId(activityEntryRecordBO.getActivityEntryId(),activityEntryRecordBO.getUserId())) {
+            LoggerUtil.error(LOGGER, "更新的报名记录不存在 ActivityEntryRecordBO={0}", activityEntryRecordBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的报名记录不存在");
         }
+        ActivityEntryRecordDO activityEntryRecordDO = activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryRecordBO.getActivityEntryId(),activityEntryRecordBO.getUserId());
+        ActivityEntryRecordDO newActivityEntryRecordDO = convert(activityEntryRecordBO);
+        if (newActivityEntryRecordDO.getActivityEntryRecordId() != null) {
+            activityEntryRecordDO.setActivityEntryRecordId(newActivityEntryRecordDO.getActivityEntryRecordId());
+        }
+        if (newActivityEntryRecordDO.getActivityEntryId() != null) {
+            activityEntryRecordDO.setActivityEntryId(newActivityEntryRecordDO.getActivityEntryId());
+        }
+        if (newActivityEntryRecordDO.getUserId() != null) {
+            activityEntryRecordDO.setUserId(newActivityEntryRecordDO.getUserId());
+        }
+        if (newActivityEntryRecordDO.getAttend() != null) {
+            activityEntryRecordDO.setAttend(newActivityEntryRecordDO.getAttend());
+        }
+        if (newActivityEntryRecordDO.getState() != null) {
+            activityEntryRecordDO.setState(newActivityEntryRecordDO.getState());
+        }
+        if (newActivityEntryRecordDO.getNote() != null) {
+            activityEntryRecordDO.setNote(newActivityEntryRecordDO.getNote());
+        }
+        if (newActivityEntryRecordDO.getChoose() != null) {
+            activityEntryRecordDO.setChoose(newActivityEntryRecordDO.getChoose());
+        }
+        if (newActivityEntryRecordDO.getExtInfo() != null) {
+            activityEntryRecordDO.setExtInfo(newActivityEntryRecordDO.getExtInfo());
+        }
+        return convert(activityEntryRecordDORepo.save(activityEntryRecordDO));
     }
 
     /**
@@ -119,6 +147,7 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
         if (StringUtils.isBlank(activityEntryRecordBO.getActivityEntryRecordId())) {
             activityEntryRecordBO.setActivityEntryRecordId(activityBizFactory.getActivityEntryRecordId());
         }
+        activityEntryRecordBO.setState(ActivityEntryRecordStateEnum.SIGN_UP.getCode());
         return convert(activityEntryRecordDORepo.save(convert(activityEntryRecordBO)));
     }
 
@@ -151,8 +180,8 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
      * @return
      */
     @Override
-    public Long countByActivityEntryId(String activityEntryId) {
-        return activityEntryRecordDORepo.countByActivityEntryId(activityEntryId);
+    public Long countByActivityEntryIdAndState(String activityEntryId,String state) {
+        return activityEntryRecordDORepo.countByActivityEntryIdAndState(activityEntryId, state);
     }
 
     /**
@@ -170,6 +199,7 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
         activityEntryRecordBO.setActivityEntryId(activityEntryRecordDO.getActivityEntryId());
         activityEntryRecordBO.setUserId(activityEntryRecordDO.getUserId());
         activityEntryRecordBO.setAttend(activityEntryRecordDO.getAttend());
+        activityEntryRecordBO.setState(activityEntryRecordDO.getState());
         activityEntryRecordBO.setNote(activityEntryRecordDO.getNote());
         activityEntryRecordBO.setChoose(activityEntryRecordDO.getChoose());
         activityEntryRecordBO.setExtInfo(JSON.parseObject(activityEntryRecordDO.getExtInfo(), Map.class));
@@ -192,6 +222,7 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
         activityEntryRecordDO.setUserId(activityEntryRecordBO.getUserId());
         activityEntryRecordDO.setAttend(activityEntryRecordBO.getAttend());
         activityEntryRecordDO.setNote(activityEntryRecordBO.getNote());
+        activityEntryRecordDO.setState(activityEntryRecordBO.getState());
         activityEntryRecordDO.setChoose(activityEntryRecordBO.getChoose());
         activityEntryRecordDO.setExtInfo(JSON.toJSONString(activityEntryRecordBO.getExtInfo()));
         return activityEntryRecordDO;

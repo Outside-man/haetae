@@ -154,9 +154,9 @@ public class UserActivityEntryController {
                         .withNote(request.getRecordNote())
                         .withChoose(request.getRecordChoose())
                         .build();
-                Integer result = activityEntryService.deleteActivityEntryRecord(activityEntryRecordRequest);
-                if(result == 1){
-                    return RestResultUtil.buildSuccessResult(null, "取消报名成功");
+                ActivityEntryRecordBO activityEntryRecordBO = activityEntryService.undoSignUp(activityEntryRecordRequest);
+                if(activityEntryRecordBO == null){
+                    return RestResultUtil.buildSuccessResult(activityEntryRecordBO, "取消报名成功");
                 }else{
                     return RestResultUtil.buildSuccessResult(null, "取消报名失败");
                 }

@@ -30,11 +30,11 @@ public interface ActivityEntryRecordRepoService {
     ActivityEntryRecordBO findByActivityEntryIdAndUserId(String activityEntryId, String userId);
 
     /**
-     * 通过报名信息id和用户id删除报名记录
-     * @param activityEntryId
-     * @param userId
+     * 更新报名记录
+     * @param activityEntryRecordBO
+     * @return
      */
-    Integer deleteByActivityEntryIdAndUserId(String activityEntryId, String userId);
+    ActivityEntryRecordBO updateActivityEntryRecord(ActivityEntryRecordBO activityEntryRecordBO);
 
     /**
      * 通过用户id查找报名记录
@@ -49,7 +49,7 @@ public interface ActivityEntryRecordRepoService {
      * @param activityEntryId
      * @return
      */
-    Long countByActivityEntryId(String activityEntryId);
+    Long countByActivityEntryIdAndState(String activityEntryId,String state);
 
 
     /**

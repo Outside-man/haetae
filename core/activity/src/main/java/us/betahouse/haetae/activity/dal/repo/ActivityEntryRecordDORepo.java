@@ -41,17 +41,16 @@ public interface ActivityEntryRecordDORepo extends JpaRepository<ActivityEntryRe
     ActivityEntryRecordDO findByActivityEntryIdAndUserId(String activityEntryId, String userId);
 
     /**
-     * 通过报名信息id和用户id删除报名记录
+     * 通过对应报名信息id和用户id检测报名记录是否存在
      * @param activityEntryId
      * @param userId
      */
-    @Transactional
-    void deleteByActivityEntryIdAndUserId(String activityEntryId, String userId);
+    boolean existsActivityEntryRecordDOByActivityEntryIdAndUserId(String activityEntryId, String userId);
 
     /**
-     * 通过报名信息id查找报名记录数量
+     * 通过对应报名信息id和报名记录状态查找报名记录数量
      * @param activityEntryId
      * @return
      */
-    Long countByActivityEntryId(String activityEntryId);
+    Long countByActivityEntryIdAndState(String activityEntryId, String state);
 }

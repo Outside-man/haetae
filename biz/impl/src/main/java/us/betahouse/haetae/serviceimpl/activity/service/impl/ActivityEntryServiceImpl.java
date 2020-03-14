@@ -8,6 +8,7 @@ import us.betahouse.haetae.activity.builder.ActivityEntryRecordBOBuilder;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityEntryRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.enums.ActivityEntryRecordStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityEntryStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
@@ -25,6 +26,7 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.*;
 
+import javax.validation.constraints.AssertTrue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -185,7 +187,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
                             //已报名
                             status = ActivityEntryStatusType.REGISTERED.getCode();
                         }
-                    } else if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(activityEntryBO.getActivityEntryId())) {
+                    } else if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryIdAndState(activityEntryBO.getActivityEntryId(),ActivityEntryRecordStateEnum.SIGN_UP.getCode())) {
                         //人已满
                         status = ActivityEntryStatusType.EXCEED.getCode();
                     } else {
@@ -268,8 +270,8 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
 
 
         List<ActivityEntry> activityEntryList = new ArrayList<>();
-        List<ActivityEntryRecordBO> activityEntryRecordBOList = activityEntryRecordRepoService.findAllByUserId(userID);
-
+        List<ActivityEntryRecordBO> activityEntryRecordBOList = CollectionUtils.toStream(activityEntryRecordRepoService.findAllByUserId(userID))
+                .filter((ActivityEntryRecordBO a) -> ActivityEntryRecordStateEnum.SIGN_UP.getCode().equals(a.getState())).collect(Collectors.toList());
         for(ActivityEntryRecordBO activityEntryRecordBO :activityEntryRecordBOList){
 
 
@@ -427,7 +429,7 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
     public synchronized ActivityEntryRecordBO createActivityEntryRecord(ActivityEntryRecordRequest request) {
         ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
         AssertUtil.assertNotNull(activityEntryBO,"报名信息id不存在");
-        if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryId(request.getActivityEntryId())) {
+        if (activityEntryBO.getNumber() <= activityEntryRecordRepoService.countByActivityEntryIdAndState(request.getActivityEntryId(),ActivityEntryRecordStateEnum.SIGN_UP.getCode())) {
             return null;
         }else{
             AssertUtil.assertTrue(activityEntryRecordRepoService.findByActivityEntryIdAndUserId(request.getActivityEntryId(),request.getUserId()) == null,"您已报名");
@@ -450,15 +452,18 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      * @return
      */
     @Override
-    public Integer deleteActivityEntryRecord(ActivityEntryRecordRequest request) {
+    public ActivityEntryRecordBO undoSignUp(ActivityEntryRecordRequest request) {
         ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
         AssertUtil.assertNotNull(activityEntryBO, "报名信息不存在");
-        AssertUtil.assertTrue(activityEntryRecordRepoService.findByActivityEntryIdAndUserId(request.getActivityEntryId(),request.getUserId()) != null,"您未报名该活动");
-        String activityId = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId()).getActivityId();
+        ActivityEntryRecordBO activityEntryRecordBO = activityEntryRecordRepoService.findByActivityEntryIdAndUserId(request.getActivityEntryId(),request.getUserId());
+        AssertUtil.assertNotNull(activityEntryRecordBO,"您未报名该活动");
+        AssertUtil.assertTrue(ActivityEntryRecordStateEnum.UNDO_SIGN_UP.getCode().equals(activityEntryRecordBO.getState()),"您已取消报名");
+        String activityId = activityEntryBO.getActivityId();
         //后一个半小时时间,90分钟
         Date anHourAndAHalfAfter = new Date(System.currentTimeMillis()+90*1000*60);
         AssertUtil.assertTrue(anHourAndAHalfAfter.before(activityRepoService.queryActivityByActivityId(activityId).getStart()),"距离活动开始不足1.5小时，不允许取消报名");
-        return activityEntryRecordRepoService.deleteByActivityEntryIdAndUserId(request.getActivityEntryId(),request.getUserId());
+        activityEntryRecordBO.setState(ActivityEntryRecordStateEnum.UNDO_SIGN_UP.getCode());
+        return activityEntryRecordRepoService.updateActivityEntryRecord(activityEntryRecordBO);
     }
 
 

@@ -31,6 +31,11 @@ public class ActivityEntryRecordRequest extends BaseRequest{
     private Boolean isAttend;
 
     /**
+     * 报名记录状态
+     */
+    private String state;
+
+    /**
      * 备注(预留)
      */
     private String note;
@@ -70,6 +75,14 @@ public class ActivityEntryRecordRequest extends BaseRequest{
 
     public void setAttend(Boolean attend) {
         isAttend = attend;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getNote() {

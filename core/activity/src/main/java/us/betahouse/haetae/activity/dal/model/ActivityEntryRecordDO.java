@@ -46,6 +46,11 @@ public class ActivityEntryRecordDO extends BaseDO{
     private Boolean isAttend;
 
     /**
+     * 记录状态
+     */
+    private String state;
+
+    /**
      * 备注(预留)
      */
     private String note;
@@ -90,6 +95,14 @@ public class ActivityEntryRecordDO extends BaseDO{
 
     public void setAttend(Boolean attend) {
         isAttend = attend;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getNote() {

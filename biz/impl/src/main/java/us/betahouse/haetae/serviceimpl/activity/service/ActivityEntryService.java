@@ -93,7 +93,7 @@ public interface ActivityEntryService {
      * @param request
      * @return
      */
-    Integer deleteActivityEntryRecord(ActivityEntryRecordRequest request);
+    ActivityEntryRecordBO undoSignUp(ActivityEntryRecordRequest request);
 
     /**
      * 结束可以结束的报名
