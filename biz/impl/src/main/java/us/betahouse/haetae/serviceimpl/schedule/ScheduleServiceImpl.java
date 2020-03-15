@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.locale.model.basic.LocaleApplyBO;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.locale.service.LocaleApplyService;
 import us.betahouse.util.utils.CollectionUtils;
@@ -34,6 +36,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private LocaleApplyService localeApplyService;
+
+    @Autowired
+    private ActivityEntryService activityEntryService;
 
     /**
      * 结束活动

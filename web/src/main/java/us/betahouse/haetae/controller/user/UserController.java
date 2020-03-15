@@ -17,8 +17,10 @@ import us.betahouse.haetae.converter.UserVOConverter;
 import us.betahouse.haetae.model.user.request.UserRequest;
 import us.betahouse.haetae.model.user.vo.UserVO;
 import us.betahouse.haetae.organization.model.OrganizationMemberBO;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityBlacklistService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
+import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
 import us.betahouse.haetae.serviceimpl.organization.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
@@ -58,6 +60,9 @@ public class UserController {
   
     @Autowired
     private OrganizationService organizationService;
+
+    @Autowired
+    private ActivityBlacklistService activityBlacklistService;
     /**
      * 登陆
      *
