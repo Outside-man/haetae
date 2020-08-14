@@ -294,6 +294,19 @@ public class ActivityServiceImpl implements ActivityService {
         activityManager.updatePast(request);
     }
 
+    @Override
+    public Boolean checkActivity(ActivityManagerRequest request, OperateContext context) {
+        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        AssertUtil.assertNotNull(activity, "活动不存在");
+        if (StringUtils.equals(activity.getState(),ActivityStateEnum.PUBLISHED.getCode())){
+            //gc
+            activity=null;
+            return true;
+        }
+        activity=null;
+        return false;
+    }
+
     /**
      * 生成权限移除请求
      *
@@ -307,4 +320,5 @@ public class ActivityServiceImpl implements ActivityService {
         permManageRequest.setUserIds(userIds);
         return permManageRequest;
     }
+
 }

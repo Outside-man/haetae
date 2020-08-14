@@ -110,4 +110,12 @@ public interface ActivityService {
      * @param context
      */
     void  assignPastRecord(ActivityManagerRequest request,OperateContext context);
+
+    /**
+     * 校验活动是否存在
+     *  @param request
+     * @param context
+     * @return
+     */
+    Boolean checkActivity(ActivityManagerRequest request, OperateContext context);
 }

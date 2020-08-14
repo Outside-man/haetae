@@ -164,6 +164,35 @@ public class ActivityController {
     }
 
     /**
+     * 校验活动是否存在
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @GetMapping("/check")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityBO> checkActivity(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+        return RestOperateTemplate.operate(LOGGER, "校验活动是否存在且处于发布状态", request, new RestOperateCallBack<ActivityBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+            @Override
+            public Result<ActivityBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
+                        .withActivityId(request.getActivityId()).build();
+                Boolean ifActivityExist=activityService.checkActivity(activityManagerRequest,context);
+                return ifActivityExist ? RestResultUtil.buildSuccessResult("活动存在并处于发布状态"):RestResultUtil.buildFailResult("活动不处于发布状态");
+            }
+        });
+    }
+
+
+    /**
      * 操作活动
      *
      * @param request
