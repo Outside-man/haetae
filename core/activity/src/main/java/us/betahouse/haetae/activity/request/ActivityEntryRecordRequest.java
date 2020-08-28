@@ -45,6 +45,11 @@ public class ActivityEntryRecordRequest extends BaseRequest{
      */
     private String choose;
 
+    /**
+     *是否订阅活动开始消息
+     */
+    private String subscribe;
+
     public String getActivityEntryRecordId() {
         return activityEntryRecordId;
     }
@@ -100,4 +105,8 @@ public class ActivityEntryRecordRequest extends BaseRequest{
     public void setChoose(String choose) {
         this.choose = choose;
     }
+
+    public String getSubscribe() { return subscribe; }
+
+    public void setSubscribe(String subscribe) { this.subscribe = subscribe; }
 }

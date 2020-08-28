@@ -51,6 +51,12 @@ public class ActivityEntryRecordBO extends ToString {
     private String choose;
 
     /**
+     *是否订阅活动开始消息
+     */
+    private String subscribe;
+
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -125,6 +131,11 @@ public class ActivityEntryRecordBO extends ToString {
     public void setChoose(String choose) {
         this.choose = choose;
     }
+
+    public String getSubscribe() { return subscribe; }
+
+    public void setSubscribe(String subscribe) { this.subscribe = subscribe; }
+
 
     public Map<String, String> getExtInfo() {
         return extInfo;

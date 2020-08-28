@@ -4,6 +4,12 @@
  */
 package us.betahouse.util.utils;
 
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
 import java.io.*;
 import java.net.*;
 import java.util.Iterator;
@@ -230,5 +236,29 @@ public class HttpUtils {
             connection.setReadTimeout(socketTimeout);
         }
 
+    }
+    public static String httpPostWithJson(String url, String json) {
+        String result = "";
+        HttpPost httpPost = new HttpPost(url);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        try {
+            BasicResponseHandler handler = new BasicResponseHandler();
+            StringEntity entity = new StringEntity(json, "utf-8");//解决中文乱码问题
+            entity.setContentEncoding("UTF-8");
+            entity.setContentType("application/json");
+            httpPost.setEntity(entity);
+            result = httpClient.execute(httpPost, handler);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                httpClient.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }

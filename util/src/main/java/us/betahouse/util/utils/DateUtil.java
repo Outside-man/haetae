@@ -4,6 +4,7 @@
  */
 package us.betahouse.util.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,6 +17,8 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    private static final String MEDIUM_TIME = "MM月dd日 ";
+
     private static final String SHORT_TIME = "yyyyMMddHHmmss";
 
     private static final String YEAR_TIME = "yyyy";
@@ -26,12 +29,12 @@ public class DateUtil {
 
     private static final String DAY = "dd";
 
+    private static final String TIME_DESCRIPTION = "yyyy年MM月dd日 HH:mm";
 
+    private static final String TIME_DATABASE = "yyyy-MM-dd HH:mm:ss";
     /**
      * 获取短时间字符串
-     *
      * @param date
-     * @return
      */
     public static String getShortDatesStr(Date date) {
         return format(date, SHORT_TIME);
@@ -42,6 +45,10 @@ public class DateUtil {
     }
 
 
+   //该方法用于数据库中的日期转换为MEDIUM_TIME格式
+    public static String getMediumDatesStr(String str) { return getMediumDatesStr(parse(str,TIME_DATABASE)); }
+
+    private static String getMediumDatesStr(Date date) { return format(date, MEDIUM_TIME); }
 
     /**
      * 获取年份
@@ -129,5 +136,52 @@ public class DateUtil {
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * 转换成 yyyy年MM月dd日 形式
+     */
+   public static String parse_CH(String dateStr,String format){
+       DateFormat dateFormat = new SimpleDateFormat(format);
+       try {
+           Date date = dateFormat.parse(dateStr);
+           DateFormat CHFormat=new SimpleDateFormat(TIME_DESCRIPTION);
+        return  CHFormat.format(date);
+       } catch (ParseException e) {
+           throw new IllegalArgumentException("日期转换失败");
+       }
+
+   }
+    /**
+     * 判断日期是不是今天内
+     *
+     * @param inputDate
+     * @return
+     */
+    public static boolean isToday(Date inputDate){
+        boolean flag = false;
+        //获取当前系统时间
+        long longDate = System.currentTimeMillis();
+        Date nowDate = new Date(longDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = dateFormat.format(nowDate);
+        String subDate = format.substring(0, 10);
+        //定义每天的24h时间范围
+        String beginTime = subDate + " 00:00:00";
+        String endTime = subDate + " 23:59:59";
+        Date BeginTime = null;
+        Date EndTime = null;
+        try {
+            BeginTime = dateFormat.parse(beginTime);
+            EndTime = dateFormat.parse(endTime);
+
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("日期转换失败");
+        }
+        if(inputDate.after(BeginTime) && inputDate.before(EndTime)) {
+            flag = true;
+        }
+        return flag;
     }
 }
