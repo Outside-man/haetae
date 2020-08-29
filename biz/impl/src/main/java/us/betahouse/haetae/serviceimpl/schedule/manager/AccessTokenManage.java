@@ -1,21 +1,16 @@
-package us.betahouse.haetae.serviceimpl.schedule;
+package us.betahouse.haetae.serviceimpl.schedule.manager;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryPublish;
-import us.betahouse.util.utils.DateUtil;
 import us.betahouse.util.wechat.WeChatAccessTokenUtil;
 
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 @Component
-public class SubscriptionTask {
+public class AccessTokenManage {
 
-    public static String AccessToken ;
+    private static String AccessToken ;
 
     private static String appid;
 
@@ -23,19 +18,14 @@ public class SubscriptionTask {
 
     @Value("${wechat.appId}")
     public void setAppId(String appId) {    //注意这里的set方法不能是静态的
-        SubscriptionTask.appid = appId;
+        AccessTokenManage.appid = appId;
     }
+
     @Value("${wechat.secret}")
     public void setSecret(String secret) {    //注意这里的set方法不能是静态的
-        SubscriptionTask.secret = secret;
+        AccessTokenManage.secret = secret;
     }
 
-
-
-
-   // static final ConcurrentHashMap<String, List<String>> SUBSCRIPTION_CONTAINER =new ConcurrentHashMap<>();
-
-    private final Logger LOGGER = LoggerFactory.getLogger(ScheduleServiceImpl.class);
 
 
      public static synchronized String GetToken(){
@@ -48,9 +38,7 @@ public class SubscriptionTask {
          return AccessToken;
      }
 
-  //  public static void putSubscriptionTask(ActivityEntryPublish activityEntryPublish){
 
-   // }
 
 
 }

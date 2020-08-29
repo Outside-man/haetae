@@ -21,10 +21,6 @@ public class ScheduleConstant {
      */
     public final static String AM_TWO_OF_THE_CLOCK = "0 0 2 * * ?";
 
-    /**
-     * 每天上午7触发
-     */
-    public final static String AM_SEVEN_OF_THE_CLOCK = "0 0 7 * * ?";
 
 
 }

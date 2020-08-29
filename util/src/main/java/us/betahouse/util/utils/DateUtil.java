@@ -23,11 +23,17 @@ public class DateUtil {
 
     private static final String YEAR_TIME = "yyyy";
 
+    private static final String HOUR_TIME = "HH";
+
+    private static final String MINUTE_TIME = "mm";
+
+    private static final String MONTH_TIME= "MM";
+
+    private static final String DAY = "dd";
+
     private static final String MONTH_DAY = "MMdd";
 
     private static final String YEAR_MONTH_DAY="yyyy-MM-dd";
-
-    private static final String DAY = "dd";
 
     private static final String TIME_DESCRIPTION = "yyyy年MM月dd日 HH:mm";
 
@@ -50,6 +56,7 @@ public class DateUtil {
 
     private static String getMediumDatesStr(Date date) { return format(date, MEDIUM_TIME); }
 
+    public static Date parseTime_Database(String str){return parse(str,TIME_DATABASE);}
     /**
      * 获取年份
      *
@@ -66,13 +73,18 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static String getMonthDay(Date date) {
-        return format(date, MONTH_DAY);
-    }
+    public static String getMonthDay(Date date) { return format(date, MONTH_DAY); }
 
-    public static String getYearMonthDay(Date date){
-        return format(date, YEAR_MONTH_DAY);
-    }
+    /**
+     * 获取月份
+     * @param date
+     * @return
+     */
+
+    public static String getMonth(Date date) { return format(date, MONTH_TIME); }
+
+
+    public static String getYearMonthDay(Date date){ return format(date, YEAR_MONTH_DAY); }
     /**
      * 获取日
      *
@@ -82,6 +94,16 @@ public class DateUtil {
     public static String getDay(Date date) {
         return format(date, DAY);
     }
+
+    /**
+     * 获取小时
+     */
+    public static String getHour(Date date) { return format(date, HOUR_TIME); }
+
+    /**
+     * 获取分钟
+     */
+    public static String getMinute(Date date) { return format(date, MINUTE_TIME); }
 
     /**
      * 格式化时间
@@ -153,35 +175,5 @@ public class DateUtil {
        }
 
    }
-    /**
-     * 判断日期是不是今天内
-     *
-     * @param inputDate
-     * @return
-     */
-    public static boolean isToday(Date inputDate){
-        boolean flag = false;
-        //获取当前系统时间
-        long longDate = System.currentTimeMillis();
-        Date nowDate = new Date(longDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String format = dateFormat.format(nowDate);
-        String subDate = format.substring(0, 10);
-        //定义每天的24h时间范围
-        String beginTime = subDate + " 00:00:00";
-        String endTime = subDate + " 23:59:59";
-        Date BeginTime = null;
-        Date EndTime = null;
-        try {
-            BeginTime = dateFormat.parse(beginTime);
-            EndTime = dateFormat.parse(endTime);
 
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("日期转换失败");
-        }
-        if(inputDate.after(BeginTime) && inputDate.before(EndTime)) {
-            flag = true;
-        }
-        return flag;
-    }
 }

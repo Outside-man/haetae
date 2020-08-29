@@ -1,10 +1,17 @@
 package us.betahouse.haetae.serviceimpl.activity.model;
 
+import us.betahouse.util.common.ToString;
+
 /**
   * @Author kana-cr
   * @Date  2020/8/28 13:23
   **/
-public class ActivityEntryPublish {
+public class ActivityEntryPublish extends ToString {
+
+    /**
+     * 当前订阅的消息 的 唯一凭证
+     */
+   private String activityEntryRecordID;
 
     /**
      * 温馨提示 （备注）
@@ -30,10 +37,13 @@ public class ActivityEntryPublish {
      */
     private String location;
 
+    public String getActivityEntryRecordID() { return activityEntryRecordID; }
+
+    public void setActivityEntryRecordID(String activityEntryRecordID) { this.activityEntryRecordID = activityEntryRecordID; }
+
     public String getNote() { return note; }
 
-    public void setNote(String note) { this.note = note;
-    }
+    public void setNote(String note) { this.note = note; }
     public String getStart() { return start; }
 
     public void setStart(String start) { this.start = start; }

@@ -2,14 +2,15 @@ package us.betahouse.haetae.serviceimpl.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryPublish;
-import us.betahouse.haetae.serviceimpl.schedule.SubscriptionTask;
+import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.DateUtil;
 import us.betahouse.util.utils.HttpUtils;
-import us.betahouse.util.wechat.WeChatAccessTokenUtil;
 
 import java.text.MessageFormat;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,13 +19,20 @@ import java.util.concurrent.locks.ReentrantLock;
   * @Author kana-cr
   * @Date  2020/8/28 13:58
   */
+@Component
 public class SubscribeUtil {
 
 
     /**
      * 模板id
      */
-    private final static String TEMPLATE_ID="oqC6UDgnz6u9FucXj0BPSz7CSn5rZUAT8cq2Ek8Obr4";
+    private static String TEMPLATE_ID;
+
+    @Value("${wechat.TemplateId}")
+    public void setTemplateId(String templateId) {    //注意这里的set方法不能是静态的
+        SubscribeUtil.TEMPLATE_ID = templateId;
+    }
+
     /**
      *推送api
      */
@@ -52,8 +60,6 @@ public class SubscribeUtil {
         AssertUtil.assertStringNotBlank(activityEntryPublish.getActivityName(),"活动名称不能为空");
         AssertUtil.assertStringNotBlank(activityEntryPublish.getLocation(),"活动地点不能为空");
 
-
-        //String accessToken= WeChatAccessTokenUtil.GetAccessToken(appId,secret);
         String url = MessageFormat.format(PUBLISH_URL,accessToken);
 
         StringBuilder publishBuilder = new StringBuilder();
@@ -99,8 +105,8 @@ public class SubscribeUtil {
             }else if (StringUtils.equals(code,"42001")){
                 //防止token被连续刷新多次
                 lock.lock();
-                if (StringUtils.equals(accessToken,new SubscriptionTask().GetToken())) {
-                    accessToken = new SubscriptionTask().refreshToken();
+                if (StringUtils.equals(accessToken,AccessTokenManage.GetToken())) {
+                    accessToken = AccessTokenManage.refreshToken();
                     return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
                 }
                 lock.unlock();

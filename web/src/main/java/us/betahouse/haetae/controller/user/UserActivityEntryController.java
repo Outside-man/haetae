@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
 import us.betahouse.haetae.activity.request.ActivityEntryRecordRequest;
@@ -27,7 +26,8 @@ import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.SubscribeUtil;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.schedule.ScheduleService;
-import us.betahouse.haetae.serviceimpl.schedule.SubscriptionTask;
+import us.betahouse.haetae.serviceimpl.schedule.ScheduleTaskMap;
+import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -35,10 +35,8 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.wechat.WeChatAccessTokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * 用户已报名活动报名信息接口
@@ -180,7 +178,14 @@ public class UserActivityEntryController {
             }
         });
     }
-       @CheckLogin
+
+    /**
+     * 增添定时任务
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+      @CheckLogin
        @PostMapping("/Subscribe")
        @Log(loggerName = LoggerName.WEB_DIGEST)
       public Result<ActivityEntryPublish> ActivitySubscribe(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest) {
@@ -190,6 +195,7 @@ public class UserActivityEntryController {
                    AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                    AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
                    AssertUtil.assertStringNotBlank(request.getOpenid(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户openid不能为空");
+                   AssertUtil.assertStringNotBlank(request.getActivityEntryRecordID(),RestResultCode.ILLEGAL_PARAMETERS.getCode(), "当前报名记录id不能为空");
                    AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
                    AssertUtil.assertStringNotBlank(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
                    AssertUtil.assertStringNotBlank(request.getLocation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动地点不能为空");
@@ -200,13 +206,13 @@ public class UserActivityEntryController {
                    OperateContext context = new OperateContext();
                    context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                    ActivityEntryPublish activityEntryPublish = new ActivityEntryPublish();
-                   BeanUtils.copyProperties(activityEntryPublish, request);
-                   //SubscriptionTask.putSubscriptionTask(activityEntryPublish);
+                   BeanUtils.copyProperties(request,activityEntryPublish);
+                   ScheduleTaskMap.getInstance().putMap(activityEntryPublish,request.getOpenid());
                    return RestResultUtil.buildSuccessResult(activityEntryPublish, "用户已订阅该活动");
                }
            });
        }
-         //  @CheckLogin
+           @CheckLogin
            @PostMapping("/SubOne")
            @Log(loggerName = LoggerName.WEB_DIGEST)
            public Result<ActivityEntryPublish> ActivitySubscribeOne(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest){
@@ -227,10 +233,10 @@ public class UserActivityEntryController {
                        context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                        ActivityEntryPublish activityEntryPublish =new ActivityEntryPublish();
                        BeanUtils.copyProperties(request,activityEntryPublish);
-                       String token = SubscriptionTask.GetToken();
+                       String token = AccessTokenManage.GetToken();
                        String result = SubscribeUtil.publishActivityByOpenId(request.getOpenid(), token, activityEntryPublish);
                        if (StringUtils.equals(CommonResultCode.ILLEGAL_PARAMETERS.getCode(),result) ){
-                           token = SubscriptionTask.refreshToken();
+                           token = AccessTokenManage.refreshToken();
                            result = SubscribeUtil.publishActivityByOpenId(request.getOpenid(), token, activityEntryPublish);
                        }
                        if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){

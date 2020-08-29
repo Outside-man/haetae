@@ -4,6 +4,12 @@ import us.betahouse.haetae.common.RestRequest;
 
 public class ActivitySubscribeRestRequest extends RestRequest {
 
+
+    /**
+     * 活动报名记录ID 当前订阅的消息的唯一凭证
+     */
+    private String activityEntryRecordID ;
+
     /**
      * 用户的openid
      */
@@ -32,6 +38,10 @@ public class ActivitySubscribeRestRequest extends RestRequest {
      * 活动地点
      */
     private String location;
+
+    public String getActivityEntryRecordID() { return activityEntryRecordID; }
+
+    public void setActivityEntryRecordID(String activityEntryRecordID) { this.activityEntryRecordID = activityEntryRecordID; }
 
     public String getOpenid() { return openid; }
 
