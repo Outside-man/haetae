@@ -14,7 +14,7 @@ import java.util.Map;
   * @Author kana-cr
   * @Date  2020/8/28 12:06
   **/
-public class WeChatPublishUtil {
+public class WeChatAccessTokenUtil {
 
 
     /**

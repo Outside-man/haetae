@@ -237,7 +237,12 @@ public class HttpUtils {
         }
 
     }
-    public static String httpPostWithJson(String url, String json) {
+
+    /**
+     *当要发送复杂json对象时 使用
+     *
+     */
+    public static String doPostUseJson(String url, String json) {
         String result = "";
         HttpPost httpPost = new HttpPost(url);
         CloseableHttpClient httpClient = HttpClients.createDefault();

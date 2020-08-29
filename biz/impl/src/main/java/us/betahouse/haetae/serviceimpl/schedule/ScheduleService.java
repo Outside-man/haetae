@@ -22,4 +22,5 @@ public interface ScheduleService {
      * 结束报名
      */
     void finishActivityEntries();
+
 }

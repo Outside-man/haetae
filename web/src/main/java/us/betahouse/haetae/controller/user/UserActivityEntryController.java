@@ -1,8 +1,11 @@
 package us.betahouse.haetae.controller.user;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryRecordBO;
 import us.betahouse.haetae.activity.request.ActivityEntryRecordRequest;
@@ -13,21 +16,29 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.controller.activity.ActivityController;
 import us.betahouse.haetae.model.activity.request.ActivityEntryRestRequest;
+import us.betahouse.haetae.model.activity.request.ActivitySubscribeRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityEntryRecordRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityEntryRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryPublish;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityBlacklistService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.SubscribeUtil;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
+import us.betahouse.haetae.serviceimpl.schedule.ScheduleService;
+import us.betahouse.haetae.serviceimpl.schedule.SubscriptionTask;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.wechat.WeChatAccessTokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * 用户已报名活动报名信息接口
@@ -37,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping(value = "/user")
+@CrossOrigin
 public class UserActivityEntryController {
     /**
      * 日志实体
@@ -48,6 +60,11 @@ public class UserActivityEntryController {
 
     @Autowired
     private ActivityBlacklistService activityBlacklistService;
+
+    @Autowired
+    private ScheduleService scheduleService;
+
+
 
     @CheckLogin
     @GetMapping("/registeredActivityEntry")
@@ -163,5 +180,65 @@ public class UserActivityEntryController {
             }
         });
     }
+       @CheckLogin
+       @PostMapping("/Subscribe")
+       @Log(loggerName = LoggerName.WEB_DIGEST)
+      public Result<ActivityEntryPublish> ActivitySubscribe(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest) {
+           return RestOperateTemplate.operate(LOGGER, "活动开始信息订阅", request, new RestOperateCallBack<ActivityEntryPublish>() {
+               @Override
+               public void before() {
+                   AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                   AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                   AssertUtil.assertStringNotBlank(request.getOpenid(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户openid不能为空");
+                   AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
+                   AssertUtil.assertStringNotBlank(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
+                   AssertUtil.assertStringNotBlank(request.getLocation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动地点不能为空");
+               }
+
+               @Override
+               public Result<ActivityEntryPublish> execute() {
+                   OperateContext context = new OperateContext();
+                   context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                   ActivityEntryPublish activityEntryPublish = new ActivityEntryPublish();
+                   BeanUtils.copyProperties(activityEntryPublish, request);
+                   //SubscriptionTask.putSubscriptionTask(activityEntryPublish);
+                   return RestResultUtil.buildSuccessResult(activityEntryPublish, "用户已订阅该活动");
+               }
+           });
+       }
+         //  @CheckLogin
+           @PostMapping("/SubOne")
+           @Log(loggerName = LoggerName.WEB_DIGEST)
+           public Result<ActivityEntryPublish> ActivitySubscribeOne(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest){
+               return RestOperateTemplate.operate(LOGGER, "活动开始信息订阅", request, new RestOperateCallBack<ActivityEntryPublish>() {
+                   @Override
+                   public void before() {
+                       AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                       AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                       AssertUtil.assertStringNotBlank(request.getOpenid(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户openid不能为空");
+                       AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
+                       AssertUtil.assertStringNotBlank(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
+                       AssertUtil.assertStringNotBlank(request.getLocation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动地点不能为空");
+                   }
+
+                   @Override
+                   public Result<ActivityEntryPublish> execute() {
+                       OperateContext context = new OperateContext();
+                       context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                       ActivityEntryPublish activityEntryPublish =new ActivityEntryPublish();
+                       BeanUtils.copyProperties(request,activityEntryPublish);
+                       String token = SubscriptionTask.GetToken();
+                       String result = SubscribeUtil.publishActivityByOpenId(request.getOpenid(), token, activityEntryPublish);
+                       if (StringUtils.equals(CommonResultCode.ILLEGAL_PARAMETERS.getCode(),result) ){
+                           token = SubscriptionTask.refreshToken();
+                           result = SubscribeUtil.publishActivityByOpenId(request.getOpenid(), token, activityEntryPublish);
+                       }
+                       if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
+                           return  RestResultUtil.buildSuccessResult(activityEntryPublish , "用户未允许订阅该消息");
+                       }
+                       return RestResultUtil.buildSuccessResult(activityEntryPublish , "订阅信息已发布");
+                   }
+               });
+       }
 
 }

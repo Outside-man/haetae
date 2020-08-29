@@ -165,4 +165,5 @@ public class UserServiceImpl implements UserService {
     public void modifyUserMajorAndClassAndGrade(CommonUserRequest request, OperateContext context) {
         userBasicService.modifyMajorAndClassAndGrade(request.getUserId(), request.getUserInfoBO().getMajor(), request.getUserInfoBO().getClassId(), request.getUserInfoBO().getGrade());
     }
+
 }

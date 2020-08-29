@@ -1,6 +1,5 @@
 package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +20,12 @@ import us.betahouse.haetae.activity.request.ActivityEntryRequest;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityEntryStatusType;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntry;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
-import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryPublish;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.*;
-import us.betahouse.util.wechat.WeChatPublishUtil;
 
-import javax.validation.constraints.AssertTrue;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

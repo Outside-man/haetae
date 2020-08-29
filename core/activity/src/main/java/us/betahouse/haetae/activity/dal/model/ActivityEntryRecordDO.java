@@ -60,10 +60,7 @@ public class ActivityEntryRecordDO extends BaseDO{
      */
     private String choose;
 
-    /**
-     *是否订阅活动开始消息
-     */
-     private String subscribe;
+
 
     public String getActivityEntryRecordId() {
         return activityEntryRecordId;
@@ -125,7 +122,5 @@ public class ActivityEntryRecordDO extends BaseDO{
         this.choose = choose;
     }
 
-    public String getSubscribe() { return subscribe; }
 
-    public void setSubscribe(String subscribe) { this.subscribe = subscribe; }
 }

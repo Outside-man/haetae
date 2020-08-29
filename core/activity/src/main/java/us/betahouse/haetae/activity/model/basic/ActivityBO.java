@@ -137,14 +137,6 @@ public class ActivityBO extends ToString {
         }
     }
 
-    /**
-     * 判断是否活动处于发布状态，并且在今天开始 (用于推送功能)
-     *
-     */
-    public  boolean canPublish(){
-
-        return  StringUtils.equals(state, ActivityStateEnum.PUBLISHED.getCode()) && DateUtil.isToday(start);
-    }
 
     /**
      * 判断是否可以结束
