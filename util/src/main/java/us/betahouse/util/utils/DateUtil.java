@@ -38,6 +38,8 @@ public class DateUtil {
     private static final String TIME_DESCRIPTION = "yyyy年MM月dd日 HH:mm";
 
     private static final String TIME_DATABASE = "yyyy-MM-dd HH:mm:ss";
+
+    private static final String TIME_MONTH_DAY = "MM月dd日";
     /**
      * 获取短时间字符串
      * @param date
@@ -52,7 +54,7 @@ public class DateUtil {
 
 
    //该方法用于数据库中的日期转换为MEDIUM_TIME格式
-    public static String getMediumDatesStr(String str) { return getMediumDatesStr(parse(str,TIME_DATABASE)); }
+    public static String getMediumDatesStr(String str) { return getMediumDatesStr(parse(str,TIME_MONTH_DAY)); }
 
     private static String getMediumDatesStr(Date date) { return format(date, MEDIUM_TIME); }
 

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import us.betahouse.util.wechat.WeChatAccessTokenUtil;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 @Component
 public class AccessTokenManage {
 
@@ -26,11 +28,17 @@ public class AccessTokenManage {
         AccessTokenManage.secret = secret;
     }
 
+    private static final ReentrantLock lock = new ReentrantLock();
 
+     public static String GetToken(){
+            if (StringUtils.isEmpty(AccessToken)) {
+                lock.lock();
+                if (AccessToken == null) {
+                    AccessToken = WeChatAccessTokenUtil.GetAccessToken(appid, secret);
+                }
+                lock.unlock();
+            }
 
-     public static synchronized String GetToken(){
-        if (StringUtils.isEmpty(AccessToken))
-            AccessToken = WeChatAccessTokenUtil.GetAccessToken(appid,secret);
         return AccessToken;
      }
      public static synchronized String refreshToken(){

@@ -11,11 +11,6 @@ public class ActivitySubscribeRestRequest extends RestRequest {
     private String activityEntryRecordID ;
 
     /**
-     * 用户的openid
-     */
-    private String openid;
-
-    /**
      * 温馨提示 （备注）
      */
     private String note;
@@ -42,10 +37,6 @@ public class ActivitySubscribeRestRequest extends RestRequest {
     public String getActivityEntryRecordID() { return activityEntryRecordID; }
 
     public void setActivityEntryRecordID(String activityEntryRecordID) { this.activityEntryRecordID = activityEntryRecordID; }
-
-    public String getOpenid() { return openid; }
-
-    public void setOpenid(String openid) { this.openid = openid; }
 
     public String getNote() { return note; }
 

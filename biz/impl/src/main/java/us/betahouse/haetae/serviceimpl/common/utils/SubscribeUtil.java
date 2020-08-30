@@ -28,7 +28,7 @@ public class SubscribeUtil {
      */
     private static String TEMPLATE_ID;
 
-    @Value("${wechat.TemplateId}")
+    @Value("${wechat.SubTemplateId}")
     public void setTemplateId(String templateId) {    //注意这里的set方法不能是静态的
         SubscribeUtil.TEMPLATE_ID = templateId;
     }
@@ -64,6 +64,7 @@ public class SubscribeUtil {
 
         StringBuilder publishBuilder = new StringBuilder();
         publishBuilder.append(DateUtil.getMediumDatesStr(activityEntryPublish.getStart())).append("起");
+
         String holdTime=publishBuilder.toString();
 
         JSONObject jsonObject=new JSONObject();
@@ -105,11 +106,20 @@ public class SubscribeUtil {
             }else if (StringUtils.equals(code,"42001")){
                 //防止token被连续刷新多次
                 lock.lock();
+                //第一个知道令牌过期的调用 刷新令牌
                 if (StringUtils.equals(accessToken,AccessTokenManage.GetToken())) {
                     accessToken = AccessTokenManage.refreshToken();
+                    lock.unlock();
+                    //刷新后再次推送
+                    return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
+                }else {
+                    //重新获取新的令牌
+                    accessToken=AccessTokenManage.GetToken();
+                    lock.unlock();
+                    //再次推送
                     return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
                 }
-                lock.unlock();
+
             }else if (StringUtils.equals(code,"43101"))
                 return CommonResultCode.FORBIDDEN.getCode();
 

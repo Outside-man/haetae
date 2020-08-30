@@ -34,8 +34,7 @@ public class ScheduleTaskMap {
     private final static int ADVANCE_TIME = 2;
 
     // 静态内部类实现单例模式
-    private ScheduleTaskMap() {
-    }
+    private ScheduleTaskMap() { }
 
     private static class  ScheduleTaskMapInstance {
         private static final  ScheduleTaskMap INSTANCE = new  ScheduleTaskMap();

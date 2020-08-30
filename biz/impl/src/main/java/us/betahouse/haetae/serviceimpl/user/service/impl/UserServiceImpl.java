@@ -166,4 +166,9 @@ public class UserServiceImpl implements UserService {
         userBasicService.modifyMajorAndClassAndGrade(request.getUserId(), request.getUserInfoBO().getMajor(), request.getUserInfoBO().getClassId(), request.getUserInfoBO().getGrade());
     }
 
+    @Override
+    public UserBO queryByUserId(String userId, OperateContext context) {
+      return userRepoService.queryByUserId(userId);
+    }
+
 }

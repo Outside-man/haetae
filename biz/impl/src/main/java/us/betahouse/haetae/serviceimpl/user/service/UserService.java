@@ -9,6 +9,7 @@ import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
 import java.util.Map;
 
@@ -115,5 +116,14 @@ public interface UserService {
      * @param context
      */
     void modifyUserMajorAndClassAndGrade(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 通过唯一的userid查询用户信息
+     *
+     * @param userId
+     * @param context
+     * @return
+     */
+    UserBO queryByUserId(String userId, OperateContext context);
 }
 
