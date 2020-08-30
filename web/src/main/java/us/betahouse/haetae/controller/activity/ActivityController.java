@@ -331,7 +331,7 @@ public class ActivityController {
                 if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
                     return  RestResultUtil.buildSuccessResult( request , "用户未允许订阅该消息");
                 }
-                return RestResultUtil.buildSuccessResult(request , "订阅信息已发布");;
+                return RestResultUtil.buildSuccessResult(request , "订阅信息已发布");
             }
 
             });
