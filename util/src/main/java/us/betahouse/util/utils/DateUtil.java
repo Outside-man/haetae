@@ -54,7 +54,7 @@ public class DateUtil {
 
 
    //该方法用于数据库中的日期转换为MEDIUM_TIME格式
-    public static String getMediumDatesStr(String str) { return getMediumDatesStr(parse(str,TIME_MONTH_DAY)); }
+    public static String getMediumDatesStr(String str) { return getMediumDatesStr(parse(str,TIME_DATABASE)); }
 
     private static String getMediumDatesStr(Date date) { return format(date, MEDIUM_TIME); }
 

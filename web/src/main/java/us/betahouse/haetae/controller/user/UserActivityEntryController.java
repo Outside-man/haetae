@@ -213,7 +213,7 @@ public class UserActivityEntryController {
                }
            });
        }
-           @CheckLogin
+          // @CheckLogin
            @PostMapping("/SubOne")
            @Log(loggerName = LoggerName.WEB_DIGEST)
            public Result<ActivityEntryPublish> ActivitySubscribeOne(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest){
