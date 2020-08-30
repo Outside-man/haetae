@@ -4,33 +4,26 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryPublish;
+import us.betahouse.haetae.serviceimpl.activity.model.AuditMessage;
 import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
-import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.DateUtil;
 import us.betahouse.util.utils.HttpUtils;
 
 import java.text.MessageFormat;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
-  * @Author kana-cr
-  * @Date  2020/8/28 13:58
-  */
 @Component
-public class SubscribeUtil {
-
-
+public class AuditUtil {
     /**
      * 模板id
      */
     private static String TEMPLATE_ID;
 
-    @Value("${wechat.SubTemplateId}")
+    @Value("${wechat.AuditTemplateId}")
     public void setTemplateId(String templateId) {    //注意这里的set方法不能是静态的
-        SubscribeUtil.TEMPLATE_ID = templateId;
+        AuditUtil.TEMPLATE_ID = templateId;
     }
 
     /**
@@ -47,45 +40,41 @@ public class SubscribeUtil {
      * 返回体的错误信息
      */
     private final static String ERROR_MESSAGE = "errmsg";
-    /**
-     *
-     * @param openId
-     * @param activityEntryPublish 活动信息对象
-     * @return
-     */
+
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public static String publishActivityByOpenId(String openId  , String accessToken, ActivityEntryPublish activityEntryPublish){
+    public static String publishAuditByOpenId(String openId  , String accessToken, AuditMessage audit){
 
         String url = MessageFormat.format(PUBLISH_URL,accessToken);
 
-        StringBuilder publishBuilder = new StringBuilder();
-        publishBuilder.append(DateUtil.getMediumDatesStr(activityEntryPublish.getStart())).append("起");
-
-        String holdTime=publishBuilder.toString();
 
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("touser",openId);
         jsonObject.put("template_id",TEMPLATE_ID);
 
         JSONObject data=new JSONObject();
-        JSONObject thing1 = new JSONObject();
-        thing1.put("value",activityEntryPublish.getNote());
+        JSONObject phrase = new JSONObject();
+        phrase.put("value",audit.getResult());
 
-        JSONObject thing2 = new JSONObject();
-        thing2.put("value",activityEntryPublish.getActivityName());
-        JSONObject date3 = new JSONObject();
-        date3.put("value",DateUtil.parse_CH(activityEntryPublish.getStart(),"yyyy-MM-dd HH:mm:ss"));
-        JSONObject thing6 = new JSONObject();
-        thing6.put("value",activityEntryPublish.getLocation());
-        JSONObject thing5 = new JSONObject();
-        thing5.put("value", holdTime);
+        JSONObject detail = new JSONObject();
+        detail.put("value",audit.getDetail());
+        JSONObject date = new JSONObject();
+        date.put("value",audit.getAuditTime());
+        JSONObject applicant = new JSONObject();
+        applicant.put("value",audit.getApplicant());
+        JSONObject Note = new JSONObject();
+        String note = audit.getNote();
+        if (note !=null ) {
+            Note.put("value",note);
+        }else {
+            Note.put("value","如有疑问请联系管理者");
+        }
 
-        data.put("thing1", thing1);
-        data.put("thing2",thing2);
-        data.put("date3",date3);
-        data.put("thing6",thing6);
-        data.put("thing5",thing5);
+        data.put("phrase1", phrase);
+        data.put("thing2",detail);
+        data.put("date3",date);
+        data.put("thin11",applicant);
+        data.put("thing7",Note);
 
         jsonObject.put("data",data);
 
@@ -97,26 +86,23 @@ public class SubscribeUtil {
             //GC
             jsonObject=null;
             result=null;
-            publishBuilder=null;
             if (StringUtils.equals(code,"0")) {
                 return CommonResultCode.SUCCESS.getCode();
             }else if (StringUtils.equals(code,"42001")){
                 //防止token被连续刷新多次
                 lock.lock();
                 //第一个知道令牌过期的调用 刷新令牌
-
-                if (StringUtils.equals(accessToken,AccessTokenManage.GetToken())) {
+                if (StringUtils.equals(accessToken, AccessTokenManage.GetToken())) {
                     accessToken = AccessTokenManage.refreshToken();
                     lock.unlock();
                     //刷新后再次推送
-                    return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
-                    //如果令牌已经被刷新就不再去刷新 直接重新用新令牌发布一次 (类CAS思想)
+                    return AuditUtil.publishAuditByOpenId(openId, accessToken, audit);
                 }else {
                     //重新获取新的令牌
                     accessToken=AccessTokenManage.GetToken();
                     lock.unlock();
                     //再次推送
-                    return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
+                    return AuditUtil.publishAuditByOpenId(openId, accessToken, audit);
                 }
 
             }else if (StringUtils.equals(code,"43101"))

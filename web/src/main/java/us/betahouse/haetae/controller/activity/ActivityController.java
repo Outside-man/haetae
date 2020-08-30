@@ -7,6 +7,7 @@ package us.betahouse.haetae.controller.activity;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
@@ -17,20 +18,27 @@ import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.activity.PastActivityVO;
 import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
+import us.betahouse.haetae.model.activity.request.AuditRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
+import us.betahouse.haetae.serviceimpl.activity.model.AuditMessage;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.utils.AuditUtil;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
+import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
+import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -51,6 +59,9 @@ public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 添加活动
@@ -292,4 +303,37 @@ public class ActivityController {
             }
         });
     }
+
+    @CheckLogin
+    @PostMapping("/audit")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<AuditRestRequest> auditActivity(AuditRestRequest request ,HttpServletRequest httpServletRequest){
+        return RestOperateTemplate.operate(LOGGER, "审核结果发布", request, new RestOperateCallBack<AuditRestRequest>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getResult(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核结果不能为空");
+                AssertUtil.assertStringNotBlank(request.getDetail(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核内容不能为空");
+                AssertUtil.assertStringNotBlank(request.getAuditTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核时间不能为空");
+                AssertUtil.assertStringNotBlank(request.getApplicant(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "申请人不能为空");
+            }
+
+            @Override
+            public Result<AuditRestRequest> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                AuditMessage message = new AuditMessage();
+                BeanUtils.copyProperties(request,message);
+                String openid =  userService.queryByUserId(request.getUserId(),context).getOpenId();
+                String token = AccessTokenManage.GetToken();;
+               String result = AuditUtil.publishAuditByOpenId(openid,token,message);
+                if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
+                    return  RestResultUtil.buildSuccessResult( request , "用户未允许订阅该消息");
+                }
+                return RestResultUtil.buildSuccessResult(request , "订阅信息已发布");;
+            }
+
+            });
+        }
 }

@@ -236,10 +236,6 @@ public class UserActivityEntryController {
                        BeanUtils.copyProperties(request,activityEntryPublish);
                        String token = AccessTokenManage.GetToken();
                        String result = SubscribeUtil.publishActivityByOpenId(openid, token, activityEntryPublish);
-                       if (StringUtils.equals(CommonResultCode.ILLEGAL_PARAMETERS.getCode(),result) ){
-                           token = AccessTokenManage.refreshToken();
-                           result = SubscribeUtil.publishActivityByOpenId(openid, token, activityEntryPublish);
-                       }
                        if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
                            return  RestResultUtil.buildSuccessResult(activityEntryPublish , "用户未允许订阅该消息");
                        }
