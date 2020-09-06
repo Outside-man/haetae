@@ -137,9 +137,10 @@ public class ActivityBO extends ToString {
         }
     }
 
-
     /**
      * 判断是否可以结束
+     *
+     * @return
      */
     public boolean canFinish() {
         // 活动手动重启 系统不会去结束

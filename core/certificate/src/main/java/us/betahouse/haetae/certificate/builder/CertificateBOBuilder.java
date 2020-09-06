@@ -52,6 +52,10 @@ final public class CertificateBOBuilder {
      */
     private String status;
     /**
+     * 驳回原因
+     */
+    private String rejectReason;
+    /**
      * 证书发布时间
      */
     private Date certificatePublishTime;
@@ -126,12 +130,17 @@ final public class CertificateBOBuilder {
         certificateBO.setTeamId(teamId);
         certificateBO.setCertificateGrade(certificateGrade);
         certificateBO.setPictureUrl(pictureUrl);
+        certificateBO.setRejectReason(rejectReason);
         return certificateBO;
     }
 
     private CertificateBOBuilder() {
     }
 
+    public CertificateBOBuilder withRejectReason(String rejectReason){
+        this.rejectReason = rejectReason;
+        return this;
+    }
 
     public CertificateBOBuilder withCertificateId(String certificateId) {
         this.certificateId = certificateId;

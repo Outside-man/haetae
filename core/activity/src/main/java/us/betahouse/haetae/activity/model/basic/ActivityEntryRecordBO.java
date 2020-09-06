@@ -50,7 +50,6 @@ public class ActivityEntryRecordBO extends ToString {
      */
     private String choose;
 
-
     /**
      * 拓展信息
      */
@@ -126,7 +125,6 @@ public class ActivityEntryRecordBO extends ToString {
     public void setChoose(String choose) {
         this.choose = choose;
     }
-
 
     public Map<String, String> getExtInfo() {
         return extInfo;

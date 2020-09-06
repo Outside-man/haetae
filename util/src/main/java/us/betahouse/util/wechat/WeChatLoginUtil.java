@@ -11,8 +11,6 @@ import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.HttpUtils;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 微信openId请求工具
@@ -28,18 +26,16 @@ public class WeChatLoginUtil {
      */
     private final static String OPEN_ID_URL_TEMPLATE = "https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code";
 
-
     /**
      * 返回体的openId
      */
     private final static String OPEN_ID = "openid";
-    
+
     /**
      * 返回体的错误码
      */
     private final static String ERROR_CODE = "errcode";
 
-    
     /**
      * 获取openId
      *
@@ -63,6 +59,4 @@ public class WeChatLoginUtil {
 
         return openId;
     }
-
-
 }

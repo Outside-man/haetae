@@ -55,19 +55,16 @@ public class SubscribeUtil {
      */
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public static String publishActivityByOpenId(String openId  , String accessToken, ActivityEntryPublish activityEntryPublish){
+    public static String publishActivityByOpenId(String page,String openId  , String accessToken, ActivityEntryPublish activityEntryPublish){
 
         String url = MessageFormat.format(PUBLISH_URL,accessToken);
-
-        StringBuilder publishBuilder = new StringBuilder();
-        publishBuilder.append(DateUtil.getMediumDatesStr(activityEntryPublish.getStart())).append("起");
-
-        String holdTime=publishBuilder.toString();
 
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("touser",openId);
         jsonObject.put("template_id",TEMPLATE_ID);
-
+        if (!StringUtils.isEmpty(page)){
+            jsonObject.put("page" , page);
+        }
         JSONObject data=new JSONObject();
         JSONObject thing1 = new JSONObject();
         thing1.put("value",activityEntryPublish.getNote());
@@ -79,7 +76,7 @@ public class SubscribeUtil {
         JSONObject thing6 = new JSONObject();
         thing6.put("value",activityEntryPublish.getLocation());
         JSONObject thing5 = new JSONObject();
-        thing5.put("value", holdTime);
+        thing5.put("value", activityEntryPublish.getActivityTime());
 
         data.put("thing1", thing1);
         data.put("thing2",thing2);
@@ -97,7 +94,6 @@ public class SubscribeUtil {
             //GC
             jsonObject=null;
             result=null;
-            publishBuilder=null;
             if (StringUtils.equals(code,"0")) {
                 return CommonResultCode.SUCCESS.getCode();
             }else if (StringUtils.equals(code,"42001")){
@@ -109,14 +105,14 @@ public class SubscribeUtil {
                     accessToken = AccessTokenManage.refreshToken();
                     lock.unlock();
                     //刷新后再次推送
-                    return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
+                    return SubscribeUtil.publishActivityByOpenId(page,openId, accessToken, activityEntryPublish);
                     //如果令牌已经被刷新就不再去刷新 直接重新用新令牌发布一次 (类CAS思想)
                 }else {
                     //重新获取新的令牌
                     accessToken=AccessTokenManage.GetToken();
                     lock.unlock();
                     //再次推送
-                    return SubscribeUtil.publishActivityByOpenId(openId, accessToken, activityEntryPublish);
+                    return SubscribeUtil.publishActivityByOpenId(page,openId, accessToken, activityEntryPublish);
                 }
 
             }else if (StringUtils.equals(code,"43101"))

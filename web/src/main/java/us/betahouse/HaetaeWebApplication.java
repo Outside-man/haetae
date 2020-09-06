@@ -3,13 +3,10 @@ package us.betahouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import us.betahouse.haetae.serviceimpl.common.init.InitService;
 
@@ -21,7 +18,6 @@ import javax.annotation.PostConstruct;
 @ImportResource(locations = {"classpath:spring/user.xml", "classpath:spring/biz-service.xml"})
 @SpringBootApplication
 @EnableScheduling
-@EnableAsync
 public class HaetaeWebApplication {
 
     @Autowired
@@ -40,5 +36,4 @@ public class HaetaeWebApplication {
         app = this;
         app.initService = this.initService;
     }
-
 }

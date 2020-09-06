@@ -29,7 +29,7 @@ public class UserInfoBO extends ToString {
      */
     @NotBlank
     private String userId;
-
+    
     /**
      * 学号
      */
@@ -68,7 +68,7 @@ public class UserInfoBO extends ToString {
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
-
+    
     public String getUserInfoId() {
         return userInfoId;
     }

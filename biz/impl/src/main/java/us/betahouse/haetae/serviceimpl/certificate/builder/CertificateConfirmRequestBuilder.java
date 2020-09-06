@@ -36,6 +36,10 @@ public class CertificateConfirmRequestBuilder {
      */
     private String certificateState;
     /**
+     * 证书驳回原因
+     */
+    private String rejectReason;
+    /**
      * 学生学号
      */
     private String confirmStuId;
@@ -43,7 +47,6 @@ public class CertificateConfirmRequestBuilder {
      * 导入数据地址
      */
     private String localUrl;
-
 
     public static CertificateConfirmRequestBuilder getInstance() {
         return new CertificateConfirmRequestBuilder();
@@ -58,12 +61,18 @@ public class CertificateConfirmRequestBuilder {
         certificateConfirmRequest.setConfirmUserId(confirmUserId);
         certificateConfirmRequest.setUserId(userId);
         certificateConfirmRequest.setLocalURL(localUrl);
+        certificateConfirmRequest.setRejectReason(rejectReason);
         return certificateConfirmRequest;
     }
 
     private CertificateConfirmRequestBuilder() {
     }
 
+    public CertificateConfirmRequestBuilder withRejectReason(String rejectReason){
+        this.rejectReason = rejectReason;
+        return this;
+    }
+    
     public CertificateConfirmRequestBuilder withCertificateId(String certificateId) {
         this.certificateId = certificateId;
         return this;

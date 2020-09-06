@@ -62,6 +62,10 @@ public class CertificateBO extends ToString {
      */
     private String status;
     /**
+     * 驳回原因
+     */
+    private String rejectReason;
+    /**
      * 证书有效截止时间
      */
     private Date expirationTime;
@@ -103,7 +107,15 @@ public class CertificateBO extends ToString {
      * 证书图片
      */
     private String pictureUrl;
-
+    
+    public String getRejectReason() {
+        return rejectReason;
+    }
+    
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+    
     public String getCertificateId() {
         return certificateId;
     }

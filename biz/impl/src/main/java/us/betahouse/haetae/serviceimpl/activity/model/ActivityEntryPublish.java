@@ -11,7 +11,7 @@ public class ActivityEntryPublish extends ToString {
     /**
      * 当前订阅的消息 的 唯一凭证
      */
-   private String activityEntryRecordID;
+   private String subscribeId;
 
     /**
      * 温馨提示 （备注）
@@ -25,7 +25,7 @@ public class ActivityEntryPublish extends ToString {
     /**
      * 活动结束时间
      */
-    private String end;
+    private String activityTime;
 
     /**
      * 活动名称
@@ -37,9 +37,9 @@ public class ActivityEntryPublish extends ToString {
      */
     private String location;
 
-    public String getActivityEntryRecordID() { return activityEntryRecordID; }
+    public String getSubscribeId() { return subscribeId; }
 
-    public void setActivityEntryRecordID(String activityEntryRecordID) { this.activityEntryRecordID = activityEntryRecordID; }
+    public void setSubscribeId(String subscribeId) { this.subscribeId = subscribeId; }
 
     public String getNote() { return note; }
 
@@ -48,9 +48,9 @@ public class ActivityEntryPublish extends ToString {
 
     public void setStart(String start) { this.start = start; }
 
-    public String getEnd() { return end; }
+    public String getActivityTime() { return activityTime; }
 
-    public void setEnd(String end) { this.end = end; }
+    public void setActivityTime(String activityTime) { this.activityTime = activityTime; }
 
     public String getActivityName() { return activityName; }
 

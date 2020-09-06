@@ -45,7 +45,6 @@ public class ActivityEntryRecordRequest extends BaseRequest{
      */
     private String choose;
 
-
     public String getActivityEntryRecordId() {
         return activityEntryRecordId;
     }
@@ -101,6 +100,4 @@ public class ActivityEntryRecordRequest extends BaseRequest{
     public void setChoose(String choose) {
         this.choose = choose;
     }
-
-
 }

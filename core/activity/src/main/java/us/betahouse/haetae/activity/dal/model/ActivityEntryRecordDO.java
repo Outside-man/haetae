@@ -61,7 +61,6 @@ public class ActivityEntryRecordDO extends BaseDO{
     private String choose;
 
 
-
     public String getActivityEntryRecordId() {
         return activityEntryRecordId;
     }
@@ -121,6 +120,4 @@ public class ActivityEntryRecordDO extends BaseDO{
     public void setChoose(String choose) {
         this.choose = choose;
     }
-
-
 }

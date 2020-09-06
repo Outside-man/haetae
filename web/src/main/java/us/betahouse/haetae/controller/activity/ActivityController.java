@@ -4,12 +4,16 @@
  */
 package us.betahouse.haetae.controller.activity;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.dal.service.impl.ActivityRepoServiceImpl;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -38,9 +42,12 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 活动接口
@@ -59,10 +66,12 @@ public class ActivityController {
 
     @Autowired
     private ActivityService activityService;
+    
+    @Autowired
+    private ActivityRepoService activityRepoService;
 
     @Autowired
     private UserService userService;
-
     /**
      * 添加活动
      *
@@ -173,35 +182,39 @@ public class ActivityController {
             }
         });
     }
-
+    
     /**
-     * 校验活动是否存在
+     * 获取所有活动举办单位
      *
      * @param request
      * @param httpServletRequest
      * @return
      */
-    @GetMapping("/check")
+    @CheckLogin
+    @GetMapping(value = "/organizers")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<ActivityBO> checkActivity(ActivityRestRequest request,HttpServletRequest httpServletRequest){
-        return RestOperateTemplate.operate(LOGGER, "校验活动是否存在且处于发布状态", request, new RestOperateCallBack<ActivityBO>() {
+    public Result<JSONArray> getOrganizers(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取所有活动举办单位", request, new RestOperateCallBack<JSONArray>() {
+            
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
             }
+            
             @Override
-            public Result<ActivityBO> execute() {
+            public Result<JSONArray> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
-                        .withActivityId(request.getActivityId()).build();
-                Boolean ifActivityExist=activityService.checkActivity(activityManagerRequest,context);
-                return ifActivityExist ? RestResultUtil.buildSuccessResult("活动存在并处于发布状态"):RestResultUtil.buildFailResult("活动不处于发布状态");
+                
+                List<String> organizers = new ArrayList<>();
+                activityRepoService.queryAllActivity().forEach(n -> organizers.add(n.getOrganizationMessage()));
+                // 去重
+                List<String> out = organizers.stream().distinct().collect(Collectors.toList());
+                return RestResultUtil.buildSuccessResult(JSONArray.parseArray(JSON.toJSONString(out)), "获取所有活动举办单位成功");
             }
         });
     }
-
 
     /**
      * 操作活动
@@ -307,7 +320,7 @@ public class ActivityController {
     @CheckLogin
     @PostMapping("/audit")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<AuditRestRequest> auditActivity(AuditRestRequest request ,HttpServletRequest httpServletRequest){
+    public Result<AuditRestRequest> auditActivity(AuditRestRequest request , HttpServletRequest httpServletRequest){
         return RestOperateTemplate.operate(LOGGER, "审核结果发布", request, new RestOperateCallBack<AuditRestRequest>() {
             @Override
             public void before() {
@@ -327,13 +340,14 @@ public class ActivityController {
                 BeanUtils.copyProperties(request,message);
                 String openid =  userService.queryByUserId(request.getUserId(),context).getOpenId();
                 String token = AccessTokenManage.GetToken();;
-               String result = AuditUtil.publishAuditByOpenId(openid,token,message);
+                String result = AuditUtil.publishAuditByOpenId(request.getPage(),openid,token,message);
                 if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
                     return  RestResultUtil.buildSuccessResult( request , "用户未允许订阅该消息");
                 }
                 return RestResultUtil.buildSuccessResult(request , "订阅信息已发布");
             }
 
-            });
-        }
+        });
+    }
+
 }

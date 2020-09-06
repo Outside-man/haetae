@@ -85,5 +85,4 @@ public interface UserRepoService {
      * @return
      */
     UserBO queryBySessionId(String sessionId);
-
 }

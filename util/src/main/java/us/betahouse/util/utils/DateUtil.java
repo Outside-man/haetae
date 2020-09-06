@@ -7,6 +7,7 @@ package us.betahouse.util.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -40,9 +41,12 @@ public class DateUtil {
     private static final String TIME_DATABASE = "yyyy-MM-dd HH:mm:ss";
 
     private static final String TIME_MONTH_DAY = "MM月dd日";
+
     /**
      * 获取短时间字符串
+     *
      * @param date
+     * @return
      */
     public static String getShortDatesStr(Date date) {
         return format(date, SHORT_TIME);
@@ -175,7 +179,16 @@ public class DateUtil {
        } catch (ParseException e) {
            throw new IllegalArgumentException("日期转换失败");
        }
-
    }
+
+   public static Date subMinute(Date date,int minute){
+       Calendar calendar = Calendar.getInstance();
+       calendar.setTime(date);
+       calendar.add(Calendar.MINUTE,-minute);
+       return calendar.getTime();
+   }
+
+
+
 
 }

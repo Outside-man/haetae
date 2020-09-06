@@ -102,6 +102,9 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         if (newSkillDO.getStatus() != null) {
             skillDO.setStatus(newSkillDO.getStatus());
         }
+        if (newSkillDO.getRejectReason() != null){
+            skillDO.setRejectReason(newSkillDO.getRejectReason());
+        }
         //更新审核员信息
         if (newSkillDO.getConfirmUserId() != null) {
             skillDO.setConfirmUserId(newSkillDO.getConfirmUserId());
@@ -179,7 +182,8 @@ public class SkillRepoServiceImpl implements SkillRepoService {
                 .withRank(skillDO.getRank())
                 .withCertificatePictureUrl(skillDO.getPictureUrl())
                 .withExpirationTime(skillDO.getExpirationTime())
-                .withExtInfo(JSONObject.parseObject(skillDO.getExtInfo(), Map.class));
+                .withExtInfo(JSONObject.parseObject(skillDO.getExtInfo(), Map.class))
+                .withRejectReason(skillDO.getRejectReason());
         return builder.build();
     }
 
@@ -205,6 +209,7 @@ public class SkillRepoServiceImpl implements SkillRepoService {
         skillDO.setStatus(certificateBO.getStatus());
         skillDO.setRank(certificateBO.getRank());
         skillDO.setPictureUrl(certificateBO.getPictureUrl());
+        skillDO.setRejectReason(certificateBO.getRejectReason());
         return skillDO;
     }
 }

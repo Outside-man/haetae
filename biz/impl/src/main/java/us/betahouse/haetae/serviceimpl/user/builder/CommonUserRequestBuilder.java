@@ -39,7 +39,12 @@ final public class CommonUserRequestBuilder {
      * 微信小程序code
      */
     private String code;
-
+    
+    /**
+     * 微信头像
+     */
+    private String avatarUrl;
+    
     /**
      * 用户名
      */
@@ -89,6 +94,7 @@ final public class CommonUserRequestBuilder {
     public CommonUserRequest build() {
         CommonUserRequest request = new CommonUserRequest();
         request.setRequestId(requestId);
+        request.setAvatarUrl(avatarUrl);
         request.setCode(code);
         request.setUserId(userId);
         request.setPassword(password);
@@ -107,6 +113,11 @@ final public class CommonUserRequestBuilder {
     private CommonUserRequestBuilder() {
     }
 
+    public CommonUserRequestBuilder withAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+        return this;
+    }
+    
     public CommonUserRequestBuilder withRequestId(String requestId) {
         this.requestId = requestId;
         return this;

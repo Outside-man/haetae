@@ -19,7 +19,6 @@ import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 定时任务实现
@@ -40,7 +39,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private ActivityEntryService activityEntryService;
-
 
     /**
      * 结束活动
@@ -70,9 +68,4 @@ public class ScheduleServiceImpl implements ScheduleService {
             LoggerUtil.info(LOGGER, "系统结束报名, activityEntries={0}", finishActivityEntryList);
         }
     }
-
-
-
-
-
 }

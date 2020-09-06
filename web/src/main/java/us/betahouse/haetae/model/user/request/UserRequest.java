@@ -41,6 +41,11 @@ public class UserRequest extends RestRequest {
      * 微信code
      */
     private String code;
+    
+    /**
+     * 微信头像
+     */
+    private String avatarUrl;
 
     /**
      * 专业号
@@ -61,7 +66,15 @@ public class UserRequest extends RestRequest {
      * 学期
      */
     private String term;
-
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public String getUsername() {
         return username;
     }

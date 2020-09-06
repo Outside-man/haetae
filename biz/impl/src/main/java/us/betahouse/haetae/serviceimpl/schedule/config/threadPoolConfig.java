@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 @Configuration
 public class threadPoolConfig {
     private final Logger LOGGER = LoggerFactory.getLogger(threadPoolConfig.class);
@@ -17,7 +19,7 @@ public class threadPoolConfig {
         threadPoolTaskScheduler.setThreadNamePrefix("threadPoolTaskScheduler-");
         threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(true);
         threadPoolTaskScheduler.setAwaitTerminationSeconds(60);
-        LOGGER.info("已经载入ThreadPoolTaskScheduler的Bean对象,对象为{}",threadPoolTaskScheduler);
+        LOGGER.info("已经载入ThreadPoolTaskScheduler{}",threadPoolTaskScheduler);
         return threadPoolTaskScheduler;
     }
 }

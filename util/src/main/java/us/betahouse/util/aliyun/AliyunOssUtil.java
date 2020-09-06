@@ -163,6 +163,7 @@ public class AliyunOssUtil {
             /***********************************/
 
         } catch (Exception e) {
+            e.printStackTrace();
             fileUrl = null;
         } finally {
             if (ossClient != null) {

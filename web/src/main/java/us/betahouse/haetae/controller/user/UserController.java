@@ -87,7 +87,8 @@ public class UserController {
                 CommonUserRequestBuilder builder = CommonUserRequestBuilder.getInstance()
                         .withRequestId(request.getRequestId())
                         .withUsername(request.getUsername()).withPassword(request.getPassword())
-                        .withCode(request.getCode());
+                        .withCode(request.getCode())
+                        .withAvatarUrl(request.getAvatarUrl());
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
@@ -404,6 +405,4 @@ public class UserController {
             }
         });
     }
-
-
 }

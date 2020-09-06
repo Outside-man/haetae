@@ -6,9 +6,9 @@ public class ActivitySubscribeRestRequest extends RestRequest {
 
 
     /**
-     * 活动报名记录ID 当前订阅的消息的唯一凭证
+     * 订阅ID 当前订阅的消息的唯一凭证
      */
-    private String activityEntryRecordID ;
+    private String subscribeId;
 
     /**
      * 温馨提示 （备注）
@@ -20,9 +20,9 @@ public class ActivitySubscribeRestRequest extends RestRequest {
     private String start;
 
     /**
-     * 活动结束时间
+     * 活动时间
      */
-    private String end;
+    private String activityTime;
 
     /**
      * 活动名称
@@ -34,9 +34,27 @@ public class ActivitySubscribeRestRequest extends RestRequest {
      */
     private String location;
 
-    public String getActivityEntryRecordID() { return activityEntryRecordID; }
+    /**
+     * 微信小程序点击订阅后的跳转页面
+     */
+    private String page;
 
-    public void setActivityEntryRecordID(String activityEntryRecordID) { this.activityEntryRecordID = activityEntryRecordID; }
+    /**
+     * 设置在活动开始时间前 多长时间的提醒 0 - 120
+     */
+    private String advanceTime;
+
+    public String getAdvanceTime() { return advanceTime; }
+
+    public void setAdvanceTime(String advanceTime) { this.advanceTime = advanceTime; }
+
+    public String getPage() { return page; }
+
+    public void setPage(String page) { this.page = page; }
+
+    public String getSubscribeId() { return subscribeId; }
+
+    public void setSubscribeId(String subscribeId) { this.subscribeId = subscribeId; }
 
     public String getNote() { return note; }
 
@@ -46,9 +64,9 @@ public class ActivitySubscribeRestRequest extends RestRequest {
 
     public void setStart(String start) { this.start = start; }
 
-    public String getEnd() { return end; }
+    public String getActivityTime() { return activityTime; }
 
-    public void setEnd(String end) { this.end = end; }
+    public void setActivityTime(String activityTime) { this.activityTime = activityTime; }
 
     public String getActivityName() { return activityName; }
 

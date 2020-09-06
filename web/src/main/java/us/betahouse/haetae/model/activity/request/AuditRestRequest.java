@@ -29,6 +29,15 @@ public class AuditRestRequest extends RestRequest {
      */
     private String note;
 
+    /**
+     * 发布消息后的跳转页面
+     */
+    private String page;
+
+    public String getPage() { return page; }
+
+    public void setPage(String page) { this.page = page; }
+
     public String getResult() { return result; }
 
     public void setResult(String result) { this.result = result; }

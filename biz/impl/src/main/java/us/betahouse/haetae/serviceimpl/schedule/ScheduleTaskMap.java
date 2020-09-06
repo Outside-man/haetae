@@ -1,6 +1,5 @@
 package us.betahouse.haetae.serviceimpl.schedule;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import us.betahouse.util.utils.DateUtil;
 
 import javax.annotation.PostConstruct;
 import java.text.MessageFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,11 +27,9 @@ public class ScheduleTaskMap {
      * [秒] [分] [小时] [日] [月] [周] [年]
      */
     //0 1 2 分别为 小时 日 月
-    private final static String CRON_TEMPLATE ="0 0 {0} {1} {2} ?";
+    private final static String CRON_TEMPLATE ="0 {0} {1} {2} {3} ?";
 
     private final Logger LOGGER = LoggerFactory.getLogger(ScheduleTaskMap.class);
-
-    private final static int ADVANCE_TIME = 2;
 
     // 静态内部类实现单例模式
     private ScheduleTaskMap() { }
@@ -65,33 +63,24 @@ public class ScheduleTaskMap {
      *
      * @param activityEntryPublish
      * @param openid
+     * @param advanceTime  自定义提前时间 0 - 120分钟
      * @return
      */
-    public RealTask putMap(ActivityEntryPublish activityEntryPublish , String openid) {
-        Date startTime = DateUtil.parseTime_Database(activityEntryPublish.getStart());
-        //提前两小时
-        int Hour = Integer.valueOf(DateUtil.getHour(startTime));
-        int previousDay = 0;
-        if ( Hour - ADVANCE_TIME < 0){
-            previousDay ++;
-            Hour = Hour + 24 - ADVANCE_TIME;
-        }
-        int day = Integer.parseInt(DateUtil.getDay(startTime));
-        //将订阅发布时间转化成cron表达式 --发布时间在活动开始前三小时
-        //按顺序  时 日 月
-       String cron = MessageFormat.format(CRON_TEMPLATE, String.valueOf(Hour), String.valueOf(day - previousDay),
-              DateUtil.getMonth(startTime));
+    public RealTask putMap(int advanceTime,String page,ActivityEntryPublish activityEntryPublish , String openid) {
+        System.out.println(threadPoolTaskScheduler);
+        Date startTime=DateUtil.subMinute(DateUtil.parseTime_Database(activityEntryPublish.getStart()),advanceTime);
+        //将订阅发布时间转化成cron表达式
+        String cron = MessageFormat.format(CRON_TEMPLATE,DateUtil.getMinute(startTime), DateUtil.getHour(startTime),
+               DateUtil.getDay(startTime), DateUtil.getMonth(startTime));
 
         RealTask realTask = new RealTask();
         realTask.setCron(cron);
-        SubscriptionTask task =new SubscriptionTask(activityEntryPublish,openid);
+        SubscriptionTask task =new SubscriptionTask(activityEntryPublish,openid,page);
         realTask.setTask(task);
-
-        LOGGER.info("ThreadPoolTaskScheduler {}", threadPoolTaskScheduler);
+        //延时队列
         ScheduledFuture<?> future = threadPoolTaskScheduler.schedule(task, new CronTrigger(cron));
         realTask.setFuture(future);
-
-        currentHashMap.putIfAbsent(activityEntryPublish.getActivityEntryRecordID(), realTask);
+        currentHashMap.putIfAbsent(activityEntryPublish.getSubscribeId(), realTask);
         LOGGER.info("加入定时任务: {}",realTask.toString());
 
         return realTask;
@@ -115,5 +104,26 @@ public class ScheduleTaskMap {
         }
         return task;
     }
+
+    public ActivityEntryPublish delMap(String id){
+        RealTask task = cancelMap(id);
+        if (task != null){
+            SubscriptionTask subTask = (SubscriptionTask)task.getTask();
+            return subTask.getActivityEntryPublish();
+        }
+        return null;
+    }
+    /**
+     * 查询是否存在任务
+     */
+    public ActivityEntryPublish ifExist(String id){
+      RealTask task = currentHashMap.getOrDefault(id, null);
+      if (task != null){
+          SubscriptionTask subTask = (SubscriptionTask)task.getTask();
+         return subTask.getActivityEntryPublish();
+      }
+      return null;
+    }
+
 
 }

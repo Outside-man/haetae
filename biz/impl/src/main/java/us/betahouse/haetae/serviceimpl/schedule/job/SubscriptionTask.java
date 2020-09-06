@@ -20,19 +20,25 @@ public class SubscriptionTask implements Runnable {
 
     private String openid;
 
+    private String page;
     /**
      * 定时消费任务 消费后不论成功失败都删除该任务
      */
     @Override
     public void run() {
-        SubscribeUtil.publishActivityByOpenId(openid,AccessTokenManage.GetToken(),activityEntryPublish);
+        SubscribeUtil.publishActivityByOpenId(page,openid,AccessTokenManage.GetToken(),activityEntryPublish);
         //订阅发布后删除容器中的该任务
-        LOGGER.info("消费订阅消息，订阅id为 {}",activityEntryPublish.getActivityEntryRecordID());
-        ScheduleTaskMap.getInstance().cancelMap(activityEntryPublish.getActivityEntryRecordID() );
+        LOGGER.info("消费订阅消息，订阅id为 {}",activityEntryPublish.getSubscribeId());
+        ScheduleTaskMap.getInstance().cancelMap(activityEntryPublish.getSubscribeId() );
     }
 
-    public SubscriptionTask(ActivityEntryPublish activityEntryPublish, String openid) {
+    public SubscriptionTask(ActivityEntryPublish activityEntryPublish, String openid, String page) {
         this.activityEntryPublish = activityEntryPublish;
         this.openid = openid;
+        this.page = page;
+    }
+
+    public ActivityEntryPublish getActivityEntryPublish() {
+        return activityEntryPublish;
     }
 }

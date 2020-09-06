@@ -93,7 +93,7 @@ public interface ActivityEntryService {
      * @param request
      * @return
      */
-    ActivityEntryRecordBO undoSignUp(ActivityEntryRecordRequest request);
+    void undoSignUp(ActivityEntryRecordRequest request);
 
     /**
      * 结束可以结束的报名
@@ -102,5 +102,8 @@ public interface ActivityEntryService {
      */
     List<ActivityEntryBO> systemFinishActivityEntry();
 
-
+    /**
+     *  根据用户id和活动id查找报名记录
+     */
+    ActivityEntryRecordBO findByActivityEntryIdAndUserId(ActivityEntryRecordRequest request);
 }

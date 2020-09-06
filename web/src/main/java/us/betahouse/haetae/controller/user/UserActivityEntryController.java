@@ -22,13 +22,15 @@ import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryPublish;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityBlacklistService;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
+import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.SubscribeUtil;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
-import us.betahouse.haetae.serviceimpl.schedule.ScheduleService;
 import us.betahouse.haetae.serviceimpl.schedule.ScheduleTaskMap;
+import us.betahouse.haetae.serviceimpl.schedule.dto.RealTask;
 import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -62,7 +64,6 @@ public class UserActivityEntryController {
 
     @Autowired
     private UserService userService;
-
 
 
     @CheckLogin
@@ -170,12 +171,8 @@ public class UserActivityEntryController {
                         .withNote(request.getRecordNote())
                         .withChoose(request.getRecordChoose())
                         .build();
-                ActivityEntryRecordBO activityEntryRecordBO = activityEntryService.undoSignUp(activityEntryRecordRequest);
-                if(activityEntryRecordBO == null){
-                    return RestResultUtil.buildSuccessResult(activityEntryRecordBO, "取消报名成功");
-                }else{
-                    return RestResultUtil.buildSuccessResult(null, "取消报名失败");
-                }
+                activityEntryService.undoSignUp(activityEntryRecordRequest);
+                return RestResultUtil.buildSuccessResult(null, "取消报名成功");
             }
         });
     }
@@ -186,7 +183,7 @@ public class UserActivityEntryController {
      * @param httpServletRequest
      * @return
      */
-      @CheckLogin
+       @CheckLogin
        @PostMapping("/Subscribe")
        @Log(loggerName = LoggerName.WEB_DIGEST)
       public Result<ActivityEntryPublish> ActivitySubscribe(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest) {
@@ -195,9 +192,10 @@ public class UserActivityEntryController {
                public void before() {
                    AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                    AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                   AssertUtil.assertStringNotBlank(request.getActivityEntryRecordID(),RestResultCode.ILLEGAL_PARAMETERS.getCode(), "当前报名记录id不能为空");
+                   AssertUtil.assertStringNotBlank(request.getSubscribeId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(), "当前订阅id不能为空");
                    AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
                    AssertUtil.assertStringNotBlank(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
+                   AssertUtil.assertStringNotBlank(request.getActivityTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动时间不能为空");
                    AssertUtil.assertStringNotBlank(request.getLocation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动地点不能为空");
                }
 
@@ -205,43 +203,102 @@ public class UserActivityEntryController {
                public Result<ActivityEntryPublish> execute() {
                    OperateContext context = new OperateContext();
                    context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                   String openid =  userService.queryByUserId(request.getUserId(),context).getOpenId();
+                   if (request.getAdvanceTime()==null || !StringUtils.isNumeric(request.getAdvanceTime())){
+                       request.setAdvanceTime("0");
+                   }
+                    UserBO userBO =  userService.queryByUserId(request.getUserId(),context);
+                   if (userBO==null){
+                       return RestResultUtil.buildSuccessResult("用户id错误");
+                   }
+                   String openid = userBO.getOpenId();
                    ActivityEntryPublish activityEntryPublish = new ActivityEntryPublish();
                    BeanUtils.copyProperties(request,activityEntryPublish);
-                   ScheduleTaskMap.getInstance().putMap(activityEntryPublish,openid);
+                   ScheduleTaskMap.getInstance().putMap(Integer.parseInt(request.getAdvanceTime()),request.getPage(),activityEntryPublish,openid);
                    return RestResultUtil.buildSuccessResult(activityEntryPublish, "用户已订阅该活动");
                }
            });
        }
-          // @CheckLogin
-           @PostMapping("/SubOne")
-           @Log(loggerName = LoggerName.WEB_DIGEST)
-           public Result<ActivityEntryPublish> ActivitySubscribeOne(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest){
-               return RestOperateTemplate.operate(LOGGER, "活动开始信息订阅", request, new RestOperateCallBack<ActivityEntryPublish>() {
-                   @Override
-                   public void before() {
-                       AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                       AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                       AssertUtil.assertStringNotBlank(request.getActivityName(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动名不能为空");
-                       AssertUtil.assertStringNotBlank(request.getStart(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动开始时间不能为空");
-                       AssertUtil.assertStringNotBlank(request.getLocation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动地点不能为空");
-                   }
 
-                   @Override
-                   public Result<ActivityEntryPublish> execute() {
-                       OperateContext context = new OperateContext();
-                       context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                       ActivityEntryPublish activityEntryPublish =new ActivityEntryPublish();
-                       String openid =  userService.queryByUserId(request.getUserId(),context).getOpenId();
-                       BeanUtils.copyProperties(request,activityEntryPublish);
-                       String token = AccessTokenManage.GetToken();
-                       String result = SubscribeUtil.publishActivityByOpenId(openid, token, activityEntryPublish);
-                       if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
-                           return  RestResultUtil.buildSuccessResult(activityEntryPublish , "用户未允许订阅该消息");
-                       }
-                       return RestResultUtil.buildSuccessResult(activityEntryPublish , "订阅信息已发布");
-                   }
-               });
+    /**
+     * 查询是否有订阅
+     */
+    @CheckLogin
+    @GetMapping("/Subscribe")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityEntryPublish> ActivitySubscribeFind(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "活动订阅查询", request, new RestOperateCallBack<ActivityEntryPublish>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getSubscribeId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(), "当前订阅id不能为空");
+            }
+
+            @Override
+            public Result<ActivityEntryPublish> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                return RestResultUtil.buildSuccessResult(ScheduleTaskMap.getInstance().ifExist(request.getSubscribeId()) , "查询成功");
+            }
+        });
+    }
+    /**
+     * 取消订阅
+     */
+    @CheckLogin
+    @DeleteMapping("/Subscribe")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityEntryPublish> ActivitySubscribeDel(ActivitySubscribeRestRequest request , HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "活动订阅查询", request, new RestOperateCallBack<ActivityEntryPublish>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getSubscribeId(),RestResultCode.ILLEGAL_PARAMETERS.getCode(), "当前订阅id不能为空");
+            }
+
+            @Override
+            public Result<ActivityEntryPublish> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                return RestResultUtil.buildSuccessResult(ScheduleTaskMap.getInstance().delMap(request.getSubscribeId()) , "取消订阅成功");
+            }
+        });
+    }
+
+    /**
+     *
+     * 获取报名记录
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+       @CheckLogin
+       @GetMapping("/getActivityEntryRecord")
+       @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityEntryRecordBO> getRecord(ActivityEntryRestRequest request, HttpServletRequest httpServletRequest) {
+           return RestOperateTemplate.operate(LOGGER, "查询报名记录", request, new RestOperateCallBack<ActivityEntryRecordBO>() {
+               @Override
+               public void before() {
+                   AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                   AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                   AssertUtil.assertStringNotBlank(request.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "报名信息id不能为空");
+               }
+
+               @Override
+               public Result<ActivityEntryRecordBO> execute() {
+                   OperateContext context = new OperateContext();
+                   context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                   ActivityEntryRecordRequest activityEntryRecordRequest = ActivityEntryRecordRequestBuilder.anActivityEntryRecordRequest()
+                           .withActivityEntryId(request.getActivityEntryId())
+                           .withUserId(request.getUserId())
+                           .build();
+                   ActivityEntryRecordBO result =  activityEntryService.findByActivityEntryIdAndUserId(activityEntryRecordRequest);
+                   return RestResultUtil.buildSuccessResult(result, "查询成功");
+               }
+           });
        }
+
+
 
 }

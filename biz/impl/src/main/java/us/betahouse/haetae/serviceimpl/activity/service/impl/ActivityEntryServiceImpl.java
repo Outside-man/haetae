@@ -26,6 +26,7 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.*;
 
+import javax.validation.constraints.AssertTrue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -45,8 +46,6 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      * 系统结束标志
      */
     private final static String SYSTEM_FINISH_SIGN = "systemFinish";
-
-
 
     @Autowired
     private ActivityEntryRepoService activityEntryRepoService;
@@ -453,18 +452,18 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
      * @return
      */
     @Override
-    public ActivityEntryRecordBO undoSignUp(ActivityEntryRecordRequest request) {
+    public void undoSignUp(ActivityEntryRecordRequest request) {
         ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(request.getActivityEntryId());
         AssertUtil.assertNotNull(activityEntryBO, "报名信息不存在");
         ActivityEntryRecordBO activityEntryRecordBO = activityEntryRecordRepoService.findByActivityEntryIdAndUserId(request.getActivityEntryId(),request.getUserId());
         AssertUtil.assertNotNull(activityEntryRecordBO,"您未报名该活动");
-        AssertUtil.assertTrue(ActivityEntryRecordStateEnum.UNDO_SIGN_UP.getCode().equals(activityEntryRecordBO.getState()),"您已取消报名");
+//        AssertUtil.assertTrue(ActivityEntryRecordStateEnum.UNDO_SIGN_UP.getCode().equals(activityEntryRecordBO.getState()),"您已取消报名");
         String activityId = activityEntryBO.getActivityId();
         //后一个半小时时间,90分钟
         Date anHourAndAHalfAfter = new Date(System.currentTimeMillis()+90*1000*60);
+        Date start = activityRepoService.queryActivityByActivityId(activityId).getStart();
         AssertUtil.assertTrue(anHourAndAHalfAfter.before(activityRepoService.queryActivityByActivityId(activityId).getStart()),"距离活动开始不足1.5小时，不允许取消报名");
-        activityEntryRecordBO.setState(ActivityEntryRecordStateEnum.UNDO_SIGN_UP.getCode());
-        return activityEntryRecordRepoService.updateActivityEntryRecord(activityEntryRecordBO);
+        activityEntryRecordRepoService.deleteRecord(activityEntryRecordBO);
     }
 
 
@@ -487,6 +486,10 @@ public class ActivityEntryServiceImpl implements ActivityEntryService {
         return systemFinishActivityEntries;
     }
 
+    @Override
+    public ActivityEntryRecordBO findByActivityEntryIdAndUserId(ActivityEntryRecordRequest request) {
+        return activityEntryRecordRepoService.findByActivityEntryIdAndUserId(request.getActivityEntryId() , request.getUserId());
+    }
 
 
 }

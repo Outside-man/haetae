@@ -25,11 +25,7 @@ public class ActivityEntryServiceImplTest {
                 .withActivityEntryId("201812041846232069140910012018")
                 .withUserId("201811302142154453730001201841")
                 .build();
-        ActivityEntryRecordBO activityEntryRecordBO = activityEntryService.undoSignUp(activityEntryRecordRequest);
-        if(activityEntryRecordBO == null){
-            System.out.println("取消报名成功");
-        }else{
-            System.out.println( "取消报名失败");
-        }
+        activityEntryService.undoSignUp(activityEntryRecordRequest);
+        System.out.println("取消报名成功");
     }
 }

@@ -43,15 +43,18 @@ public class AuditUtil {
 
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public static String publishAuditByOpenId(String openId  , String accessToken, AuditMessage audit){
+    public static String publishAuditByOpenId(String page , String openId  , String accessToken, AuditMessage audit){
 
         String url = MessageFormat.format(PUBLISH_URL,accessToken);
 
 
         JSONObject jsonObject=new JSONObject();
+
         jsonObject.put("touser",openId);
         jsonObject.put("template_id",TEMPLATE_ID);
-
+        if (!StringUtils.isEmpty(page)){
+            jsonObject.put("page" , page);
+        }
         JSONObject data=new JSONObject();
         JSONObject phrase = new JSONObject();
         phrase.put("value",audit.getResult());
@@ -96,13 +99,13 @@ public class AuditUtil {
                     accessToken = AccessTokenManage.refreshToken();
                     lock.unlock();
                     //刷新后再次推送
-                    return AuditUtil.publishAuditByOpenId(openId, accessToken, audit);
+                    return AuditUtil.publishAuditByOpenId(page,openId, accessToken, audit);
                 }else {
                     //重新获取新的令牌
                     accessToken=AccessTokenManage.GetToken();
                     lock.unlock();
                     //再次推送
-                    return AuditUtil.publishAuditByOpenId(openId, accessToken, audit);
+                    return AuditUtil.publishAuditByOpenId(page,openId, accessToken, audit);
                 }
 
             }else if (StringUtils.equals(code,"43101"))
