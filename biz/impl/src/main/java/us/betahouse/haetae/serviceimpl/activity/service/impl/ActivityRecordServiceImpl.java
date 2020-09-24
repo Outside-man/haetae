@@ -5,9 +5,11 @@
 package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
@@ -35,6 +37,7 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityRecordService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
@@ -293,6 +296,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
      * @param activityRecords
      * @return
      */
+
     private ActivityRecordStatistics parseActivityRecordStatistics(ActivityRecordStatistics recordStatistics, List<ActivityRecordBO> activityRecords) {
         // 构建统计结果
         recordStatistics.initStatisticsKey();

@@ -326,6 +326,7 @@ public class ActivityController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getAuditId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "订阅用户id不能为空");
                 AssertUtil.assertStringNotBlank(request.getResult(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核结果不能为空");
                 AssertUtil.assertStringNotBlank(request.getDetail(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核内容不能为空");
                 AssertUtil.assertStringNotBlank(request.getAuditTime(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "审核时间不能为空");
@@ -338,11 +339,13 @@ public class ActivityController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 AuditMessage message = new AuditMessage();
                 BeanUtils.copyProperties(request,message);
-                String openid =  userService.queryByUserId(request.getUserId(),context).getOpenId();
+                String openid =  userService.queryByUserId(request.getAuditId(),context).getOpenId();
+                if (StringUtils.isEmpty(openid))
+                    return RestResultUtil.buildSuccessResult(request , "该用户不存在");
                 String token = AccessTokenManage.GetToken();;
                 String result = AuditUtil.publishAuditByOpenId(request.getPage(),openid,token,message);
                 if (StringUtils.equals(CommonResultCode.FORBIDDEN.getCode(),result)){
-                    return  RestResultUtil.buildSuccessResult( request , "用户未允许订阅该消息");
+                    return  RestResultUtil.buildSuccessResult(request , "用户未允许订阅该消息");
                 }
                 return RestResultUtil.buildSuccessResult(request , "订阅信息已发布");
             }

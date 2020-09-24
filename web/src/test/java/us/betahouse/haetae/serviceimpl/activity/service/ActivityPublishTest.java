@@ -49,7 +49,7 @@ public class ActivityPublishTest {
     public void PublishActivityToday(){
        ActivityEntryPublish publish = new ActivityEntryPublish();
        publish.setStart("2020-08-28 13:00:00");
-       publish.setEnd("2020-08-29 15:00:00");
+      // publish.setEnd("2020-08-29 15:00:00");
        publish.setActivityName("测试活动");
        publish.setLocation("测试地点");
        publish.setNote("备注提示");

@@ -76,7 +76,7 @@ public class AuditUtil {
         data.put("phrase1", phrase);
         data.put("thing2",detail);
         data.put("date3",date);
-        data.put("thin11",applicant);
+        data.put("thing11",applicant);
         data.put("thing7",Note);
 
         jsonObject.put("data",data);
