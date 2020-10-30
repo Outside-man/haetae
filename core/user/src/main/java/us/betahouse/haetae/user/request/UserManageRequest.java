@@ -50,6 +50,11 @@ public class UserManageRequest extends BaseRequest {
      * 小程序用户id
      */
     private String openId;
+    
+    /**
+     * 微信头像
+     */
+    private String avatarUrl;
 
     /**
      * 用户信息
@@ -70,7 +75,15 @@ public class UserManageRequest extends BaseRequest {
      * 绑定的权限码
      */
     private RoleCode roleCode;
-
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public String getStuId() {
         return stuId;
     }

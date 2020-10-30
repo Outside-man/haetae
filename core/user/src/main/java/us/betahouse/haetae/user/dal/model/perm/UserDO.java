@@ -47,7 +47,13 @@ public class UserDO extends BaseDO {
      */
     @Column(length = 32, nullable = false)
     private String password;
-
+    
+    /**
+     * 头像路径
+     */
+    @Column(name = "avatar_url", length = 2048)
+    private String avatarUrl;
+    
     /**
      * 盐
      */
@@ -77,7 +83,15 @@ public class UserDO extends BaseDO {
      */
     @Column(name = "last_login_ip", length = 32)
     private String lastLoginIP;
-
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public String getUserId() {
         return userId;
     }

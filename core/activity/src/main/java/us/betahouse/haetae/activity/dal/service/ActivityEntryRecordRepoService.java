@@ -43,7 +43,13 @@ public interface ActivityEntryRecordRepoService {
      * @return
      */
     List<ActivityEntryRecordBO> findAllByUserId(String userId);
-
+    
+    /**
+     * 删除报名信息
+     * @param activityEntryRecordBO
+     */
+    void deleteRecord(ActivityEntryRecordBO activityEntryRecordBO);
+    
     /**
      * 通过报名信息id查找报名记录数量
      * @param activityEntryId

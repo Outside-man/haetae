@@ -51,7 +51,7 @@ public class UserBasicServiceImpl implements UserBasicService {
     private UserHelper userHelper;
 
     @Override
-    public CommonUser login(String username, String password, String openId, String loginIP) {
+    public CommonUser login(String username, String password, String avatarUrl, String openId, String loginIP) {
         UserBO userBO = userRepoService.queryByUserName(username);
         AssertUtil.assertNotNull(userBO, UserErrorCode.USERNAME_PASSWORD_NOT_RIGHT);
         boolean passwordRight = StringUtils.equals(EncryptUtil.encryptPassword(password, userBO.getSalt()), userBO.getPassword());
@@ -70,6 +70,9 @@ public class UserBasicServiceImpl implements UserBasicService {
                 userRepoService.clearOpenIdAndSessionId(beforeLoginUser.getUserId());
             }
         }
+        if (StringUtils.isNotBlank(avatarUrl)) {
+            userBO.setAvatarUrl(avatarUrl);
+        }
         String token = UUID.randomUUID().toString();
         userBO.setLastLoginIP(loginIP);
         userBO.setLastLoginDate(new Date());
@@ -78,6 +81,7 @@ public class UserBasicServiceImpl implements UserBasicService {
         userRepoService.updateUserByUserId(userBO);
 
         CommonUser user = getByUserId(userBO.getUserId());
+        user.setAvatarUrl(userBO.getAvatarUrl());
         // 存储登陆凭证
         user.setToken(token);
         return user;
@@ -107,6 +111,7 @@ public class UserBasicServiceImpl implements UserBasicService {
         }
         // fetch 用户角色
         userHelper.fillRole(user);
+        user.setAvatarUrl(userRepoService.queryByUserId(userId).getAvatarUrl());
         return user;
     }
 

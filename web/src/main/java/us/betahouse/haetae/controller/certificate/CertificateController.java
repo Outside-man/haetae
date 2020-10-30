@@ -26,7 +26,9 @@ import us.betahouse.util.utils.AssertUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 证书接口
@@ -58,7 +60,7 @@ public class CertificateController {
      * @param httpServletRequest
      * @return
      */
-    @PostMapping
+    @PostMapping(value = "create")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<CertificateBO> createCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
@@ -110,7 +112,7 @@ public class CertificateController {
      * @param httpServletRequest
      * @return
      */
-    @PutMapping
+    @PutMapping(value = "modify")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<CertificateBO> modifyCertificate(@RequestBody CertificateRestRequest request, HttpServletRequest httpServletRequest) {
@@ -159,7 +161,7 @@ public class CertificateController {
     /**
      * 删除证书
      */
-    @DeleteMapping
+    @DeleteMapping(value = "delete")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result deleteCertificate(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
@@ -189,7 +191,7 @@ public class CertificateController {
     /**
      * 获取证书详细信息
      */
-    @GetMapping
+    @GetMapping(value = "details")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<CertificateBO> getCertificateByCertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
@@ -217,22 +219,36 @@ public class CertificateController {
     @GetMapping(value = "certificates")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result<List<CertificateBO>> getCertificatesByUserId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "查找多条证书记录", request, new RestOperateCallBack<List<CertificateBO>>() {
+    public Result<Map<String, List<CertificateBO>>> getCertificatesByUserId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "查找所有类型证书记录", request, new RestOperateCallBack<Map<String, List<CertificateBO>>>() {
             @Override
             public void before() {
-                AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
             }
 
             @Override
-            public Result<List<CertificateBO>> execute() {
+            public Result<Map<String, List<CertificateBO>>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
                         .withUserID(request.getUserId())
-                        .withCertificateType(request.getCertificateType());
-                List<CertificateBO> certificateBOS = certificateService.findAllByCertificateTypeAndUserId(builder.build(), context);
-                return RestResultUtil.buildSuccessResult(certificateBOS, "获取用户单类证书成功");
+                        .withCertificateType("QUALIFICATIONS");
+                List<CertificateBO> qualifications = certificateService.findAllByCertificateTypeAndUserId(builder.build(), context);
+                
+                builder.withCertificateType("SKILL");
+                List<CertificateBO> skill = certificateService.findAllByCertificateTypeAndUserId(builder.build(), context);
+                
+                builder.withCertificateType("COMPETITION");
+                List<CertificateBO> competition = certificateService.findAllByCertificateTypeAndUserId(builder.build(), context);
+    
+                builder.withCertificateType("CET_4_6");
+                List<CertificateBO> cet = certificateService.findAllByCertificateTypeAndUserId(builder.build(), context);
+    
+                Map<String, List<CertificateBO>> certificates = new HashMap<>(1);
+                certificates.put("QUALIFICATIONS", qualifications);
+                certificates.put("SKILL", skill);
+                certificates.put("COMPETITION", competition);
+                certificates.put("CET_4_6", cet);
+                return RestResultUtil.buildSuccessResult(certificates, "获取用户所有类型证书成功");
             }
         });
     }

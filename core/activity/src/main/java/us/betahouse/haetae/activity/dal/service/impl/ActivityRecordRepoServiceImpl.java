@@ -157,6 +157,7 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
                 .collect(Collectors.toList());
     }
 
+
     /**
      * 活动记录DO2BO
      *

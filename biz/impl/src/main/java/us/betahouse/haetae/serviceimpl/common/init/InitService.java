@@ -87,16 +87,13 @@ public class InitService {
         organizationManagerPerm.add(OrganizationPermType.ALL_ORG_MEMBER_MANAGE);
         organizationManagerPerm.add(OrganizationPermType.ALL_ORG_RELATION_MANAGE);
         //证书
-        certificateConfirmPerm.add(CertificatePermType.CONFIRM_CERTIFICATE);
-        certificateConfirmPerm.add(CertificatePermType.GET_CERTIFICATES);
-        certificateConfirmPerm.add(CertificatePermType.MODIFY_CERTIFICATE);
-
         certificateManagerPerm.add(CertificatePermType.GET_CERTIFICATES);
         certificateManagerPerm.add(CertificatePermType.DELETE_CERTIFICATE);
         certificateManagerPerm.add(CertificatePermType.CONFIRM_CERTIFICATE);
         certificateManagerPerm.add(CertificatePermType.IMPORT_CERTIFICATE);
         certificateManagerPerm.add(CertificatePermType.MODIFY_CERTIFICATE);
         certificateManagerPerm.add(CertificatePermType.MANAGER_CONFIRM);
+        certificateManagerPerm.add(CertificatePermType.CERTIFICATE_MANAGER);
         //场地
         localeManagerPerm.add(LocalePermType.LOCALE_APPLY);
         localeManagerPerm.add(LocalePermType.APPLY_CHECK);

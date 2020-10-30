@@ -36,7 +36,7 @@ public class ActivityPublish extends CommonActivityOperate {
 
     @Override
     protected boolean skipOperate(ActivityBO activityBO) {
-        if (StringUtils.equals(activityBO.getState(), ActivityStateEnum.PUBLISHED.getCode())) {
+        if (StringUtils.equals(activityBO.getState(), ActivityStateEnum.PUBLISHED.getCode() )|| StringUtils.equals(activityBO.getState(), ActivityStateEnum.RESTARTED.getCode())) {
             return true;
         }
         return false;

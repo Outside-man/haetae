@@ -21,7 +21,17 @@ public class UserVO extends BasicUser {
     private List<String> roleInfo;
 
     public List<String> jobInfo;
-
+    
+    private String avatarUrl;
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public List<String> getRoleInfo() {
         return roleInfo;
     }

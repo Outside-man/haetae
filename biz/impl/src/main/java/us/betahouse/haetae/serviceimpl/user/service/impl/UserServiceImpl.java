@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(request.getCode())) {
             openId = WeChatLoginUtil.fetchOpenId(request.getCode(), APP_ID, SECRET);
         }
-        return userBasicService.login(request.getUsername(), request.getPassword(), openId, context.getOperateIP());
+        return userBasicService.login(request.getUsername(), request.getPassword(), request.getAvatarUrl(), openId, context.getOperateIP());
     }
 
     @Override
@@ -165,4 +165,10 @@ public class UserServiceImpl implements UserService {
     public void modifyUserMajorAndClassAndGrade(CommonUserRequest request, OperateContext context) {
         userBasicService.modifyMajorAndClassAndGrade(request.getUserId(), request.getUserInfoBO().getMajor(), request.getUserInfoBO().getClassId(), request.getUserInfoBO().getGrade());
     }
+
+    @Override
+    public UserBO queryByUserId(String userId, OperateContext context) {
+      return userRepoService.queryByUserId(userId);
+    }
+
 }

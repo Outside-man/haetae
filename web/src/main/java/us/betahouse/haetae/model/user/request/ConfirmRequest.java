@@ -34,7 +34,19 @@ public class ConfirmRequest extends RestRequest {
      * 证书id
      */
     private String certificateId;
-
+    /**
+     * 证书驳回原因
+     */
+    private String rejectReason;
+    
+    public String getRejectReason() {
+        return rejectReason;
+    }
+    
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+    
     public String getStuId() {
         return stuId;
     }

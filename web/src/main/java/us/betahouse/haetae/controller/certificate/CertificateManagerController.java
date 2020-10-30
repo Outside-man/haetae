@@ -80,11 +80,11 @@ public class CertificateManagerController {
                         .withUserID(request.getUserId())
                         .build();
                 List<CertificateBO> certificateBOList = certificateManagerService.fetchAllCertificateList(certificateManagerRequest, context);
-                for (CertificateBO certificateBO : certificateBOList) {
+                /*for (CertificateBO certificateBO : certificateBOList) {
                     Map<String, String> extInfo = certificateBO.getExtInfo();
                     extInfo.put("stuId", userInfoRepoService.queryUserInfoByUserId(certificateBO.getUserId()).getStuId());
                     extInfo.put("stuName", userInfoRepoService.queryUserInfoByUserId(certificateBO.getUserId()).getRealName());
-                }
+                }*/
                 return RestResultUtil.buildSuccessResult(certificateBOList, "获取所有证书信息成功");
             }
 
@@ -107,7 +107,7 @@ public class CertificateManagerController {
             public void before() {
                 AssertUtil.assertNotNull(request.getCertificateId(), "证书id不能为空");
                 AssertUtil.assertNotNull(request.getCertificateType(), "证书类型不能为空");
-
+                AssertUtil.assertNotNull(request.getTeamId(), "竞赛团队id不能为空");
             }
 
             @Override
@@ -118,7 +118,7 @@ public class CertificateManagerController {
                         .withCertificateId(request.getCertificateId())
                         .withTeamId(request.getTeamId())
                         .withCertificateType(request.getCertificateType());
-                certificateService.delete(builder.build(), context);
+                certificateManagerService.delete(builder.build(), context);
                 return RestResultUtil.buildSuccessResult("删除记录成功");
             }
         });

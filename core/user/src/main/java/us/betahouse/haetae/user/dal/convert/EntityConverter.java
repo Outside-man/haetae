@@ -218,6 +218,7 @@ final public class EntityConverter {
         userBO.setLastLoginIP(userDO.getLastLoginIP());
         userBO.setLastLoginDate(userDO.getLastLoginDate());
         userBO.setSessionId(userDO.getSessionId());
+        userBO.setAvatarUrl(userDO.getAvatarUrl());
         return userBO;
     }
 
@@ -240,6 +241,7 @@ final public class EntityConverter {
         userDO.setLastLoginIP(userBO.getLastLoginIP());
         userDO.setLastLoginDate(userBO.getLastLoginDate());
         userDO.setSessionId(userBO.getSessionId());
+        userDO.setAvatarUrl(userBO.getAvatarUrl());
         return userDO;
     }
 

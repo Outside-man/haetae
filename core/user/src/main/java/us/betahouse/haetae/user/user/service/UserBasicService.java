@@ -28,11 +28,12 @@ public interface UserBasicService {
      *
      * @param username
      * @param password
+     * @param avatarUrl
      * @param openId
      * @param loginIP
      * @return
      */
-    CommonUser login(String username, String password, String openId, String loginIP);
+    CommonUser login(String username, String password, String avatarUrl, String openId, String loginIP);
 
 
     /**

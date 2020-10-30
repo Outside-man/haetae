@@ -17,6 +17,10 @@ import us.betahouse.haetae.user.enums.PermType;
 public enum CertificatePermTypeEnum implements PermType {
     //=================总管理权限 start=================
     /**
+     * 后台管理员（最高权限）
+     */
+    CERTIFICATE_MANAGER(CertificatePermType.CERTIFICATE_MANAGER, "后台管理员", true),
+    /**
      * 管理审核员
      */
     MANAGER_CONFIRM(CertificatePermType.MANAGER_CONFIRM, "管理审核员", true),
