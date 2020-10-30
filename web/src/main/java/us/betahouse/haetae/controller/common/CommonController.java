@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.*;
 
 /**
  * @author MessiahJK
@@ -61,8 +62,10 @@ public class CommonController {
      * 日志
      */
     private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     /**
      * 上传文件到aliyun云存储
+     *
      * @param multipartFile
      * @return
      * @throws IOException
@@ -74,8 +77,8 @@ public class CommonController {
             @Override
             public Result<Map> execute() throws IOException {
                 FileInputStream inputStream = (FileInputStream) multipartFile.getInputStream();
-                String path =aliyunOssUtil.uploadFile(fileName, "/haetae/", inputStream);
-                Map map=new HashMap(4);
+                String path = aliyunOssUtil.uploadFile(fileName, "/haetae/", inputStream);
+                Map map = new HashMap(4);
                 map.put("path", path);
                 return RestResultUtil.buildSuccessResult(map, "上传成功");
             }
@@ -131,5 +134,23 @@ public class CommonController {
             }
         });
     }
-    
+
+    @GetMapping("/term")
+    public Result<List<String>> getTermInfo() {
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        int nowYear = cal.get(Calendar.YEAR);
+        int startYear = 2017;
+        List<String> termList = new ArrayList<>();
+        // 开始学期到目前学期
+        for (; startYear < nowYear; startYear++) {
+            termList.add(startYear + "A");
+            termList.add(startYear + "B");
+        }
+        termList.add(nowYear + "A");
+        if (month > 7) {
+            termList.add(nowYear + "B");
+        }
+        return RestResultUtil.buildSuccessResult(termList);
+    }
 }

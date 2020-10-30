@@ -271,7 +271,7 @@ public class HttpUtils {
         }
         return result;
     }
-    
+
     /**
      * 请求接口返回字节输入流
      * @param url 链接
