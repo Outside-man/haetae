@@ -98,6 +98,9 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         if (newQualificationDO.getStatus() != null) {
             qualificationsDO.setStatus(newQualificationDO.getStatus());
         }
+        if (newQualificationDO.getRejectReason() != null){
+            qualificationsDO.setRejectReason(newQualificationDO.getRejectReason());
+        }
         //更新证书等级
         if (newQualificationDO.getRank() != null) {
             qualificationsDO.setRank(newQualificationDO.getRank());
@@ -209,6 +212,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
                 .withType(qualificationsDO.getType())
                 .withRank(qualificationsDO.getRank())
                 .withCertificatePictureUrl(qualificationsDO.getPictureUrl())
+                .withRejectReason(qualificationsDO.getRejectReason())
                 //四六级证书成绩
                 .withCertificateGrade(qualificationsDO.getCertificateGrade())
                 .withExtInfo(JSONObject.parseObject(qualificationsDO.getExtInfo(), Map.class));
@@ -238,6 +242,7 @@ public class QualificationsRepoServiceImpl implements QualificationsRepoService 
         qualificationsDO.setRank(certificateBO.getRank());
         qualificationsDO.setStatus(certificateBO.getStatus());
         qualificationsDO.setPictureUrl(certificateBO.getPictureUrl());
+        qualificationsDO.setRejectReason(certificateBO.getRejectReason());
         //四六级证书成绩
         qualificationsDO.setCertificateGrade(certificateBO.getCertificateGrade());
         return qualificationsDO;

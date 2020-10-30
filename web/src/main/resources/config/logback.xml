@@ -132,7 +132,7 @@
 
     <!-- biz-service-impl 日志 -->
     <appender name="BIZ-SERVICE-IMPL" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log_dir}/sys/core-service-impl.log</File>
+        <File>${log_dir}/sys/biz-service-impl.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_dir}/sys/biz-service-impl.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>${maxHistory}</maxHistory>

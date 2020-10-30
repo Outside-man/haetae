@@ -35,6 +35,11 @@ public class UserBO extends ToString {
      */
     @NotBlank
     private String password;
+    
+    /**
+     * 用户头像
+     */
+    private String avatarUrl;
 
     /**
      * 盐
@@ -61,7 +66,15 @@ public class UserBO extends ToString {
      * 会话id
      */
     private String sessionId;
-
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public String getUserId() {
         return userId;
     }

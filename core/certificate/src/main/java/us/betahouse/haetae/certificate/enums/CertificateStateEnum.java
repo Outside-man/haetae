@@ -20,8 +20,12 @@ public enum CertificateStateEnum {
     /**
      * 未审核
      */
-    UNREVIEWED("UNREVIEWED", "未审核");
-
+    UNREVIEWED("UNREVIEWED", "未审核"),
+    /**
+     * 驳回
+     */
+    REJECTED("REJECTED", "驳回");
+    
     /**
      * 状态id
      */

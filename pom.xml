@@ -83,7 +83,7 @@
                 <artifactId>haetae-web</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
-            <!-- 子模块 end -->
+            <!-- 子模块 activityTime -->
 
             <!--二方包 betahouse util-->
             <dependency>
@@ -146,7 +146,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.10</version>
             </dependency>
-            <!--三方包 end-->
+            <!--三方包 activityTime-->
 
         </dependencies>
     </dependencyManagement>

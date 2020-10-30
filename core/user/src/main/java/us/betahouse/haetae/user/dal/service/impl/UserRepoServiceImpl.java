@@ -92,6 +92,9 @@ public class UserRepoServiceImpl implements UserRepoService {
         if (newUserDO.getSessionId() != null) {
             userDO.setSessionId(newUserDO.getSessionId());
         }
+        if (newUserDO.getAvatarUrl() != null) {
+            userDO.setAvatarUrl(newUserDO.getAvatarUrl());
+        }
         return EntityConverter.convert(userDORepo.save(userDO));
     }
 

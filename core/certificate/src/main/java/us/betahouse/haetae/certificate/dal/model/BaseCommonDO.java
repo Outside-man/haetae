@@ -29,10 +29,15 @@ public abstract class BaseCommonDO extends BaseDO {
     @Column(name = "user_id", nullable = false, length = 32)
     private String userId;
     /**
-     * 证书状态 审核通过 未审核
+     * 证书状态 审核通过 未审核 驳回
      */
     @Column(name = "status", nullable = false)
     private String status;
+    /**
+     * 证书驳回原因
+     */
+    @Column(name = "reject_reason", length = 1024)
+    private String rejectReason;
     /**
      * 证书发布时间
      */
@@ -109,5 +114,12 @@ public abstract class BaseCommonDO extends BaseDO {
     public void setConfirmUserId(String confirmUserId) {
         this.confirmUserId = confirmUserId;
     }
-
+    
+    public String getRejectReason() {
+        return rejectReason;
+    }
+    
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
 }

@@ -204,6 +204,55 @@ public class CertificateManagerServiceImpl implements CertificateManagerService 
         }
         return certificateBO;
     }
+    
+    @Override
+    @VerifyPerm(permType = CertificatePermType.MODIFY_CERTIFICATE)
+    @Transactional(rollbackFor = Exception.class)
+    public CertificateBO rejectCertificate(CertificateConfirmRequest request, OperateContext context) {
+        CertificateBO certificateBO = certificateService.findByCertificateId(request.getCertificateId());
+        AssertUtil.assertNotNull(certificateBO, "证书id不存在");
+        //更改证书 状态
+        certificateBO.setStatus(CertificateStateEnum.REJECTED.getCode());
+        certificateBO.setRejectReason(request.getRejectReason());
+        //添加审核员userId
+        certificateBO.setConfirmUserId(request.getUserId());
+        //保存信息 更新信息
+        CertificateTypeEnum certificateTypeEnum = CertificateTypeEnum.getByCode(request.getCertificateType());
+        AssertUtil.assertNotNull(certificateTypeEnum, "证书类型不存在");
+        //证书类型判断(四种类型，四六级与资格证书同表)
+        switch (certificateTypeEnum) {
+            //四六级证书
+            case CET_4_6:
+                //资格证书
+            case QUALIFICATIONS: {
+                qualificationsRepoService.modify(certificateBO);
+                break;
+            }
+            //竞赛证书
+            case COMPETITION: {
+                //获取竞赛证书团队信息
+                String teamid = certificateBO.getTeamId();
+                List<CertificateBO> certificateBOList = competitionRepoService.queryByTeamId(teamid);
+                for (CertificateBO certificateBO1 : certificateBOList) {
+                    certificateBO.setCertificateId(certificateBO1.getCertificateId());
+                    certificateBO.setWorkUserId(certificateBO1.getWorkUserId());
+                    competitionRepoService.modify(certificateBO);
+                }
+                competitionUserIdCovert(certificateBO);
+                break;
+            }
+            //技能证书
+            case SKILL: {
+                skillRepoService.modify(certificateBO);
+                break;
+            }
+            //异常
+            default: {
+                throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "证书类型不存在");
+            }
+        }
+        return certificateBO;
+    }
 
     /**
      * 转换器 竞赛证书userid 转stuid

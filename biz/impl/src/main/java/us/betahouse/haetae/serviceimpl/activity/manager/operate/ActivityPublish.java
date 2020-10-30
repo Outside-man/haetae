@@ -28,7 +28,7 @@ public class ActivityPublish extends CommonActivityOperate {
 
     @Override
     protected boolean canOperate(ActivityBO activityBO) {
-        if (StringUtils.equals(activityBO.getState(), ActivityStateEnum.APPROVED.getCode())) {
+        if (StringUtils.equals(activityBO.getState(), ActivityStateEnum.APPROVED.getCode()) || StringUtils.equals(activityBO.getState(), ActivityStateEnum.RESTARTED.getCode())) {
             return true;
         }
         return false;

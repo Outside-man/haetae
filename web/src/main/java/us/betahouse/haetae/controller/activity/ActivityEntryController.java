@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import us.betahouse.haetae.activity.dal.service.ActivityEntryRepoService;
+import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.activity.request.ActivityEntryRequest;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -15,7 +18,9 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.activity.request.ActivityEntryRestRequest;
+import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityEntryRequestBuilder;
+import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntry;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityEntryList;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityEntryService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
@@ -52,6 +57,12 @@ public class ActivityEntryController {
 
     @Autowired
     private ActivityEntryService activityEntryService;
+    
+    @Autowired
+    private ActivityEntryRepoService activityEntryRepoService;
+    
+    @Autowired
+    private ActivityRepoService activityRepoService;
 
     @CheckLogin
     @GetMapping
@@ -84,7 +95,47 @@ public class ActivityEntryController {
         });
     }
 
-
+    @CheckLogin
+    @GetMapping("/singleActivityEntry")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityEntry> singleActivityEntry(ActivityEntryRestRequest activityEntryRestRequest, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取活动报名信息", activityEntryRestRequest, new RestOperateCallBack<ActivityEntry>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(activityEntryRestRequest, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertNotNull(activityEntryRestRequest.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "缺少活动报名id参数");
+                AssertUtil.assertStringNotBlank(activityEntryRestRequest.getActivityEntryId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动报名id不能为空");
+            }
+    
+            @Override
+            public Result<ActivityEntry> execute() throws IOException {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityEntryBO activityEntryBO = activityEntryRepoService.findByActivityEntryId(activityEntryRestRequest.getActivityEntryId());
+                ActivityBO activityBO = activityRepoService.queryActivityByActivityId(activityEntryBO.getActivityId());
+                ActivityEntry activityEntry = new ActivityEntry();
+                activityEntry.setActivityId(activityEntryBO.getActivityId());
+                activityEntry.setActivityEntryId(activityEntryBO.getActivityEntryId());
+                activityEntry.setTitle(activityEntryBO.getTitle());
+                activityEntry.setActivityEntryStart(DateUtil.format(activityEntryBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+                activityEntry.setActivityEntryEnd(DateUtil.format(activityEntryBO.getEnd(), "yyyy年MM月dd日 HH:mm:ss"));
+                activityEntry.setActivityName(activityBO.getActivityName());
+                activityEntry.setActivityType(activityEntryBO.getType());
+                activityEntry.setDescription(activityEntryBO.getNote());
+                activityEntry.setLocation(activityBO.getLocation());
+                activityEntry.setSecond((activityEntryBO.getStart().getTime() - System.currentTimeMillis())/1000);
+                activityEntry.setNumber(activityEntryBO.getNumber());
+                activityEntry.setLinkman(activityEntryBO.getLinkman());
+                activityEntry.setContact(activityEntryBO.getContact());
+                activityEntry.setChoose(activityEntryBO.getChoose());
+                activityEntry.setTop(activityEntryBO.getTop());
+                activityEntry.setStart(DateUtil.format(activityBO.getStart(), "yyyy年MM月dd日 HH:mm:ss"));
+                activityEntry.setEnd(DateUtil.format(activityBO.getEnd(), "yyyy年MM月dd日 HH:mm:ss"));
+                activityEntry.setStatus(activityEntryBO.getState());
+                return RestResultUtil.buildSuccessResult(activityEntry, "获取活动报名信息成功");
+            }
+        });
+    }
 
     /**
      * 创建报名

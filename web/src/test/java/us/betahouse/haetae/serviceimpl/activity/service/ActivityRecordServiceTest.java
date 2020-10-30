@@ -59,7 +59,7 @@ public class ActivityRecordServiceTest {
     private PastActivityDORepo pastActivityDORepo;
     @Test
     public void importStamp() {
-        String url = "C:\\Users\\j10k\\Desktop\\第四届课外体育三项赛录入名单.csv";
+        String url = "/Users/kagantuya/Desktop/2020企业经营沙盘模拟宣讲会.csv";
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -156,7 +156,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importOneHour(){
-        String url =  "C:\\Users\\j10k\\Desktop\\党建活动(1).csv";
+        String url =  "/Users/kagantuya/Desktop/10.24交换一小时.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -164,7 +164,7 @@ public class ActivityRecordServiceTest {
             activityRecordDO.setActivityId("201904151539461439186510012019");
             activityRecordDO.setUserId(userInfoRepoService.queryUserInfoByStuId(csv[i][1]).getUserId());
             activityRecordDO.setScannerUserId("201812010040554783180001201835");
-            activityRecordDO.setTime((int)(Double.valueOf(csv[i][3])*10));
+            activityRecordDO.setTime((int)(Double.valueOf(csv[i][2])*10));
             activityRecordDO.setType("partyTimeActivity");
             activityRecordDO.setStatus("ENABLE");
             activityRecordDO.setTerm(TermUtil.getNowTerm());
@@ -260,7 +260,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "C:\\Users\\j10k\\Desktop\\2019暑期社会实践考核成绩第二课堂导入名单（补）.csv";
+        String url = "/Users/kagantuya/Desktop/10.24交换一小时.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {

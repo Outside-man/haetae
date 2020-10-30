@@ -34,6 +34,7 @@ final public class UserVOConverter {
         userVO.setToken(commonUser.getToken());
         userVO.setUserId(commonUser.getUserId());
         userVO.setUserInfo(commonUser.getUserInfo());
+        userVO.setAvatarUrl(commonUser.getAvatarUrl());
         userVO.setRoleInfo(new ArrayList<>(CollectionUtils.toStream(commonUser.getRoleInfo().values()).map(RoleBO::getRoleCode).collect(Collectors.toSet())));
         return userVO;
     }

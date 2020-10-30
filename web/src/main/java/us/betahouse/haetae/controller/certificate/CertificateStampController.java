@@ -83,7 +83,7 @@ public class CertificateStampController {
      * @param httpServletRequest
      * @return
      */
-    @PutMapping
+    @PutMapping(value = "confirm")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
     public Result<CertificateBO> confirmCertificate(ConfirmRequest request, HttpServletRequest httpServletRequest) {
@@ -103,6 +103,38 @@ public class CertificateStampController {
                         .withCertificateId(request.getCertificateId());
                 CertificateBO certificateBO = certificateManagerService.confirmCertificate(builder.build(), context);
                 return RestResultUtil.buildSuccessResult(certificateBO, "证书审核通过");
+            }
+        });
+    }
+    
+    /**
+     * 审核员 驳回证书
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @PutMapping(value = "reject")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    @CheckLogin
+    public Result<CertificateBO> rejectCertificate(ConfirmRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "证书审核驳回", request, new RestOperateCallBack<CertificateBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request.getCertificateId(), "驳回证书id不能为空");
+            }
+            
+            @Override
+            public Result<CertificateBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateConfirmRequestBuilder builder = CertificateConfirmRequestBuilder.getInstance()
+                        .withUserId(request.getUserId())
+                        .withCertificateType(request.getCertificateType())
+                        .withRejectReason(request.getRejectReason())
+                        .withCertificateId(request.getCertificateId());
+                CertificateBO certificateBO = certificateManagerService.rejectCertificate(builder.build(), context);
+                return RestResultUtil.buildSuccessResult(certificateBO, "证书审核驳回");
             }
         });
     }

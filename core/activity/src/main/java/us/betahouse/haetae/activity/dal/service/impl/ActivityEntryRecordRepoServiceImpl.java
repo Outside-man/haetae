@@ -166,6 +166,7 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
             ActivityEntryRecordDO activityEntryRecordDO =activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryBO.getActivityEntryId(),userId);
             if (activityEntryRecordDO != null) {
                 activityEntryRecordDO.setAttend(true);
+                System.out.println(activityEntryRecordDO.toString());
                 activityEntryRecordBOList.add(convert(activityEntryRecordDORepo.save(activityEntryRecordDO)));
             }
 
@@ -173,6 +174,12 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
         return activityEntryRecordBOList;
     }
 
+    @Override
+    public void deleteRecord(ActivityEntryRecordBO activityEntryRecordBO) {
+        String activityEntryId = activityEntryRecordBO.getActivityEntryId();
+        String userId = activityEntryRecordBO.getUserId();
+        activityEntryRecordDORepo.delete(activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryId, userId));
+    }
 
     /**
      * 通过报名信息id查找报名记录数量

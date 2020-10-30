@@ -106,6 +106,9 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         if (newCompetitionDO.getStatus() != null) {
             competitionDO.setStatus(newCompetitionDO.getStatus());
         }
+        if (newCompetitionDO.getRejectReason() != null){
+            competitionDO.setRejectReason(newCompetitionDO.getRejectReason());
+        }
         //更新审核员id
         if (newCompetitionDO.getConfirmUserId() != null) {
             competitionDO.setConfirmUserId(newCompetitionDO.getConfirmUserId());
@@ -204,7 +207,8 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
                 .withCertificatePictureUrl(competitionDO.getPictureUrl())
                 .withWorkUserId(JSON.parseObject(competitionDO.getWorkersUserId(), List.class))
                 .withExtInfo(JSON.parseObject(competitionDO.getExtInfo(), Map.class))
-                .withTeacher(JSON.parseObject(competitionDO.getTeacher(), List.class));
+                .withTeacher(JSON.parseObject(competitionDO.getTeacher(), List.class))
+                .withRejectReason(competitionDO.getRejectReason());
         return builder.build();
     }
 
@@ -232,6 +236,7 @@ public class CompetitionRepoServiceImpl implements CompetitionRepoService {
         competitionDO.setWorkersUserId(JSON.toJSONString(certificateBO.getWorkUserId()));
         competitionDO.setExtInfo(JSON.toJSONString(certificateBO.getExtInfo()));
         competitionDO.setTeacher(JSON.toJSONString(certificateBO.getTeacher()));
+        competitionDO.setRejectReason(certificateBO.getRejectReason());
         return competitionDO;
     }
 }

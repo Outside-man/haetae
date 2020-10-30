@@ -106,6 +106,15 @@ public interface CertificateManagerService {
      * @return
      */
     CertificateBO confirmCertificate(CertificateConfirmRequest request,OperateContext context);
+    
+    /**
+     * 证书审核驳回
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    CertificateBO rejectCertificate(CertificateConfirmRequest request,OperateContext context);
+    
     //批量创建证书
-
 }

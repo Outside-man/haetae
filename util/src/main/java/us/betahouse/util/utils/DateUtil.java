@@ -4,8 +4,10 @@
  */
 package us.betahouse.util.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,16 +18,29 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    private static final String MEDIUM_TIME = "MM月dd日 ";
+
     private static final String SHORT_TIME = "yyyyMMddHHmmss";
 
     private static final String YEAR_TIME = "yyyy";
+
+    private static final String HOUR_TIME = "HH";
+
+    private static final String MINUTE_TIME = "mm";
+
+    private static final String MONTH_TIME= "MM";
+
+    private static final String DAY = "dd";
 
     private static final String MONTH_DAY = "MMdd";
 
     private static final String YEAR_MONTH_DAY="yyyy-MM-dd";
 
-    private static final String DAY = "dd";
+    private static final String TIME_DESCRIPTION = "yyyy年MM月dd日 HH:mm";
 
+    private static final String TIME_DATABASE = "yyyy-MM-dd HH:mm:ss";
+
+    private static final String TIME_MONTH_DAY = "MM月dd日";
 
     /**
      * 获取短时间字符串
@@ -42,7 +57,12 @@ public class DateUtil {
     }
 
 
+   //该方法用于数据库中的日期转换为MEDIUM_TIME格式
+    public static String getMediumDatesStr(String str) { return getMediumDatesStr(parse(str,TIME_DATABASE)); }
 
+    private static String getMediumDatesStr(Date date) { return format(date, MEDIUM_TIME); }
+
+    public static Date parseTime_Database(String str){return parse(str,TIME_DATABASE);}
     /**
      * 获取年份
      *
@@ -59,13 +79,18 @@ public class DateUtil {
      * @param date
      * @return
      */
-    public static String getMonthDay(Date date) {
-        return format(date, MONTH_DAY);
-    }
+    public static String getMonthDay(Date date) { return format(date, MONTH_DAY); }
 
-    public static String getYearMonthDay(Date date){
-        return format(date, YEAR_MONTH_DAY);
-    }
+    /**
+     * 获取月份
+     * @param date
+     * @return
+     */
+
+    public static String getMonth(Date date) { return format(date, MONTH_TIME); }
+
+
+    public static String getYearMonthDay(Date date){ return format(date, YEAR_MONTH_DAY); }
     /**
      * 获取日
      *
@@ -75,6 +100,16 @@ public class DateUtil {
     public static String getDay(Date date) {
         return format(date, DAY);
     }
+
+    /**
+     * 获取小时
+     */
+    public static String getHour(Date date) { return format(date, HOUR_TIME); }
+
+    /**
+     * 获取分钟
+     */
+    public static String getMinute(Date date) { return format(date, MINUTE_TIME); }
 
     /**
      * 格式化时间
@@ -130,4 +165,30 @@ public class DateUtil {
         }
         return true;
     }
+
+
+    /**
+     * 转换成 yyyy年MM月dd日 形式
+     */
+   public static String parse_CH(String dateStr,String format){
+       DateFormat dateFormat = new SimpleDateFormat(format);
+       try {
+           Date date = dateFormat.parse(dateStr);
+           DateFormat CHFormat=new SimpleDateFormat(TIME_DESCRIPTION);
+        return  CHFormat.format(date);
+       } catch (ParseException e) {
+           throw new IllegalArgumentException("日期转换失败");
+       }
+   }
+
+   public static Date subMinute(Date date,int minute){
+       Calendar calendar = Calendar.getInstance();
+       calendar.setTime(date);
+       calendar.add(Calendar.MINUTE,-minute);
+       return calendar.getTime();
+   }
+
+
+
+
 }

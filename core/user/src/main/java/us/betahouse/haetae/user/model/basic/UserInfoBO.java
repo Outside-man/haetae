@@ -29,7 +29,7 @@ public class UserInfoBO extends ToString {
      */
     @NotBlank
     private String userId;
-
+    
     /**
      * 学号
      */
@@ -63,12 +63,25 @@ public class UserInfoBO extends ToString {
      * 入学年份
      */
     private Date enrollDate;
-
+    
+    /**
+     * 头像
+     */
+    private String avatarUrl;
+    
     /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
-
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public String getUserInfoId() {
         return userInfoId;
     }

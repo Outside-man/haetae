@@ -18,8 +18,12 @@ import java.util.Map;
 public class CommonUser extends BasicUser {
 
     private static final long serialVersionUID = -5647855589382683224L;
-
-
+    
+    /**
+     * 头像路径
+     */
+    private String avatarUrl;
+    
     /**
      * 角色信息
      */
@@ -49,7 +53,15 @@ public class CommonUser extends BasicUser {
         }
         return roleInfo.get(roleId);
     }
-
+    
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+    
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
     public Map<String, RoleBO> getRoleInfo() {
         return roleInfo;
     }
