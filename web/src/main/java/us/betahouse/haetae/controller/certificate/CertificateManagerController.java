@@ -83,6 +83,7 @@ public class CertificateManagerController {
                 /*for (CertificateBO certificateBO : certificateBOList) {
                     Map<String, String> extInfo = certificateBO.getExtInfo();
                     extInfo.put("stuId", userInfoRepoService.queryUserInfoByUserId(certificateBO.getUserId()).getStuId());
+                    extInfo.put("realNmae", userInfoRepoService.queryUserInfoByUserId(certificateBO.getUserId()).getRealName());
                     extInfo.put("stuName", userInfoRepoService.queryUserInfoByUserId(certificateBO.getUserId()).getRealName());
                 }*/
                 return RestResultUtil.buildSuccessResult(certificateBOList, "获取所有证书信息成功");

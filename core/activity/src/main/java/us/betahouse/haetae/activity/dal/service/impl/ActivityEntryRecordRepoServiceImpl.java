@@ -166,6 +166,7 @@ public class ActivityEntryRecordRepoServiceImpl implements ActivityEntryRecordRe
             ActivityEntryRecordDO activityEntryRecordDO =activityEntryRecordDORepo.findByActivityEntryIdAndUserId(activityEntryBO.getActivityEntryId(),userId);
             if (activityEntryRecordDO != null) {
                 activityEntryRecordDO.setAttend(true);
+                System.out.println(activityEntryRecordDO.toString());
                 activityEntryRecordBOList.add(convert(activityEntryRecordDORepo.save(activityEntryRecordDO)));
             }
 

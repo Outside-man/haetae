@@ -272,7 +272,7 @@ public class CertificateServiceImpl implements CertificateService {
      * @return
      */
     private void judgeState(CertificateBO certificateBO) {
-        AssertUtil.assertTrue(certificateBO.getStatus().equals(CertificateStateEnum.UNREVIEWED.getCode()), "证书已通过审核");
+        AssertUtil.assertTrue(!certificateBO.getStatus().equals(CertificateStateEnum.APPROVED.getCode()), "证书已通过审核");
     }
 
     /**
@@ -381,6 +381,7 @@ public class CertificateServiceImpl implements CertificateService {
         List<String> userIds = new ArrayList<>();
         for (String userid : certificateBO.getWorkUserId()) {
             UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByUserId(userid);
+            AssertUtil.assertNotNull(userInfoBO, "ID为 " + userid + " 的用户信息不存在");
             userIds.add(userInfoBO.getStuId());
         }
         //团队伙伴id转stuId

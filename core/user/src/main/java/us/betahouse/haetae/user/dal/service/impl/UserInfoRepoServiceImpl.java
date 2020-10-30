@@ -114,10 +114,15 @@ public class UserInfoRepoServiceImpl implements UserInfoRepoService {
 
     @Override
     public List<UserInfoBO> batchQueryByUserIds(List<String> userIds) {
-        return CollectionUtils.toStream(userInfoDORepo.findAllByUserIdIn(userIds))
-                .filter(Objects::nonNull)
-                .map(EntityConverter::convert)
-                .collect(Collectors.toList());
+        List<UserInfoBO> userInfoBOS = new ArrayList<>();
+        List<UserDO> userDOS = userDORepo.findAllByUserIdIn(userIds);
+        List<UserInfoDO> userInfoDOS = userInfoDORepo.findAllByUserIdIn(userIds);
+        for (int i = 0;i < userInfoDOS.size();i ++ ) {
+            UserInfoBO userInfoBO = EntityConverter.convert(userInfoDOS.get(i));
+            userInfoBO.setAvatarUrl(userDOS.get(i).getAvatarUrl());
+            userInfoBOS.add(userInfoBO);
+        }
+        return userInfoBOS;
     }
 
     @Override

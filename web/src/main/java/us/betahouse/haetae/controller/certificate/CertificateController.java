@@ -14,9 +14,12 @@ import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
 import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.certificate.request.CertificateRestRequest;
+import us.betahouse.haetae.model.certificate.vo.CertificateVO;
 import us.betahouse.haetae.serviceimpl.certificate.builder.CertificateRequestBuilder;
 import us.betahouse.haetae.serviceimpl.certificate.service.CertificateService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -53,6 +56,12 @@ public class CertificateController {
     @Autowired
     private CertificateService certificateService;
 
+    @Autowired
+    private UserInfoRepoService userInfoRepoService;
+
+    @Autowired
+    private UserService userService;
+
     /**
      * 创建证书
      *
@@ -83,6 +92,15 @@ public class CertificateController {
             public Result<CertificateBO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                /**
+                 *
+                 *
+                 *
+                 * 2020.9.17 15.55 前端修改了teacher的属性为teacherNumber和teacherName，原先是teacherOneNumber和teacherTwoNumber……
+                 *
+                 *
+                 *
+                 */
                 CertificateRequestBuilder builder = CertificateRequestBuilder.getInstance()
                         .withCertificateName(request.getCertificateName())
                         .withCompetitionName(request.getCompetitionName())
@@ -194,8 +212,8 @@ public class CertificateController {
     @GetMapping(value = "details")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     @CheckLogin
-    public Result<CertificateBO> getCertificateByCertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "根据证书id获取该证书详细信息", request, new RestOperateCallBack<CertificateBO>() {
+    public Result<CertificateVO> getCertificateByCertificateId(CertificateRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据证书id获取该证书详细信息", request, new RestOperateCallBack<CertificateVO>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, "请求体不能为空");
@@ -203,12 +221,18 @@ public class CertificateController {
             }
 
             @Override
-            public Result<CertificateBO> execute() {
+            public Result<CertificateVO> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CertificateVO certificateVO = new CertificateVO();
                 CertificateBO certificateBO;
+                System.out.println(request.getCertificateId());
                 certificateBO = certificateService.findByCertificateId(request.getCertificateId());
-                return RestResultUtil.buildSuccessResult(certificateBO, "获取详细记录信息成功");
+                Map<String, String> extInfo = certificateBO.getExtInfo();
+                extInfo.put("realName", userInfoRepoService.queryUserInfoByUserId(certificateBO.getUserId()).getRealName());
+                certificateVO.setCertificate(certificateBO);
+                certificateVO.setCreator(userService.queryByUserId(certificateBO.getUserId(), context));
+                return RestResultUtil.buildSuccessResult(certificateVO, "获取详细记录信息成功");
             }
         });
     }

@@ -172,6 +172,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setConfirmUserId(request.getConfirmUserId());
         certificateBO.setCertificateNumber(request.getCertificateNumber());
         certificateBO.setPictureUrl(request.getPictureUrl());
+        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         certificateBO = setExtInfos(certificateBO, request);
         switch (certificateTypeEnum) {
             //国际资格证书  参数同普通证书相同
@@ -221,6 +222,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setTeamId(request.getTeamId());
         certificateBO.setConfirmUserId(request.getConfirmUserId());
         certificateBO.setPictureUrl(request.getPictureUrl());
+        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //放入拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //放入指导老师信息
@@ -281,6 +283,7 @@ public class CertificateManagerImpl implements CertificateManager {
         certificateBO.setRank(request.getRank());
         certificateBO.setConfirmUserId(request.getConfirmUserId());
         certificateBO.setPictureUrl(request.getPictureUrl());
+        certificateBO.setStatus(CertificateStateEnum.UNREVIEWED.getCode());
         //设置拓展信息
         certificateBO = setExtInfos(certificateBO, request);
         //技能证书有效期
