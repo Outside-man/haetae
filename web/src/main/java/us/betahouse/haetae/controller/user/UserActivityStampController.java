@@ -81,7 +81,7 @@ public class UserActivityStampController {
             }
         });
     }
-    
+
     @GetMapping(value = "/analysisData")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -93,30 +93,30 @@ public class UserActivityStampController {
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
                 AssertUtil.assertStringNotBlank(request.getActivityType(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动类型不能为空");
             }
-            
+
             @Override
             public Result<List<Map<String, String>>> execute() {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 List<Map<String, String>> data = new ArrayList<>();
-    
+
                 double[] stampCount = new double[5];
                 ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
                         .withTerm(request.getTerm())
                         .withUserId(request.getUserId());
-    
+
                 builder.withType("schoolActivity");
                 StampRecord schoolActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
                 stampCount[0] = schoolActivityStampRecord.getActivityStamps().size();
-    
+
                 builder.withType("lectureActivity");
                 StampRecord lectureActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
                 stampCount[1] = lectureActivityStampRecord.getActivityStamps().size();
-    
+
                 builder.withType("practiceActivity");
                 StampRecord practiceActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
                 stampCount[2] = practiceActivityStampRecord.getActivityStamps().size();
-    
+
                 builder.withType("volunteerActivity");
                 StampRecord volunteerActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
                 List<ActivityStamp> volunteerActivityStamps = volunteerActivityStampRecord.getActivityStamps();
@@ -125,49 +125,16 @@ public class UserActivityStampController {
                     volunteerActivityTime += Double.parseDouble(stamp.getActivityTime());
                 }
                 stampCount[3] = volunteerActivityTime;
-    
+
                 builder.withType("volunteerWork");
                 StampRecord volunteerWorkStampRecord = activityRecordService.getUserStamps(builder.build(), context);
                 List<ActivityStamp> volunteerWorkStamps = volunteerWorkStampRecord.getActivityStamps();
                 double volunteerWorkTime = 0;
                 for (ActivityStamp stamp : volunteerWorkStamps) {
                     volunteerWorkTime += Double.parseDouble(stamp.getActivityTime());
-                
-                int[] stampCount = new int[5];
-                ActivityStampRequestBuilder builder = ActivityStampRequestBuilder.getInstance()
-                        .withTerm(request.getTerm())
-                        .withUserId(request.getUserId());
-                
-                builder.withType("schoolActivity");
-                StampRecord schoolActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
-                stampCount[0] = schoolActivityStampRecord.getActivityStamps().size();
-                
-                builder.withType("lectureActivity");
-                StampRecord lectureActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
-                stampCount[1] = lectureActivityStampRecord.getActivityStamps().size();
-                
-                builder.withType("practiceActivity");
-                StampRecord practiceActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
-                stampCount[2] = practiceActivityStampRecord.getActivityStamps().size();
-                
-                builder.withType("volunteerActivity");
-                StampRecord volunteerActivityStampRecord = activityRecordService.getUserStamps(builder.build(), context);
-                List<ActivityStamp> volunteerActivityStamps = volunteerActivityStampRecord.getActivityStamps();
-                int volunteerActivityTime = 0;
-                for (ActivityStamp stamp : volunteerActivityStamps) {
-                    volunteerActivityTime += stamp.getTime();
-                }
-                stampCount[3] = volunteerActivityTime;
-                
-                builder.withType("volunteerWork");
-                StampRecord volunteerWorkStampRecord = activityRecordService.getUserStamps(builder.build(), context);
-                List<ActivityStamp> volunteerWorkStamps = volunteerWorkStampRecord.getActivityStamps();
-                int volunteerWorkTime = 0;
-                for (ActivityStamp stamp : volunteerWorkStamps) {
-                    volunteerWorkTime += stamp.getTime();
                 }
                 stampCount[4] = volunteerWorkTime;
-    
+
                 // 正在报名 1 即将开始 0 过期 -1
                 int[] activityEntry = new int[]{-1};
                 Date current = new Date();
@@ -182,7 +149,7 @@ public class UserActivityStampController {
                         activityEntry[0] = 0;
                     }
                 }
-    
+
                 data.add(new HashMap<String, String>(){{ put("stamp", JSON.toJSONString(stampCount)); }});
                 data.add(new HashMap<String, String>(){{ put("activityEntry", JSON.toJSONString(activityEntry)); }});
                 return RestResultUtil.buildSuccessResult(data, "获取每种活动章和活动报名状态成功");
