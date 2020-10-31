@@ -46,16 +46,6 @@ public class AuditRestRequest extends RestRequest {
     public void setAuditId(String auditId) {
         this.auditId = auditId;
     }
-  
-    /**
-     *
-     * 订阅消息人的userid
-     */
-    private String auditId;
-
-    public String getAuditId() { return auditId; }
-
-    public void setAuditId(String auditId) { this.auditId = auditId; }
 
     public String getPage() { return page; }
 
