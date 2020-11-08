@@ -171,4 +171,12 @@ public class UserServiceImpl implements UserService {
       return userRepoService.queryByUserId(userId);
     }
 
+    @Override
+    public CommonUser queryCommonByUserId(String userId, OperateContext context) {
+        CommonUser commonUser = userBasicService.getByUserId(userId);
+        commonUser.setAvatarUrl(queryByUserId(userId,context).getAvatarUrl());
+       return commonUser;
+    }
+
+
 }

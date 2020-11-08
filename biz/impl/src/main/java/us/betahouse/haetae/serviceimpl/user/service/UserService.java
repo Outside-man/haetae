@@ -125,5 +125,14 @@ public interface UserService {
      * @return
      */
     UserBO queryByUserId(String userId, OperateContext context);
+
+    /**
+     * 通过userId来查询用户基础模型
+     *
+     * @param userId
+     * @param context
+     * @return
+     */
+    CommonUser queryCommonByUserId(String userId, OperateContext context);
 }
 
