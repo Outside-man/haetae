@@ -193,8 +193,10 @@ public class UserController {
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
 
-                Cookie cookie = new Cookie("UserToken",userVO.toString());
+                Cookie cookie = new Cookie("UserToken", userVO.getToken());
+
                 response.addCookie(cookie);
+
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
