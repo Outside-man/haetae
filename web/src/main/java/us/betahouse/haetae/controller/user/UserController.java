@@ -35,7 +35,9 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -167,7 +169,7 @@ public class UserController {
     @CrossOrigin
     @PostMapping(value = "/token")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest) {
+    public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest , HttpServletResponse response) {
         return RestOperateTemplate.operate(LOGGER, "用户普通登录", null, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
@@ -187,8 +189,12 @@ public class UserController {
                 UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
                 OrganizationRequest organizationRequest=new OrganizationRequest();
                 organizationRequest.setMemberId(userVO.getUserId());
+
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
+
+                Cookie cookie = new Cookie("UserToken",userVO.toString());
+                response.addCookie(cookie);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
