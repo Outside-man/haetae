@@ -384,6 +384,7 @@ public class UserController {
      */
     @CrossOrigin
     @PutMapping(value = "/pwdByStuId")
+    @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> modifyPasswordByStuId(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "根据学号修改密码", null, new RestOperateCallBack<UserVO>() {
