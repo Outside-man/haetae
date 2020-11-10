@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import us.betahouse.haetae.activity.dal.service.ActivityEntryRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.enums.ActivityEntryStateEnum;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
+import us.betahouse.haetae.activity.model.basic.ActivityEntryBO;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -50,6 +54,9 @@ public class UserActivityStampController {
     
     @Autowired
     private ActivityRepoService activityRepoService;
+
+    @Autowired
+    private ActivityEntryRepoService activityEntryRepoService;
     
     /**
      * 日志
@@ -134,24 +141,16 @@ public class UserActivityStampController {
                     volunteerWorkTime += Double.parseDouble(stamp.getActivityTime());
                 }
                 stampCount[4] = volunteerWorkTime;
-
                 // 正在报名 1 即将开始 0 过期 -1
-                int[] activityEntry = new int[]{-1};
-                Date current = new Date();
-                List<ActivityBO> activityBOS = activityRepoService.queryAllActivity();
-                for (ActivityBO activityBO : activityBOS) {
-                    Date start = activityBO.getStart();
-                    Date end = activityBO.getEnd();
-                    if (!current.before(start) && current.before(end)) {
-                        activityEntry[0] = 1;
-                        break;
-                    } else if (current.before(start)){
-                        activityEntry[0] = 0;
-                    }
+                int activityEntry = -1;
+                if (activityEntryRepoService.existsByState(ActivityEntryStateEnum.PUBLISHED.getCode())) {
+                    activityEntry = 1;
                 }
 
                 data.add(new HashMap<String, String>(){{ put("stamp", JSON.toJSONString(stampCount)); }});
-                data.add(new HashMap<String, String>(){{ put("activityEntry", JSON.toJSONString(activityEntry)); }});
+                Map<String, String> map = new HashMap<>(1);
+                map.put("activityEntry", String.valueOf(activityEntry));
+                data.add(map);
                 return RestResultUtil.buildSuccessResult(data, "获取每种活动章和活动报名状态成功");
             }
         });

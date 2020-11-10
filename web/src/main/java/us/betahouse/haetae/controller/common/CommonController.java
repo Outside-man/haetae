@@ -107,7 +107,7 @@ public class CommonController {
                 Map<String, Object> param = new HashMap<>(1);
                 param.put("page", page);
                 param.put("scene", scene);
-                param.put("is_hyaline", true);
+                param.put("is_hyaline", false);
                 // 判断 accessToken 是否过期
                 String result = HttpUtils.doPostUseJson(url, param.toString());
                 JSONObject resultJson = JSONObject.parseObject(result);

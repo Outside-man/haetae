@@ -239,4 +239,9 @@ public class ActivityEntryRepoServiceImpl implements ActivityEntryRepoService {
         activityEntryDO.setExtInfo(JSON.toJSONString(activityEntryBO.getExtInfo()));
         return activityEntryDO;
     }
+
+    @Override
+    public boolean existsByState(String state) {
+        return activityEntryDORepo.existsByState(state);
+    }
 }

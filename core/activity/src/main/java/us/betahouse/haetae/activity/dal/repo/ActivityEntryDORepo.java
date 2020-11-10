@@ -62,11 +62,19 @@ public interface ActivityEntryDORepo extends JpaRepository<ActivityEntryDO, Long
      * 通过学期、状态、类型分页查询
      *
      * @param pageable 分页工具
-     * @param term 学期
-     * @param status 状态
-     * @param type 类型
+     * @param term     学期
+     * @param status   状态
+     * @param type     类型
      * @return Page<ActivityDO>
      */
     Page<ActivityEntryDO> findAllByTermContainsAndStateContainsAndTypeContainsOrderByStart(Pageable pageable, String term, String status, String type);
+
+    /**
+     * 通过状态判断是否存在记录
+     *
+     * @param state 状态
+     * @return 是否存在记录
+     */
+    boolean existsByState(String state);
 
 }
