@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
@@ -143,6 +144,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    //@VerifyPerm()
     public void modifyPwdByStuId(CommonUserRequest request, OperateContext context) {
 
         UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(request.getStuId());
@@ -170,5 +172,13 @@ public class UserServiceImpl implements UserService {
     public UserBO queryByUserId(String userId, OperateContext context) {
       return userRepoService.queryByUserId(userId);
     }
+
+    @Override
+    public CommonUser queryCommonByUserId(String userId, OperateContext context) {
+        CommonUser commonUser = userBasicService.getByUserId(userId);
+        commonUser.setAvatarUrl(queryByUserId(userId,context).getAvatarUrl());
+       return commonUser;
+    }
+
 
 }

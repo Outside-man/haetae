@@ -26,7 +26,9 @@ import us.betahouse.haetae.serviceimpl.organization.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -35,7 +37,9 @@ import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -167,7 +171,7 @@ public class UserController {
     @CrossOrigin
     @PostMapping(value = "/token")
     @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest) {
+    public Result<UserVO> normalLogin(UserRequest request, HttpServletRequest httpServletRequest , HttpServletResponse response) {
         return RestOperateTemplate.operate(LOGGER, "用户普通登录", null, new RestOperateCallBack<UserVO>() {
             @Override
             public void before() {
@@ -187,8 +191,14 @@ public class UserController {
                 UserVO userVO = UserVOConverter.convert(userService.login(builder.build(), context));
                 OrganizationRequest organizationRequest=new OrganizationRequest();
                 organizationRequest.setMemberId(userVO.getUserId());
+
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
+
+                Cookie cookie = new Cookie("UserToken", userVO.getToken());
+
+                response.addCookie(cookie);
+
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
@@ -227,6 +237,43 @@ public class UserController {
             }
         });
     }
+
+    /**
+     * 根据token获取用户信息
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @CrossOrigin
+    @GetMapping(value = "/token")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    @CheckLogin
+    public Result<UserVO> getUserInfoByToken(UserRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "用户普通登录", null, new RestOperateCallBack<UserVO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
+            }
+
+            @Override
+            public Result<UserVO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                CommonUser commonUser =  userService.queryCommonByUserId(request.getUserId(), context);
+                UserVO userVO = UserVOConverter.convert(commonUser);
+                OrganizationRequest organizationRequest=new OrganizationRequest();
+                organizationRequest.setMemberId(request.getUserId());
+
+                List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
+                userVO.setJobInfo(list);
+
+                return RestResultUtil.buildSuccessResult(userVO, "获取信息成功");
+            }
+        });
+    }
+
 
 
     /**
@@ -337,6 +384,7 @@ public class UserController {
      */
     @CrossOrigin
     @PutMapping(value = "/pwdByStuId")
+    @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> modifyPasswordByStuId(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "根据学号修改密码", null, new RestOperateCallBack<UserVO>() {
