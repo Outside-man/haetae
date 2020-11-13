@@ -80,6 +80,12 @@ public interface ActivityEntryRepoService {
      */
     ActivityEntryBO updateActivityEntryByActivityEntryId( ActivityEntryBO activityEntryBO);
 
-
+    /**
+     * 通过状态判断是否存在记录
+     *
+     * @param state 状态
+     * @return 是否存在记录
+     */
+    boolean existsByState(String state);
 
 }

@@ -59,7 +59,7 @@ public class ActivityRecordServiceTest {
     private PastActivityDORepo pastActivityDORepo;
     @Test
     public void importStamp() {
-        String url = "/Users/kagantuya/Desktop/2020企业经营沙盘模拟宣讲会.csv";
+        String url = "/Users/kagantuya/Desktop/普通活动/2020年农林研究生宣讲会.csv";
         List<String> ls = activityRecordService.importStamp(url);
         for (String str : ls) {
             System.out.println(str);
@@ -122,7 +122,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importCXJC(){
-        String url = "C:\\Users\\j10k\\Desktop\\初心剧场考核章导入.csv";
+        String url = "/Users/kagantuya/Desktop/党建活动/10.31初心剧场考核章导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityStampRequest request=new ActivityStampRequest();
@@ -156,7 +156,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void importOneHour(){
-        String url =  "/Users/kagantuya/Desktop/10.24交换一小时.csv";
+        String url =  "/Users/kagantuya/Desktop/党建活动/10.30献血服务一小时时长导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -176,7 +176,7 @@ public class ActivityRecordServiceTest {
 
     @Test
     public void importVolunteerActivity(){
-        String url = "C:\\Users\\j10k\\Desktop\\2019云栖大会志愿活动录入名单(2).csv";
+        String url = "/Users/kagantuya/Desktop/志愿活动/志愿活动：第五届子衿苑服务社区第一次户外活动.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         for (int i = 1; i < csv.length; i++) {
             ActivityRecordDO activityRecordDO = new ActivityRecordDO();
@@ -260,7 +260,7 @@ public class ActivityRecordServiceTest {
     }
     @Test
     public void check() {
-        String url = "/Users/kagantuya/Desktop/10.24交换一小时.csv";
+        String url = "/Users/kagantuya/Desktop/党建活动/10.31初心剧场考核章导入.csv";
         String[][] csv = CsvUtil.getWithHeader(url);
         List<String> notStampStuIds = new ArrayList<>();
         for (int i = 1; i < csv.length; i++) {
