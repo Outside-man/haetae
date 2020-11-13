@@ -125,7 +125,7 @@ public class RoleController {
      * @param httpServletRequest
      * @return
      */
-    @PostMapping(value = "userBatchRole")
+    @PostMapping(value = "/userBatchRole")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<RoleBO> userBatchRole(RoleUserPermRestRequest request, HttpServletRequest httpServletRequest) {

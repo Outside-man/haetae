@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
+import us.betahouse.haetae.serviceimpl.user.constant.UserPermType;
+import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserBasicService userBasicService;
+
     @Autowired
     private YibanUtil yibanUtil;
 
@@ -67,6 +70,7 @@ public class UserServiceImpl implements UserService {
      */
     @Autowired
     private MultiValidator<UserManageRequest> passwordValidator;
+
 
     @Override
     public CommonUser register(CommonUserRequest request, OperateContext context) {
@@ -144,7 +148,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //@VerifyPerm()
+    @VerifyPerm(permType = UserPermType.USER_PASSWORD_RESET)
     public void modifyPwdByStuId(CommonUserRequest request, OperateContext context) {
 
         UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(request.getStuId());
