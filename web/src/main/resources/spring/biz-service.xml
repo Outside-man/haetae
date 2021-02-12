@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--=================活动操作=================-->
+    <!--活动发布-->
+    <bean id="activityPublish" class="us.betahouse.haetae.serviceimpl.activity.manager.operate.ActivityPublish"/>
+
+    <!--活动取消-->
+    <bean id="activityCancel" class="us.betahouse.haetae.serviceimpl.activity.manager.operate.ActivityCancel"/>
+
+    <!--活动结束-->
+    <bean id="activityFinish" class="us.betahouse.haetae.serviceimpl.activity.manager.operate.ActivityFinish"/>
+
+    <!--活动重启-->
+    <bean id="activityRestart" class="us.betahouse.haetae.serviceimpl.activity.manager.operate.ActivityRestart"/>
+
+    <!--活动操作管理-->
+    <bean id="activityOperateManager" class="us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager">
+        <property name="operateMap">
+            <map>
+                <entry key="publish" value-ref="activityPublish"/>
+                <entry key="cancel" value-ref="activityCancel"/>
+                <entry key="finish" value-ref="activityFinish"/>
+                <entry key="restart" value-ref="activityRestart"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--=================章服务=================-->
+
+    <!--校园活动章服务-->
+    <bean id="schoolActivityStampService"
+          class="us.betahouse.haetae.serviceimpl.activity.manager.stamp.SchoolActivityStampService"/>
+
+    <!--社会实践章服务-->
+    <bean id="practiceActivityStampService"
+          class="us.betahouse.haetae.serviceimpl.activity.manager.stamp.PracticeActivityStampService"/>
+
+    <!--志愿服务章服务-->
+    <bean id="volunteerActivityStampService"
+          class="us.betahouse.haetae.serviceimpl.activity.manager.stamp.VolunteerActivityStampService"/>
+    <!--义工服务章服务-->
+    <bean id="volunteerWorkStampService"
+          class="us.betahouse.haetae.serviceimpl.activity.manager.stamp.VolunteerWorkStampService"/>
+    <!--党员活动章服务-->
+    <bean id="partyActivityStampService"
+          class="us.betahouse.haetae.serviceimpl.activity.manager.stamp.PartyActivityStampService"/>
+    <!--党员实践活动章服务-->
+    <bean id="partyTimeActivityStampService"
+          class="us.betahouse.haetae.serviceimpl.activity.manager.stamp.PartyTimeActivityStampService"/>
+    <!--章服务管理器-->
+    <bean id="stampManager" class="us.betahouse.haetae.serviceimpl.activity.manager.StampManager">
+        <property name="stampServices">
+            <map>
+                <entry key="schoolActivity" value-ref="schoolActivityStampService"/>
+                <entry key="lectureActivity" value-ref="schoolActivityStampService"/>
+                <entry key="practiceActivity" value-ref="practiceActivityStampService"/>
+                <entry key="volunteerActivity" value-ref="volunteerActivityStampService"/>
+                <entry key="volunteerWork" value-ref="volunteerWorkStampService"/>
+                <entry key="partyActivity" value-ref="partyActivityStampService"/>
+                <entry key="partyTimeActivity" value-ref="partyTimeActivityStampService"/>
+            </map>
+        </property>
+    </bean>
+
+
+</beans>
