@@ -5,10 +5,12 @@
 package us.betahouse.haetae.activity.dal.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -19,6 +21,11 @@ import java.util.List;
  */
 @Repository
 public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Long> {
+    
+    @Transactional(rollbackOn = Exception.class)
+    @Modifying
+    void deleteAllByActivityIdAndUserId(String activityId, String userId);
+    
     /**
      * 通过用户id获取活动记录
      *
@@ -26,6 +33,8 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
      * @return
      */
     List<ActivityRecordDO> findByUserId(String userId);
+    
+    List<ActivityRecordDO> findAllByActivityId(String activityId);
 
     /**
      * 通过用户id和活动类型获取活动记录
@@ -81,7 +90,7 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
      */
     ActivityRecordDO findByActivityRecordId(String activityRecordId);
 
-
+    int countAllByUserIdAndType(String userId, String type);
 
     @Query(value = "SELECT sum( 1 ), sum( activity_record.time ),activity_record.user_id,activity_record.type FROM activity_record GROUP BY activity_record.user_id,activity_record.type", nativeQuery = true)
     List<Object[]>  findGroupByActivityTypeAndUserId();

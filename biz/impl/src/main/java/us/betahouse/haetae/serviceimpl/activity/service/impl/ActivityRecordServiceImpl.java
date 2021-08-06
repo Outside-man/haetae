@@ -233,7 +233,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Transactional(rollbackFor = Exception.class)
     public List<String> importStamp(String url) {
         String[][] csv = CsvUtil.getWithHeader(url);
-        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0].substring(1, csv[0][0].length()));
+        AssertUtil.assertEquals(ActivityStampImportTemplateEnum.NAME.getDesc(), csv[0][0]);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.STU_ID.getDesc(), csv[0][1]);
         AssertUtil.assertEquals(ActivityStampImportTemplateEnum.ACTIVITY_NAME.getDesc(), csv[0][2]);
         List<String> notStampStuIds = new ArrayList<>();
