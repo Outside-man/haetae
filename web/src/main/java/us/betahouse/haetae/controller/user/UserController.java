@@ -4,11 +4,13 @@
  */
 package us.betahouse.haetae.controller.user;
 
+import cn.hutool.poi.excel.ExcelUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -25,9 +27,13 @@ import us.betahouse.haetae.serviceimpl.organization.request.OrganizationRequest;
 import us.betahouse.haetae.serviceimpl.organization.service.OrganizationService;
 import us.betahouse.haetae.serviceimpl.user.builder.CommonUserRequestBuilder;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
+import us.betahouse.haetae.serviceimpl.user.request.UploadUserExcelRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
+import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
+import us.betahouse.haetae.user.model.basic.perm.PermBO;
+import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -40,7 +46,8 @@ import us.betahouse.util.utils.CollectionUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -67,6 +74,9 @@ public class UserController {
 
     @Autowired
     private ActivityBlacklistService activityBlacklistService;
+
+    @Autowired
+    private PermRepoService permRepoService;
     /**
      * 登陆
      *
@@ -101,6 +111,18 @@ public class UserController {
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
 
+                List<String> roleNames=new ArrayList<>();
+                CommonUserRequest commonUserRequest=new CommonUserRequest();
+                commonUserRequest.setUserId(userVO.getUserId());
+                Collection<RoleBO> values = userService.fetchUserRoles(commonUserRequest, context).values();
+                Iterator<RoleBO> ite= values.iterator();
+                while (ite.hasNext()){
+                    roleNames.add(ite.next().getRoleName());
+                }
+                List<String> roleIds=CollectionUtils.toStream(values).map(RoleBO::getRoleId).collect(Collectors.toList());
+                List<String> rolePermNames = CollectionUtils.toStream(permRepoService.batchQueryPermByRoleId(roleIds)).map(PermBO::getPermName).collect(Collectors.toList());
+                rolePermNames.addAll(roleNames);
+                userVO.setRoleInfo(rolePermNames);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
@@ -133,6 +155,19 @@ public class UserController {
                 organizationRequest.setMemberId(userVO.getUserId());
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
+
+                List<String> roleNames=new ArrayList<>();
+                CommonUserRequest commonUserRequest=new CommonUserRequest();
+                commonUserRequest.setUserId(userVO.getUserId());
+                Collection<RoleBO> values = userService.fetchUserRoles(commonUserRequest, context).values();
+                Iterator<RoleBO> ite= values.iterator();
+                while (ite.hasNext()){
+                    roleNames.add(ite.next().getRoleName());
+                }
+                List<String> roleIds=CollectionUtils.toStream(values).map(RoleBO::getRoleId).collect(Collectors.toList());
+                List<String> rolePermNames = CollectionUtils.toStream(permRepoService.batchQueryPermByRoleId(roleIds)).map(PermBO::getPermName).collect(Collectors.toList());
+                rolePermNames.addAll(roleNames);
+                userVO.setRoleInfo(rolePermNames);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
@@ -199,6 +234,18 @@ public class UserController {
 
                 response.addCookie(cookie);
 
+                List<String> roleNames=new ArrayList<>();
+                CommonUserRequest commonUserRequest=new CommonUserRequest();
+                commonUserRequest.setUserId(userVO.getUserId());
+                Collection<RoleBO> values = userService.fetchUserRoles(commonUserRequest, context).values();
+                Iterator<RoleBO> ite= values.iterator();
+                while (ite.hasNext()){
+                    roleNames.add(ite.next().getRoleName());
+                }
+                List<String> roleIds=CollectionUtils.toStream(values).map(RoleBO::getRoleId).collect(Collectors.toList());
+                List<String> rolePermNames = CollectionUtils.toStream(permRepoService.batchQueryPermByRoleId(roleIds)).map(PermBO::getPermName).collect(Collectors.toList());
+                rolePermNames.addAll(roleNames);
+                userVO.setRoleInfo(rolePermNames);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
@@ -233,6 +280,12 @@ public class UserController {
                 organizationRequest.setMemberId(userVO.getUserId());
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
+
+                CommonUserRequest commonUserRequest=new CommonUserRequest();
+                commonUserRequest.setUserId(userVO.getUserId());
+                List<String> roleIds=CollectionUtils.toStream(userService.fetchUserRoles(commonUserRequest,context).values()).map(RoleBO::getRoleId).collect(Collectors.toList());
+                List<String> rolePermNames = CollectionUtils.toStream(permRepoService.batchQueryPermByRoleId(roleIds)).map(PermBO::getPermName).collect(Collectors.toList());
+                userVO.setRoleInfo(rolePermNames);
                 return RestResultUtil.buildSuccessResult(userVO, "登陆成功");
             }
         });
@@ -269,6 +322,11 @@ public class UserController {
                 List<String> list= CollectionUtils.toStream(organizationService.queryOrganizationMemberByMemberId(organizationRequest)).map(OrganizationMemberBO::findJob).distinct().collect(Collectors.toList());
                 userVO.setJobInfo(list);
 
+                CommonUserRequest commonUserRequest=new CommonUserRequest();
+                commonUserRequest.setUserId(userVO.getUserId());
+                List<String> roleIds=CollectionUtils.toStream(userService.fetchUserRoles(commonUserRequest,context).values()).map(RoleBO::getRoleId).collect(Collectors.toList());
+                List<String> rolePermNames = CollectionUtils.toStream(permRepoService.batchQueryPermByRoleId(roleIds)).map(PermBO::getPermName).collect(Collectors.toList());
+                userVO.setRoleInfo(rolePermNames);
                 return RestResultUtil.buildSuccessResult(userVO, "获取信息成功");
             }
         });
@@ -450,6 +508,28 @@ public class UserController {
                 CommonUserRequest commonUserRequest = builder.build();
                 userService.modifyUserMajorAndClassAndGrade(commonUserRequest, context);
                 return RestResultUtil.buildSuccessResult("信息登记成功");
+            }
+        });
+    }
+
+    @PostMapping("/uploadUserExcel")
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<String>> uploadUserExcel(@PathVariable("file") MultipartFile file,UserRequest request,HttpServletRequest httpServletRequest){
+        return RestOperateTemplate.operate(LOGGER, "根据excel批量创建用户", null, new RestOperateCallBack<List<String>>() {
+            @Override
+            public void before() {
+                RestOperateCallBack.super.before();
+            }
+
+            @Override
+            public Result<List<String>> execute() throws IOException {
+                UploadUserExcelRequest uploadUserExcelRequest=new UploadUserExcelRequest();
+                uploadUserExcelRequest.setUserId(request.getUserId());
+                OperateContext context=new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                List<String> titles=userService.saveUserByExcel(uploadUserExcelRequest,file,context);
+                return RestResultUtil.buildSuccessResult(titles,"导入excel成功，返回标题");
             }
         });
     }

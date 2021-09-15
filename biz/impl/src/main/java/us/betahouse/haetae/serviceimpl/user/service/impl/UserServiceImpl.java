@@ -4,16 +4,23 @@
  */
 package us.betahouse.haetae.serviceimpl.user.service.impl;
 
+import cn.hutool.poi.excel.ExcelReader;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.user.constant.UserPermType;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
+import us.betahouse.haetae.serviceimpl.user.request.UploadUserExcelRequest;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
@@ -27,13 +34,19 @@ import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.user.utils.EncryptUtil;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
+import us.betahouse.util.template.ExcelTemplate;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.DateUtil;
+import us.betahouse.util.utils.ExcelUtil;
+import us.betahouse.util.utils.LoggerUtil;
 import us.betahouse.util.validator.MultiValidator;
 import us.betahouse.util.wechat.WeChatLoginUtil;
 import us.betahouse.util.yiban.YibanUtil;
 
-import java.util.Map;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 用户服务实现
@@ -182,6 +195,72 @@ public class UserServiceImpl implements UserService {
         CommonUser commonUser = userBasicService.getByUserId(userId);
         commonUser.setAvatarUrl(queryByUserId(userId,context).getAvatarUrl());
        return commonUser;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+//    @VerifyPerm(permType = )
+    public List<String> saveUserByExcel(UploadUserExcelRequest request, MultipartFile file, OperateContext context) {
+        int index=file.getOriginalFilename().indexOf(".");
+        String fileType=file.getOriginalFilename().substring(index+1);
+        Workbook workbook;
+        List<String> titles=new ArrayList<>();
+        try {
+            if(fileType.equalsIgnoreCase("xls")){
+                workbook=new HSSFWorkbook(file.getInputStream());
+            }else if(fileType.equalsIgnoreCase("xlsx")){
+                workbook=new XSSFWorkbook(file.getInputStream());
+            }else {
+                throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"文件格式错误");
+            }
+        } catch (IOException e) {
+            throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"读取文件失败");
+        }
+        List<ExcelTemplate> excelTemplates = ExcelUtil.parseExcel(workbook);
+
+        for (ExcelTemplate excelTemplate : excelTemplates) {
+            Map<String, List<String>> data = excelTemplate.getDate();
+            for (int i = 0; i < excelTemplate.getColumnNum(); i++) {
+                List<String> list;
+                CommonUserRequest commonUserRequest=new CommonUserRequest();
+                UserInfoBO userInfoBO=new UserInfoBO();
+                if(data.get("姓名")!=null){
+                    list=data.get("姓名");
+                    userInfoBO.setRealName(list.get(i));
+                    commonUserRequest.setUsername(list.get(i));
+                }
+                if(data.get("学号")!=null){
+                    list=data.get("学号");
+                    userInfoBO.setStuId(list.get(i));
+                    commonUserRequest.setStuId(list.get(i));
+                }
+                if(data.get("初始密码")!=null){
+                    list=data.get("初始密码");
+
+                    commonUserRequest.setPassword(list.get(i));
+                }
+                if(data.get("性别")!=null){
+                    list=data.get("性别");
+                    userInfoBO.setSex(list.get(i));
+                }
+                if(data.get("专业")!=null){
+                    list=data.get("专业");
+                    userInfoBO.setMajor(list.get(i));
+                }
+                if(data.get("年级")!=null){
+                    list=data.get("年级");
+                    userInfoBO.setGrade(list.get(i));
+            }
+                commonUserRequest.setSalt(UUID.randomUUID().toString());
+                userInfoBO.setEnrollDate(new Date());
+                commonUserRequest.setUserInfoBO(userInfoBO);
+                userManager.create(commonUserRequest);
+            }
+            if(StringUtils.isNotBlank(excelTemplate.getTitle())){
+                titles.add(excelTemplate.getTitle());
+            }
+        }
+        return titles;
     }
 
 

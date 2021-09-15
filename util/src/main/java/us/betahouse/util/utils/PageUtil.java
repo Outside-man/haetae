@@ -27,6 +27,7 @@ public class PageUtil<T> {
 
     /**
      * 当前页
+     * 首页是第 0 页不是第 1 页
      */
     private Integer number;
 

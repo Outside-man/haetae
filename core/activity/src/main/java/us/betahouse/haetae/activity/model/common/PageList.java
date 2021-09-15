@@ -5,6 +5,7 @@
 package us.betahouse.haetae.activity.model.common;
 
 import org.springframework.data.domain.Page;
+import us.betahouse.util.utils.PageUtil;
 
 import java.util.Collection;
 import java.util.List;
@@ -101,6 +102,26 @@ public class PageList<E> {
                 .collect(Collectors.toList());
     }
 
+    private void init(PageUtil pageUtil){
+        this.totalElements=pageUtil.getTotalElements().longValue();
+        this.totalPages=pageUtil.getTotalPages()+1;
+        this.size=pageUtil.getSize();
+        this.number=pageUtil.getNumber()+1;
+        this.numberOfElements=pageUtil.getNumberOfElements();
+        this.first=pageUtil.getFirst();
+        this.end=pageUtil.getEnd();
+        this.content=pageUtil.getData();
+    }
+
+    /**
+     * PageUtil<T> ->PageList<T>
+     *
+     * @param pageUtil  util/src/main/java/us/betahouse/util/utils/PageUtil.java
+     */
+    public PageList(PageUtil<?> pageUtil){
+        this.init(pageUtil);
+    }
+
     /**
      * Page<V> ->PageList<T>
      *
@@ -162,6 +183,8 @@ public class PageList<E> {
     public List<E> getContent() {
         return content;
     }
+
+    public void setContent(List<E> content){this.content=content;}
 
 
     /**

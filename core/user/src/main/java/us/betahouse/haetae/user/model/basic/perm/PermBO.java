@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.model.basic.perm;
 import org.hibernate.validator.constraints.NotBlank;
 import us.betahouse.util.common.ToString;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +42,16 @@ public class PermBO extends ToString {
      * 权限描述
      */
     private String permDesc;
+
+    /**
+     * 权限有效期开始时间(现仅为导章时使用)
+     */
+    private Date start;
+
+    /**
+     * 权限有效期结束时间(现仅为导章时使用)
+     */
+    private Date end;
 
     /**
      * 拓展信息
@@ -112,5 +123,21 @@ public class PermBO extends ToString {
 
     public void setExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }

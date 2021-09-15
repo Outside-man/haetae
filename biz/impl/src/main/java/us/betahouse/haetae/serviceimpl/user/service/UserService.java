@@ -4,13 +4,16 @@
  */
 package us.betahouse.haetae.serviceimpl.user.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
+import us.betahouse.haetae.serviceimpl.user.request.UploadUserExcelRequest;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -134,5 +137,16 @@ public interface UserService {
      * @return
      */
     CommonUser queryCommonByUserId(String userId, OperateContext context);
+
+
+    /**
+     * excel保存用户信息,返回excel表标题
+     *
+     * @param request
+     * @param file
+     * @param context
+     * @return
+     */
+    List<String> saveUserByExcel(UploadUserExcelRequest request, MultipartFile file, OperateContext context);
 }
 

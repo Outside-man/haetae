@@ -189,4 +189,20 @@ public interface PermRepoService {
      * @return
      */
     List<UserPermRelationBO> getUserPermRelationsOrderByCreate(String permId);
+
+    /**
+     * 效验当前时间是否能盖章
+     *
+     * @param permId
+     * @return
+     */
+    boolean verifyStampTime(String permId);
+
+    /**
+     * 根据权限id查找权限
+     *
+     * @param permId
+     * @return
+     */
+    PermBO queryPermByPermId(String permId);
 }
