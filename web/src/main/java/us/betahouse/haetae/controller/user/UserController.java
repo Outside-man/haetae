@@ -6,6 +6,7 @@ package us.betahouse.haetae.controller.user;
 
 import cn.hutool.poi.excel.ExcelUtil;
 import org.apache.commons.lang.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,9 @@ import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
+import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.enums.RestResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
@@ -46,7 +49,8 @@ import us.betahouse.util.utils.CollectionUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -516,14 +520,14 @@ public class UserController {
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<String>> uploadUserExcel(@PathVariable("file") MultipartFile file,UserRequest request,HttpServletRequest httpServletRequest){
-        return RestOperateTemplate.operate(LOGGER, "根据excel批量创建用户", null, new RestOperateCallBack<List<String>>() {
+        return RestOperateTemplate.operate(LOGGER, "根据excel批量创建用户", request, new RestOperateCallBack<List<String>>() {
             @Override
             public void before() {
-                RestOperateCallBack.super.before();
+                AssertUtil.assertNotNull(file,CommonResultCode.ILLEGAL_PARAMETERS.getCode(),"上传文件不能为空");
             }
 
             @Override
-            public Result<List<String>> execute() throws IOException {
+            public Result<List<String>> execute(){
                 UploadUserExcelRequest uploadUserExcelRequest=new UploadUserExcelRequest();
                 uploadUserExcelRequest.setUserId(request.getUserId());
                 OperateContext context=new OperateContext();
@@ -533,4 +537,50 @@ public class UserController {
             }
         });
     }
+
+    @GetMapping("/downloadMoban")
+    public Result<String> download(UserRequest request,HttpServletResponse response) {
+        return RestOperateTemplate.operate(LOGGER, "根据excel批量创建用户", request, new RestOperateCallBack<String>() {
+            @Override
+            public void before() {
+                RestOperateCallBack.super.before();
+            }
+            @Override
+            public Result<String> execute() throws IOException {
+                String filePath = "web/src/main/resources/download";
+                String fileName = "xinshenmoban.xlsx";
+                File file = new File(filePath + File.separator + fileName);
+                FileInputStream fileInputStream = new FileInputStream(file);
+                InputStream fis = new BufferedInputStream(fileInputStream);
+                OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+                try {
+                    byte[] buffer = new byte[1024];
+                    // 清空response
+                    response.reset();
+// 设置response的Header
+                    response.setCharacterEncoding("UTF-8");
+//Content-Disposition的作用：告知浏览器以何种方式显示响应返回的文件，用浏览器打开还是以附件的形式下载到本地保存
+//attachment表示以附件方式下载 inline表示在线打开 "Content-Disposition: inline; filename=文件名.mp3"
+// filename表示文件的默认名称，因为网络传输只支持URL编码的相关支付，因此需要将文件名URL编码后进行传输,前端收到后需要反编码才能获取到真正的名称
+                    response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+// 告知浏览器文件的大小
+                    response.addHeader("Content-Length", "" + file.length());
+                    response.setContentType("application/octet-stream");
+                    while (fis.read(buffer)!=-1){
+                        outputStream.write(buffer);
+                    }
+                    outputStream.flush();
+                } catch (Exception e) {
+                    throw new BetahouseException(CommonResultCode.SYSTEM_ERROR.getCode(),"下载文件失败，资源不存在或未找到");
+                }finally {
+                    fileInputStream.close();
+                    fis.close();
+                    outputStream.close();
+                }
+                return RestResultUtil.buildSuccessResult("下载成功", "导入excel成功，返回标题");
+            }
+        });
+    }
 }
+
+
