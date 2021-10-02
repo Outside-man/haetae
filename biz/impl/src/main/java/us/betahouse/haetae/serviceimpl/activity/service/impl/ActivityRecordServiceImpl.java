@@ -4,6 +4,9 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service.impl;
 
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import com.csvreader.CsvWriter;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.model.ActivityRecordDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
@@ -45,11 +49,17 @@ import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.CsvUtil;
 import us.betahouse.util.utils.LoggerUtil;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -287,6 +297,89 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
         }
         parseActivityRecordStatistics(recordStatistics, activityRecords);
         return recordStatistics;
+    }
+
+    @Override
+    public List<String> exportExcel(ActivityStampRequest request, OperateContext context) throws IOException {
+        ActivityDO activityDO = activityDORepo.findByActivityId(request.getActivityId());
+        FileSystemView fsv = FileSystemView.getFileSystemView();
+        File com=fsv.getHomeDirectory();
+        //导到桌面上
+        CsvWriter csvWriter = new CsvWriter(com.getPath()+"\\"+activityDO.getActivityName()+"导出名单.csv", ',', Charset.forName("GBK"));
+        String[] headers ={"学号", "姓名","专业","年级","班级"};
+        csvWriter.writeRecord(headers);
+        List<ActivityRecordBO> activityRecordBOList = activityRecordManager.queryByActivityId(request.getActivityId());
+        List<String> users = new LinkedList<>();
+        for (ActivityRecordBO activityRecordBO : activityRecordBOList){
+            users.add(activityRecordBO.getUserId());
+        }
+        List<UserInfoBO> userInfoBOList = userInfoRepoService.batchQueryByUserIds(users);
+        int i=1;
+        for (UserInfoBO userInfoBO : userInfoBOList) {
+            i++;
+            String[] content = new String[15];
+            content[0] = userInfoBO.getStuId();
+            content[1] = userInfoBO.getRealName();
+            content[2] = userInfoBO.getMajor();
+            content[3] = userInfoBO.getGrade();
+            content[4] = userInfoBO.getClassId();
+
+            csvWriter.writeRecord(content);
+        }
+        csvWriter.close();
+        return null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<String> importExcel(MultipartFile multipartFile, ActivityStampRequest request, OperateContext context) {
+        ExcelReader excelReader;
+        try {
+            excelReader = ExcelUtil.getReader(multipartFile.getInputStream());
+            System.out.println(multipartFile.getInputStream());
+        } catch (Exception e) {
+            throw new BetahouseException(CommonResultCode.FORBIDDEN,"文件读取错误");
+        }
+        AssertUtil.assertBigger(2, excelReader.getRowCount(), CommonResultCode.FORBIDDEN.getCode(), "文件不得少于两行信息，本次批量导入未进行");
+        List<List<Object>> read = excelReader.read(0, excelReader.getRowCount());
+        List<String> header = new ArrayList<>(Arrays.asList("学号", "姓名", "班级"));
+        AssertUtil.assertTrue(header.equals(read.get(0)), CommonResultCode.FORBIDDEN, MessageFormat.format("表头格式错误，正确模板为{0}", header));
+        read.remove(0);
+
+        List<String> notStampStuIds = new ArrayList<>();
+        for (List<Object> objects : read) {
+            AssertUtil.assertNotNull(objects.get(0), CommonResultCode.FORBIDDEN.getCode(), "存在缺少学号，本次批量导入未进行");
+            AssertUtil.assertNotNull(objects.get(1), CommonResultCode.FORBIDDEN.getCode(), "存在缺少姓名，本次批量导入未进行");
+            AssertUtil.assertNotNull(objects.get(2), CommonResultCode.FORBIDDEN.getCode(), "存在缺少班级，本次批量导入未进行");
+
+            String studid = String.valueOf(objects.get(0));//学号
+            String realname = String.valueOf(objects.get(1));//姓名
+            String stuclass = String.valueOf(objects.get(2));//班级
+
+            AssertUtil.assertNotNull(studid, CommonResultCode.FORBIDDEN.getCode(), "存在学号为空，本次批量导入未进行");
+            AssertUtil.assertNotNull(realname, CommonResultCode.FORBIDDEN.getCode(), "存在姓名为空，本次批量导入未进行");
+            AssertUtil.assertNotNull(stuclass, CommonResultCode.FORBIDDEN.getCode(), "存在班级为空，本次批量导入未进行");
+
+            ActivityBO activityBO = activityRepoService.queryActivityByActivityId(request.getActivityId());
+            activityBO.setState(ActivityStateEnum.RESTARTED.getCode());
+            activityRepoService.updateActivity(activityBO);
+
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByStuId(studid);//根据学号查找用户
+            if (userInfoBO == null) {
+                notStampStuIds.add(studid);
+                continue;
+            }
+            request.setScannerUserId(request.getUserId());
+            request.setStatus("ENABLE");
+            request.setTerm(activityBO.getTerm());
+            List<String> inList = new ArrayList<>();
+            inList.add(userInfoBO.getUserId());
+            stampManager.batchStamp(request, inList);//绑定章
+
+            activityBO.setState(ActivityStateEnum.FINISHED.getCode());
+            activityRepoService.updateActivity(activityBO);
+        }
+        return notStampStuIds;
     }
 
     /**

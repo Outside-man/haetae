@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.serviceimpl.activity.model.ActivityRecordStatistics;
@@ -11,6 +12,7 @@ import us.betahouse.haetae.serviceimpl.activity.model.StampRecord;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityStampRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -93,4 +95,23 @@ public interface ActivityRecordService {
     default ActivityRecordStatistics fetchUserRecordStatistics(String userId) {
         return fetchUserRecordStatistics(userId, null);
     }
+
+    /**
+     * （excel）批量导出活动章名单
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    List<String> exportExcel(ActivityStampRequest request, OperateContext context) throws IOException;
+
+    /**
+     * （excel）批量导入活动章
+     *
+     * @param file
+     * @param request
+     * @param context
+     * @return
+     */
+    List<String> importExcel(MultipartFile file, ActivityStampRequest request, OperateContext context);
 }

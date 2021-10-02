@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,4 +106,48 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      */
     @Query(value = "SELECT * from activity ORDER BY id desc LIMIT 10 ",nativeQuery = true)
     List<ActivityDO> findFirst10OrOrderByStart();
+
+    /**
+     * 通过用户Id分页查询
+     *
+     * @param pageable 分页工具
+     * @param userId
+
+     * @return Page<ActivityDO>
+     */
+    Page<ActivityDO> findByUserId(Pageable pageable, String userId);
+
+    /**
+     * 已审批通过的活动分页查询
+     *
+     * @param pageable 分页工具
+     * @param state     状态
+     * @param stuId 学号
+     * @param activityName 活动名
+     * @param organizationMessage 组织单位
+
+     * @return Page<ActivityDO>
+     */
+    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 " +
+            "and organization_message like ?4 and user_id in(select user_id from common_user_info where stu_id like ?2 ) "
+            ,nativeQuery = true)
+    Page<ActivityDO>  findApproved(Pageable pageable, String state,String stuId, String activityName ,String organizationMessage);
+
+    /**
+     * 已审批通过的活动（添加时间）分页查询
+     *
+     * @param pageable 分页工具
+     * @param state     状态
+     * @param stuId 学号
+     * @param activityName 活动名
+     * @param organizationMessage 组织单位
+     * @param start 活动开始时间
+     * @param end 活动结束时间
+
+     * @return Page<ActivityDO>
+     */
+    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 and organization_message like ?4 " +
+            "and start >= ?5 and end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
+    Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date start, Date end);
+
 }

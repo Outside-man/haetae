@@ -94,4 +94,12 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
 
     @Query(value = "SELECT sum( 1 ), sum( activity_record.time ),activity_record.user_id,activity_record.type FROM activity_record GROUP BY activity_record.user_id,activity_record.type", nativeQuery = true)
     List<Object[]>  findGroupByActivityTypeAndUserId();
+
+    /**
+     * 根据活动Id获取记录
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityRecordDO> queryByActivityId(String activityId);
 }

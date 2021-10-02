@@ -24,6 +24,7 @@ public final class ActivityManagerRequestBuilder {
     private Long start;
     private Long end;
     private Long score;
+    private String applicationStamper;
     private String description;
     private String userId;
     private String state;
@@ -90,6 +91,11 @@ public final class ActivityManagerRequestBuilder {
         return this;
     }
 
+    public ActivityManagerRequestBuilder withApplicationStamper(String applicationStamper) {
+        this.applicationStamper = applicationStamper;
+        return this;
+    }
+
     public ActivityManagerRequestBuilder withDescription(String description) {
         this.description = description;
         return this;
@@ -138,6 +144,7 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setStart(start);
         activityManagerRequest.setEnd(end);
         activityManagerRequest.setScore(score);
+        activityManagerRequest.setApplicationStamper(applicationStamper);
         activityManagerRequest.setDescription(description);
         activityManagerRequest.setUserId(userId);
         activityManagerRequest.setState(state);

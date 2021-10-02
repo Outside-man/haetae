@@ -79,4 +79,12 @@ public interface ActivityRecordManager {
     ActivityRecordBO updateScannerName(String activityRecordId,String scannerName);
 
     List<ActivityRecordBO> findAll();
+
+    /**
+     * 通过活动id查询活动记录
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityRecordBO> queryByActivityId(String activityId);
 }

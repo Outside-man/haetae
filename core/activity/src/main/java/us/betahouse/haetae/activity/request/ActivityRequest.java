@@ -65,6 +65,11 @@ public class ActivityRequest extends BaseRequest {
     private Long score;
 
     /**
+     * 活动分数
+     */
+    private String applicationStamper;
+
+    /**
      * 活动描述
      */
     private String description;
@@ -214,6 +219,14 @@ public class ActivityRequest extends BaseRequest {
 
     public void setScore(Long score) {
         this.score = score;
+    }
+
+    public String getApplicationStamper() {
+        return applicationStamper;
+    }
+
+    public void setApplicationStamper(String applicationStamper) {
+        this.applicationStamper = applicationStamper;
     }
 
     public String getDescription() {
