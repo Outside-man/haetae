@@ -123,6 +123,21 @@ public class ActivityRestRequest extends RestRequest {
      */
     private Long pastLectureActivity;
 
+    /**
+     * 活动盖章开始时间
+     */
+    private Long activityStampedStart;
+
+    /**
+     * 活动盖章结束时间
+     */
+    private Long activityStampedEnd;
+
+    /**
+     * 通过负责人学号关键字查找
+     */
+    private String searchCreatorStuId;
+
     public String getOrderRule() {
         return orderRule;
     }
@@ -284,5 +299,29 @@ public class ActivityRestRequest extends RestRequest {
 
     public void setPastLectureActivity(Long pastLectureActivity) {
         this.pastLectureActivity = pastLectureActivity;
+    }
+
+    public Long getActivityStampedStart() {
+        return activityStampedStart;
+    }
+
+    public void setActivityStampedStart(Long activityStampedStart) {
+        this.activityStampedStart = activityStampedStart;
+    }
+
+    public Long getActivityStampedEnd() {
+        return activityStampedEnd;
+    }
+
+    public void setActivityStampedEnd(Long activityStampedEnd) {
+        this.activityStampedEnd = activityStampedEnd;
+    }
+
+    public String getSearchCreatorStuId() {
+        return searchCreatorStuId;
+    }
+
+    public void setSearchCreatorStuId(String searchCreatorStuId) {
+        this.searchCreatorStuId = searchCreatorStuId;
     }
 }

@@ -66,7 +66,20 @@ public class UserRequest extends RestRequest {
      * 学期
      */
     private String term;
-    
+
+    /**
+     * b
+     */
+    private String operatedId;
+
+    public String getOperatedId() {
+        return operatedId;
+    }
+
+    public void setOperatedId(String operatedId) {
+        this.operatedId = operatedId;
+    }
+
     public String getAvatarUrl() {
         return avatarUrl;
     }

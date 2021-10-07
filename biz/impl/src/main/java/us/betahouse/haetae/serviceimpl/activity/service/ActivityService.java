@@ -110,4 +110,20 @@ public interface ActivityService {
      * @param context
      */
     void  assignPastRecord(ActivityManagerRequest request,OperateContext context);
+
+    /**
+     * 完善活动扫章时间起止日期
+     *
+     * @param activityBOS
+     * @return
+     */
+    List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS);
+
+    /**
+     * 完善活动的创建者的stuId，将其放置在(额外信息)extInfo中
+     *
+     * @param activityBOS
+     * @return
+     */
+    List<ActivityBO> fillActivityCreatorStuId(List<ActivityBO> activityBOS);
 }

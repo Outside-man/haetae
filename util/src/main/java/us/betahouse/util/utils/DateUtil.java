@@ -38,7 +38,7 @@ public class DateUtil {
 
     private static final String TIME_DESCRIPTION = "yyyy年MM月dd日 HH:mm";
 
-    private static final String TIME_DATABASE = "yyyy-MM-dd HH:mm:ss";
+    public static final String TIME_DATABASE = "yyyy-MM-dd HH:mm:ss";
 
     private static final String TIME_MONTH_DAY = "MM月dd日";
 
@@ -188,7 +188,23 @@ public class DateUtil {
        return calendar.getTime();
    }
 
-
+    /**
+     * 验证该字符串是否可以转换为特定DATA
+     */
+    public static boolean isValidDate(String str,String dataFormat) {
+        boolean convertSuccess=true;
+        // 指定日期格式
+        SimpleDateFormat format = new SimpleDateFormat(dataFormat);
+        try {
+            // 设置lenient为false. 否则SimpleDateFormat会比较宽松地验证日期，比如2007/02/29会被接受，并转换成2007/03/01
+            format.setLenient(false);
+            format.parse(str);
+        } catch (ParseException e) {
+            // 如果throw java.text.ParseException或者NullPointerException，就说明格式不对
+            convertSuccess=false;
+        }
+        return convertSuccess;
+    }
 
 
 }

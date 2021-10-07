@@ -40,6 +40,7 @@ import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
+import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -88,6 +89,9 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Autowired
     private BizIdFactory activityBizFactory;
 
+    @Autowired
+    private PermRepoService permRepoService;
+
     /**
      * 章管理器
      */
@@ -98,6 +102,11 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     public List<String> batchStamp(ActivityStampRequest request, OperateContext context) {
         // 校验盖章权限
         AssertUtil.assertTrue(verifyStampPerm(request), CommonResultCode.FORBIDDEN, "没有该活动的盖章权限");
+
+        //效验是否在扫章时间段内
+        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
+        String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+        AssertUtil.assertTrue(permRepoService.verifyStampTime(stampPermId),"当前时间不在扫章时间段内");
 
         // 没有盖章成功的学号
         List<String> notStampStuIds = new ArrayList<>();

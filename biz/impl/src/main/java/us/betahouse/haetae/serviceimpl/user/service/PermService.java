@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.user.service;
 
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.user.request.PermRequest;
 import us.betahouse.haetae.serviceimpl.user.request.RoleUserPermRequest;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
@@ -65,4 +66,12 @@ public interface PermService {
      * @return
      */
     List<PermBO> findAllNotContainStamperAndFinance();
+
+    /**
+     * 更新权限的有效期(当前仅限扫章权限)
+     *
+     * @param request
+     * @return
+     */
+    PermBO updatePermStartAndEndTimeByPermId(PermRequest request,OperateContext context);
 }

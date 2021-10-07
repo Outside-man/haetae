@@ -134,6 +134,16 @@ public class ActivityRequest extends BaseRequest {
      */
     private Long pastPracticeActivity;
 
+    /**
+     * 活动盖章开始时间
+     */
+    private Long activityStampedTimeStart;
+
+    /**
+     * 活动盖章结束时间
+     */
+    private Long activityStampedTimeEnd;
+
     private PastActivityBO pastActivityBO;
 
     public String getOrderRule() {
@@ -327,5 +337,21 @@ public class ActivityRequest extends BaseRequest {
 
     public void setPastActivityBO(PastActivityBO pastActivityBO) {
         this.pastActivityBO = pastActivityBO;
+    }
+
+    public Long getActivityStampedTimeStart() {
+        return activityStampedTimeStart;
+    }
+
+    public void setActivityStampedTimeStart(Long activityStampedTimeStart) {
+        this.activityStampedTimeStart = activityStampedTimeStart;
+    }
+
+    public Long getActivityStampedTimeEnd() {
+        return activityStampedTimeEnd;
+    }
+
+    public void setActivityStampedTimeEnd(Long activityStampedTimeEnd) {
+        this.activityStampedTimeEnd = activityStampedTimeEnd;
     }
 }
