@@ -10,6 +10,7 @@ import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -88,4 +89,28 @@ public interface ActivityManager {
      * @return
      */
     PastActivityBO updatePast(ActivityRequest request);
+
+    /**
+     * 查找活动By UserId 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findByUserId(ActivityRequest request);
+
+    /**
+     * 查找已审批通过的活动 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApproved(ActivityRequest request);
+
+    /**
+     * 查找已审批通过的活动(添加time) 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApprovedAddTime(ActivityRequest request) throws ParseException;
 }

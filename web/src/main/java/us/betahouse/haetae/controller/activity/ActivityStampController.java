@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -36,6 +37,7 @@ import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -324,5 +326,70 @@ public class ActivityStampController {
         });
     }
 
+    /**
+     * （excel）批量导出活动章
+     *
+     * @param
+     * @param httpServletRequest
+     * @return
+     */
+//    @CrossOrigin
+    @PostMapping(value = "exportExcel")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<String>> exportExcel(StamperRequest request,HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "（excel）批量导出活动章", request, new RestOperateCallBack<List<String>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+
+            @Override
+            public Result<List<String>> execute() throws IOException {
+                //暂时还是用了导出csv
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityStampRequest activityStampRequest=new ActivityStampRequest();
+                activityStampRequest.setActivityId(request.getActivityId());
+                List<String> unbathRows=activityRecordService.exportExcel(activityStampRequest,context);
+                return RestResultUtil.buildSuccessResult(unbathRows, "（excel）批量导出活动名单成功");
+            }
+        });
+    }
+
+    /**
+     * （excel）批量导入活动章
+     *
+     * @param file
+     * @param httpServletRequest
+     * @return
+     */
+//    @CrossOrigin
+    @PostMapping(value = "importExcel")
+//    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<List<String>> importExcel(MultipartFile file, StamperRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "（excel）批量导入活动章", request, new RestOperateCallBack<List<String>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+
+            @Override
+            public Result<List<String>> execute() {
+                //一个活动用户只能参与一次即只能获得一个章，则重复导入两条相同数据，用户也只能获得一个章。
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityStampRequest activityStampRequest=new ActivityStampRequest();
+                activityStampRequest.setUserId(request.getUserId());//执行者id
+                activityStampRequest.setActivityId(request.getActivityId());//活动id
+                List<String> unbathRows=activityRecordService.importExcel(file,activityStampRequest,context);
+                return RestResultUtil.buildSuccessResult(unbathRows, "批量导入活动章成功");
+            }
+        });
+    }
 
 }
+

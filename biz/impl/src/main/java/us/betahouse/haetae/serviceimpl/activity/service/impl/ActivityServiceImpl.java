@@ -42,6 +42,7 @@ import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.NumberUtils;
 
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -340,6 +341,107 @@ public class ActivityServiceImpl implements ActivityService {
             list.add(activityBO);
         }
         return list;
+    }
+
+    @Override
+    public PageList<ActivityBO> findByUserId(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        ActivityRequest re=new ActivityRequest();
+        re.setUserId(request.getUserId());
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+
+        return activityManager.findByUserId(re);
+    }
+
+    @Override
+    public PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String stuId = "%" + "" + "%";
+        String activityName = "%" + "" + "%";
+        String organizationMessage = "%" + "" + "%";
+        Long startTime = request.getStart();
+        Long endTime = request.getEnd();
+
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getUserId())){
+            stuId = "%" + request.getUserId() + "%";
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        if(StringUtils.isNotBlank(request.getOrganizationMessage())){
+            organizationMessage = "%" + request.getOrganizationMessage() + "%";
+        }
+
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re = new ActivityRequest();
+
+
+        //有时间
+        if (startTime != null && endTime != null && String.valueOf(startTime).length() !=0 && String.valueOf(endTime).length() !=0 ){
+            re.setState(request.getState());
+            re.setPage(page);
+            re.setLimit(limit);
+            re.setOrderRule(orderRule);
+            re.setStuId(stuId);
+            re.setActivityName(activityName);
+            re.setOrganizationMessage(organizationMessage);
+            re.setStart(startTime);
+            re.setEnd(endTime);
+
+            activityBOPageList = activityManager.findApprovedAddTime(re);
+        }else {//无时间
+            re.setState(request.getState());
+            re.setPage(page);
+            re.setLimit(limit);
+            re.setOrderRule(orderRule);
+            re.setStuId(stuId);
+            re.setActivityName(activityName);
+            re.setOrganizationMessage(organizationMessage);
+            activityBOPageList = activityManager.findApproved(re);
+        }
+
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getUserId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+
+            activityBO.setStuId(getstuId);
+        });
+
+        return activityBOPageList;
+
     }
 
     /**

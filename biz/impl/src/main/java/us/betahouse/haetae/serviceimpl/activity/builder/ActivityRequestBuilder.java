@@ -60,6 +60,10 @@ public final class ActivityRequestBuilder {
      */
     private Long score;
     /**
+     * 申请章数
+     */
+    private String applicationStamper;
+    /**
      * 描述
      */
     private String description;
@@ -138,6 +142,11 @@ public final class ActivityRequestBuilder {
         return this;
     }
 
+    public ActivityRequestBuilder withApplicationStamper(String applicationStamper) {
+        this.applicationStamper = applicationStamper;
+        return this;
+    }
+
     public ActivityRequestBuilder withDescription(String description) {
         this.description = description;
         return this;
@@ -171,6 +180,7 @@ public final class ActivityRequestBuilder {
         activityRequest.setStart(start);
         activityRequest.setEnd(end);
         activityRequest.setScore(score);
+        activityRequest.setApplicationStamper(applicationStamper);
         activityRequest.setDescription(description);
         activityRequest.setUserId(userId);
         activityRequest.setState(state);

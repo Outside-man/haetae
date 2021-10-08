@@ -32,9 +32,12 @@ public class OrganizationManagerTest {
     @Test
     public void createOrganization(){
         OrganizationManageRequest request = new OrganizationManageRequest();
-        request.setOrganizationName("c社团");
-        request.setMemberDesc("社长");
-        request.setMemberId("11111");
+        // 社名
+        request.setOrganizationName("社名");
+        // 职称（社长/负责人）
+        request.setMemberDesc("职称（社长/负责人）");
+        // user_id
+        request.setMemberId("user_id");
         organizationManager.createOrganization(request);
     }
     @Test
@@ -53,10 +56,10 @@ public class OrganizationManagerTest {
     @Test
     public void manageMember(){
         OrganizationManageRequest request = new OrganizationManageRequest();
-        request.setOrganizationId("201811302159427109255010032018");
-        request.setMemberType(MemberType.MEMBER);
-        request.setMemberDesc("社员");
-        request.setMemberId("201811302142079964900001201864");
+        request.setOrganizationId("202012181052027488780011202081");
+        request.setMemberType(MemberType.ASSOCIATION_LEADER);
+        request.setMemberDesc("社长");
+        request.setMemberId("201908311508185089410001201903");
         organizationManager.manageMember(request);
     }
 

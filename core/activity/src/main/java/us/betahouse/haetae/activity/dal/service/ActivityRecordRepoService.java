@@ -100,5 +100,12 @@ public interface ActivityRecordRepoService {
      */
     List<ActivityRecordBO> findAll();
 
+    /**
+     * 查询用户活动记录
+     *
+     * @param activityId
+     * @return
+     */
+    List<ActivityRecordBO> queryByActivityId(String activityId);
 
 }

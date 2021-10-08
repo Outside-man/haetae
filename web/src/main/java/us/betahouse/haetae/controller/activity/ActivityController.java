@@ -66,6 +66,11 @@ import us.betahouse.util.utils.PageUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.*;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -515,4 +520,123 @@ public class ActivityController {
             }
         });
     }
+    /**
+     * 根据活动负责人userId获取活动列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+//    @CheckLogin
+    @GetMapping(value = "/getActivityListByUserID")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getActivityListByUserID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据活动负责人userId获取活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<PageList<ActivityBO>> execute() {
+                //根据返回的status为Finish为不可导章行为
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+
+                //添加页码
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+
+                //添加每页条数
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+
+                //添加排序規則
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+
+                builder.withUserId(request.getUserId());
+
+                return RestResultUtil.buildSuccessResult(activityService.findByUserId(builder.build(), context), "根据活动负责人userId获取活动列表");
+            }
+        });
+    }
+
+    /**
+     * 获取已审批通过的活动列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+//    @CheckLogin
+    @GetMapping(value = "/getApprovedActivityList")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getApprovedActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取已审批通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+            }
+
+            @Override
+            public Result<PageList<ActivityBO>> execute() throws ParseException {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+                builder.withState("APPROVED");//已审批通过
+
+
+                //添加页码
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+
+                //添加每页条数
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+
+                //添加排序規則
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+
+                //条件查询
+                // 添加负责人学号选择条件
+                if (StringUtils.isNotBlank(request.getUserId())) {//获取到的是StuId。通过StuId找UserId
+                    builder.withUserId(request.getUserId());
+                }
+                // 添加活动名称选择条件
+                if (StringUtils.isNotBlank(request.getActivityName())) {
+                    builder.withActivityName(request.getActivityName());
+                }
+                // 添加举办单位选择条件
+                if (StringUtils.isNotBlank(request.getOrganizationMessage())) {
+                    builder.withOrganizationMessage(request.getOrganizationMessage());
+                }
+                // 添加开始时间选择条件
+                if (StringUtils.isNotBlank(String.valueOf(request.getActivityStartTime()))) {
+                    builder.withStart(request.getActivityStartTime());
+                }
+                // 添加结束时间选择条件
+                if (StringUtils.isNotBlank(String.valueOf(request.getActivityEndTime()))) {
+                    builder.withEnd( request.getActivityEndTime());
+                }
+
+
+                return RestResultUtil.buildSuccessResult(activityService.findApproved(builder.build(), context), "获取已审批通过的活动列表");
+            }
+        });
+    }
+
 }

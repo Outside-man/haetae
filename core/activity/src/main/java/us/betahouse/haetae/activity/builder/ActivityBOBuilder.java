@@ -59,6 +59,11 @@ public final class ActivityBOBuilder {
     private Long score;
 
     /**
+     * 申请章数
+     */
+    private String applicationStamper;
+
+    /**
      * 活动描述
      */
     private String description;
@@ -77,6 +82,11 @@ public final class ActivityBOBuilder {
      * 活动学期
      */
     private String term;
+
+    /**
+     * 用户Id
+     */
+    private String userId;
 
     /**
      * 拓展信息
@@ -131,6 +141,11 @@ public final class ActivityBOBuilder {
         return this;
     }
 
+    public ActivityBOBuilder withApplicationStamper(String applicationStamper) {
+        this.applicationStamper = applicationStamper;
+        return this;
+    }
+
     public ActivityBOBuilder withDescription(String description) {
         this.description = description;
         return this;
@@ -151,6 +166,11 @@ public final class ActivityBOBuilder {
         return this;
     }
 
+    public ActivityBOBuilder withUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
     public ActivityBOBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
         return this;
@@ -166,10 +186,12 @@ public final class ActivityBOBuilder {
         activityBO.setStart(start);
         activityBO.setEnd(end);
         activityBO.setScore(score);
+        activityBO.setApplicationStamper(applicationStamper);
         activityBO.setDescription(description);
         activityBO.setCreatorId(creatorId);
         activityBO.setState(state);
         activityBO.setTerm(term);
+        activityBO.setUserId(userId);
         activityBO.setExtInfo(extInfo);
         return activityBO;
     }
