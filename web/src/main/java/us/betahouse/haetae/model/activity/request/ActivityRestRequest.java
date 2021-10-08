@@ -39,12 +39,6 @@ public class ActivityRestRequest extends RestRequest {
     private String organizationMessage;
 
     /**
-     * 申请章数
-     */
-
-    private String applicatonStamper;
-
-    /**
      * 活动地点
      */
     private String location;

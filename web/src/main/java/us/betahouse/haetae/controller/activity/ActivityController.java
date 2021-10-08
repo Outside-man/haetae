@@ -71,6 +71,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+=========
+import java.util.*;
+>>>>>>>>> Temporary merge branch 2
 import java.util.stream.Collectors;
 
 /**
@@ -392,6 +395,20 @@ public class ActivityController {
         });
     }
 
+<<<<<<<<< Temporary merge branch 1
+    /**
+     * 根据活动负责人userId获取活动列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+//    @CheckLogin
+    @GetMapping(value = "/getActivityListByUserID")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getActivityListByUserID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据活动负责人userId获取活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+=========
     @CheckLogin
     @GetMapping("/approved/{stateType}")
     @Log(loggerName = LoggerName.WEB_DIGEST)
@@ -399,16 +416,46 @@ public class ActivityController {
         //将请求的活动时间放入额外信息以传入操作模板进行操作
         request.putExtInfo("stateType",stateType);
         return RestOperateTemplate.operate(LOGGER, "获取已通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+>>>>>>>>> Temporary merge branch 2
 
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+<<<<<<<<< Temporary merge branch 1
+=========
                 AssertUtil.assertStringNotBlank(request.fetchExtInfo("stateType"),"请求活动状态不能为空");
+>>>>>>>>> Temporary merge branch 2
             }
 
             @Override
             public Result<PageList<ActivityBO>> execute() {
+<<<<<<<<< Temporary merge branch 1
+                //根据返回的status为Finish为不可导章行为
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+
+                //添加页码
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+
+                //添加每页条数
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+
+                //添加排序規則
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+
+                builder.withUserId(request.getUserId());
+
+                return RestResultUtil.buildSuccessResult(activityService.findByUserId(builder.build(), context), "根据活动负责人userId获取活动列表");
+=========
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 String stateType= request.fetchExtInfo("stateType").toUpperCase();
@@ -485,90 +532,12 @@ public class ActivityController {
                 PageUtil<ActivityBO> pageUtil=new PageUtil(list,number-1,size);
                 PageList<ActivityBO> pageList=new PageList(pageUtil);
                 return RestResultUtil.buildSuccessResult(pageList,"获取通过活动列表成功");
+>>>>>>>>> Temporary merge branch 2
             }
         });
     }
 
-    @CheckLogin
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    @PutMapping("/updateStampedTime")
-    public Result<PermBO> updateStampedTime(ActivityRestRequest request,HttpServletRequest httpServletRequest){
-        return RestOperateTemplate.operate(LOGGER, "修改活动扫章时间", request, new RestOperateCallBack<PermBO>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityStampedStart().toString(),"更新扫章开始时间不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityStampedEnd().toString(),"更新扫章结束时间不能为空");
-                boolean validateStampTime=new Date(request.getActivityStampedStart()).before(new Date(request.getActivityStampedEnd()));
-                AssertUtil.assertTrue(validateStampTime,RestResultCode.ILLEGAL_PARAMETERS,"盖章开始时间必须早于结束时间");
-                AssertUtil.assertStringNotBlank(request.getActivityId(),"活动id不能为空");
-            }
-
-            @Override
-            public Result<PermBO> execute() {
-                ActivityBO activityBO=activityRepoService.queryActivityByActivityId(request.getActivityId());
-                String permId=activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
-                PermRequest permRequest=new PermRequest();
-                permRequest.setUserId(request.getUserId());
-                permRequest.setStart(new Date(request.getActivityStampedStart()));
-                permRequest.setEnd(new Date(request.getActivityStampedEnd()));
-                permRequest.setPermId(permId);
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                return RestResultUtil.buildSuccessResult(permService.updatePermStartAndEndTimeByPermId(permRequest,context),"更新扫章时间成功");
-            }
-        });
-    }
-    /**
-     * 根据活动负责人userId获取活动列表
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-//    @CheckLogin
-    @GetMapping(value = "/getActivityListByUserID")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<PageList<ActivityBO>> getActivityListByUserID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "根据活动负责人userId获取活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
-
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
-            }
-
-            @Override
-            public Result<PageList<ActivityBO>> execute() {
-                //根据返回的status为Finish为不可导章行为
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-
-                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
-
-                //添加页码
-                if(request.getPage()!=null&&request.getPage()!=0){
-                    builder.withPage(request.getPage());
-                }
-
-                //添加每页条数
-                if(request.getLimit()!=null&&request.getLimit()!=0){
-                    builder.withLimit(request.getLimit());
-                }
-
-                //添加排序規則
-                if(StringUtils.isBlank(request.getOrderRule())){
-                    builder.withOrderRule(request.getOrderRule());
-                }
-
-                builder.withUserId(request.getUserId());
-
-                return RestResultUtil.buildSuccessResult(activityService.findByUserId(builder.build(), context), "根据活动负责人userId获取活动列表");
-            }
-        });
-    }
-
+<<<<<<<<< Temporary merge branch 1
     /**
      * 获取已审批通过的活动列表
      *
@@ -639,4 +608,37 @@ public class ActivityController {
         });
     }
 
+=========
+    @CheckLogin
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    @PutMapping("/updateStampedTime")
+    public Result<PermBO> updateStampedTime(ActivityRestRequest request,HttpServletRequest httpServletRequest){
+        return RestOperateTemplate.operate(LOGGER, "修改活动扫章时间", request, new RestOperateCallBack<PermBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityStampedStart().toString(),"更新扫章开始时间不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityStampedEnd().toString(),"更新扫章结束时间不能为空");
+                boolean validateStampTime=new Date(request.getActivityStampedStart()).before(new Date(request.getActivityStampedEnd()));
+                AssertUtil.assertTrue(validateStampTime,RestResultCode.ILLEGAL_PARAMETERS,"盖章开始时间必须早于结束时间");
+                AssertUtil.assertStringNotBlank(request.getActivityId(),"活动id不能为空");
+            }
+
+            @Override
+            public Result<PermBO> execute() {
+                ActivityBO activityBO=activityRepoService.queryActivityByActivityId(request.getActivityId());
+                String permId=activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+                PermRequest permRequest=new PermRequest();
+                permRequest.setUserId(request.getUserId());
+                permRequest.setStart(new Date(request.getActivityStampedStart()));
+                permRequest.setEnd(new Date(request.getActivityStampedEnd()));
+                permRequest.setPermId(permId);
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                return RestResultUtil.buildSuccessResult(permService.updatePermStartAndEndTimeByPermId(permRequest,context),"更新扫章时间成功");
+            }
+        });
+    }
+>>>>>>>>> Temporary merge branch 2
 }

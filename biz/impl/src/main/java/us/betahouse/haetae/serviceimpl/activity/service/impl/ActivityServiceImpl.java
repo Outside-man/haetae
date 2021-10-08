@@ -42,7 +42,6 @@ import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.NumberUtils;
 
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -457,5 +456,4 @@ public class ActivityServiceImpl implements ActivityService {
         permManageRequest.setUserIds(userIds);
         return permManageRequest;
     }
-
 }
