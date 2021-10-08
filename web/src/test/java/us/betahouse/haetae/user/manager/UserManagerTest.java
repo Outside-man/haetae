@@ -59,7 +59,7 @@ public class UserManagerTest {
 
     @Test
     public void batchBindRole() {
-            String stuId="189050105";
+            String stuId="20179061";
 //        String url = "C:\\Users\\j10k\\Desktop\\苏.csv";
 //        String[][] csv = CsvUtil.getWithHeader(url);
 //        for (int i = 1; i < csv.length; i++) {
@@ -71,7 +71,7 @@ public class UserManagerTest {
             String userId = (userInfoRepoService.queryUserInfoByStuId(stuId).getUserId());
             UserManageRequest request = new UserManageRequest();
             request.setUserId(userId);
-            request.setRoleCode(UserRoleCode.LOCALE_MEMBER);
+            request.setRoleCode(UserRoleCode.CERTIFICATE_CONFIRM);
             userManager.batchBindRolByCode(request);
 //        }
 //            request.setRoleCode(UserRoleCode.LEARNING_MANAGER);
@@ -112,15 +112,21 @@ public class UserManagerTest {
     @Test
     public void batchBindPerm() {
         UserManageRequest request=new UserManageRequest();
-        request.setUserId("201904032054129780650001201994");
+        request.setUserId("201812032105255787370001201847");
         List<String> list= new ArrayList<>();
-        list.add("202002221910514810655300040222");
+        list.add("201905232203216530124400040523");
         request.setPermIds(list);
         userManager.batchBindPerm(request);
     }
 
     @Test
     public void batchUnbindPerm() {
+        UserManageRequest request=new UserManageRequest();
+        request.setUserId("201812032105255787370001201847");
+        List<String> list= new ArrayList<>();
+        list.add("201905232203216530124400040523");
+        request.setPermIds(list);
+        userManager.batchUnbindPerm(request);
     }
 
     private UserManageRequest genUserCreateRequest(int index) {
@@ -147,7 +153,7 @@ public class UserManagerTest {
                 .withUndistributedStamp(0L)
                 ;
         ActivityRequest activityRequest=new ActivityRequest();
-        String csvs[][]=CsvUtil.getWithHeader("C:\\Users\\j10k\\Desktop\\111.csv");
+        String csvs[][]=CsvUtil.getWithHeader("C:\\Users\\86181\\Desktop\\17.csv");
         for(int i=1;i< csvs.length;i++){
             try {
             UserManageRequest request = new UserManageRequest();

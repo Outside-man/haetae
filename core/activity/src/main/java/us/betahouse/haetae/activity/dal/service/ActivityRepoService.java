@@ -8,6 +8,7 @@ import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -145,4 +146,40 @@ public interface ActivityRepoService {
      * @return
      */
     PastActivityBO createPastActivity(PastActivityBO pastActivityBO);
+
+    /**
+     * 通过用户Id分页查询 分页
+     *
+     * @param userId
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryActivityByUserId(String userId,Integer page,Integer limit);
+
+    /**
+     * 查询已通过审批分页查询 分页
+     *
+     * @param state 状态
+     * @param stuId 学号
+     * @param activityName 活动名
+     * @param organizationMessage 组织单位
+     * @param page 页面
+     * @param limit 每页行数
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryApproved(String state,String stuId,String activityName,String organizationMessage,
+                                       Integer page,Integer limit);
+
+    /**
+     * 查询已通过审批（添加时间）分页查询 分页
+     *
+     * @param state 状态
+     * @param stuId 学号
+     * @param activityName 活动名
+     * @param organizationMessage 组织单位
+     * @param page 页面
+     * @param limit 每页行数
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryApprovedAddTime(String state,String stuId,String activityName,String organizationMessage
+            ,Long start,Long end,Integer page,Integer limit) throws ParseException;
 }

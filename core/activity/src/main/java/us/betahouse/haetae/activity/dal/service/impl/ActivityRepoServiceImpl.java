@@ -26,6 +26,9 @@ import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -52,6 +55,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     @Autowired
     private BizIdFactory activityBizFactory;
 
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     /**
      * 查询所有活动
      *
@@ -240,6 +244,44 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         return convert(pastActivityDORepo.save(pastActivityDO));
     }
 
+    @Override
+    public PageList<ActivityBO> queryActivityByUserId(String userId, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findByUserId(pageable,userId), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryApproved(String state, String stuId, String activityName, String organizationMessage, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findApproved(pageable,state,stuId,activityName,organizationMessage), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryApprovedAddTime(String state, String stuId, String activityName, String organizationMessage, Long start, Long end, Integer page, Integer limit) throws ParseException {
+        Pageable pageable = PageRequest.of(page, limit);
+        String Syear = String.valueOf(start).substring(0,4);
+        String Smonth = String.valueOf(start).substring(4,6);
+        String Sdate = String.valueOf(start).substring(6,8);
+        String Shour = String.valueOf(start).substring(8,10);
+        String Sminute = String.valueOf(start).substring(10,12);
+        String Ssecond = String.valueOf(start).substring(12,14);
+
+        String Stime = Syear+"-"+Smonth+"-"+Sdate+" "+Shour+":"+Sminute+":"+Ssecond;
+        Date sTime = SIMPLE_DATE_FORMAT.parse(Stime);
+
+        String Eyear = String.valueOf(end).substring(0,4);
+        String Emonth = String.valueOf(end).substring(4,6);
+        String Edate = String.valueOf(end).substring(6,8);
+        String Ehour = String.valueOf(end).substring(8,10);
+        String Eminute = String.valueOf(end).substring(10,12);
+        String Esecond = String.valueOf(end).substring(12,14);
+        String Etime = Eyear+"-"+Emonth+"-"+Edate+" "+Ehour+":"+Eminute+":"+Esecond;
+
+        Date eTime = SIMPLE_DATE_FORMAT.parse(Etime);
+
+        return new PageList<>(activityDORepo.findApprovedAddTime(pageable,state,stuId,activityName,organizationMessage,sTime,eTime), this::convert);
+    }
+
     private Object convert(Object o) {
         if(o instanceof ActivityDO){
             return convert((ActivityDO)o);
@@ -274,10 +316,12 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setStart(activityDO.getStart());
         activityBO.setEnd(activityDO.getEnd());
         activityBO.setScore(activityDO.getScore());
+        activityBO.setApplicationStamper(activityDO.getApplicationStamper());
         activityBO.setDescription(activityDO.getDescription());
         activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
+        activityBO.setUserId(activityDO.getUserId());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
@@ -301,10 +345,12 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setStart(activityBO.getStart());
         activityDO.setEnd(activityBO.getEnd());
         activityDO.setScore(activityBO.getScore());
+        activityDO.setApplicationStamper(activityBO.getApplicationStamper());
         activityDO.setDescription(activityBO.getDescription());
         activityDO.setUserId(activityBO.getCreatorId());
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
+        activityDO.setUserId(activityBO.getUserId());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }

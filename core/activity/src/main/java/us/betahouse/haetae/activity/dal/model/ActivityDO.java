@@ -69,6 +69,12 @@ public class ActivityDO extends BaseDO {
     private Long score;
 
     /**
+     * 活动申请章数
+     */
+    @Column(name = "application_stamper")
+    private String applicationStamper;
+
+    /**
      * 活动描述
      */
     private String description;
@@ -152,6 +158,13 @@ public class ActivityDO extends BaseDO {
 
     public void setScore(Long score) {
         this.score = score;
+    }
+
+    public String getApplicationStamper() {
+        return applicationStamper;
+    }
+    public void setApplicationStamper(String applicationStamper) {
+        this.applicationStamper = applicationStamper;
     }
 
     public String getDescription() {

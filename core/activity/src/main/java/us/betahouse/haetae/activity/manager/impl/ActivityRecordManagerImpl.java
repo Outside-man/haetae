@@ -113,4 +113,9 @@ public class ActivityRecordManagerImpl implements ActivityRecordManager {
     public List<ActivityRecordBO> findAll() {
         return activityRecordRepoService.findAll();
     }
+
+    @Override
+    public List<ActivityRecordBO> queryByActivityId(String activityId) {
+        return activityRecordRepoService.queryByActivityId(activityId);
+    }
 }

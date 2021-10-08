@@ -11,14 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.dal.service.impl.ActivityRepoServiceImpl;
-import us.betahouse.haetae.activity.enums.ActivityEntryStateEnum;
-import us.betahouse.haetae.activity.enums.ActivityStateEnum;
-import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -28,12 +23,7 @@ import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.activity.PastActivityVO;
 import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
 import us.betahouse.haetae.model.activity.request.AuditRestRequest;
-import us.betahouse.haetae.serviceimpl.activity.constant.AcitvityStampedTime;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityCreatorId;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
-import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.AuditMessage;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
@@ -41,17 +31,8 @@ import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.AuditUtil;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
-import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
-import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
-import us.betahouse.haetae.serviceimpl.user.request.PermRequest;
-import us.betahouse.haetae.serviceimpl.user.service.PermService;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
-import us.betahouse.haetae.user.dal.service.PermRepoService;
-import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.manager.PermManager;
-import us.betahouse.haetae.user.model.basic.UserInfoBO;
-import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
 import us.betahouse.util.common.Result;
@@ -59,13 +40,13 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.log.Log;
 import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.CollectionUtils;
-import us.betahouse.util.utils.DateUtil;
-import us.betahouse.util.utils.PageUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -91,15 +72,6 @@ public class ActivityController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ActivityManager activityManager;
-
-    @Autowired
-    private PermService permService;
-
-    @Autowired
-    private PermRepoService permRepoService;
     /**
      * 添加活动
      *
@@ -123,10 +95,6 @@ public class ActivityController {
                 boolean validateTime = new Date(request.getActivityStartTime()).before(new Date(request.getActivityEndTime()));
                 AssertUtil.assertTrue(validateTime, "活动开始时间必须早于结束时间");
                 AssertUtil.assertNotNull(request.getOrganizationMessage(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "举办单位不能为空");
-                AssertUtil.assertNotNull(request.getActivityStampedStart(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"活动盖章开始时间不能为空");
-                AssertUtil.assertNotNull(request.getActivityStampedEnd(),RestResultCode.ILLEGAL_PARAMETERS.getCode(),"活动盖章结束时间不能为空");
-                boolean validateStampTime=new Date(request.getActivityStampedStart()).before(new Date(request.getActivityStampedEnd()));
-                AssertUtil.assertTrue(validateStampTime,RestResultCode.ILLEGAL_PARAMETERS,"扫章开始时间必须早于结束时间");
             }
 
             @Override
@@ -141,8 +109,6 @@ public class ActivityController {
                         .withStart(request.getActivityStartTime())
                         .withEnd(request.getActivityEndTime())
                         .withTerm(request.getTerm() == null ? TermUtil.getNowTerm() : request.getTerm())
-                        .withActivityStampedTimeStart(request.getActivityStampedStart())
-                        .withActivityStampedTimeEnd(request.getActivityStampedEnd())
                         // 以下是可选参数
                         // 描述
                         .withDescription(request.getDescription())
@@ -515,4 +481,123 @@ public class ActivityController {
             }
         });
     }
+    /**
+     * 根据活动负责人userId获取活动列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+//    @CheckLogin
+    @GetMapping(value = "/getActivityListByUserID")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getActivityListByUserID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据活动负责人userId获取活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户不能为空");
+            }
+
+            @Override
+            public Result<PageList<ActivityBO>> execute() {
+                //根据返回的status为Finish为不可导章行为
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+
+                //添加页码
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+
+                //添加每页条数
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+
+                //添加排序規則
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+
+                builder.withUserId(request.getUserId());
+
+                return RestResultUtil.buildSuccessResult(activityService.findByUserId(builder.build(), context), "根据活动负责人userId获取活动列表");
+            }
+        });
+    }
+
+    /**
+     * 获取已审批通过的活动列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+//    @CheckLogin
+    @GetMapping(value = "/getApprovedActivityList")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getApprovedActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取已审批通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+            }
+
+            @Override
+            public Result<PageList<ActivityBO>> execute() throws ParseException {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+                builder.withState("APPROVED");//已审批通过
+
+
+                //添加页码
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+
+                //添加每页条数
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+
+                //添加排序規則
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+
+                //条件查询
+                // 添加负责人学号选择条件
+                if (StringUtils.isNotBlank(request.getUserId())) {//获取到的是StuId。通过StuId找UserId
+                    builder.withUserId(request.getUserId());
+                }
+                // 添加活动名称选择条件
+                if (StringUtils.isNotBlank(request.getActivityName())) {
+                    builder.withActivityName(request.getActivityName());
+                }
+                // 添加举办单位选择条件
+                if (StringUtils.isNotBlank(request.getOrganizationMessage())) {
+                    builder.withOrganizationMessage(request.getOrganizationMessage());
+                }
+                // 添加开始时间选择条件
+                if (StringUtils.isNotBlank(String.valueOf(request.getActivityStartTime()))) {
+                    builder.withStart(request.getActivityStartTime());
+                }
+                // 添加结束时间选择条件
+                if (StringUtils.isNotBlank(String.valueOf(request.getActivityEndTime()))) {
+                    builder.withEnd( request.getActivityEndTime());
+                }
+
+
+                return RestResultUtil.buildSuccessResult(activityService.findApproved(builder.build(), context), "获取已审批通过的活动列表");
+            }
+        });
+    }
+
 }

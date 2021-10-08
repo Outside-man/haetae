@@ -67,6 +67,11 @@ public class ActivityBO extends ToString {
     private Long score;
 
     /**
+     * 活动申请章数
+     */
+    private String applicationStamper;
+
+    /**
      * 活动描述
      */
     private String description;
@@ -87,6 +92,16 @@ public class ActivityBO extends ToString {
      * 活动学期
      */
     private String term;
+
+    /**
+     * 用户id
+     */
+    private String userId;
+
+    /**
+     * 学号
+     */
+    private String stuId;
 
     /**
      * 拓展信息
@@ -234,6 +249,14 @@ public class ActivityBO extends ToString {
         this.score = score;
     }
 
+    public String getApplicationStamper() {
+        return applicationStamper;
+    }
+
+    public void setApplicationStamper(String applicationStamper) {
+        this.applicationStamper = applicationStamper;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -264,6 +287,22 @@ public class ActivityBO extends ToString {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    public String getStuId() {
+        return stuId;
+    }
+
+    public void setStuId(String stuId) {
+        this.stuId = stuId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Map<String, String> getExtInfo() {

@@ -7,6 +7,7 @@ package us.betahouse.haetae.common.template;
 import us.betahouse.util.common.Result;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * 操作模板
@@ -21,7 +22,7 @@ public interface RestOperateCallBack<T> {
 
     ;
 
-    Result<T> execute() throws IOException;
+    Result<T> execute() throws IOException, ParseException;
 
     default void after() {
     }

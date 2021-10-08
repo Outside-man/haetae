@@ -194,4 +194,17 @@ public class AssertUtil {
         }
     }
 
+    /**
+     * 判断 a 是否大于 b 若大于则抛异常
+     *
+     * @param a           a
+     * @param b           b
+     * @param code        状态码
+     * @param description description
+     */
+    public static void assertBigger(double a, double b, String code, String description) {
+        if (a > b) {
+            throw new BetahouseException(code, description);
+        }
+    }
 }

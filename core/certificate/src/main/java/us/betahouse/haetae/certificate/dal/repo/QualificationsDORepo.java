@@ -38,6 +38,9 @@ public interface QualificationsDORepo extends JpaRepository<QualificationsDO, Lo
      * @return
      */
     List<QualificationsDO> findByUserId(String userId);
+    
+    int countAllByUserId(String userId);
+    
     /**
      * 通过学生id和证书id查找证书
      *

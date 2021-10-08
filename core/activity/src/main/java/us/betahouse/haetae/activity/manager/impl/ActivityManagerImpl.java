@@ -18,6 +18,7 @@ import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -157,5 +158,22 @@ public class ActivityManagerImpl implements ActivityManager {
     @Override
     public PastActivityBO updatePast(ActivityRequest request) {
         return activityRepoService.updatePastActivity(request.getUserId(), request.getPastActivityBO());
+    }
+
+    @Override
+    public PageList<ActivityBO> findByUserId(ActivityRequest request) {
+        return activityRepoService.queryActivityByUserId(request.getUserId(),request.getPage(), request.getLimit());
+    }
+
+    @Override
+    public PageList<ActivityBO> findApproved(ActivityRequest request) {
+        return activityRepoService.queryApproved(request.getState(),request.getStuId(),request.getActivityName(),
+                request.getOrganizationMessage(),request.getPage(), request.getLimit());
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedAddTime(ActivityRequest request) throws ParseException {
+        return activityRepoService.queryApprovedAddTime(request.getState(),request.getStuId(),request.getActivityName(),
+                request.getOrganizationMessage(),request.getStart(),request.getEnd(),request.getPage(), request.getLimit());
     }
 }

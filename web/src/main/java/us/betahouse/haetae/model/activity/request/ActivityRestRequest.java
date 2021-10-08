@@ -301,6 +301,15 @@ public class ActivityRestRequest extends RestRequest {
         this.pastLectureActivity = pastLectureActivity;
     }
 
+    public String getApplicatonStamper() {
+        return applicatonStamper;
+    }
+
+    public void setApplicatonStamper(String applicatonStamper) {
+        this.applicatonStamper = applicatonStamper;
+    }
+
+
     public Long getActivityStampedStart() {
         return activityStampedStart;
     }

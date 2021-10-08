@@ -11,6 +11,7 @@ import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -126,4 +127,22 @@ public interface ActivityService {
      * @return
      */
     List<ActivityBO> fillActivityCreatorStuId(List<ActivityBO> activityBOS);
+
+    /**
+     * 查找活动通过UserId
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findByUserId(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找已审批通过的活动
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException;
 }

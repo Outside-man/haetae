@@ -157,6 +157,15 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ActivityRecordBO> queryByActivityId(String activityId) {
+        List<ActivityRecordDO> activityRecordDOList = activityRecordDORepo.queryByActivityId(activityId);
+        return CollectionUtils.toStream(activityRecordDOList)
+                .filter(Objects::nonNull)
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
 
     /**
      * 活动记录DO2BO
