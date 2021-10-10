@@ -174,6 +174,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     }
 
+
     @Override
     public ActivityBO update(ActivityManagerRequest request, OperateContext operateContext) {
         return activityManager.update(request);
@@ -432,16 +433,91 @@ public class ActivityServiceImpl implements ActivityService {
             re.setOrganizationMessage(organizationMessage);
             activityBOPageList = activityManager.findApproved(re);
         }
-
+        //将输入的UserId转为学号输出
         activityBOPageList.getContent().forEach(activityBO -> {
             String userId = activityBO.getUserId();
+            //通过userId查找stuId
             String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
-
             activityBO.setStuId(getstuId);
         });
 
         return activityBOPageList;
 
+    }
+
+
+    @Override
+    public PageList<ActivityBO> findCreatedByWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        activityBOPageList = activityManager.findCreatedByWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getUserId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        activityBOPageList = activityManager.findApprovedByWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getUserId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
     }
 
     /**

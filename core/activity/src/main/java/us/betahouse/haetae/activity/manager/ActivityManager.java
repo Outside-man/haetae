@@ -59,6 +59,8 @@ public interface ActivityManager {
      */
     PageList<ActivityBO> find(ActivityRequest request);
 
+
+
     /**
      * 查询过去活动记录
      * @param request
@@ -113,4 +115,18 @@ public interface ActivityManager {
      * @return
      */
     PageList<ActivityBO> findApprovedAddTime(ActivityRequest request) throws ParseException;
+
+    /**
+     * 查找本周创建的活动 分页
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findCreatedByWeek(ActivityRequest request);
+
+    /**
+     * 查找本周审批通过的活动 分页
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApprovedByWeek(ActivityRequest request);
 }

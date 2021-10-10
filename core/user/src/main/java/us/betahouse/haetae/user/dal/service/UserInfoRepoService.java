@@ -73,4 +73,6 @@ public interface UserInfoRepoService {
      */
     List<UserInfoBO> queryAllMajorAndGrade();
 
+
+
 }

@@ -146,8 +146,41 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
 
      * @return Page<ActivityDO>
      */
+    //nativeQuery = true:直接查表名，不查对象名
     @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 and organization_message like ?4 " +
             "and start >= ?5 and end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
     Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date start, Date end);
+
+
+    /**
+     * 本周创建的活动分页查询 倒序
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtCreateGreaterThanEqualAndActivityNameContainsOrderByActivityIdDesc(Date date, Pageable pageable,String activityName);
+
+    /**
+     * 本周创建的活动分页查询
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtCreateGreaterThanEqualAndActivityNameContains(Date date, Pageable pageable,String activityName);
+    /**
+     * 本周审批通过的活动分页查询 倒序
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContainsOrderByActivityIdDesc(Date date, Pageable pageable,String activityName,String state);
+
+    /**
+     * 本周审批通过的活动分页查询
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContains(Date date, Pageable pageable,String activityName,String state);
 
 }

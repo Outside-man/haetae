@@ -581,37 +581,30 @@ public class ActivityController {
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<ActivityBO>> getApprovedActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "获取已审批通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
-
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
             }
-
             @Override
             public Result<PageList<ActivityBO>> execute() throws ParseException {
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-
                 ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
                 builder.withState("APPROVED");//已审批通过
-
-
                 //添加页码
                 if(request.getPage()!=null&&request.getPage()!=0){
                     builder.withPage(request.getPage());
                 }
-
                 //添加每页条数
                 if(request.getLimit()!=null&&request.getLimit()!=0){
                     builder.withLimit(request.getLimit());
                 }
-
                 //添加排序規則
                 if(StringUtils.isBlank(request.getOrderRule())){
                     builder.withOrderRule(request.getOrderRule());
                 }
-
-                //条件查询
+                //条件查询（可选）
+                //获取不到stuId，显示system
                 // 添加负责人学号选择条件
                 if (StringUtils.isNotBlank(request.getUserId())) {//获取到的是StuId。通过StuId找UserId
                     builder.withUserId(request.getUserId());
@@ -632,11 +625,85 @@ public class ActivityController {
                 if (StringUtils.isNotBlank(String.valueOf(request.getActivityEndTime()))) {
                     builder.withEnd( request.getActivityEndTime());
                 }
-
-
                 return RestResultUtil.buildSuccessResult(activityService.findApproved(builder.build(), context), "获取已审批通过的活动列表");
             }
         });
     }
+    //查询本周创建的活动
+    //只有活动名称一个查询条件
+    /**
+     * 获取本周创建的活动列表
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    //@CheckLogin
+    @GetMapping(value = "/week/created")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getCreatedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取本周创建的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+            }
+            @Override
+            public Result<PageList<ActivityBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+                //活动名称可选
+                if (StringUtils.isNotBlank(request.getActivityName())) {
+                    builder.withActivityName(request.getActivityName());
+                }
+                return RestResultUtil.buildSuccessResult(activityService.findCreatedByWeek(builder.build(), context), "获取本周创建的活动列表成功");
+            }
+        });
+    }
 
+    /**
+     * 获取本周审批通过的活动列表
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    @GetMapping(value = "/week/approved")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<PageList<ActivityBO>> getApprovedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "获取本周审批通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+            }
+            @Override
+            public Result<PageList<ActivityBO>> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+                if(request.getPage()!=null&&request.getPage()!=0){
+                    builder.withPage(request.getPage());
+                }
+                if(request.getLimit()!=null&&request.getLimit()!=0){
+                    builder.withLimit(request.getLimit());
+                }
+                if(StringUtils.isBlank(request.getOrderRule())){
+                    builder.withOrderRule(request.getOrderRule());
+                }
+                //活动名称可选
+                if (StringUtils.isNotBlank(request.getActivityName())) {
+                    builder.withActivityName(request.getActivityName());
+                }
+                return RestResultUtil.buildSuccessResult(activityService.findApprovedByWeek(builder.build(), context), "获取本周审批通过的活动列表成功");
+            }
+        });
+    }
 }

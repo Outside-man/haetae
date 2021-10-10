@@ -40,6 +40,8 @@ public interface ActivityService {
      */
     PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context);
 
+
+
     /**
      * 更新活动
      *
@@ -145,4 +147,20 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException;
+
+    /**
+     * 查找本周创建的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findCreatedByWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周通过审批的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context);
 }
