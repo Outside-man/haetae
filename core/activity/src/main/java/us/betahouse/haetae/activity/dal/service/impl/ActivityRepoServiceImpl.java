@@ -17,6 +17,7 @@ import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.repo.PastActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
@@ -385,5 +386,32 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         pastActivityDO.setPastPracticeActivity(pastActivityBO.getPastPracticeActivity());
         return pastActivityDO;
 
+    }
+
+
+    @Override
+    public PageList<ActivityBO> queryCreatedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findByGmtCreateGreaterThanEqualAndActivityNameContainsOrderByActivityIdDesc(date,pageable,activityName), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryCreatedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findByGmtCreateGreaterThanEqualAndActivityNameContains(date,pageable,activityName), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryApprovedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        String state= "APPROVED";
+        return new PageList<>(activityDORepo.findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContainsOrderByActivityIdDesc(date,pageable,activityName,state), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryApprovedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        String state= "APPROVED";
+        return new PageList<>(activityDORepo.findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContains(date,pageable,activityName,state), this::convert);
     }
 }

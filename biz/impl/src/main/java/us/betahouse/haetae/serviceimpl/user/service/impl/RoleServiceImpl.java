@@ -57,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleBO createRole(RoleUserPermRequest request, OperateContext context) {
-        //创建permBO 判断权限是否存在  useid是否存在
+        //创建permBO 判断权限是否存在  useId是否存在
         RoleManageRequest roleManageRequest = new RoleManageRequest();
         RoleBO roleBO = new RoleBO();
         roleBO.setRoleName(request.getRoleName());
@@ -86,8 +86,8 @@ public class RoleServiceImpl implements RoleService {
         List<String> stuids = request.getStuIds();
         //获取useid
         String userId;
-        for (int i = 0; i < stuids.size(); i++) {
-            userId = userInfoRepoService.queryUserInfoByStuId(stuids.get(i)).getUserId();
+        for (String stuid : stuids) {
+            userId = userInfoRepoService.queryUserInfoByStuId(stuid).getUserId();
             AssertUtil.assertNotNull(userId);
             useIds.add(userId);
         }

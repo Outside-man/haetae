@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.finance.constant.FinancePermType;
+import us.betahouse.haetae.serviceimpl.user.request.PermRequest;
 import us.betahouse.haetae.serviceimpl.user.request.RoleUserPermRequest;
 import us.betahouse.haetae.serviceimpl.user.service.PermService;
 import us.betahouse.haetae.user.dal.convert.EntityConverter;
@@ -23,8 +25,10 @@ import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,5 +140,18 @@ public class PermServiceImpl implements PermService {
                 .filter(permDO -> !(permDO.getPermType().equals(FinancePermType.FINANCE_MANAGER)))
                 .map(EntityConverter::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @VerifyPerm(permType=ActivityPermType.STAMPER_MANAGE)
+    public PermBO updatePermStartAndEndTimeByPermId(PermRequest request,OperateContext context) {
+        Date start=request.getStart();
+        Date end=request.getEnd();
+        AssertUtil.assertStringNotBlank(start.toString(),"扫章开始时间不能为空");
+        AssertUtil.assertStringNotBlank(end.toString(),"扫章结束时间不能为空");
+        AssertUtil.assertTrue(start.before(end),"扫章开始时间必须早于结束时间");
+        AssertUtil.assertStringNotBlank(request.getPermId(),"权限Id不能为空");
+        PermBO newPermBO=permManager.updateStartAndEndTimeByPermID(request.getStart(),request.getEnd(),request.getPermId());
+        return newPermBO;
     }
 }

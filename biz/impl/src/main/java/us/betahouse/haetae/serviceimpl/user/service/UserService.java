@@ -4,13 +4,17 @@
  */
 package us.betahouse.haetae.serviceimpl.user.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.user.request.CommonUserRequest;
+import us.betahouse.haetae.serviceimpl.user.request.UploadUserExcelRequest;
+import us.betahouse.haetae.serviceimpl.user.routingtable.UserRoutingTable;
 import us.betahouse.haetae.user.model.CommonUser;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RoleBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,5 +129,54 @@ public interface UserService {
      * @return
      */
     UserBO queryByUserId(String userId, OperateContext context);
+
+    /**
+     * 通过userId来查询用户基础模型
+     *
+     * @param userId
+     * @param context
+     * @return
+     */
+    CommonUser queryCommonByUserId(String userId, OperateContext context);
+
+
+    /**
+     * excel保存用户信息,返回excel表标题
+     *
+     * @param request
+     * @param file
+     * @param context
+     * @return
+     */
+    List<String> saveUserByExcel(UploadUserExcelRequest request, MultipartFile file, OperateContext context);
+
+    /**
+     * 返回用户权限所及的路由表
+     * @param userId
+     * @return
+     */
+    List<UserRoutingTable> getRoutingTable(String userId);
+
+    /**
+     * 登录，管理员和活动负责人才可以登录
+     * @param request
+     * @param context
+     * @return
+     */
+    public CommonUser loginProxy(CommonUserRequest request, OperateContext context);
+
+    /**
+     * 给予用户导章权限
+     * @param request
+     * @param context
+     */
+    public void giveStamperPerm(CommonUserRequest request,OperateContext context);
+
+    /**
+     * 通过学号查找学生信息
+     * @param stuid
+     * @return
+     */
+    CommonUser findByStuid(String stuid);
 }
 

@@ -84,6 +84,16 @@ public enum UserRoleCode implements RoleCode {
      * 场地申请人
      */
     LOCALE_MEMBER("LOCALE_MEMBER", "场地申请人"),
+
+    /**
+     * 用户信息管理员
+     */
+    USER_MANAGER("USER_MANAGER","用户信息管理员"),
+
+    /**
+     * 管理活动管理员的导章等权限
+     */
+    GENERAL_MANAGER("GENERAL_MANAGER","总管理"),
     ;
 
     public static UserRoleCode getByCode(String code) {
@@ -117,4 +127,6 @@ public enum UserRoleCode implements RoleCode {
     public String getDesc() {
         return desc;
     }
+
+
 }

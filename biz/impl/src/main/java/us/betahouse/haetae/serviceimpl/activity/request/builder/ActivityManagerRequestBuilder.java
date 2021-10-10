@@ -33,6 +33,8 @@ public final class ActivityManagerRequestBuilder {
     private Integer page;
     private Integer limit;
     private String orderRule;
+    private Long activityStampedTimeStart;
+    private Long activityStampedTimeEnd;
 
     private ActivityManagerRequestBuilder() {
     }
@@ -132,6 +134,14 @@ public final class ActivityManagerRequestBuilder {
         this.orderRule=orderRule;
         return this;
     }
+    public ActivityManagerRequestBuilder withActivityStampedTimeStart(Long startTime) {
+        this.activityStampedTimeStart=startTime;
+        return this;
+    }
+    public ActivityManagerRequestBuilder withActivityStampedTimeEnd(Long endTime) {
+        this.activityStampedTimeEnd=endTime;
+        return this;
+    }
     public ActivityManagerRequest build() {
         ActivityManagerRequest activityManagerRequest = new ActivityManagerRequest();
         activityManagerRequest.setActivityId(activityId);
@@ -153,6 +163,8 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setPage(page);
         activityManagerRequest.setLimit(limit);
         activityManagerRequest.setOrderRule(orderRule);
+        activityManagerRequest.setActivityStampedTimeStart(activityStampedTimeStart);
+        activityManagerRequest.setActivityStampedTimeEnd(activityStampedTimeEnd);
         return activityManagerRequest;
     }
 }

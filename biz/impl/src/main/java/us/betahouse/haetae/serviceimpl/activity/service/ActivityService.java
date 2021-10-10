@@ -40,6 +40,8 @@ public interface ActivityService {
      */
     PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context);
 
+
+
     /**
      * 更新活动
      *
@@ -113,6 +115,22 @@ public interface ActivityService {
     void  assignPastRecord(ActivityManagerRequest request,OperateContext context);
 
     /**
+     * 完善活动扫章时间起止日期
+     *
+     * @param activityBOS
+     * @return
+     */
+    List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS);
+
+    /**
+     * 完善活动的创建者的stuId，将其放置在(额外信息)extInfo中
+     *
+     * @param activityBOS
+     * @return
+     */
+    List<ActivityBO> fillActivityCreatorStuId(List<ActivityBO> activityBOS);
+
+    /**
      * 查找活动通过UserId
      *
      * @param request
@@ -129,4 +147,20 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException;
+
+    /**
+     * 查找本周创建的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findCreatedByWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周通过审批的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context);
 }

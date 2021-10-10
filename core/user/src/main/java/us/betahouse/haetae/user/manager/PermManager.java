@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.manager;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,4 +56,14 @@ public interface PermManager {
      * @return
      */
     List<String> getPermUsers(String permId);
+
+    /**
+     * 更新权限信息
+     *
+     * @param start
+     * @param end
+     * @param permId
+     * @return
+     */
+    PermBO updateStartAndEndTimeByPermID(Date start,Date end,String permId);
 }

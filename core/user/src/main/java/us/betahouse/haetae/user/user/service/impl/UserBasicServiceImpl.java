@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.dal.service.UserRepoService;
+import us.betahouse.haetae.user.enums.RoleCode;
 import us.betahouse.haetae.user.enums.UserErrorCode;
 import us.betahouse.haetae.user.model.BasicUser;
 import us.betahouse.haetae.user.model.CommonUser;
@@ -23,9 +24,11 @@ import us.betahouse.haetae.user.user.helper.UserHelper;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.haetae.user.utils.EncryptUtil;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户基础服务实现
@@ -224,6 +227,20 @@ public class UserBasicServiceImpl implements UserBasicService {
         List<String> roleIds = new ArrayList<>(userHelper.fetchUserRoles(userId).keySet());
         for (String roleId : roleIds) {
             if (permRepoService.verifyRolePermRelationByPermType(roleId, permTypes)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean verifyPermissionByRoleCode(String userId, List<RoleCode> roleCodes) {
+        List<String> values = CollectionUtils.toStream(userHelper.fetchUserRoles(userId).values())
+                .filter(Objects::nonNull)
+                .map(RoleBO::getRoleCode)
+                .collect(Collectors.toList());
+        for (RoleCode roleCode : roleCodes) {
+            if(values.contains(roleCode.getCode())){
                 return true;
             }
         }

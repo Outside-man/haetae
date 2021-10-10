@@ -20,16 +20,15 @@ import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
+import us.betahouse.util.common.ResultCode;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
+import us.betahouse.util.utils.DateUtil;
 import us.betahouse.util.utils.LoggerUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -173,6 +172,78 @@ public class PermRepoServiceImpl implements PermRepoService {
         // 绑定
         rolePermRelationDORepo.saveAll(relations);
 
+        return bindPerms;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public List<PermBO> roleBindPermsUnbindNo(String roleId, List<String> permIds) {
+        // 获取用户信息
+        RoleDO roleDO = roleDORepo.findByRoleId(roleId);
+        AssertUtil.assertNotNull(roleDO, "角色不存在");
+
+        // 获取 permIds 对应的权限信息
+        List<PermDO> permDOList = permDORepo.findAllByPermIdIn(permIds);
+
+        // 绑定的权限
+        List<PermBO> bindPerms = CollectionUtils.toStream(permDOList)
+                .filter(Objects::nonNull)
+                .map(EntityConverter::convert).collect(Collectors.toList());
+
+        // permIds 有查不到的就属于异常
+        if (permDOList.size() != permIds.size()) {
+            LoggerUtil.error(LOGGER, "绑定的权限id不存在 permIds={0}, permDOList={1}", permIds, permDOList);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "绑定的权限id不存在");
+        }
+
+        // 查询已经绑定的权限
+        List<String> roleBoundPermIds = CollectionUtils.toStream(rolePermRelationDORepo.findAllByRoleId(roleId))
+                .filter(Objects::nonNull).map(RolePermRelationDO::getPermId)
+                .collect(Collectors.toList());
+
+        List<String> permInRoleAlreadyBindPermIds=new ArrayList<>();
+        // 存在已绑定的权限,需要特殊处理 必须要迭代器删除不然会并发修改问题
+        if (!CollectionUtils.isEmpty(roleBoundPermIds)) {
+            // 构建迭代器
+            Iterator<String> rolePermIterator=roleBoundPermIds.iterator();
+            Iterator<PermDO> permIterator = permDOList.iterator();
+            while (permIterator.hasNext()) {
+                PermDO perm = permIterator.next();
+                for (String boundId : roleBoundPermIds) {
+                    // 是已绑的权限 就从里面移除
+                    if (StringUtils.equals(boundId, perm.getPermId())) {
+                        permInRoleAlreadyBindPermIds.add(boundId);
+                        permIterator.remove();
+                    }
+                }
+            }
+            //从roleBoundPermIds中去除已经绑定的权限
+            while (rolePermIterator.hasNext()){
+                String permId=rolePermIterator.next();
+                for (String id : permInRoleAlreadyBindPermIds) {
+                    if(StringUtils.equals(id,permId)){
+                        rolePermIterator.remove();
+                    }
+                }
+            }
+        }
+
+        if(!CollectionUtils.isEmpty(roleBoundPermIds)){
+            roleUnbindPerms(roleId,roleBoundPermIds);
+        }
+
+        // 构建关联关系实体
+        List<RolePermRelationDO> relations = new ArrayList<>();
+        for (PermDO permDO : permDOList) {
+            RolePermRelationBO relation = new RolePermRelationBO();
+            relation.setPermId(permDO.getPermId());
+            relation.setRoleId(roleId);
+            // 通过 id 工厂构建关联id
+            relation.setRolePermId(userBizIdFactory.getRoleUserRelationId(roleId, permDO.getPermId()));
+            relations.add(RelationConverter.convert(relation));
+        }
+        // 绑定
+        rolePermRelationDORepo.saveAll(relations);
         return bindPerms;
     }
 
@@ -448,5 +519,25 @@ public class PermRepoServiceImpl implements PermRepoService {
                 .filter(Objects::nonNull)
                 .map(RelationConverter::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean verifyStampTime(String permId) {
+        PermDO permDO = permDORepo.findByPermId(permId);
+        Date start=permDO.getStart();
+        Date end=permDO.getEnd();
+        AssertUtil.assertNotNull(start,"扫章开始或结束时间不能为空");
+        AssertUtil.assertNotNull(end,"扫章开始或结束时间不能为空");
+        return DateUtil.nowIsBetween(start,end);
+    }
+
+    @Override
+    public PermBO queryPermByPermId(String permId) {
+        return EntityConverter.convert(permDORepo.findByPermId(permId));
+    }
+
+    @Override
+    public PermBO queryPermByPermType(String permType) {
+        return EntityConverter.convert(permDORepo.findByPermType(permType));
     }
 }

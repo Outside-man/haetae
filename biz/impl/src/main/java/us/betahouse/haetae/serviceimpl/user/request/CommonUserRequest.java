@@ -5,6 +5,7 @@
 package us.betahouse.haetae.serviceimpl.user.request;
 
 
+import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 import us.betahouse.haetae.user.request.UserManageRequest;
 
 /**
@@ -13,7 +14,7 @@ import us.betahouse.haetae.user.request.UserManageRequest;
  * @author dango.yxm
  * @version : CommonUserRequest.java 2018/11/20 11:37 PM dango.yxm
  */
-public class CommonUserRequest extends UserManageRequest {
+public class CommonUserRequest extends UserManageRequest implements VerifyRequest {
 
     private static final long serialVersionUID = 652627597728059422L;
 
@@ -41,5 +42,10 @@ public class CommonUserRequest extends UserManageRequest {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public String getVerifyUserId() {
+        return getUserId();
     }
 }

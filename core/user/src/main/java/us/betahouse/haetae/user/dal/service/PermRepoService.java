@@ -67,6 +67,15 @@ public interface PermRepoService {
     List<PermBO> roleBindPerms(String roleId, List<String> permIds);
 
     /**
+     * 给角色绑定权限，解绑未传入权限
+     *
+     * @param roleId
+     * @param permIds
+     * @return
+     */
+    List<PermBO> roleBindPermsUnbindNo(String roleId,List<String> permIds);
+
+    /**
      * 给角色绑定权限
      *
      * @param roleId
@@ -189,4 +198,28 @@ public interface PermRepoService {
      * @return
      */
     List<UserPermRelationBO> getUserPermRelationsOrderByCreate(String permId);
+
+    /**
+     * 效验当前时间是否能盖章
+     *
+     * @param permId
+     * @return
+     */
+    boolean verifyStampTime(String permId);
+
+    /**
+     * 根据权限id查找权限
+     *
+     * @param permId
+     * @return
+     */
+    PermBO queryPermByPermId(String permId);
+
+    /**
+     * 根据权限类型查找权限
+     *
+     * @param permType
+     * @return
+     */
+    PermBO queryPermByPermType(String permType);
 }

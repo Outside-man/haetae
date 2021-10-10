@@ -9,6 +9,7 @@ import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -182,4 +183,41 @@ public interface ActivityRepoService {
      */
     PageList<ActivityBO> queryApprovedAddTime(String state,String stuId,String activityName,String organizationMessage
             ,Long start,Long end,Integer page,Integer limit) throws ParseException;
+
+    /**
+     *
+     * @param date
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageList<ActivityBO> queryCreatedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName);
+
+
+    /**
+     *
+     * @param date
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageList<ActivityBO> queryCreatedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName);
+    /**
+     *
+     * @param date
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageList<ActivityBO> queryApprovedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName);
+
+
+    /**
+     *
+     * @param date
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageList<ActivityBO> queryApprovedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName);
 }

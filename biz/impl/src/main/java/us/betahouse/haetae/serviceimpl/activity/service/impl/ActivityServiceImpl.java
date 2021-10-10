@@ -20,15 +20,14 @@ import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.organization.model.OrganizationBO;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermExInfoKey;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
+import us.betahouse.haetae.serviceimpl.activity.constant.*;
 import us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
+import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.RoleRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.manager.PermManager;
@@ -46,6 +45,7 @@ import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,6 +89,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityBlacklistRepoService activityBlacklistRepoService;
 
+    @Autowired
+    private PermRepoService permRepoService;
+
     @Override
 //    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional(rollbackFor = Exception.class)
@@ -104,7 +107,11 @@ public class ActivityServiceImpl implements ActivityService {
         // 创建活动
         ActivityBO activityBO = activityManager.create(request);
         // 创建权限
-        PermBO permBO = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限").build();
+        PermBOBuilder permBOBuilder = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限")
+                .withStart(request.getActivityStampedTimeStart())
+                .withEnd(request.getActivityStampedTimeEnd());
+        PermBO permBO = permBOBuilder.build();
+
         // 将活动id 冗余到权限拓展信息
         permBO.putExtInfo(ActivityPermExInfoKey.ACTIVITY_ID, activityBO.getActivityId());
         // 构建请求
@@ -166,6 +173,7 @@ public class ActivityServiceImpl implements ActivityService {
         return activityManager.find(re);
 
     }
+
 
     @Override
     public ActivityBO update(ActivityManagerRequest request, OperateContext operateContext) {
@@ -296,6 +304,47 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS) {
+        List<ActivityBO> list=new ArrayList<>();
+        for (ActivityBO activityBO : activityBOS) {
+            String permId=activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
+            PermBO permBO = permRepoService.queryPermByPermId(permId);
+            if(permBO==null){
+                System.out.println(MessageFormat.format("活动{0}没有对应盖章权限",activityBO.getActivityName()));
+                continue;
+            }else {
+                Date start=permBO.getStart();
+                Date end=permBO.getEnd();
+                if(start!=null&&end!=null){
+                    activityBO.putExtInfo(AcitvityStampedTime.ACTIVITY_STAMPED_START_TIME,start.toString());
+                    activityBO.putExtInfo(AcitvityStampedTime.ACTIVITY_STAMPED_End_TIME,end.toString());
+                }
+            }
+            list.add(activityBO);
+        }
+        return list;
+    }
+
+    @Override
+    public List<ActivityBO> fillActivityCreatorStuId(List<ActivityBO> activityBOS) {
+        List<ActivityBO> list=new ArrayList<>();
+        for (ActivityBO activityBO : activityBOS) {
+            UserInfoBO userInfoBO=userInfoRepoService.queryUserInfoByUserId(activityBO.getCreatorId());
+            if(userInfoBO==null){
+                list.add(activityBO);
+                continue;
+            }
+            String creatorStuId=userInfoBO.getStuId();
+            if(creatorStuId!=null){
+                activityBO.putExtInfo(ActivityCreatorId.CREATOR_STUID,creatorStuId);
+            }
+
+            list.add(activityBO);
+        }
+        return list;
+    }
+
+    @Override
     public PageList<ActivityBO> findByUserId(ActivityManagerRequest request, OperateContext context) {
         Integer page=0;
         Integer limit=10;
@@ -384,16 +433,91 @@ public class ActivityServiceImpl implements ActivityService {
             re.setOrganizationMessage(organizationMessage);
             activityBOPageList = activityManager.findApproved(re);
         }
-
+        //将输入的UserId转为学号输出
         activityBOPageList.getContent().forEach(activityBO -> {
             String userId = activityBO.getUserId();
+            //通过userId查找stuId
             String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
-
             activityBO.setStuId(getstuId);
         });
 
         return activityBOPageList;
 
+    }
+
+
+    @Override
+    public PageList<ActivityBO> findCreatedByWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        activityBOPageList = activityManager.findCreatedByWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getUserId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        activityBOPageList = activityManager.findApprovedByWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getUserId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
     }
 
     /**
