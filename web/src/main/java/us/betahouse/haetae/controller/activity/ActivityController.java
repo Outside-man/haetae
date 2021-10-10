@@ -427,7 +427,7 @@ public class ActivityController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
 
                 ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
-                builder.withState("APPROVED");//已审批通过
+                builder.withState("APPROVED");//待审核
 
 
                 //添加页码

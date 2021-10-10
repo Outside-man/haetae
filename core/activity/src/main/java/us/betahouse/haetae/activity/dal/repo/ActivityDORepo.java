@@ -128,7 +128,7 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
 
      * @return Page<ActivityDO>
      */
-    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 " +
+    @Query(value = "SELECT * from activity where state != ?1 and state != 'CANCELED' and activity_name like ?3 " +
             "and organization_message like ?4 and user_id in(select user_id from common_user_info where stu_id like ?2 ) "
             ,nativeQuery = true)
     Page<ActivityDO>  findApproved(Pageable pageable, String state,String stuId, String activityName ,String organizationMessage);
@@ -146,7 +146,7 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
 
      * @return Page<ActivityDO>
      */
-    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 and organization_message like ?4 " +
+    @Query(value = "SELECT * from activity where state != ?1 and state != 'CANCELED'and activity_name like ?3 and organization_message like ?4 " +
             "and start >= ?5 and end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
     Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date start, Date end);
 
