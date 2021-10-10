@@ -527,7 +527,7 @@ public class ActivityController {
      * @param httpServletRequest
      * @return
      */
-//    @CheckLogin
+    @CheckLogin
     @GetMapping(value = "/getActivityListByUserID")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<ActivityBO>> getActivityListByUserID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
@@ -576,7 +576,7 @@ public class ActivityController {
      * @param httpServletRequest
      * @return
      */
-//    @CheckLogin
+    @CheckLogin
     @GetMapping(value = "/getApprovedActivityList")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<ActivityBO>> getApprovedActivityList(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
@@ -604,8 +604,6 @@ public class ActivityController {
                     builder.withOrderRule(request.getOrderRule());
                 }
                 //条件查询（可选）
-                //获取不到stuId，显示system
-                // 添加负责人学号选择条件
                 if (StringUtils.isNotBlank(request.getUserId())) {//获取到的是StuId。通过StuId找UserId
                     builder.withUserId(request.getUserId());
                 }
@@ -629,8 +627,6 @@ public class ActivityController {
             }
         });
     }
-    //查询本周创建的活动
-    //只有活动名称一个查询条件
     /**
      * 获取本周创建的活动列表
      *
@@ -638,7 +634,7 @@ public class ActivityController {
      * @param httpServletRequest
      * @return
      */
-    //@CheckLogin
+    @CheckLogin
     @GetMapping(value = "/week/created")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<ActivityBO>> getCreatedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
@@ -676,6 +672,7 @@ public class ActivityController {
      * @param httpServletRequest
      * @return
      */
+    @CheckLogin
     @GetMapping(value = "/week/approved")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<ActivityBO>> getApprovedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {

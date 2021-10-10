@@ -182,22 +182,18 @@ public class ActivityManagerImpl implements ActivityManager {
     @Override
     public PageList<ActivityBO> findCreatedByWeek(ActivityRequest request) {
         String asc ="ASC";
-        //工具类
         Calendar c = Calendar.getInstance();
         int week = c.get(Calendar.DAY_OF_WEEK);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         int second = c.get(Calendar.SECOND);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date=new Date();
         long now=date.getTime();
-        //查询一年
-        long Monday=now-1000L*60*60*24*365;
-        //1代表周日
+        //周日由1改为8
         if(week==1){
             week=8;
         }
-        //long Monday=now-1000L*60*60*24*(week-2)-1000*60*60*hour-1000*60*minute-1000*second;
+        long Monday=now-1000L*60*60*24*(week-2)-1000*60*60*hour-1000*60*minute-1000*second;
         date= new Date(Monday);
         if(asc.equals(request.getOrderRule())){
             return activityRepoService.queryCreatedByWeekPagerASC(date, request.getPage(), request.getLimit(),request.getActivityName());
@@ -208,22 +204,17 @@ public class ActivityManagerImpl implements ActivityManager {
     @Override
     public PageList<ActivityBO> findApprovedByWeek(ActivityRequest request) {
         String asc ="ASC";
-        //工具类
         Calendar c = Calendar.getInstance();
         int week = c.get(Calendar.DAY_OF_WEEK);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         int second = c.get(Calendar.SECOND);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date=new Date();
         long now=date.getTime();
-        //查询一年
-        long Monday=now-1000L*60*60*24*365;
-        //1代表周日
         if(week==1){
             week=8;
         }
-        //long Monday=now-1000L*60*60*24*(week-2)-1000*60*60*hour-1000*60*minute-1000*second;
+        long Monday=now-1000L*60*60*24*(week-2)-1000*60*60*hour-1000*60*minute-1000*second;
         date= new Date(Monday);
         if(asc.equals(request.getOrderRule())){
             return activityRepoService.queryApprovedByWeekPagerASC(date, request.getPage(), request.getLimit(),request.getActivityName());
