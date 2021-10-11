@@ -8,6 +8,8 @@ import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.common.RestRequest;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
 
+import java.util.Date;
+
 /**
  * @author MessiahJK
  * @version : ActivityRestRequest.java 2018/11/25 21:39 MessiahJK
@@ -143,6 +145,32 @@ public class ActivityRestRequest extends RestRequest {
      * 通过负责人学号关键字查找
      */
     private String searchCreatorStuId;
+
+    /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 
     public String getOrderRule() {
         return orderRule;

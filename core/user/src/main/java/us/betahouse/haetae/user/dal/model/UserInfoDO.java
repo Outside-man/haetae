@@ -88,6 +88,34 @@ public class UserInfoDO extends BaseDO {
     @Column(length = 2000)
     private String extInfo;
 
+    /**
+     * 辅导员姓名
+     */
+    @Column(name = "counsellor_name",length = 50)
+    private String counsellorName;
+
+    /**
+     * 联系方式
+     */
+    @Column(length = 50)
+    private String phoneNumber;
+
+    public String getCounsellorName() {
+        return counsellorName;
+    }
+
+    public void setCounsellorName(String counsellorName) {
+        this.counsellorName = counsellorName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getUserInfoId() {
         return userInfoId;
     }

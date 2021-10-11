@@ -7,6 +7,8 @@ package us.betahouse.haetae.activity.request;
 
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 
+import java.util.Date;
+
 /**
  * 活动管理请求
  *
@@ -149,7 +151,34 @@ public class ActivityRequest extends BaseRequest {
      */
     private Long activityStampedTimeEnd;
 
+
+    /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
     private PastActivityBO pastActivityBO;
+
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 
     public String getOrderRule() {
         return orderRule;

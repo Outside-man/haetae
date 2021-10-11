@@ -703,4 +703,78 @@ public class ActivityController {
             }
         });
     }
+    /**
+     * 驳回审批
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    //添加驳回理由
+    //@CheckLogin
+    @PutMapping
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityBO> cancel(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "驳回申请", request, new RestOperateCallBack<ActivityBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+                AssertUtil.assertStringNotBlank(request.getOperation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "操作不能为空");
+            }
+
+            @Override
+            public Result<ActivityBO> execute() {
+                // 强校验操作类型
+                ActivityOperationEnum operation = ActivityOperationEnum.getByCode(request.getOperation());
+                AssertUtil.assertNotNull(operation, "操作类型不存在");
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
+                        .withActivityId(request.getActivityId())
+                        .withOperation(request.getOperation())
+                        .build();
+                ActivityBO activityBO = activityService.operate(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, MessageFormat.format("驳回申请成功", operation.getDesc()));
+            }
+        });
+    }
+    /**
+     * 审批通过
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    //添加审批时间
+    //@CheckLogin
+    @PutMapping
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityBO> publish(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "审批通过", request, new RestOperateCallBack<ActivityBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+                AssertUtil.assertStringNotBlank(request.getOperation(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "操作不能为空");
+            }
+
+            @Override
+            public Result<ActivityBO> execute() {
+                // 强校验操作类型
+                ActivityOperationEnum operation = ActivityOperationEnum.getByCode(request.getOperation());
+                AssertUtil.assertNotNull(operation, "操作类型不存在");
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
+                        .withActivityId(request.getActivityId())
+                        .withOperation(request.getOperation())
+                        .build();
+                ActivityBO activityBO = activityService.operate(activityManagerRequest, context);
+                return RestResultUtil.buildSuccessResult(activityBO, MessageFormat.format("审批通过成功", operation.getDesc()));
+            }
+        });
+    }
+
+
 }

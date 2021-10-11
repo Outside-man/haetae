@@ -163,4 +163,20 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context);
+    /**
+     * 审批通过
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext);
+    /**
+     * 驳回审批
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext);
 }

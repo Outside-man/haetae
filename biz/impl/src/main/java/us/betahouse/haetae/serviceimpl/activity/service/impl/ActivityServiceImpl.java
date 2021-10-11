@@ -520,6 +520,16 @@ public class ActivityServiceImpl implements ActivityService {
         return activityBOPageList;
     }
 
+    @Override
+    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityOperateManager.operate(request, operateContext);
+    }
+    @Override
+    public ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityOperateManager.operate(request, operateContext);
+    }
+
+
     /**
      * 生成权限移除请求
      *

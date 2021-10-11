@@ -104,6 +104,16 @@ public class ActivityBO extends ToString {
     private String stuId;
 
     /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -184,6 +194,21 @@ public class ActivityBO extends ToString {
         }
     }
 
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 
     public String getActivityId() {
         return activityId;

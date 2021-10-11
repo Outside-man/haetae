@@ -6,6 +6,7 @@ package us.betahouse.haetae.serviceimpl.activity.request.builder;
 
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +36,8 @@ public final class ActivityManagerRequestBuilder {
     private String orderRule;
     private Long activityStampedTimeStart;
     private Long activityStampedTimeEnd;
+    private Date approvedTime;
+    private String cancelReason;
 
     private ActivityManagerRequestBuilder() {
     }
@@ -142,6 +145,16 @@ public final class ActivityManagerRequestBuilder {
         this.activityStampedTimeEnd=endTime;
         return this;
     }
+
+    public ActivityManagerRequestBuilder withApprovedTime(Date approvedTime){
+        this.approvedTime=approvedTime;
+        return this;
+    }
+    public ActivityManagerRequestBuilder withCancelReason(String cancelReason){
+        this.cancelReason=cancelReason;
+        return this;
+    }
+
     public ActivityManagerRequest build() {
         ActivityManagerRequest activityManagerRequest = new ActivityManagerRequest();
         activityManagerRequest.setActivityId(activityId);
@@ -165,6 +178,8 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setOrderRule(orderRule);
         activityManagerRequest.setActivityStampedTimeStart(activityStampedTimeStart);
         activityManagerRequest.setActivityStampedTimeEnd(activityStampedTimeEnd);
+        activityManagerRequest.setApprovedTime(approvedTime);
+        activityManagerRequest.setCancelReason(cancelReason);
         return activityManagerRequest;
     }
 }

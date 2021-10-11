@@ -89,6 +89,16 @@ public final class ActivityBOBuilder {
     private String userId;
 
     /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -171,6 +181,15 @@ public final class ActivityBOBuilder {
         return this;
     }
 
+    public ActivityBOBuilder withApprovedTime(Date approvedTime){
+        this.approvedTime=approvedTime;
+        return this;
+    }
+    public ActivityBOBuilder withCancelReason(String cancelReason){
+        this.cancelReason=cancelReason;
+        return this;
+    }
+
     public ActivityBOBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
         return this;
@@ -192,6 +211,8 @@ public final class ActivityBOBuilder {
         activityBO.setState(state);
         activityBO.setTerm(term);
         activityBO.setUserId(userId);
+        activityBO.setApprovedTime(approvedTime);
+        activityBO.setCancelReason(cancelReason);
         activityBO.setExtInfo(extInfo);
         return activityBO;
     }
