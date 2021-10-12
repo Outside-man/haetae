@@ -51,6 +51,16 @@ final public class UserInfoBOBuilder {
     private String grade;
 
     /**
+     * 辅导员姓名
+     */
+    private String counsellorName;
+
+    /**
+     * 联系方式
+     */
+    private String phoneNumber;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -68,6 +78,8 @@ final public class UserInfoBOBuilder {
         userInfoBO.setSex(sex);
         userInfoBO.setStuId(stuId);
         userInfoBO.setGrade(grade);
+        userInfoBO.setCounsellorName(counsellorName);
+        userInfoBO.setPhoneNumber(phoneNumber);
         if (extInfo != null) {
             userInfoBO.setExtInfo(extInfo);
         }
@@ -107,6 +119,14 @@ final public class UserInfoBOBuilder {
     }
     public UserInfoBOBuilder withGrade(String grade) {
         this.grade = grade;
+        return this;
+    }
+    public UserInfoBOBuilder withCounsellorName(String counsellorName) {
+        this.counsellorName = counsellorName;
+        return this;
+    }
+    public UserInfoBOBuilder withPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 

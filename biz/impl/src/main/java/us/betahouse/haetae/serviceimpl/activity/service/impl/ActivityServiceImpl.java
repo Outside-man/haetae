@@ -181,6 +181,15 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.publish(request);
+    }
+    @Override
+    public ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.cancel(request);
+    }
+
+    @Override
     public ActivityBO operate(ActivityManagerRequest request, OperateContext operateContext) {
         return activityOperateManager.operate(request, operateContext);
     }
@@ -520,14 +529,7 @@ public class ActivityServiceImpl implements ActivityService {
         return activityBOPageList;
     }
 
-    @Override
-    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityOperateManager.operate(request, operateContext);
-    }
-    @Override
-    public ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityOperateManager.operate(request, operateContext);
-    }
+
 
 
     /**

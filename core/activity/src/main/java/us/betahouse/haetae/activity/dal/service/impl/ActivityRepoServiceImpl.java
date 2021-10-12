@@ -170,6 +170,41 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         }
         return convert(activityDORepo.save(activityDO));
     }
+    /**
+     * 活动审批通过
+     *
+     * @param activityBO
+     * @return
+     */
+    @Override
+    public ActivityBO publishActivity(ActivityBO activityBO) {
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
+            LoggerUtil.error(LOGGER, "审批通过的活动不存在", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "审批通过的活动不存在");
+        }
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        activityDO.setState("PUBLISHED");
+        activityDO.setApprovedTime(new Date());
+        return convert(activityDORepo.save(activityDO));
+    }
+    /**
+     * 活动驳回
+     *
+     * @param activityBO
+     * @return
+     */
+    @Override
+    public ActivityBO cancelActivity(ActivityBO activityBO) {
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
+            LoggerUtil.error(LOGGER, "取消的活动不存在", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "取消的活动不存在");
+        }
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        activityDO.setState("CANCELED");
+        activityDO.setCancelReason(activityBO.getCancelReason());
+        return convert(activityDORepo.save(activityDO));
+    }
+
 
     @Override
     public ActivityBO queryActivityByActivityId(String activityId) {
@@ -323,6 +358,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
         activityBO.setUserId(activityDO.getUserId());
+        activityBO.setCancelReason(activityDO.getCancelReason());
+        activityBO.setApprovedTime(activityDO.getApprovedTime());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
@@ -352,6 +389,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
         activityDO.setUserId(activityBO.getUserId());
+        activityDO.setCancelReason(activityBO.getCancelReason());
+        activityDO.setApprovedTime(activityBO.getApprovedTime());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }

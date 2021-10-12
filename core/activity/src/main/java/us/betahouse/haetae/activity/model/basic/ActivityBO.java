@@ -113,6 +113,7 @@ public class ActivityBO extends ToString {
      */
     private String cancelReason;
 
+
     /**
      * 拓展信息
      */

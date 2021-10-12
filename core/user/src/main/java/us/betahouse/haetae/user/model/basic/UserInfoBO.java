@@ -7,6 +7,7 @@ package us.betahouse.haetae.user.model.basic;
 import org.hibernate.validator.constraints.NotBlank;
 import us.betahouse.util.common.ToString;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,12 +69,39 @@ public class UserInfoBO extends ToString {
      * 头像
      */
     private String avatarUrl;
-    
+
+    /**
+     * 辅导员姓名
+     */
+    private String counsellorName;
+
+    /**
+     * 联系方式
+     */
+    private String phoneNumber;
+
+
     /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
-    
+
+    public String getCounsellorName() {
+        return counsellorName;
+    }
+
+    public void setCounsellorName(String counsellorName) {
+        this.counsellorName = counsellorName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getAvatarUrl() {
         return avatarUrl;
     }

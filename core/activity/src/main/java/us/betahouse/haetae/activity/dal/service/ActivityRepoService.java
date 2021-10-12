@@ -63,6 +63,20 @@ public interface ActivityRepoService {
      * @return
      */
     ActivityBO updateActivity(ActivityBO activityBO);
+    /**
+     * 活动审批通过
+     *
+     * @param activityBO
+     * @return
+     */
+    ActivityBO publishActivity(ActivityBO activityBO);
+    /**
+     * 活动申请驳回
+     *
+     * @param activityBO
+     * @return
+     */
+    ActivityBO cancelActivity(ActivityBO activityBO);
 
     /**
      * 通过活动id查询活动

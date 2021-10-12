@@ -52,6 +52,24 @@ public interface ActivityManager {
     ActivityBO update(ActivityRequest request);
 
     /**
+     * 活动审批通过
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO publish(ActivityRequest request);
+
+    /**
+     * 活动审批驳回
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO cancel(ActivityRequest request);
+
+
+
+    /**
      * 查找活动
      *
      * @param request

@@ -109,6 +109,31 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withExtInfo(request.getExtInfo());
         return activityRepoService.updateActivity(builder.build());
     }
+    /**
+     * 活动审批通过
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityBO publish(ActivityRequest request) {
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
+                .withActivityId(request.getActivityId());
+        return activityRepoService.publishActivity(builder.build());
+    }
+    /**
+     * 活动申请驳回
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityBO cancel(ActivityRequest request) {
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
+                .withActivityId(request.getActivityId())
+                .withCancelReason(request.getCancelReason());
+        return activityRepoService.cancelActivity(builder.build());
+    }
 
     @Override
     public PageList<ActivityBO> find(ActivityRequest request) {
