@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import us.betahouse.util.utils.PageUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -104,13 +105,48 @@ public class PageList<E> {
 
     private void init(PageUtil pageUtil){
         this.totalElements=pageUtil.getTotalElements().longValue();
-        this.totalPages=pageUtil.getTotalPages()+1;
+        this.totalPages=pageUtil.getTotalPages();
         this.size=pageUtil.getSize();
-        this.number=pageUtil.getNumber()+1;
+        this.number=pageUtil.getNumber();
         this.numberOfElements=pageUtil.getNumberOfElements();
         this.first=pageUtil.getFirst();
         this.end=pageUtil.getEnd();
         this.content=pageUtil.getData();
+    }
+
+    public void init(List<E> content,Long totalElements,int number,int size) {
+        if (content == null) {
+            this.content = Collections.emptyList();
+        }
+        if(number < 0 || size < 0 ){
+            throw new IllegalArgumentException("参数错误");
+        }
+        this.totalElements=totalElements;
+        this.content=content;
+        this.size=size;
+        this.number=number;
+        this.numberOfElements=content.size();
+        this.totalPages=(int)((this.totalElements + size - 1)/size);
+        if(number<1){
+            this.number=1;
+            this.first=true;
+        }else {
+            this.first=false;
+        }
+        if(number>totalPages){
+            this.number=totalPages;
+            this.end=true;
+        }else {
+            this.end=false;
+        }
+    }
+
+    /**
+     * content<T> ->PageList<T>
+     *
+     */
+    public PageList(List<E> content,Long totalElements,int number,int size){
+        this.init(content, totalElements, number, size);
     }
 
     /**

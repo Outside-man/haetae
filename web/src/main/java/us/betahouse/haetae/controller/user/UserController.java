@@ -360,8 +360,9 @@ public class UserController {
      * @param httpServletRequest
      * @return
      */
+    @CrossOrigin
     @PutMapping(value = "/pwd")
-    @CheckLogin
+//    @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> modifyPassword(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "修改密码", null, new RestOperateCallBack<UserVO>() {
@@ -472,7 +473,7 @@ public class UserController {
         });
     }
 
-    @PostMapping("/uploadUserExcel")
+    @PostMapping("/uploaduserexcel")
     @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<String>> uploadUserExcel(@PathVariable("file") MultipartFile file,UserRequest request,HttpServletRequest httpServletRequest){
@@ -494,7 +495,7 @@ public class UserController {
         });
     }
 
-    @GetMapping("/downloadMoban")
+    @GetMapping("/downloadtemplate")
     public Result<String> download(UserRequest request,HttpServletResponse response) {
         return RestOperateTemplate.operate(LOGGER, "根据excel批量创建用户", request, new RestOperateCallBack<String>() {
             @Override
@@ -587,7 +588,7 @@ public class UserController {
      * @return
      */
     @CheckLogin
-    @PutMapping(value = "/stampemanager")
+    @PutMapping(value = "/stampmanager")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<String> giveStamperPerm(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "给予一位用户导章权限", request, new RestOperateCallBack<String>() {
@@ -619,7 +620,7 @@ public class UserController {
     @GetMapping(value = "/routingtable")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<UserRoutingTable>> getRoutingTable(UserRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "给予一位用户导章权限", request, new RestOperateCallBack<List<UserRoutingTable>>() {
+        return RestOperateTemplate.operate(LOGGER, "拉取路由表", request, new RestOperateCallBack<List<UserRoutingTable>>() {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");

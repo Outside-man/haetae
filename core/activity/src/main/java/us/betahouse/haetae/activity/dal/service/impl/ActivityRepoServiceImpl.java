@@ -49,6 +49,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
 
     @Autowired
     private PastActivityDORepo pastActivityDORepo;
+
     /**
      * id工厂
      */
@@ -282,6 +283,19 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         return new PageList<>(activityDORepo.findApprovedAddTime(pageable,state,stuId,activityName,organizationMessage,sTime,eTime), this::convert);
     }
 
+    @Override
+    public void updateActivityStampedTimeByActivityId(Date activityStampedStart, Date activityStampedEnd, String activityId) {
+        int i=activityDORepo.updateActivityStampedTimeByActivityId(activityStampedStart,activityStampedEnd,activityId);
+        if(i==0){
+            throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"修改未成功");
+        }
+    }
+
+    @Override
+    public List<ActivityBO> convert(List<ActivityDO> activityDOs) {
+        return CollectionUtils.toStream(activityDOs).filter(Objects::nonNull).map(this::convert).collect(Collectors.toList());
+    }
+
     private Object convert(Object o) {
         if(o instanceof ActivityDO){
             return convert((ActivityDO)o);
@@ -322,6 +336,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
         activityBO.setUserId(activityDO.getUserId());
+        activityBO.setActivityStampedStart(activityDO.getActivityStampedStart());
+        activityBO.setActivityStampedEnd(activityDO.getActivityStampedEnd());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
@@ -351,6 +367,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
         activityDO.setUserId(activityBO.getUserId());
+        activityDO.setActivityStampedStart(activityBO.getActivityStampedStart());
+        activityDO.setActivityStampedEnd(activityBO.getActivityStampedEnd());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }

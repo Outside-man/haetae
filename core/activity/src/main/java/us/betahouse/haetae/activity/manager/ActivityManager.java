@@ -11,6 +11,7 @@ import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -113,4 +114,16 @@ public interface ActivityManager {
      * @return
      */
     PageList<ActivityBO> findApprovedAddTime(ActivityRequest request) throws ParseException;
+
+    /**
+     * 更具活动id修改扫章时间
+     * @param request
+     */
+    void updateStampedTimeByActivityId(ActivityRequest request);
+
+    /**按条件查找活动
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApprovedActivity(ActivityRequest request);
 }

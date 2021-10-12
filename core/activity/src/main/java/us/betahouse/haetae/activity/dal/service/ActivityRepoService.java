@@ -4,11 +4,13 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -182,4 +184,19 @@ public interface ActivityRepoService {
      */
     PageList<ActivityBO> queryApprovedAddTime(String state,String stuId,String activityName,String organizationMessage
             ,Long start,Long end,Integer page,Integer limit) throws ParseException;
+
+    /**
+     *根据activityId修改活动扫章时间
+     * @param activityStampedStart
+     * @param activityStampedEnd
+     * @param activityId
+     */
+    void updateActivityStampedTimeByActivityId(Date activityStampedStart,Date activityStampedEnd,String activityId);
+
+    /**
+     * List<ActivityBO> 2 List<ActivityDO>
+     * @param activityDOs
+     * @return
+     */
+    List<ActivityBO> convert(List<ActivityDO> activityDOs);
 }

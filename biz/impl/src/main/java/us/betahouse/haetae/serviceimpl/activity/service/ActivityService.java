@@ -113,14 +113,6 @@ public interface ActivityService {
     void  assignPastRecord(ActivityManagerRequest request,OperateContext context);
 
     /**
-     * 完善活动扫章时间起止日期
-     *
-     * @param activityBOS
-     * @return
-     */
-    List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS);
-
-    /**
      * 完善活动的创建者的stuId，将其放置在(额外信息)extInfo中
      *
      * @param activityBOS
@@ -145,4 +137,19 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException;
+
+    /**
+     * 修改活动的扫章时间
+     * @param request
+     * @param context
+     */
+    void updateActivityStampedTimeByActivityId(ActivityManagerRequest request,OperateContext context);
+
+    /**
+     * 分页获得所有通过的活动，可查询
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedActivity(ActivityManagerRequest request,OperateContext context);
 }

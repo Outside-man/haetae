@@ -227,23 +227,22 @@ public class UserServiceImpl implements UserService {
 
         for (ExcelTemplate excelTemplate : excelTemplates) {
             Map<String, List<String>> data = excelTemplate.getDate();
-            for (int i = 0; i < excelTemplate.getColumnNum(); i++) {
+            for (int i = 0; i < excelTemplate.getRowNum(); i++) {
                 List<String> list;
                 CommonUserRequest commonUserRequest=new CommonUserRequest();
                 UserInfoBO userInfoBO=new UserInfoBO();
                 if(data.get("姓名")!=null){
                     list=data.get("姓名");
                     userInfoBO.setRealName(list.get(i));
-                    commonUserRequest.setUsername(list.get(i));
                 }
                 if(data.get("学号")!=null){
                     list=data.get("学号");
                     userInfoBO.setStuId(list.get(i));
                     commonUserRequest.setStuId(list.get(i));
+                    commonUserRequest.setUsername(list.get(i));
                 }
                 if(data.get("初始密码")!=null){
                     list=data.get("初始密码");
-
                     commonUserRequest.setPassword(list.get(i));
                 }
                 if(data.get("性别")!=null){
@@ -257,7 +256,11 @@ public class UserServiceImpl implements UserService {
                 if(data.get("年级")!=null){
                     list=data.get("年级");
                     userInfoBO.setGrade(list.get(i));
-            }
+                }
+                if(data.get("班级")!=null){
+                    list=data.get("班级");
+                    userInfoBO.setClassId(list.get(i));
+                }
                 commonUserRequest.setSalt(UUID.randomUUID().toString());
                 userInfoBO.setEnrollDate(new Date());
                 commonUserRequest.setUserInfoBO(userInfoBO);

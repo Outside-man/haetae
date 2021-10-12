@@ -7,6 +7,7 @@ package us.betahouse.haetae.activity.dal.repo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
@@ -150,4 +151,63 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
             "and start >= ?5 and end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
     Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date start, Date end);
 
+    @Modifying
+    @Query(value = "update activity set activity_stamped_start=?,activity_stamped_end=? where activity_id=?",nativeQuery = true)
+    int updateActivityStampedTimeByActivityId(Date activityStampedStart,Date activityStampedEnd,String activityId);
+
+    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and user_id=(select user_id from common_user_info where stu_id=?) " +
+            "and activity_stamped_start>=? and activity_stamped_end<=? " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
+            "limit ?,?",nativeQuery = true)
+    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
+                                          String stuId,Date start,Date end,int formIndex,int size);
+
+    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and user_id=(select user_id from common_user_info where stu_id=?) " +
+            "and activity_stamped_start>=? and activity_stamped_end<=? " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
+    Long findApprovedActivityNum(String activityName,String OrganizationName,String stuId,Date start,Date end);
+
+    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and activity_stamped_start>=? and activity_stamped_end<=? " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
+            "limit ?,?",nativeQuery = true)
+    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
+                                                      Date start,Date end,int formIndex,int size);
+
+    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and activity_stamped_start>=? and activity_stamped_end<=? " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
+    Long findApprovedActivityNum(String activityName,String OrganizationName,Date start,Date end);
+
+    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and user_id=(select user_id from common_user_info where stu_id=?) " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
+            "limit ?,?",nativeQuery = true)
+    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
+                                          String stuId,int formIndex,int size);
+
+    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and user_id=(select user_id from common_user_info where stu_id=?) " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
+    Long findApprovedActivityNum(String activityName,String OrganizationName,String stuId);
+
+    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
+            "limit ?,?",nativeQuery = true)
+    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
+                                          int formIndex,int size);
+
+    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
+            "and organization_message like concat('%',?,'%') " +
+            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
+    Long findApprovedActivityNum(String activityName,String OrganizationName);
 }

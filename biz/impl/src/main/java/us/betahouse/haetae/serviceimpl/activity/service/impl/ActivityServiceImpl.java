@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.builder.PastActivityBOBuilder;
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.service.ActivityBlacklistRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
@@ -37,6 +38,9 @@ import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
+import us.betahouse.haetae.user.user.service.UserBasicService;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.NumberUtils;
@@ -90,10 +94,10 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityBlacklistRepoService activityBlacklistRepoService;
 
     @Autowired
-    private PermRepoService permRepoService;
+    private UserBasicService userBasicService;
 
     @Override
-//    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional(rollbackFor = Exception.class)
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
@@ -107,9 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
         // 创建活动
         ActivityBO activityBO = activityManager.create(request);
         // 创建权限
-        PermBOBuilder permBOBuilder = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限")
-                .withStart(request.getActivityStampedTimeStart())
-                .withEnd(request.getActivityStampedTimeEnd());
+        PermBOBuilder permBOBuilder = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限");
         PermBO permBO = permBOBuilder.build();
 
         // 将活动id 冗余到权限拓展信息
@@ -303,28 +305,6 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS) {
-        List<ActivityBO> list=new ArrayList<>();
-        for (ActivityBO activityBO : activityBOS) {
-            String permId=activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
-            PermBO permBO = permRepoService.queryPermByPermId(permId);
-            if(permBO==null){
-                System.out.println(MessageFormat.format("活动{0}没有对应盖章权限",activityBO.getActivityName()));
-                continue;
-            }else {
-                Date start=permBO.getStart();
-                Date end=permBO.getEnd();
-                if(start!=null&&end!=null){
-                    activityBO.putExtInfo(AcitvityStampedTime.ACTIVITY_STAMPED_START_TIME,start.toString());
-                    activityBO.putExtInfo(AcitvityStampedTime.ACTIVITY_STAMPED_End_TIME,end.toString());
-                }
-            }
-            list.add(activityBO);
-        }
-        return list;
-    }
-
-    @Override
     public List<ActivityBO> fillActivityCreatorStuId(List<ActivityBO> activityBOS) {
         List<ActivityBO> list=new ArrayList<>();
         for (ActivityBO activityBO : activityBOS) {
@@ -442,6 +422,33 @@ public class ActivityServiceImpl implements ActivityService {
 
         return activityBOPageList;
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateActivityStampedTimeByActivityId(ActivityManagerRequest request, OperateContext context) {
+        ActivityBO activityBO=activityRepoService.queryActivityByActivityId(request.getActivityId());
+        if(!StringUtils.equals(request.getUserId(),activityBO.getCreatorId())){
+            if(!userBasicService.verifyPermissionByRoleCode(request.getUserId(),Collections.singletonList(UserRoleCode.GENERAL_MANAGER))){
+                throw new BetahouseException(CommonResultCode.FORBIDDEN,"您不是管理员或者活动创建人，无法修改扫章时间");
+            }
+        }
+        activityManager.updateStampedTimeByActivityId(request);
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedActivity(ActivityManagerRequest request, OperateContext context) {
+        AssertUtil.assertTrue(userBasicService.verifyPermissionByRoleCode(request.getUserId(),Collections.singletonList(UserRoleCode.GENERAL_MANAGER)),
+                CommonResultCode.FORBIDDEN,"您不是管理员，无权访问");
+        PageList<ActivityBO> pageList = activityManager.findApprovedActivity(request);
+        List<ActivityBO> content = pageList.getContent();
+        List<ActivityBO> list=new ArrayList<>();
+        for (ActivityBO activityBO : content) {
+            activityBO.setStuId(userInfoRepoService.queryUserInfoByUserId(activityBO.getUserId()).getStuId());
+            list.add(activityBO);
+        }
+        pageList.setContent(list);
+        return pageList;
     }
 
     /**

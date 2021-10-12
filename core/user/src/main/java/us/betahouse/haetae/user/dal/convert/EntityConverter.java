@@ -49,8 +49,6 @@ final public class EntityConverter {
         permBO.setPermName(permDO.getPermName());
         permBO.setPermDesc(permDO.getPermDesc());
         permBO.setExtInfo(JSON.parseObject(permDO.getExtInfo(), Map.class));
-        permBO.setStart(permDO.getStart());
-        permBO.setEnd(permDO.getEnd());
         return permBO;
     }
 
@@ -70,8 +68,6 @@ final public class EntityConverter {
         permDO.setPermName(permBO.getPermName());
         permDO.setPermDesc(permBO.getPermDesc());
         permDO.setExtInfo(JSON.toJSONString(permBO.getExtInfo()));
-        permBO.setStart(permDO.getStart());
-        permBO.setEnd(permDO.getEnd());
         return permDO;
     }
 

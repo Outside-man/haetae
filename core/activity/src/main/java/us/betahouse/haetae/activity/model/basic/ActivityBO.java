@@ -104,6 +104,16 @@ public class ActivityBO extends ToString {
     private String stuId;
 
     /**
+     * 活动盖章开始时间
+     */
+    private Date activityStampedStart;
+
+    /**
+     * 活动盖章结束时间
+     */
+    private Date activityStampedEnd;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -184,6 +194,21 @@ public class ActivityBO extends ToString {
         }
     }
 
+    public Date getActivityStampedStart() {
+        return activityStampedStart;
+    }
+
+    public void setActivityStampedStart(Date activityStampedStart) {
+        this.activityStampedStart = activityStampedStart;
+    }
+
+    public Date getActivityStampedEnd() {
+        return activityStampedEnd;
+    }
+
+    public void setActivityStampedEnd(Date activityStampedEnd) {
+        this.activityStampedEnd = activityStampedEnd;
+    }
 
     public String getActivityId() {
         return activityId;

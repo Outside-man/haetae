@@ -89,6 +89,16 @@ public final class ActivityBOBuilder {
     private String userId;
 
     /**
+     * 活动盖章开始时间
+     */
+    private Date activityStampedStart;
+
+    /**
+     * 活动盖章结束时间
+     */
+    private Date activityStampedEnd;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -171,6 +181,16 @@ public final class ActivityBOBuilder {
         return this;
     }
 
+    public ActivityBOBuilder withActivityStampedStart(Date activityStampedStart) {
+        this.activityStampedStart=activityStampedStart;
+        return this;
+    }
+
+    public ActivityBOBuilder withActivityStampedEnd(Date activityStampedEnd) {
+        this.activityStampedEnd=activityStampedEnd;
+        return this;
+    }
+
     public ActivityBOBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
         return this;
@@ -192,6 +212,8 @@ public final class ActivityBOBuilder {
         activityBO.setState(state);
         activityBO.setTerm(term);
         activityBO.setUserId(userId);
+        activityBO.setActivityStampedStart(activityStampedStart);
+        activityBO.setActivityStampedEnd(activityStampedEnd);
         activityBO.setExtInfo(extInfo);
         return activityBO;
     }

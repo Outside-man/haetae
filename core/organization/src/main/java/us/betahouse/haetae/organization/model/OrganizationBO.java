@@ -34,7 +34,7 @@ public class OrganizationBO extends ToString {
      */
     private String organizationType;
 
-    private Map<String, String> extInfo = new HashMap<>();
+    private Map<String, String> extInfo;
 
     /**
      * 放入拓展信息

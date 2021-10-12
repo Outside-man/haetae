@@ -95,6 +95,27 @@ public class ActivityDO extends BaseDO {
      */
     private String term;
 
+    @Column(name = "activity_stamped_start")
+    private Date activityStampedStart;
+
+    @Column(name = "activity_stamped_end")
+    private Date activityStampedEnd;
+
+    public Date getActivityStampedStart() {
+        return activityStampedStart;
+    }
+
+    public void setActivityStampedStart(Date activityStampedStart) {
+        this.activityStampedStart = activityStampedStart;
+    }
+
+    public Date getActivityStampedEnd() {
+        return activityStampedEnd;
+    }
+
+    public void setActivityStampedEnd(Date activityStampedEnd) {
+        this.activityStampedEnd = activityStampedEnd;
+    }
 
     public String getActivityId() {
         return activityId;
