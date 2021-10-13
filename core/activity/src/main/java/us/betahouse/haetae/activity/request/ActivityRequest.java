@@ -67,9 +67,9 @@ public class ActivityRequest extends BaseRequest {
     private Long score;
 
     /**
-     * 活动分数
+     * 扫章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -162,7 +162,20 @@ public class ActivityRequest extends BaseRequest {
      */
     private String cancelReason;
 
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
+
     private PastActivityBO pastActivityBO;
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
 
     public Date getApprovedTime() {
         return approvedTime;
@@ -260,11 +273,11 @@ public class ActivityRequest extends BaseRequest {
         this.score = score;
     }
 
-    public String getApplicationStamper() {
+    public int getApplicationStamper() {
         return applicationStamper;
     }
 
-    public void setApplicationStamper(String applicationStamper) {
+    public void setApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

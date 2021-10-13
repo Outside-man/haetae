@@ -11,12 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
-import us.betahouse.haetae.activity.dal.service.impl.ActivityRepoServiceImpl;
-import us.betahouse.haetae.activity.enums.ActivityEntryStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
@@ -28,12 +24,9 @@ import us.betahouse.haetae.common.template.RestOperateTemplate;
 import us.betahouse.haetae.model.activity.PastActivityVO;
 import us.betahouse.haetae.model.activity.request.ActivityRestRequest;
 import us.betahouse.haetae.model.activity.request.AuditRestRequest;
-import us.betahouse.haetae.serviceimpl.activity.constant.AcitvityStampedTime;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityCreatorId;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
-import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityOperationEnum;
-import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.model.AuditMessage;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.request.builder.ActivityManagerRequestBuilder;
@@ -41,16 +34,11 @@ import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.utils.AuditUtil;
 import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
-import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.serviceimpl.schedule.manager.AccessTokenManage;
-import us.betahouse.haetae.serviceimpl.user.enums.UserRoleCode;
 import us.betahouse.haetae.serviceimpl.user.request.PermRequest;
 import us.betahouse.haetae.serviceimpl.user.service.PermService;
 import us.betahouse.haetae.serviceimpl.user.service.UserService;
 import us.betahouse.haetae.user.dal.service.PermRepoService;
-import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
-import us.betahouse.haetae.user.manager.PermManager;
-import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.utils.IPUtil;
 import us.betahouse.haetae.utils.RestResultUtil;
@@ -65,11 +53,9 @@ import us.betahouse.util.utils.PageUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,8 +98,9 @@ public class ActivityController {
      * @param httpServletRequest
      * @return
      */
-    @CheckLogin
+    //@CheckLogin
     @PostMapping
+    //添加活动时设置modified默认为false
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<ActivityBO> add(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "新增活动", request, new RestOperateCallBack<ActivityBO>() {
@@ -148,6 +135,7 @@ public class ActivityController {
                         .withTerm(request.getTerm() == null ? TermUtil.getNowTerm() : request.getTerm())
                         .withActivityStampedTimeStart(request.getActivityStampedStart())
                         .withActivityStampedTimeEnd(request.getActivityStampedEnd())
+                        .withApplicationStamper(request.getApplicationStamper())
                         // 以下是可选参数
                         // 描述
                         .withDescription(request.getDescription())
@@ -764,5 +752,32 @@ public class ActivityController {
         });
     }
 
+    /**
+     * 根据活动id查询活动
+     *
+     * @param request
+     * @param httpServletRequest
+     * @return
+     */
+    //@CheckLogin
+    @GetMapping(value = "/ByActivityId")
+    @Log(loggerName = LoggerName.WEB_DIGEST)
+    public Result<ActivityBO> getActivityByActivityID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+        return RestOperateTemplate.operate(LOGGER, "根据活动id查询活动", request, new RestOperateCallBack<ActivityBO>() {
+            @Override
+            public void before() {
+                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+            }
+            @Override
+            public Result<ActivityBO> execute() {
+                OperateContext context = new OperateContext();
+                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+                builder.withActivityId(request.getActivityId());
+                return RestResultUtil.buildSuccessResult(activityService.findByActivityId(builder.build(), context), "根据活动id查询活动");
+            }
+        });
+    }
 
 }

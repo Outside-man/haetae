@@ -69,7 +69,7 @@ public class ActivityBO extends ToString {
     /**
      * 活动申请章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -112,6 +112,11 @@ public class ActivityBO extends ToString {
      * 驳回原因
      */
     private String cancelReason;
+
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
 
 
     /**
@@ -195,6 +200,14 @@ public class ActivityBO extends ToString {
         }
     }
 
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
+
     public Date getApprovedTime() {
         return approvedTime;
     }
@@ -275,11 +288,11 @@ public class ActivityBO extends ToString {
         this.score = score;
     }
 
-    public String getApplicationStamper() {
+    public int getApplicationStamper() {
         return applicationStamper;
     }
 
-    public void setApplicationStamper(String applicationStamper) {
+    public void setApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

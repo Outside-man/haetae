@@ -19,7 +19,6 @@ import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -101,11 +100,11 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withLocation(request.getLocation())
                 .withStart(new Date(request.getStart()))
                 .withEnd(new Date(request.getEnd()))
-                .withScore(request.getScore())
                 .withDescription(request.getDescription())
                 .withCreatorId(request.getUserId())
                 .withState(request.getState())
                 .withTerm(request.getTerm())
+                .withApplicationStamper(request.getApplicationStamper())
                 .withExtInfo(request.getExtInfo());
         return activityRepoService.updateActivity(builder.build());
     }
@@ -190,6 +189,11 @@ public class ActivityManagerImpl implements ActivityManager {
     @Override
     public PageList<ActivityBO> findByUserId(ActivityRequest request) {
         return activityRepoService.queryActivityByUserId(request.getUserId(),request.getPage(), request.getLimit());
+    }
+
+    @Override
+    public ActivityBO findByActivityId(ActivityRequest request) {
+        return activityRepoService.queryActivityByActivityId(request.getActivityId());
     }
 
     @Override

@@ -156,6 +156,16 @@ public interface ActivityService {
     PageList<ActivityBO> findByUserId(ActivityManagerRequest request, OperateContext context);
 
     /**
+     * 查找活动通过UserId
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    ActivityBO findByActivityId(ActivityManagerRequest request, OperateContext context);
+
+
+    /**
      * 查找已审批通过的活动
      *
      * @param request

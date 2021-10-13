@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.request.builder;
 
+import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 
 import java.util.Date;
@@ -25,7 +26,7 @@ public final class ActivityManagerRequestBuilder {
     private Long start;
     private Long end;
     private Long score;
-    private String applicationStamper;
+    private int applicationStamper;
     private String description;
     private String userId;
     private String state;
@@ -38,6 +39,7 @@ public final class ActivityManagerRequestBuilder {
     private Long activityStampedTimeEnd;
     private Date approvedTime;
     private String cancelReason;
+    private Boolean modified;
 
     private ActivityManagerRequestBuilder() {
     }
@@ -96,7 +98,7 @@ public final class ActivityManagerRequestBuilder {
         return this;
     }
 
-    public ActivityManagerRequestBuilder withApplicationStamper(String applicationStamper) {
+    public ActivityManagerRequestBuilder withApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
         return this;
     }
@@ -155,6 +157,11 @@ public final class ActivityManagerRequestBuilder {
         return this;
     }
 
+    public ActivityManagerRequestBuilder withModified(Boolean modified){
+        this.modified=modified;
+        return this;
+    }
+
     public ActivityManagerRequest build() {
         ActivityManagerRequest activityManagerRequest = new ActivityManagerRequest();
         activityManagerRequest.setActivityId(activityId);
@@ -180,6 +187,7 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setActivityStampedTimeEnd(activityStampedTimeEnd);
         activityManagerRequest.setApprovedTime(approvedTime);
         activityManagerRequest.setCancelReason(cancelReason);
+        activityManagerRequest.setModified(modified);
         return activityManagerRequest;
     }
 }

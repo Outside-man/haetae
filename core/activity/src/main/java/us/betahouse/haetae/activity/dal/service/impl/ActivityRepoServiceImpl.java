@@ -130,8 +130,11 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
             LoggerUtil.error(LOGGER, "更新的活动不存在 ActivityBO={0}", activityBO);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的活动不存在");
         }
+        //DO为从数据库查询的内容，没有扫章数
         ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        //newDO为request的数据
         ActivityDO newActivityDO = convert(activityBO);
+        //如果request不为null，就将request的数据传入DO保存
         if (newActivityDO.getActivityName() != null) {
             activityDO.setActivityName(newActivityDO.getActivityName());
         }
@@ -168,6 +171,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getExtInfo() != null) {
             activityDO.setExtInfo(newActivityDO.getExtInfo());
         }
+        activityDO.setApplicationStamper(newActivityDO.getApplicationStamper());
+        activityDO.setModified(false);
         return convert(activityDORepo.save(activityDO));
     }
     /**
@@ -357,9 +362,11 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
-        activityBO.setUserId(activityDO.getUserId());
+        //DO的UserId对应BO的CreatorId
+        activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setCancelReason(activityDO.getCancelReason());
         activityBO.setApprovedTime(activityDO.getApprovedTime());
+        activityBO.setModified(activityDO.getModified());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
@@ -385,12 +392,13 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setScore(activityBO.getScore());
         activityDO.setApplicationStamper(activityBO.getApplicationStamper());
         activityDO.setDescription(activityBO.getDescription());
+        //DO的UserId对应BO的CreatorId
         activityDO.setUserId(activityBO.getCreatorId());
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
-        activityDO.setUserId(activityBO.getUserId());
         activityDO.setCancelReason(activityBO.getCancelReason());
         activityDO.setApprovedTime(activityBO.getApprovedTime());
+        activityBO.setModified(activityBO.getModified());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }

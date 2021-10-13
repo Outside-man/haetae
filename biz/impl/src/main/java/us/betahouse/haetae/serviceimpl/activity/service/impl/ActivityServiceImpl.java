@@ -120,7 +120,7 @@ public class ActivityServiceImpl implements ActivityService {
         permManageRequest.setUserIds(Collections.singletonList(request.getUserId()));
         permBO = permManager.createPerm(permManageRequest);
 
-        // 更新信息
+
         request.setActivityId(activityBO.getActivityId());
         request.putExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM, permBO.getPermId());
         return activityManager.update(request);
@@ -358,7 +358,6 @@ public class ActivityServiceImpl implements ActivityService {
         Integer page=0;
         Integer limit=10;
         String orderRule="DESC";
-
         if(NumberUtils.isNotBlank(request.getPage())){
             page=request.getPage();
         }
@@ -377,9 +376,16 @@ public class ActivityServiceImpl implements ActivityService {
         re.setPage(page);
         re.setLimit(limit);
         re.setOrderRule(orderRule);
-
         return activityManager.findByUserId(re);
     }
+    @Override
+    public ActivityBO findByActivityId(ActivityManagerRequest request, OperateContext context) {
+        ActivityRequest re=new ActivityRequest();
+        re.setActivityId(request.getActivityId());
+        return activityManager.findByActivityId(re);
+    }
+
+
 
     @Override
     public PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException {

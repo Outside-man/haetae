@@ -44,7 +44,7 @@ public class ActivityRestRequest extends RestRequest {
      * 申请章数
      */
 
-    private String applicatonStamper;
+    private int applicationStamper;
 
     /**
      * 活动地点
@@ -155,6 +155,19 @@ public class ActivityRestRequest extends RestRequest {
      * 驳回原因
      */
     private String cancelReason;
+
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
 
     public Date getApprovedTime() {
         return approvedTime;
@@ -335,12 +348,12 @@ public class ActivityRestRequest extends RestRequest {
         this.pastLectureActivity = pastLectureActivity;
     }
 
-    public String getApplicatonStamper() {
-        return applicatonStamper;
+    public int getApplicationStamper() {
+        return applicationStamper;
     }
 
-    public void setApplicatonStamper(String applicatonStamper) {
-        this.applicatonStamper = applicatonStamper;
+    public void setApplicationStamper(int applicationStamper) {
+        this.applicationStamper = applicationStamper;
     }
 
 
@@ -367,4 +380,6 @@ public class ActivityRestRequest extends RestRequest {
     public void setSearchCreatorStuId(String searchCreatorStuId) {
         this.searchCreatorStuId = searchCreatorStuId;
     }
+
+
 }

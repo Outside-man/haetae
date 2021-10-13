@@ -72,7 +72,7 @@ public class ActivityDO extends BaseDO {
      * 活动申请章数
      */
     @Column(name = "application_stamper")
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -104,6 +104,21 @@ public class ActivityDO extends BaseDO {
      * 驳回原因
      */
     private String cancelReason;
+
+    /**
+     * 审批修改记录
+     * 未修改为false
+     * 修改为true
+     */
+    private Boolean modified;
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
 
     public String getCancelReason() {
         return cancelReason;
@@ -185,10 +200,10 @@ public class ActivityDO extends BaseDO {
         this.score = score;
     }
 
-    public String getApplicationStamper() {
+    public int getApplicationStamper() {
         return applicationStamper;
     }
-    public void setApplicationStamper(String applicationStamper) {
+    public void setApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

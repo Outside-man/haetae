@@ -119,6 +119,14 @@ public interface ActivityManager {
     PageList<ActivityBO> findByUserId(ActivityRequest request);
 
     /**
+     * 查找活动ByActivityId
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO findByActivityId(ActivityRequest request);
+
+    /**
      * 查找已审批通过的活动 分页
      *
      * @param request

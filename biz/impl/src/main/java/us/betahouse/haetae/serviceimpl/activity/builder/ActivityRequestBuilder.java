@@ -62,7 +62,7 @@ public final class ActivityRequestBuilder {
     /**
      * 申请章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
     /**
      * 描述
      */
@@ -142,7 +142,7 @@ public final class ActivityRequestBuilder {
         return this;
     }
 
-    public ActivityRequestBuilder withApplicationStamper(String applicationStamper) {
+    public ActivityRequestBuilder withApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
         return this;
     }
