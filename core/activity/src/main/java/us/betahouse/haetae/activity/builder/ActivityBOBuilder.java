@@ -61,7 +61,7 @@ public final class ActivityBOBuilder {
     /**
      * 申请章数
      */
-    private int applicationStamper;
+    private String applicationStamper;
 
     /**
      * 活动描述
@@ -89,19 +89,14 @@ public final class ActivityBOBuilder {
     private String userId;
 
     /**
-     * 审批通过的时间
+     * 活动盖章开始时间
      */
-    private Date approvedTime;
+    private Date activityStampedStart;
 
     /**
-     * 驳回原因
+     * 活动盖章结束时间
      */
-    private String cancelReason;
-
-    /**
-     * 审批修改记录
-     */
-    private Boolean modified;
+    private Date activityStampedEnd;
 
     /**
      * 拓展信息
@@ -156,7 +151,7 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withApplicationStamper(int applicationStamper) {
+    public ActivityBOBuilder withApplicationStamper(String applicationStamper) {
         this.applicationStamper = applicationStamper;
         return this;
     }
@@ -186,22 +181,18 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withApprovedTime(Date approvedTime){
-        this.approvedTime=approvedTime;
+    public ActivityBOBuilder withActivityStampedStart(Date activityStampedStart) {
+        this.activityStampedStart=activityStampedStart;
         return this;
     }
-    public ActivityBOBuilder withCancelReason(String cancelReason){
-        this.cancelReason=cancelReason;
+
+    public ActivityBOBuilder withActivityStampedEnd(Date activityStampedEnd) {
+        this.activityStampedEnd=activityStampedEnd;
         return this;
     }
 
     public ActivityBOBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
-        return this;
-    }
-
-    public ActivityBOBuilder withModified(Boolean modified){
-        this.modified=modified;
         return this;
     }
 
@@ -221,10 +212,9 @@ public final class ActivityBOBuilder {
         activityBO.setState(state);
         activityBO.setTerm(term);
         activityBO.setUserId(userId);
-        activityBO.setApprovedTime(approvedTime);
-        activityBO.setCancelReason(cancelReason);
+        activityBO.setActivityStampedStart(activityStampedStart);
+        activityBO.setActivityStampedEnd(activityStampedEnd);
         activityBO.setExtInfo(extInfo);
-        activityBO.setModified(modified);
         return activityBO;
     }
 }

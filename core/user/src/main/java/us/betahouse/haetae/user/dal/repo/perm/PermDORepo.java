@@ -68,17 +68,4 @@ public interface PermDORepo extends JpaRepository<PermDO, Long> {
      * @param permId
      */
     void deleteByPermId(String permId);
-
-    /**
-     * 修改权限的起止日期
-     *
-     * @param start
-     * @param end
-     * @param permId
-     * @return
-     */
-    @Modifying
-    @Query(value = "update common_perm set start=?,end=? where perm_Id=?",nativeQuery = true)
-    void updateStartAndEndByPermId(Date start, Date end,String permId);
-
 }

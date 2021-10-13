@@ -86,4 +86,16 @@ public class ActivityDORepoTest {
         System.out.println(activityDOPage.isLast());
         System.out.println("-------------------------------------");
     }
+
+    @Test
+    public void showApprovedActivity(){
+        String activityName="";
+        String organizationName="";
+        String stuId="";
+        Date start=new Date();
+        Date end=new Date();
+        int page=1;
+        int limit=10;
+        System.out.println(activityDORepo.findApprovedActivity(activityName,organizationName,stuId,start,end,page*limit,page*limit+limit-1));
+    }
 }

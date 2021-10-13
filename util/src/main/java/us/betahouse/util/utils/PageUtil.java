@@ -80,7 +80,7 @@ public class PageUtil<T> {
         this.totalPages = (totalElements + size - 1) / size;
         this.lastPage = Math.max(number - 1, 1) > totalPages ? totalPages - 1 : Math.max(number - 1, 1);
         this.nextPage = number>=totalPages? totalPages: number + 1;
-        this.number = Math.min(this.lastPage + 1, this.nextPage);
+        this.number = Math.min(number, this.nextPage);
         this.first = this.lastPage == this.number;
         this.end = this.nextPage == this.number;
         this.numberOfElements = getData().size();

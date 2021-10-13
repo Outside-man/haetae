@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.builder.PastActivityBOBuilder;
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.service.ActivityBlacklistRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
@@ -37,6 +38,9 @@ import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
+import us.betahouse.haetae.user.user.service.UserBasicService;
+import us.betahouse.util.enums.CommonResultCode;
+import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.NumberUtils;
@@ -90,10 +94,10 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityBlacklistRepoService activityBlacklistRepoService;
 
     @Autowired
-    private PermRepoService permRepoService;
+    private UserBasicService userBasicService;
 
     @Override
-//    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
+    @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
     @Transactional(rollbackFor = Exception.class)
     public ActivityBO create(ActivityManagerRequest request, OperateContext context) {
         ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
@@ -107,9 +111,7 @@ public class ActivityServiceImpl implements ActivityService {
         // 创建活动
         ActivityBO activityBO = activityManager.create(request);
         // 创建权限
-        PermBOBuilder permBOBuilder = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限")
-                .withStart(request.getActivityStampedTimeStart())
-                .withEnd(request.getActivityStampedTimeEnd());
+        PermBOBuilder permBOBuilder = PermBOBuilder.getInstance(ActivityPermType.ACTIVITY_STAMPER, request.getActivityName() + "_盖章权限");
         PermBO permBO = permBOBuilder.build();
 
         // 将活动id 冗余到权限拓展信息
@@ -120,7 +122,7 @@ public class ActivityServiceImpl implements ActivityService {
         permManageRequest.setUserIds(Collections.singletonList(request.getUserId()));
         permBO = permManager.createPerm(permManageRequest);
 
-
+        // 更新信息
         request.setActivityId(activityBO.getActivityId());
         request.putExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM, permBO.getPermId());
         return activityManager.update(request);
@@ -174,19 +176,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     }
 
-
     @Override
     public ActivityBO update(ActivityManagerRequest request, OperateContext operateContext) {
         return activityManager.update(request);
-    }
-
-    @Override
-    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.publish(request);
-    }
-    @Override
-    public ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext) {
-        return activityManager.cancel(request);
     }
 
     @Override
@@ -313,28 +305,6 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS) {
-        List<ActivityBO> list=new ArrayList<>();
-        for (ActivityBO activityBO : activityBOS) {
-            String permId=activityBO.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
-            PermBO permBO = permRepoService.queryPermByPermId(permId);
-            if(permBO==null){
-                System.out.println(MessageFormat.format("活动{0}没有对应盖章权限",activityBO.getActivityName()));
-                continue;
-            }else {
-                Date start=permBO.getStart();
-                Date end=permBO.getEnd();
-                if(start!=null&&end!=null){
-                    activityBO.putExtInfo(AcitvityStampedTime.ACTIVITY_STAMPED_START_TIME,start.toString());
-                    activityBO.putExtInfo(AcitvityStampedTime.ACTIVITY_STAMPED_End_TIME,end.toString());
-                }
-            }
-            list.add(activityBO);
-        }
-        return list;
-    }
-
-    @Override
     public List<ActivityBO> fillActivityCreatorStuId(List<ActivityBO> activityBOS) {
         List<ActivityBO> list=new ArrayList<>();
         for (ActivityBO activityBO : activityBOS) {
@@ -358,6 +328,7 @@ public class ActivityServiceImpl implements ActivityService {
         Integer page=0;
         Integer limit=10;
         String orderRule="DESC";
+
         if(NumberUtils.isNotBlank(request.getPage())){
             page=request.getPage();
         }
@@ -376,16 +347,9 @@ public class ActivityServiceImpl implements ActivityService {
         re.setPage(page);
         re.setLimit(limit);
         re.setOrderRule(orderRule);
+
         return activityManager.findByUserId(re);
     }
-    @Override
-    public ActivityBO findByActivityId(ActivityManagerRequest request, OperateContext context) {
-        ActivityRequest re=new ActivityRequest();
-        re.setActivityId(request.getActivityId());
-        return activityManager.findByActivityId(re);
-    }
-
-
 
     @Override
     public PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException {
@@ -448,95 +412,44 @@ public class ActivityServiceImpl implements ActivityService {
             re.setOrganizationMessage(organizationMessage);
             activityBOPageList = activityManager.findApproved(re);
         }
-        //将输入的UserId转为学号输出
+
         activityBOPageList.getContent().forEach(activityBO -> {
             String userId = activityBO.getUserId();
-            //通过userId查找stuId
             String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+
             activityBO.setStuId(getstuId);
         });
 
         return activityBOPageList;
 
-    }
-
-
-    @Override
-    public PageList<ActivityBO> findCreatedByWeek(ActivityManagerRequest request, OperateContext context) {
-        Integer page=0;
-        Integer limit=10;
-        String orderRule="DESC";
-        String activityName = "%" + "" + "%";
-        if(NumberUtils.isNotBlank(request.getPage())){
-            page=request.getPage();
-        }
-        if(NumberUtils.isNotBlank(request.getLimit())){
-            limit=request.getLimit();
-        }
-        if(StringUtils.isNotBlank(request.getOrderRule())){
-            //顺序
-            String asc="ASC";
-            if(asc.equals(request.getOrderRule())){
-                orderRule=asc;
-            }
-        }
-        if(StringUtils.isNotBlank(request.getActivityName())){
-            activityName = "%" + request.getActivityName() + "%";
-        }
-        PageList<ActivityBO> activityBOPageList = null;
-        ActivityRequest re=new ActivityRequest();
-        re.setPage(page);
-        re.setLimit(limit);
-        re.setOrderRule(orderRule);
-        re.setActivityName(activityName);
-        activityBOPageList = activityManager.findCreatedByWeek(re);
-        activityBOPageList.getContent().forEach(activityBO -> {
-            String userId = activityBO.getUserId();
-            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
-            activityBO.setStuId(getstuId);
-        });
-        return activityBOPageList;
     }
 
     @Override
-    public PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context) {
-        Integer page=0;
-        Integer limit=10;
-        String orderRule="DESC";
-        String activityName = "%" + "" + "%";
-        if(NumberUtils.isNotBlank(request.getPage())){
-            page=request.getPage();
-        }
-        if(NumberUtils.isNotBlank(request.getLimit())){
-            limit=request.getLimit();
-        }
-        if(StringUtils.isNotBlank(request.getOrderRule())){
-            //顺序
-            String asc="ASC";
-            if(asc.equals(request.getOrderRule())){
-                orderRule=asc;
+    @Transactional(rollbackFor = Exception.class)
+    public void updateActivityStampedTimeByActivityId(ActivityManagerRequest request, OperateContext context) {
+        ActivityBO activityBO=activityRepoService.queryActivityByActivityId(request.getActivityId());
+        if(!StringUtils.equals(request.getUserId(),activityBO.getCreatorId())){
+            if(!userBasicService.verifyPermissionByRoleCode(request.getUserId(),Collections.singletonList(UserRoleCode.GENERAL_MANAGER))){
+                throw new BetahouseException(CommonResultCode.FORBIDDEN,"您不是管理员或者活动创建人，无法修改扫章时间");
             }
         }
-        if(StringUtils.isNotBlank(request.getActivityName())){
-            activityName = "%" + request.getActivityName() + "%";
-        }
-        PageList<ActivityBO> activityBOPageList = null;
-        ActivityRequest re=new ActivityRequest();
-        re.setPage(page);
-        re.setLimit(limit);
-        re.setOrderRule(orderRule);
-        re.setActivityName(activityName);
-        activityBOPageList = activityManager.findApprovedByWeek(re);
-        activityBOPageList.getContent().forEach(activityBO -> {
-            String userId = activityBO.getUserId();
-            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
-            activityBO.setStuId(getstuId);
-        });
-        return activityBOPageList;
+        activityManager.updateStampedTimeByActivityId(request);
     }
 
-
-
+    @Override
+    public PageList<ActivityBO> findApprovedActivity(ActivityManagerRequest request, OperateContext context) {
+        AssertUtil.assertTrue(userBasicService.verifyPermissionByRoleCode(request.getUserId(),Collections.singletonList(UserRoleCode.GENERAL_MANAGER)),
+                CommonResultCode.FORBIDDEN,"您不是管理员，无权访问");
+        PageList<ActivityBO> pageList = activityManager.findApprovedActivity(request);
+        List<ActivityBO> content = pageList.getContent();
+        List<ActivityBO> list=new ArrayList<>();
+        for (ActivityBO activityBO : content) {
+            activityBO.setStuId(userInfoRepoService.queryUserInfoByUserId(activityBO.getUserId()).getStuId());
+            list.add(activityBO);
+        }
+        pageList.setContent(list);
+        return pageList;
+    }
 
     /**
      * 生成权限移除请求

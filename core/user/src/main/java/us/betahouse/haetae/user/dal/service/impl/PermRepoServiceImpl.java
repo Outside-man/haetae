@@ -20,12 +20,10 @@ import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.model.basic.perm.RolePermRelationBO;
 import us.betahouse.haetae.user.model.basic.perm.UserBO;
 import us.betahouse.haetae.user.model.basic.perm.UserPermRelationBO;
-import us.betahouse.util.common.ResultCode;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
-import us.betahouse.util.utils.DateUtil;
 import us.betahouse.util.utils.LoggerUtil;
 
 import java.util.*;
@@ -519,16 +517,6 @@ public class PermRepoServiceImpl implements PermRepoService {
                 .filter(Objects::nonNull)
                 .map(RelationConverter::convert)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean verifyStampTime(String permId) {
-        PermDO permDO = permDORepo.findByPermId(permId);
-        Date start=permDO.getStart();
-        Date end=permDO.getEnd();
-        AssertUtil.assertNotNull(start,"扫章开始或结束时间不能为空");
-        AssertUtil.assertNotNull(end,"扫章开始或结束时间不能为空");
-        return DateUtil.nowIsBetween(start,end);
     }
 
     @Override

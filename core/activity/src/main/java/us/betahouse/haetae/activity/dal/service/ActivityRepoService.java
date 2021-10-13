@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.dal.service;
 
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
@@ -63,20 +64,6 @@ public interface ActivityRepoService {
      * @return
      */
     ActivityBO updateActivity(ActivityBO activityBO);
-    /**
-     * 活动审批通过
-     *
-     * @param activityBO
-     * @return
-     */
-    ActivityBO publishActivity(ActivityBO activityBO);
-    /**
-     * 活动申请驳回
-     *
-     * @param activityBO
-     * @return
-     */
-    ActivityBO cancelActivity(ActivityBO activityBO);
 
     /**
      * 通过活动id查询活动
@@ -170,8 +157,6 @@ public interface ActivityRepoService {
      */
     PageList<ActivityBO> queryActivityByUserId(String userId,Integer page,Integer limit);
 
-
-
     /**
      * 查询已通过审批分页查询 分页
      *
@@ -201,39 +186,17 @@ public interface ActivityRepoService {
             ,Long start,Long end,Integer page,Integer limit) throws ParseException;
 
     /**
-     *
-     * @param date
-     * @param page
-     * @param limit
-     * @return
+     *根据activityId修改活动扫章时间
+     * @param activityStampedStart
+     * @param activityStampedEnd
+     * @param activityId
      */
-    PageList<ActivityBO> queryCreatedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName);
-
+    void updateActivityStampedTimeByActivityId(Date activityStampedStart,Date activityStampedEnd,String activityId);
 
     /**
-     *
-     * @param date
-     * @param page
-     * @param limit
+     * List<ActivityBO> 2 List<ActivityDO>
+     * @param activityDOs
      * @return
      */
-    PageList<ActivityBO> queryCreatedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName);
-    /**
-     *
-     * @param date
-     * @param page
-     * @param limit
-     * @return
-     */
-    PageList<ActivityBO> queryApprovedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName);
-
-
-    /**
-     *
-     * @param date
-     * @param page
-     * @param limit
-     * @return
-     */
-    PageList<ActivityBO> queryApprovedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName);
+    List<ActivityBO> convert(List<ActivityDO> activityDOs);
 }

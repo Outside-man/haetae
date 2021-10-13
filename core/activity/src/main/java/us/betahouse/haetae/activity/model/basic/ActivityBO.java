@@ -69,7 +69,7 @@ public class ActivityBO extends ToString {
     /**
      * 活动申请章数
      */
-    private int applicationStamper;
+    private String applicationStamper;
 
     /**
      * 活动描述
@@ -104,20 +104,14 @@ public class ActivityBO extends ToString {
     private String stuId;
 
     /**
-     * 审批通过的时间
+     * 活动盖章开始时间
      */
-    private Date approvedTime;
+    private Date activityStampedStart;
 
     /**
-     * 驳回原因
+     * 活动盖章结束时间
      */
-    private String cancelReason;
-
-    /**
-     * 审批修改记录
-     */
-    private Boolean modified;
-
+    private Date activityStampedEnd;
 
     /**
      * 拓展信息
@@ -200,28 +194,20 @@ public class ActivityBO extends ToString {
         }
     }
 
-    public Boolean getModified() {
-        return modified;
+    public Date getActivityStampedStart() {
+        return activityStampedStart;
     }
 
-    public void setModified(Boolean modified) {
-        this.modified = modified;
+    public void setActivityStampedStart(Date activityStampedStart) {
+        this.activityStampedStart = activityStampedStart;
     }
 
-    public Date getApprovedTime() {
-        return approvedTime;
+    public Date getActivityStampedEnd() {
+        return activityStampedEnd;
     }
 
-    public void setApprovedTime(Date approvedTime) {
-        this.approvedTime = approvedTime;
-    }
-
-    public String getCancelReason() {
-        return cancelReason;
-    }
-
-    public void setCancelReason(String cancelReason) {
-        this.cancelReason = cancelReason;
+    public void setActivityStampedEnd(Date activityStampedEnd) {
+        this.activityStampedEnd = activityStampedEnd;
     }
 
     public String getActivityId() {
@@ -288,11 +274,11 @@ public class ActivityBO extends ToString {
         this.score = score;
     }
 
-    public int getApplicationStamper() {
+    public String getApplicationStamper() {
         return applicationStamper;
     }
 
-    public void setApplicationStamper(int applicationStamper) {
+    public void setApplicationStamper(String applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

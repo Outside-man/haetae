@@ -11,6 +11,7 @@ import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,32 +53,12 @@ public interface ActivityManager {
     ActivityBO update(ActivityRequest request);
 
     /**
-     * 活动审批通过
-     *
-     * @param request
-     * @return
-     */
-    ActivityBO publish(ActivityRequest request);
-
-    /**
-     * 活动审批驳回
-     *
-     * @param request
-     * @return
-     */
-    ActivityBO cancel(ActivityRequest request);
-
-
-
-    /**
      * 查找活动
      *
      * @param request
      * @return
      */
     PageList<ActivityBO> find(ActivityRequest request);
-
-
 
     /**
      * 查询过去活动记录
@@ -119,14 +100,6 @@ public interface ActivityManager {
     PageList<ActivityBO> findByUserId(ActivityRequest request);
 
     /**
-     * 查找活动ByActivityId
-     *
-     * @param request
-     * @return
-     */
-    ActivityBO findByActivityId(ActivityRequest request);
-
-    /**
      * 查找已审批通过的活动 分页
      *
      * @param request
@@ -143,16 +116,14 @@ public interface ActivityManager {
     PageList<ActivityBO> findApprovedAddTime(ActivityRequest request) throws ParseException;
 
     /**
-     * 查找本周创建的活动 分页
+     * 更具活动id修改扫章时间
      * @param request
-     * @return
      */
-    PageList<ActivityBO> findCreatedByWeek(ActivityRequest request);
+    void updateStampedTimeByActivityId(ActivityRequest request);
 
-    /**
-     * 查找本周审批通过的活动 分页
+    /**按条件查找活动
      * @param request
      * @return
      */
-    PageList<ActivityBO> findApprovedByWeek(ActivityRequest request);
+    PageList<ActivityBO> findApprovedActivity(ActivityRequest request);
 }

@@ -17,7 +17,6 @@ import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.repo.PastActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
-import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
@@ -50,6 +49,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
 
     @Autowired
     private PastActivityDORepo pastActivityDORepo;
+
     /**
      * id工厂
      */
@@ -130,11 +130,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
             LoggerUtil.error(LOGGER, "更新的活动不存在 ActivityBO={0}", activityBO);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的活动不存在");
         }
-        //DO为从数据库查询的内容，没有扫章数
         ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
-        //newDO为request的数据
         ActivityDO newActivityDO = convert(activityBO);
-        //如果request不为null，就将request的数据传入DO保存
         if (newActivityDO.getActivityName() != null) {
             activityDO.setActivityName(newActivityDO.getActivityName());
         }
@@ -171,45 +168,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getExtInfo() != null) {
             activityDO.setExtInfo(newActivityDO.getExtInfo());
         }
-        activityDO.setApplicationStamper(newActivityDO.getApplicationStamper());
-        activityDO.setModified(false);
         return convert(activityDORepo.save(activityDO));
     }
-    /**
-     * 活动审批通过
-     *
-     * @param activityBO
-     * @return
-     */
-    @Override
-    public ActivityBO publishActivity(ActivityBO activityBO) {
-        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
-            LoggerUtil.error(LOGGER, "审批通过的活动不存在", activityBO);
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "审批通过的活动不存在");
-        }
-        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
-        activityDO.setState("PUBLISHED");
-        activityDO.setApprovedTime(new Date());
-        return convert(activityDORepo.save(activityDO));
-    }
-    /**
-     * 活动驳回
-     *
-     * @param activityBO
-     * @return
-     */
-    @Override
-    public ActivityBO cancelActivity(ActivityBO activityBO) {
-        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
-            LoggerUtil.error(LOGGER, "取消的活动不存在", activityBO);
-            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "取消的活动不存在");
-        }
-        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
-        activityDO.setState("CANCELED");
-        activityDO.setCancelReason(activityBO.getCancelReason());
-        return convert(activityDORepo.save(activityDO));
-    }
-
 
     @Override
     public ActivityBO queryActivityByActivityId(String activityId) {
@@ -323,6 +283,19 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         return new PageList<>(activityDORepo.findApprovedAddTime(pageable,state,stuId,activityName,organizationMessage,sTime,eTime), this::convert);
     }
 
+    @Override
+    public void updateActivityStampedTimeByActivityId(Date activityStampedStart, Date activityStampedEnd, String activityId) {
+        int i=activityDORepo.updateActivityStampedTimeByActivityId(activityStampedStart,activityStampedEnd,activityId);
+        if(i==0){
+            throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"修改未成功");
+        }
+    }
+
+    @Override
+    public List<ActivityBO> convert(List<ActivityDO> activityDOs) {
+        return CollectionUtils.toStream(activityDOs).filter(Objects::nonNull).map(this::convert).collect(Collectors.toList());
+    }
+
     private Object convert(Object o) {
         if(o instanceof ActivityDO){
             return convert((ActivityDO)o);
@@ -362,11 +335,9 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
-        //DO的UserId对应BO的CreatorId
-        activityBO.setCreatorId(activityDO.getUserId());
-        activityBO.setCancelReason(activityDO.getCancelReason());
-        activityBO.setApprovedTime(activityDO.getApprovedTime());
-        activityBO.setModified(activityDO.getModified());
+        activityBO.setUserId(activityDO.getUserId());
+        activityBO.setActivityStampedStart(activityDO.getActivityStampedStart());
+        activityBO.setActivityStampedEnd(activityDO.getActivityStampedEnd());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
@@ -392,13 +363,12 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setScore(activityBO.getScore());
         activityDO.setApplicationStamper(activityBO.getApplicationStamper());
         activityDO.setDescription(activityBO.getDescription());
-        //DO的UserId对应BO的CreatorId
         activityDO.setUserId(activityBO.getCreatorId());
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
-        activityDO.setCancelReason(activityBO.getCancelReason());
-        activityDO.setApprovedTime(activityBO.getApprovedTime());
-        activityBO.setModified(activityBO.getModified());
+        activityDO.setUserId(activityBO.getUserId());
+        activityDO.setActivityStampedStart(activityBO.getActivityStampedStart());
+        activityDO.setActivityStampedEnd(activityBO.getActivityStampedEnd());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }
@@ -433,32 +403,5 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         pastActivityDO.setPastPracticeActivity(pastActivityBO.getPastPracticeActivity());
         return pastActivityDO;
 
-    }
-
-
-    @Override
-    public PageList<ActivityBO> queryCreatedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName) {
-        Pageable pageable = PageRequest.of(page, limit);
-        return new PageList<>(activityDORepo.findByGmtCreateGreaterThanEqualAndActivityNameContainsOrderByActivityIdDesc(date,pageable,activityName), this::convert);
-    }
-
-    @Override
-    public PageList<ActivityBO> queryCreatedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName) {
-        Pageable pageable = PageRequest.of(page, limit);
-        return new PageList<>(activityDORepo.findByGmtCreateGreaterThanEqualAndActivityNameContains(date,pageable,activityName), this::convert);
-    }
-
-    @Override
-    public PageList<ActivityBO> queryApprovedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName) {
-        Pageable pageable = PageRequest.of(page, limit);
-        String state= "APPROVED";
-        return new PageList<>(activityDORepo.findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContainsOrderByActivityIdDesc(date,pageable,activityName,state), this::convert);
-    }
-
-    @Override
-    public PageList<ActivityBO> queryApprovedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName) {
-        Pageable pageable = PageRequest.of(page, limit);
-        String state= "APPROVED";
-        return new PageList<>(activityDORepo.findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContains(date,pageable,activityName,state), this::convert);
     }
 }

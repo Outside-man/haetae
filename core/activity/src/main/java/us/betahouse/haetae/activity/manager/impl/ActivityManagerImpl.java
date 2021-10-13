@@ -7,8 +7,12 @@ package us.betahouse.haetae.activity.manager.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
+import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.dal.service.impl.ActivityRepoServiceImpl;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.manager.ActivityManager;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
@@ -17,11 +21,13 @@ import us.betahouse.haetae.activity.model.common.PageList;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
+import us.betahouse.util.utils.CollectionUtils;
 
 import java.text.ParseException;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 活动管理器实现
@@ -35,6 +41,8 @@ public class ActivityManagerImpl implements ActivityManager {
     @Autowired
     private ActivityRepoService activityRepoService;
 
+    @Autowired
+    private ActivityDORepo activityDORepo;
 
 
     /**
@@ -51,6 +59,12 @@ public class ActivityManagerImpl implements ActivityManager {
         if (request.getEnd() == null) {
             request.setEnd(0L);
         }
+        if(request.getActivityStampedTimeStart()==null){
+            request.setActivityStampedTimeStart(0L);
+        }
+        if(request.getActivityStampedTimeEnd()==null){
+            request.setActivityStampedTimeEnd(0L);
+        }
         ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
                 .withActivityName(request.getActivityName())
                 .withType(request.getType())
@@ -63,6 +77,8 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withCreatorId(request.getUserId())
                 .withState(ActivityStateEnum.APPROVED.getCode())
                 .withTerm(request.getTerm())
+                .withActivityStampedStart(new Date(request.getActivityStampedTimeStart()))
+                .withActivityStampedEnd(new Date(request.getActivityStampedTimeEnd()))
                 .withExtInfo(request.getExtInfo());
 
         return activityRepoService.createActivity(builder.build());
@@ -100,38 +116,13 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withLocation(request.getLocation())
                 .withStart(new Date(request.getStart()))
                 .withEnd(new Date(request.getEnd()))
+                .withScore(request.getScore())
                 .withDescription(request.getDescription())
                 .withCreatorId(request.getUserId())
                 .withState(request.getState())
                 .withTerm(request.getTerm())
-                .withApplicationStamper(request.getApplicationStamper())
                 .withExtInfo(request.getExtInfo());
         return activityRepoService.updateActivity(builder.build());
-    }
-    /**
-     * 活动审批通过
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public ActivityBO publish(ActivityRequest request) {
-        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
-                .withActivityId(request.getActivityId());
-        return activityRepoService.publishActivity(builder.build());
-    }
-    /**
-     * 活动申请驳回
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public ActivityBO cancel(ActivityRequest request) {
-        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
-                .withActivityId(request.getActivityId())
-                .withCancelReason(request.getCancelReason());
-        return activityRepoService.cancelActivity(builder.build());
     }
 
     @Override
@@ -143,8 +134,8 @@ public class ActivityManagerImpl implements ActivityManager {
         }else{
             return activityRepoService.queryActivityByTermAndStateAndTypePagerDESC(request.getTerm(), request.getState(), request.getType(), request.getPage(), request.getLimit());
         }
-    }
 
+    }
 
     @Override
     public PastActivityBO findPast(ActivityRequest request) {
@@ -192,11 +183,6 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public ActivityBO findByActivityId(ActivityRequest request) {
-        return activityRepoService.queryActivityByActivityId(request.getActivityId());
-    }
-
-    @Override
     public PageList<ActivityBO> findApproved(ActivityRequest request) {
         return activityRepoService.queryApproved(request.getState(),request.getStuId(),request.getActivityName(),
                 request.getOrganizationMessage(),request.getPage(), request.getLimit());
@@ -209,46 +195,61 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public PageList<ActivityBO> findCreatedByWeek(ActivityRequest request) {
-        String asc ="ASC";
-        Calendar c = Calendar.getInstance();
-        int week = c.get(Calendar.DAY_OF_WEEK);
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        int second = c.get(Calendar.SECOND);
-        Date date=new Date();
-        long now=date.getTime();
-        //周日由1改为8
-        if(week==1){
-            week=8;
-        }
-        long Monday=now-1000L*60*60*24*(week-2)-1000*60*60*hour-1000*60*minute-1000*second;
-        date= new Date(Monday);
-        if(asc.equals(request.getOrderRule())){
-            return activityRepoService.queryCreatedByWeekPagerASC(date, request.getPage(), request.getLimit(),request.getActivityName());
-        }else{
-            return activityRepoService.queryCreatedByWeekPagerDESC(date,request.getPage(), request.getLimit(),request.getActivityName());
-        }
+    public void updateStampedTimeByActivityId(ActivityRequest request) {
+        Date arg1=new Date(request.getActivityStampedTimeStart());
+        Date arg2=new Date(request.getActivityStampedTimeEnd());
+        String arg3=request.getActivityId();
+        //分别是活动扫章开始时间，活动扫章结束时间，活动id
+        activityRepoService.updateActivityStampedTimeByActivityId(arg1,arg2,arg3);
     }
+
     @Override
-    public PageList<ActivityBO> findApprovedByWeek(ActivityRequest request) {
-        String asc ="ASC";
-        Calendar c = Calendar.getInstance();
-        int week = c.get(Calendar.DAY_OF_WEEK);
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        int second = c.get(Calendar.SECOND);
-        Date date=new Date();
-        long now=date.getTime();
-        if(week==1){
-            week=8;
+    public PageList<ActivityBO> findApprovedActivity(ActivityRequest request) {
+        int page=1;
+        int size=10;
+        String activityName="";
+        String organizationName="";
+        if(request.getPage()!=null&&request.getPage()>0){
+            page=request.getPage();
         }
-        long Monday=now-1000L*60*60*24*(week-2)-1000*60*60*hour-1000*60*minute-1000*second;
-        date= new Date(Monday);
-        if(asc.equals(request.getOrderRule())){
-            return activityRepoService.queryApprovedByWeekPagerASC(date, request.getPage(), request.getLimit(),request.getActivityName());
-        }else{
-            return activityRepoService.queryApprovedByWeekPagerDESC(date,request.getPage(), request.getLimit(),request.getActivityName());
+        if(request.getLimit()!=null&&request.getLimit()>0){
+            size=request.getLimit();
+        }
+        if(request.getActivityName()!=null){
+            activityName=request.getActivityName();
+        }
+        if(request.getOrganizationMessage()!=null){
+            organizationName=request.getOrganizationMessage();
+        }
+        if(request.getStuId()!=null&&!request.getStuId().equals("")){
+            if(request.getActivityStampedTimeStart()!=null&&request.getActivityStampedTimeEnd()!=null){
+                //全都传入值的情况
+                List<ActivityDO> approvedActivities = activityDORepo.findApprovedActivity(activityName, organizationName, request.getStuId(),
+                        new Date(request.getActivityStampedTimeStart()), new Date(request.getActivityStampedTimeEnd()),
+                        page * size-size, size);
+                Long totalEle=activityDORepo.findApprovedActivityNum(activityName, organizationName, request.getStuId(),
+                        new Date(request.getActivityStampedTimeStart()), new Date(request.getActivityStampedTimeEnd()));
+                return new PageList(activityRepoService.convert(approvedActivities),totalEle,page,size);
+            }
+            //未传入查询时间的情况
+            List<ActivityDO> approvedActivities = activityDORepo.findApprovedActivity(activityName, organizationName,
+                    request.getStuId(), page * size, size);
+            Long totalEle=activityDORepo.findApprovedActivityNum(activityName, organizationName,request.getStuId());
+            return new PageList(activityRepoService.convert(approvedActivities),totalEle,page,size);
+        }else if(request.getActivityStampedTimeStart()!=null&&request.getActivityStampedTimeEnd()!=null){
+            //未传入stuId的情况
+            List<ActivityDO> approvedActivities = activityDORepo.findApprovedActivity(activityName, organizationName,
+                    new Date(request.getActivityStampedTimeStart()), new Date(request.getActivityStampedTimeEnd()),
+                    page * size-size, size);
+            Long totalEle=activityDORepo.findApprovedActivityNum(activityName, organizationName,
+                    new Date(request.getActivityStampedTimeStart()), new Date(request.getActivityStampedTimeEnd()));
+            return new PageList(activityRepoService.convert(approvedActivities),totalEle,page,size);
+        }else {
+            //两个都未传入的情况
+            List<ActivityDO> approvedActivities = activityDORepo.findApprovedActivity(activityName, organizationName,
+                    page * size-size, size);
+            Long totalEle=activityDORepo.findApprovedActivityNum(activityName, organizationName);
+            return new PageList(activityRepoService.convert(approvedActivities),totalEle,page,size);
         }
     }
 }
