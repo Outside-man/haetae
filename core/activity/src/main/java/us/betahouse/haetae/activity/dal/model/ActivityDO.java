@@ -95,9 +95,15 @@ public class ActivityDO extends BaseDO {
      */
     private String term;
 
+    /**
+     * 活动扫章时间开始
+     */
     @Column(name = "activity_stamped_start")
     private Date activityStampedStart;
 
+    /**
+     * 活动扫章时间结束
+     */
     @Column(name = "activity_stamped_end")
     private Date activityStampedEnd;
 
