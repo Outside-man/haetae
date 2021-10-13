@@ -398,8 +398,8 @@ public class ActivityServiceImpl implements ActivityService {
             re.setStuId(stuId);
             re.setActivityName(activityName);
             re.setOrganizationMessage(organizationMessage);
-            re.setStart(startTime);
-            re.setEnd(endTime);
+            re.setActivityStampedTimeStart(startTime);
+            re.setActivityStampedTimeEnd(endTime);
 
             activityBOPageList = activityManager.findApprovedAddTime(re);
         }else {//无时间

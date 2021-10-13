@@ -258,24 +258,24 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     }
 
     @Override
-    public PageList<ActivityBO> queryApprovedAddTime(String state, String stuId, String activityName, String organizationMessage, Long start, Long end, Integer page, Integer limit) throws ParseException {
+    public PageList<ActivityBO> queryApprovedAddTime(String state, String stuId, String activityName, String organizationMessage, Long activityStampedStart, Long activityStampedEnd, Integer page, Integer limit) throws ParseException {
         Pageable pageable = PageRequest.of(page, limit);
-        String Syear = String.valueOf(start).substring(0,4);
-        String Smonth = String.valueOf(start).substring(4,6);
-        String Sdate = String.valueOf(start).substring(6,8);
-        String Shour = String.valueOf(start).substring(8,10);
-        String Sminute = String.valueOf(start).substring(10,12);
-        String Ssecond = String.valueOf(start).substring(12,14);
+        String Syear = String.valueOf(activityStampedStart).substring(0,4);
+        String Smonth = String.valueOf(activityStampedStart).substring(4,6);
+        String Sdate = String.valueOf(activityStampedStart).substring(6,8);
+        String Shour = String.valueOf(activityStampedStart).substring(8,10);
+        String Sminute = String.valueOf(activityStampedStart).substring(10,12);
+        String Ssecond = String.valueOf(activityStampedStart).substring(12,14);
 
         String Stime = Syear+"-"+Smonth+"-"+Sdate+" "+Shour+":"+Sminute+":"+Ssecond;
         Date sTime = SIMPLE_DATE_FORMAT.parse(Stime);
 
-        String Eyear = String.valueOf(end).substring(0,4);
-        String Emonth = String.valueOf(end).substring(4,6);
-        String Edate = String.valueOf(end).substring(6,8);
-        String Ehour = String.valueOf(end).substring(8,10);
-        String Eminute = String.valueOf(end).substring(10,12);
-        String Esecond = String.valueOf(end).substring(12,14);
+        String Eyear = String.valueOf(activityStampedEnd).substring(0,4);
+        String Emonth = String.valueOf(activityStampedEnd).substring(4,6);
+        String Edate = String.valueOf(activityStampedEnd).substring(6,8);
+        String Ehour = String.valueOf(activityStampedEnd).substring(8,10);
+        String Eminute = String.valueOf(activityStampedEnd).substring(10,12);
+        String Esecond = String.valueOf(activityStampedEnd).substring(12,14);
         String Etime = Eyear+"-"+Emonth+"-"+Edate+" "+Ehour+":"+Eminute+":"+Esecond;
 
         Date eTime = SIMPLE_DATE_FORMAT.parse(Etime);

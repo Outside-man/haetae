@@ -126,10 +126,9 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      * @param stuId 学号
      * @param activityName 活动名
      * @param organizationMessage 组织单位
-
      * @return Page<ActivityDO>
      */
-    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 " +
+    @Query(value = "SELECT * from activity where state != ?1 and state != 'CANCELED' and activity_name like ?3 " +
             "and organization_message like ?4 and user_id in(select user_id from common_user_info where stu_id like ?2 ) "
             ,nativeQuery = true)
     Page<ActivityDO>  findApproved(Pageable pageable, String state,String stuId, String activityName ,String organizationMessage);
@@ -142,14 +141,13 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      * @param stuId 学号
      * @param activityName 活动名
      * @param organizationMessage 组织单位
-     * @param start 活动开始时间
-     * @param end 活动结束时间
-
+     * @param activityStampedStart 活动扫章开始时间
+     * @param activityStampedEnd 活动扫章结束时间
      * @return Page<ActivityDO>
      */
-    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 and organization_message like ?4 " +
-            "and start >= ?5 and end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
-    Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date start, Date end);
+    @Query(value = "SELECT * from activity where state != ?1 and state != 'CANCELED'and activity_name like ?3 and organization_message like ?4 " +
+            "and activity_stamped_start >= ?5 and activity_stamped_end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
+    Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date activityStampedStart, Date activityStampedEnd);
 
     @Modifying
     @Query(value = "update activity set activity_stamped_start=?,activity_stamped_end=? where activity_id=?",nativeQuery = true)

@@ -191,7 +191,8 @@ public class ActivityManagerImpl implements ActivityManager {
     @Override
     public PageList<ActivityBO> findApprovedAddTime(ActivityRequest request) throws ParseException {
         return activityRepoService.queryApprovedAddTime(request.getState(),request.getStuId(),request.getActivityName(),
-                request.getOrganizationMessage(),request.getStart(),request.getEnd(),request.getPage(), request.getLimit());
+                request.getOrganizationMessage(),request.getActivityStampedTimeStart(),request.getActivityStampedTimeEnd(),
+                request.getPage(), request.getLimit());
     }
 
     @Override

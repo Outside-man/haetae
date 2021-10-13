@@ -183,7 +183,7 @@ public interface ActivityRepoService {
      * @return PageList<ActivityBO>
      */
     PageList<ActivityBO> queryApprovedAddTime(String state,String stuId,String activityName,String organizationMessage
-            ,Long start,Long end,Integer page,Integer limit) throws ParseException;
+            ,Long activityStampedStart,Long activityStampedEnd,Integer page,Integer limit) throws ParseException;
 
     /**
      *根据activityId修改活动扫章时间
