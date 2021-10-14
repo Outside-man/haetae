@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import us.betahouse.haetae.user.dal.model.BaseDO;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * 权限实体
@@ -44,17 +43,6 @@ public class PermDO extends BaseDO {
      */
     @Column(name = "perm_name", nullable = false)
     private String permName;
-
-
-    /**
-     * 权限有效期开始时间(现仅为导章时使用)
-     */
-    private Date start;
-
-    /**
-     * 权限有效期结束时间(现仅为导章时使用)
-     */
-    private Date end;
 
     /**
      * 权限描述
@@ -108,19 +96,4 @@ public class PermDO extends BaseDO {
         this.extInfo = extInfo;
     }
 
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-    }
 }

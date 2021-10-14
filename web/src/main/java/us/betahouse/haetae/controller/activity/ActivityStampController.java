@@ -333,7 +333,7 @@ public class ActivityStampController {
      * @param httpServletRequest
      * @return
      */
-//    @CrossOrigin
+    @CrossOrigin
     @PostMapping(value = "exportExcel")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<String>> exportExcel(StamperRequest request,HttpServletRequest httpServletRequest) {
@@ -364,9 +364,9 @@ public class ActivityStampController {
      * @param httpServletRequest
      * @return
      */
-//    @CrossOrigin
+    @CrossOrigin
     @PostMapping(value = "importExcel")
-//    @CheckLogin
+    @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<String>> importExcel(MultipartFile file, StamperRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "（excel）批量导入活动章", request, new RestOperateCallBack<List<String>>() {

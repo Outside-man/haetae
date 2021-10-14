@@ -8,11 +8,9 @@ import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.csvreader.CsvWriter;
 import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +29,7 @@ import us.betahouse.haetae.activity.model.basic.importModel;
 import us.betahouse.haetae.serviceimpl.activity.builder.ActivityStampBuilder;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityExtInfoKey;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermExInfoKey;
+import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampImportTemplateEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.StampManager;
@@ -44,17 +43,13 @@ import us.betahouse.haetae.serviceimpl.common.utils.TermUtil;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
 import us.betahouse.haetae.user.dal.model.UserInfoDO;
 import us.betahouse.haetae.user.dal.repo.UserInfoDORepo;
-import us.betahouse.haetae.user.dal.service.PermRepoService;
 import us.betahouse.haetae.user.dal.service.UserInfoRepoService;
 import us.betahouse.haetae.user.model.basic.UserInfoBO;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.user.service.UserBasicService;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
-import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.CollectionUtils;
-import us.betahouse.util.utils.CsvUtil;
-import us.betahouse.util.utils.LoggerUtil;
+import us.betahouse.util.utils.*;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -99,9 +94,6 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     @Autowired
     private BizIdFactory activityBizFactory;
 
-    @Autowired
-    private PermRepoService permRepoService;
-
     /**
      * 章管理器
      */
@@ -109,17 +101,25 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
     private StampManager stampManager;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<String> batchStamp(ActivityStampRequest request, OperateContext context) {
         // 校验盖章权限
         AssertUtil.assertTrue(verifyStampPerm(request), CommonResultCode.FORBIDDEN, "没有该活动的盖章权限");
 
-        //效验是否在扫章时间段内
-        ActivityBO activity = activityRepoService.queryActivityByActivityId(request.getActivityId());
-        String stampPermId = activity.fetchExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM);
-        AssertUtil.assertTrue(permRepoService.verifyStampTime(stampPermId),"当前时间不在扫章时间段内");
-
         // 没有盖章成功的学号
         List<String> notStampStuIds = new ArrayList<>();
+
+        ActivityDO activityDO = activityDORepo.findByActivityId(request.getActivityId());
+        Date activityStampedStart=activityDO.getActivityStampedStart();
+        Date activityStampedEnd=activityDO.getActivityStampedEnd();
+        if(activityStampedStart==null||activityStampedEnd==null){
+            activityDORepo.updateActivityStampedTimeByActivityId(activityDO.getStart(),activityDO.getEnd(),activityDO.getActivityId());
+            if(!DateUtil.nowIsBetween(activityDO.getStart(),activityDO.getEnd())){
+                throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"当前时间不在活动时间段内");
+            }
+        }else if(!DateUtil.nowIsBetween(activityStampedStart,activityStampedEnd)){
+            throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"当前时间不在扫章时间段内");
+        }
 
         // 盖章的userIds
         Set<String> userIds = new HashSet<>();
@@ -341,6 +341,7 @@ public class ActivityRecordServiceImpl implements ActivityRecordService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @VerifyPerm(permType = {ActivityPermType.STAMPER_MANAGE})
     public List<String> importExcel(MultipartFile multipartFile, ActivityStampRequest request, OperateContext context) {
         ExcelReader excelReader;
         try {

@@ -56,14 +56,4 @@ public interface PermManager {
      * @return
      */
     List<String> getPermUsers(String permId);
-
-    /**
-     * 更新权限信息
-     *
-     * @param start
-     * @param end
-     * @param permId
-     * @return
-     */
-    PermBO updateStartAndEndTimeByPermID(Date start,Date end,String permId);
 }

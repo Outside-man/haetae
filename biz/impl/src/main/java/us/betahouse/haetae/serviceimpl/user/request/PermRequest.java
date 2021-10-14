@@ -1,10 +1,8 @@
 package us.betahouse.haetae.serviceimpl.user.request;
 
-import org.apache.poi.util.StringUtil;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyRequest;
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,19 +50,22 @@ public class PermRequest implements VerifyRequest {
     private String permType;
 
     /**
-     * 扫章开始时间
+     * 创建人id
      */
-    private Date start;
-
-    /**
-     * 扫章结束时间
-     */
-    private Date end;
+    private String creatorId;
 
     /**
      * 额外信息
      */
     private Map<String, String> extInfo;
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
 
     @Override
     public String getVerifyUserId() {
@@ -155,21 +156,5 @@ public class PermRequest implements VerifyRequest {
             extInfo=new HashMap<>();
         }
         extInfo.put(key, value);
-    }
-
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
     }
 }

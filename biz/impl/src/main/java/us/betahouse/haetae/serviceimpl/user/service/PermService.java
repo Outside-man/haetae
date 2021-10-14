@@ -66,12 +66,4 @@ public interface PermService {
      * @return
      */
     List<PermBO> findAllNotContainStamperAndFinance();
-
-    /**
-     * 更新权限的有效期(当前仅限扫章权限)
-     *
-     * @param request
-     * @return
-     */
-    PermBO updatePermStartAndEndTimeByPermId(PermRequest request,OperateContext context);
 }

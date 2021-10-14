@@ -72,7 +72,7 @@ public class ActivityDO extends BaseDO {
      * 活动申请章数
      */
     @Column(name = "application_stamper")
-    private int applicationStamper;
+    private String applicationStamper;
 
     /**
      * 活动描述
@@ -96,44 +96,31 @@ public class ActivityDO extends BaseDO {
     private String term;
 
     /**
-     * 审批通过的时间
+     * 活动扫章时间开始
      */
-    private Date approvedTime;
+    @Column(name = "activity_stamped_start")
+    private Date activityStampedStart;
 
     /**
-     * 驳回原因
+     * 活动扫章时间结束
      */
-    private String cancelReason;
+    @Column(name = "activity_stamped_end")
+    private Date activityStampedEnd;
 
-    /**
-     * 审批修改记录
-     * 未修改为false
-     * 修改为true
-     */
-    private Boolean modified;
-
-    public Boolean getModified() {
-        return modified;
+    public Date getActivityStampedStart() {
+        return activityStampedStart;
     }
 
-    public void setModified(Boolean modified) {
-        this.modified = modified;
+    public void setActivityStampedStart(Date activityStampedStart) {
+        this.activityStampedStart = activityStampedStart;
     }
 
-    public String getCancelReason() {
-        return cancelReason;
+    public Date getActivityStampedEnd() {
+        return activityStampedEnd;
     }
 
-    public void setCancelReason(String cancelReason) {
-        this.cancelReason = cancelReason;
-    }
-
-    public Date getApprovedTime() {
-        return approvedTime;
-    }
-
-    public void setApprovedTime(Date approvedTime) {
-        this.approvedTime = approvedTime;
+    public void setActivityStampedEnd(Date activityStampedEnd) {
+        this.activityStampedEnd = activityStampedEnd;
     }
 
     public String getActivityId() {
@@ -200,10 +187,10 @@ public class ActivityDO extends BaseDO {
         this.score = score;
     }
 
-    public int getApplicationStamper() {
+    public String getApplicationStamper() {
         return applicationStamper;
     }
-    public void setApplicationStamper(int applicationStamper) {
+    public void setApplicationStamper(String applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

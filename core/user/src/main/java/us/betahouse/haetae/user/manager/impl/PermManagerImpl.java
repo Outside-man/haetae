@@ -70,13 +70,4 @@ public class PermManagerImpl implements PermManager {
         return CollectionUtils.toStream(permRepoService.getUserPermRelationsOrderByCreate(permId))
                 .map(UserPermRelationBO::getUserId).collect(Collectors.toList());
     }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public PermBO updateStartAndEndTimeByPermID(Date start, Date end, String permId) {
-        permDORepo.updateStartAndEndByPermId(start,end,permId);
-        PermBO permBO=EntityConverter.convert(permDORepo.findByPermId(permId));
-        return permBO;
-    }
-
 }

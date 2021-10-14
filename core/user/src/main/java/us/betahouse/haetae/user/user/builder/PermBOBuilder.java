@@ -5,10 +5,8 @@
 package us.betahouse.haetae.user.user.builder;
 
 import us.betahouse.haetae.user.model.basic.perm.PermBO;
-import us.betahouse.util.common.ResultCode;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.utils.AssertUtil;
-import us.betahouse.util.utils.DateUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -38,16 +36,6 @@ final public class PermBOBuilder {
     private String permDesc;
 
     /**
-     * 权限有效期结束时间(现仅为导章时使用)
-     */
-    private Date start;
-
-    /**
-     * 权限有效期结束时间(现仅为导章时使用)
-     */
-    private Date end;
-
-    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -65,11 +53,6 @@ final public class PermBOBuilder {
         permBO.setPermType(permType);
         permBO.setPermName(permName);
         permBO.setPermDesc(permDesc);
-
-        if(start!=null&&end!=null){
-            permBO.setStart(start);
-            permBO.setEnd(end);
-        }
         if (extInfo != null) {
             permBO.setExtInfo(extInfo);
         }
@@ -101,19 +84,6 @@ final public class PermBOBuilder {
 
     public PermBOBuilder withExtInfo(Map<String, String> extInfo) {
         this.extInfo = extInfo;
-        return this;
-    }
-
-    public PermBOBuilder withStart(Long start){
-        Date date=new Date(start);
-        this.start= date;
-        return this;
-    }
-
-    public PermBOBuilder withEnd(Long end){
-        Date date=new Date(end);
-        this.end= date;
-        AssertUtil.assertTrue(start.before(this.end),CommonResultCode.ILLEGAL_PARAMETERS,"盖章开始时间必须早于结束时间");
         return this;
     }
 }
