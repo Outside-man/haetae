@@ -335,7 +335,6 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
-        activityBO.setUserId(activityDO.getUserId());
         activityBO.setActivityStampedStart(activityDO.getActivityStampedStart());
         activityBO.setActivityStampedEnd(activityDO.getActivityStampedEnd());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
@@ -366,7 +365,6 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setUserId(activityBO.getCreatorId());
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
-        activityDO.setUserId(activityBO.getUserId());
         activityDO.setActivityStampedStart(activityBO.getActivityStampedStart());
         activityDO.setActivityStampedEnd(activityBO.getActivityStampedEnd());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));

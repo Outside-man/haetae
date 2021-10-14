@@ -414,7 +414,7 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         activityBOPageList.getContent().forEach(activityBO -> {
-            String userId = activityBO.getUserId();
+            String userId = activityBO.getCreatorId();
             String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
 
             activityBO.setStuId(getstuId);

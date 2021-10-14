@@ -571,169 +571,170 @@ public class ActivityController {
             }
         });
     }
-    /**
-     * 获取本周创建的活动列表
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/week/created")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<PageList<ActivityBO>> getCreatedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取本周创建的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-            }
-            @Override
-            public Result<PageList<ActivityBO>> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
-                if(request.getPage()!=null&&request.getPage()!=0){
-                    builder.withPage(request.getPage());
-                }
-                if(request.getLimit()!=null&&request.getLimit()!=0){
-                    builder.withLimit(request.getLimit());
-                }
-                if(StringUtils.isBlank(request.getOrderRule())){
-                    builder.withOrderRule(request.getOrderRule());
-                }
-                //活动名称可选
-                if (StringUtils.isNotBlank(request.getActivityName())) {
-                    builder.withActivityName(request.getActivityName());
-                }
-                return RestResultUtil.buildSuccessResult(activityService.findCreatedByWeek(builder.build(), context), "获取本周创建的活动列表成功");
-            }
-        });
-    }
+//    /**
+//     * 获取本周创建的活动列表
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @GetMapping(value = "/week/created")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<PageList<ActivityBO>> getCreatedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+//        return RestOperateTemplate.operate(LOGGER, "获取本周创建的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//            }
+//            @Override
+//            public Result<PageList<ActivityBO>> execute() {
+//                OperateContext context = new OperateContext();
+//                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+//                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+//                if(request.getPage()!=null&&request.getPage()!=0){
+//                    builder.withPage(request.getPage());
+//                }
+//                if(request.getLimit()!=null&&request.getLimit()!=0){
+//                    builder.withLimit(request.getLimit());
+//                }
+//                if(StringUtils.isBlank(request.getOrderRule())){
+//                    builder.withOrderRule(request.getOrderRule());
+//                }
+//                //活动名称可选
+//                if (StringUtils.isNotBlank(request.getActivityName())) {
+//                    builder.withActivityName(request.getActivityName());
+//                }
+//                return RestResultUtil.buildSuccessResult(activityService.findCreatedByWeek(builder.build(), context), "获取本周创建的活动列表成功");
+//            }
+//        });
+//    }
+//
+//    /**
+//     * 获取本周审批通过的活动列表
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    @CheckLogin
+//    @GetMapping(value = "/week/approved")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<PageList<ActivityBO>> getApprovedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+//        return RestOperateTemplate.operate(LOGGER, "获取本周审批通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//            }
+//            @Override
+//            public Result<PageList<ActivityBO>> execute() {
+//                OperateContext context = new OperateContext();
+//                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+//                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+//                if(request.getPage()!=null&&request.getPage()!=0){
+//                    builder.withPage(request.getPage());
+//                }
+//                if(request.getLimit()!=null&&request.getLimit()!=0){
+//                    builder.withLimit(request.getLimit());
+//                }
+//                if(StringUtils.isBlank(request.getOrderRule())){
+//                    builder.withOrderRule(request.getOrderRule());
+//                }
+//                //活动名称可选
+//                if (StringUtils.isNotBlank(request.getActivityName())) {
+//                    builder.withActivityName(request.getActivityName());
+//                }
+//                return RestResultUtil.buildSuccessResult(activityService.findApprovedByWeek(builder.build(), context), "获取本周审批通过的活动列表成功");
+//            }
+//        });
+//    }
+//    /**
+//     * 驳回审批
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    //@CheckLogin
+//    @PutMapping(value = "/cancel")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<ActivityBO> cancel(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+//        return RestOperateTemplate.operate(LOGGER, "驳回申请", request, new RestOperateCallBack<ActivityBO>() {
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+//            }
+//            @Override
+//            public Result<ActivityBO> execute() {
+//                OperateContext context = new OperateContext();
+//                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+//                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
+//                        .withActivityId(request.getActivityId())
+//                        .withCancelReason(request.getCancelReason())
+//                        .build();
+//                ActivityBO activityBO = activityService.cancel(activityManagerRequest, context);
+//                return RestResultUtil.buildSuccessResult(activityBO, "申请驳回成功");
+//            }
+//        });
+//    }
+//    /**
+//     * 审批通过
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    //@CheckLogin
+//    @PutMapping(value = "/publish")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<ActivityBO> publish(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+//        return RestOperateTemplate.operate(LOGGER, "审批通过", request, new RestOperateCallBack<ActivityBO>() {
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+//            }
+//
+//            @Override
+//            public Result<ActivityBO> execute() {
+//                OperateContext context = new OperateContext();
+//                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+//                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
+//                        .withActivityId(request.getActivityId())
+//                        .build();
+//                ActivityBO activityBO = activityService.publish(activityManagerRequest, context);
+//                return RestResultUtil.buildSuccessResult(activityBO, "审批通过成功");
+//            }
+//        });
+//    }
+//
+//    /**
+//     * 根据活动id查询活动
+//     *
+//     * @param request
+//     * @param httpServletRequest
+//     * @return
+//     */
+//    //@CheckLogin
+//    @GetMapping(value = "/ByActivityId")
+//    @Log(loggerName = LoggerName.WEB_DIGEST)
+//    public Result<ActivityBO> getActivityByActivityID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
+//        return RestOperateTemplate.operate(LOGGER, "根据活动id查询活动", request, new RestOperateCallBack<ActivityBO>() {
+//            @Override
+//            public void before() {
+//                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
+//                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
+//            }
+//            @Override
+//            public Result<ActivityBO> execute() {
+//                OperateContext context = new OperateContext();
+//                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
+//                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
+//                builder.withActivityId(request.getActivityId());
+//                return RestResultUtil.buildSuccessResult(activityService.findByActivityId(builder.build(), context), "根据活动id查询活动");
+//            }
 
-    /**
-     * 获取本周审批通过的活动列表
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    @CheckLogin
-    @GetMapping(value = "/week/approved")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<PageList<ActivityBO>> getApprovedActivityListByWeek(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "获取本周审批通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-            }
-            @Override
-            public Result<PageList<ActivityBO>> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
-                if(request.getPage()!=null&&request.getPage()!=0){
-                    builder.withPage(request.getPage());
-                }
-                if(request.getLimit()!=null&&request.getLimit()!=0){
-                    builder.withLimit(request.getLimit());
-                }
-                if(StringUtils.isBlank(request.getOrderRule())){
-                    builder.withOrderRule(request.getOrderRule());
-                }
-                //活动名称可选
-                if (StringUtils.isNotBlank(request.getActivityName())) {
-                    builder.withActivityName(request.getActivityName());
-                }
-                return RestResultUtil.buildSuccessResult(activityService.findApprovedByWeek(builder.build(), context), "获取本周审批通过的活动列表成功");
-            }
-        });
-    }
-    /**
-     * 驳回审批
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    //@CheckLogin
-    @PutMapping(value = "/cancel")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<ActivityBO> cancel(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "驳回申请", request, new RestOperateCallBack<ActivityBO>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
-            }
-            @Override
-            public Result<ActivityBO> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
-                        .withActivityId(request.getActivityId())
-                        .withCancelReason(request.getCancelReason())
-                        .build();
-                ActivityBO activityBO = activityService.cancel(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO, "申请驳回成功");
-            }
-        });
-    }
-    /**
-     * 审批通过
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    //@CheckLogin
-    @PutMapping(value = "/publish")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<ActivityBO> publish(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "审批通过", request, new RestOperateCallBack<ActivityBO>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
-            }
-
-            @Override
-            public Result<ActivityBO> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequest activityManagerRequest = ActivityManagerRequestBuilder.getInstance()
-                        .withActivityId(request.getActivityId())
-                        .build();
-                ActivityBO activityBO = activityService.publish(activityManagerRequest, context);
-                return RestResultUtil.buildSuccessResult(activityBO, "审批通过成功");
-            }
-        });
-    }
-
-    /**
-     * 根据活动id查询活动
-     *
-     * @param request
-     * @param httpServletRequest
-     * @return
-     */
-    //@CheckLogin
-    @GetMapping(value = "/ByActivityId")
-    @Log(loggerName = LoggerName.WEB_DIGEST)
-    public Result<ActivityBO> getActivityByActivityID(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        return RestOperateTemplate.operate(LOGGER, "根据活动id查询活动", request, new RestOperateCallBack<ActivityBO>() {
-            @Override
-            public void before() {
-                AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getActivityId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "活动id不能为空");
-            }
-            @Override
-            public Result<ActivityBO> execute() {
-                OperateContext context = new OperateContext();
-                context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityManagerRequestBuilder builder = ActivityManagerRequestBuilder.getInstance();
-                builder.withActivityId(request.getActivityId());
-                return RestResultUtil.buildSuccessResult(activityService.findByActivityId(builder.build(), context), "根据活动id查询活动");
-            }
-        });
-    }
+//        });
+//    }
 
 }
