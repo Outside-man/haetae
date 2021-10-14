@@ -62,6 +62,16 @@ public class ActivityBO extends ToString {
     private Date end;
 
     /**
+     * 扫章开始时间
+     */
+    private Date stampedStart;
+
+    /**
+     * 扫章结束时间
+     */
+    private Date stampedEnd;
+
+    /**
      * 活动分数
      */
     private Long score;
@@ -69,7 +79,7 @@ public class ActivityBO extends ToString {
     /**
      * 活动申请章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -104,14 +114,20 @@ public class ActivityBO extends ToString {
     private String stuId;
 
     /**
-     * 活动盖章开始时间
+     * 审批通过的时间
      */
-    private Date activityStampedStart;
+    private Date approvedTime;
 
     /**
-     * 活动盖章结束时间
+     * 驳回原因
      */
-    private Date activityStampedEnd;
+    private String cancelReason;
+
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
+
 
     /**
      * 拓展信息
@@ -194,20 +210,44 @@ public class ActivityBO extends ToString {
         }
     }
 
-    public Date getActivityStampedStart() {
-        return activityStampedStart;
+    public Date getStampedStart() {
+        return stampedStart;
     }
 
-    public void setActivityStampedStart(Date activityStampedStart) {
-        this.activityStampedStart = activityStampedStart;
+    public void setStampedStart(Date stampedStart) {
+        this.stampedStart = stampedStart;
     }
 
-    public Date getActivityStampedEnd() {
-        return activityStampedEnd;
+    public Date getStampedEnd() {
+        return stampedEnd;
     }
 
-    public void setActivityStampedEnd(Date activityStampedEnd) {
-        this.activityStampedEnd = activityStampedEnd;
+    public void setStampedEnd(Date stampedEnd) {
+        this.stampedEnd = stampedEnd;
+    }
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
+
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
     }
 
     public String getActivityId() {
@@ -274,11 +314,11 @@ public class ActivityBO extends ToString {
         this.score = score;
     }
 
-    public String getApplicationStamper() {
+    public int getApplicationStamper() {
         return applicationStamper;
     }
 
-    public void setApplicationStamper(String applicationStamper) {
+    public void setApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

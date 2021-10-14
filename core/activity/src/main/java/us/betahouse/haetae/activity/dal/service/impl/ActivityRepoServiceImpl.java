@@ -17,6 +17,7 @@ import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
 import us.betahouse.haetae.activity.dal.repo.PastActivityDORepo;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
+import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
@@ -49,7 +50,6 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
 
     @Autowired
     private PastActivityDORepo pastActivityDORepo;
-
     /**
      * id工厂
      */
@@ -168,8 +168,48 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getExtInfo() != null) {
             activityDO.setExtInfo(newActivityDO.getExtInfo());
         }
+        if(newActivityDO.getApplicationStamper()!=0){
+            activityDO.setApplicationStamper(newActivityDO.getApplicationStamper());
+        }
+        activityDO.setModified(true);
         return convert(activityDORepo.save(activityDO));
     }
+    /**
+     * 活动审批通过
+     *
+     * @param activityBO
+     * @return
+     */
+    @Override
+    public ActivityBO publishActivity(ActivityBO activityBO) {
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
+            LoggerUtil.error(LOGGER, "审批通过的活动不存在", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "审批通过的活动不存在");
+        }
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        activityDO.setState("PUBLISHED");
+        activityDO.setApprovedTime(new Date());
+        return convert(activityDORepo.save(activityDO));
+    }
+    /**
+     * 活动驳回
+     *
+     * @param activityBO
+     * @return
+     */
+    @Override
+    public ActivityBO cancelActivity(ActivityBO activityBO) {
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
+            LoggerUtil.error(LOGGER, "取消的活动不存在", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "取消的活动不存在");
+        }
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        activityDO.setState("CANCELED");
+        activityDO.setCancelReason(activityBO.getCancelReason());
+        activityDO.setModified(false);
+        return convert(activityDORepo.save(activityDO));
+    }
+
 
     @Override
     public ActivityBO queryActivityByActivityId(String activityId) {
@@ -258,42 +298,29 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     }
 
     @Override
-    public PageList<ActivityBO> queryApprovedAddTime(String state, String stuId, String activityName, String organizationMessage, Long activityStampedStart, Long activityStampedEnd, Integer page, Integer limit) throws ParseException {
+    public PageList<ActivityBO> queryApprovedAddTime(String state, String stuId, String activityName, String organizationMessage, Long start, Long end, Integer page, Integer limit) throws ParseException {
         Pageable pageable = PageRequest.of(page, limit);
-        String Syear = String.valueOf(activityStampedStart).substring(0,4);
-        String Smonth = String.valueOf(activityStampedStart).substring(4,6);
-        String Sdate = String.valueOf(activityStampedStart).substring(6,8);
-        String Shour = String.valueOf(activityStampedStart).substring(8,10);
-        String Sminute = String.valueOf(activityStampedStart).substring(10,12);
-        String Ssecond = String.valueOf(activityStampedStart).substring(12,14);
+        String Syear = String.valueOf(start).substring(0,4);
+        String Smonth = String.valueOf(start).substring(4,6);
+        String Sdate = String.valueOf(start).substring(6,8);
+        String Shour = String.valueOf(start).substring(8,10);
+        String Sminute = String.valueOf(start).substring(10,12);
+        String Ssecond = String.valueOf(start).substring(12,14);
 
         String Stime = Syear+"-"+Smonth+"-"+Sdate+" "+Shour+":"+Sminute+":"+Ssecond;
         Date sTime = SIMPLE_DATE_FORMAT.parse(Stime);
 
-        String Eyear = String.valueOf(activityStampedEnd).substring(0,4);
-        String Emonth = String.valueOf(activityStampedEnd).substring(4,6);
-        String Edate = String.valueOf(activityStampedEnd).substring(6,8);
-        String Ehour = String.valueOf(activityStampedEnd).substring(8,10);
-        String Eminute = String.valueOf(activityStampedEnd).substring(10,12);
-        String Esecond = String.valueOf(activityStampedEnd).substring(12,14);
+        String Eyear = String.valueOf(end).substring(0,4);
+        String Emonth = String.valueOf(end).substring(4,6);
+        String Edate = String.valueOf(end).substring(6,8);
+        String Ehour = String.valueOf(end).substring(8,10);
+        String Eminute = String.valueOf(end).substring(10,12);
+        String Esecond = String.valueOf(end).substring(12,14);
         String Etime = Eyear+"-"+Emonth+"-"+Edate+" "+Ehour+":"+Eminute+":"+Esecond;
 
         Date eTime = SIMPLE_DATE_FORMAT.parse(Etime);
 
         return new PageList<>(activityDORepo.findApprovedAddTime(pageable,state,stuId,activityName,organizationMessage,sTime,eTime), this::convert);
-    }
-
-    @Override
-    public void updateActivityStampedTimeByActivityId(Date activityStampedStart, Date activityStampedEnd, String activityId) {
-        int i=activityDORepo.updateActivityStampedTimeByActivityId(activityStampedStart,activityStampedEnd,activityId);
-        if(i==0){
-            throw new BetahouseException(CommonResultCode.SYSTEM_ERROR,"修改未成功");
-        }
-    }
-
-    @Override
-    public List<ActivityBO> convert(List<ActivityDO> activityDOs) {
-        return CollectionUtils.toStream(activityDOs).filter(Objects::nonNull).map(this::convert).collect(Collectors.toList());
     }
 
     private Object convert(Object o) {
@@ -335,6 +362,11 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setCreatorId(activityDO.getUserId());
         activityBO.setState(activityDO.getState());
         activityBO.setTerm(activityDO.getTerm());
+        //DO的UserId对应BO的CreatorId
+        activityBO.setCreatorId(activityDO.getUserId());
+        activityBO.setCancelReason(activityDO.getCancelReason());
+        activityBO.setApprovedTime(activityDO.getApprovedTime());
+        activityBO.setModified(activityDO.getModified());
         activityBO.setActivityStampedStart(activityDO.getActivityStampedStart());
         activityBO.setActivityStampedEnd(activityDO.getActivityStampedEnd());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
@@ -362,9 +394,13 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setScore(activityBO.getScore());
         activityDO.setApplicationStamper(activityBO.getApplicationStamper());
         activityDO.setDescription(activityBO.getDescription());
+        //DO的UserId对应BO的CreatorId
         activityDO.setUserId(activityBO.getCreatorId());
         activityDO.setState(activityBO.getState());
         activityDO.setTerm(activityBO.getTerm());
+        activityDO.setCancelReason(activityBO.getCancelReason());
+        activityDO.setApprovedTime(activityBO.getApprovedTime());
+        activityBO.setModified(activityBO.getModified());
         activityDO.setActivityStampedStart(activityBO.getActivityStampedStart());
         activityDO.setActivityStampedEnd(activityBO.getActivityStampedEnd());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
@@ -401,5 +437,32 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         pastActivityDO.setPastPracticeActivity(pastActivityBO.getPastPracticeActivity());
         return pastActivityDO;
 
+    }
+
+
+    @Override
+    public PageList<ActivityBO> queryCreatedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findByGmtCreateGreaterThanEqualAndActivityNameContainsOrderByActivityIdDesc(date,pageable,activityName), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryCreatedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findByGmtCreateGreaterThanEqualAndActivityNameContains(date,pageable,activityName), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryApprovedByWeekPagerDESC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        String state= "APPROVED";
+        return new PageList<>(activityDORepo.findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContainsOrderByActivityIdDesc(date,pageable,activityName,state), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> queryApprovedByWeekPagerASC(Date date, Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        String state= "APPROVED";
+        return new PageList<>(activityDORepo.findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContains(date,pageable,activityName,state), this::convert);
     }
 }

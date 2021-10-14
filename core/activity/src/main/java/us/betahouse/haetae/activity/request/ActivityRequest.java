@@ -62,6 +62,16 @@ public class ActivityRequest extends BaseRequest {
     private Long end;
 
     /**
+     * 扫章开始时间
+     */
+    private Long stampedStart;
+
+    /**
+     * 扫章结束时间
+     */
+    private Long stampedEnd;
+
+    /**
      * 活动分数
      */
     private Long score;
@@ -168,6 +178,22 @@ public class ActivityRequest extends BaseRequest {
     private Boolean modified;
 
     private PastActivityBO pastActivityBO;
+
+    public Long getStampedStart() {
+        return stampedStart;
+    }
+
+    public void setStampedStart(Long stampedStart) {
+        this.stampedStart = stampedStart;
+    }
+
+    public Long getStampedEnd() {
+        return stampedEnd;
+    }
+
+    public void setStampedEnd(Long stampedEnd) {
+        this.stampedEnd = stampedEnd;
+    }
 
     public Boolean getModified() {
         return modified;

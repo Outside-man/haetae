@@ -4,9 +4,11 @@
  */
 package us.betahouse.haetae.serviceimpl.activity.builder;
 
+import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
 import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.serviceimpl.activity.enums.ActivityStampStatusEnum;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +57,17 @@ public final class ActivityRequestBuilder {
      * 结束时间
      */
     private Long end;
+
+    /**
+     * 扫章开始时间
+     */
+    private Long stampedStart;
+
+    /**
+     * 扫章结束时间
+     */
+    private Long stampedEnd;
+
     /**
      * 分数
      */
@@ -137,6 +150,16 @@ public final class ActivityRequestBuilder {
         return this;
     }
 
+    public ActivityRequestBuilder withStampedStart(Long stampedStart){
+        this.stampedStart=stampedStart;
+        return this;
+    }
+
+    public ActivityRequestBuilder withStampedEnd(Long stampedEnd){
+        this.stampedEnd=stampedEnd;
+        return this;
+    }
+
     public ActivityRequestBuilder withScore(Long score) {
         this.score = score;
         return this;
@@ -179,6 +202,8 @@ public final class ActivityRequestBuilder {
         activityRequest.setDefaultTime(defaultTime);
         activityRequest.setStart(start);
         activityRequest.setEnd(end);
+        activityRequest.setStampedEnd(stampedEnd);
+        activityRequest.setStampedStart(stampedStart);
         activityRequest.setScore(score);
         activityRequest.setApplicationStamper(applicationStamper);
         activityRequest.setDescription(description);

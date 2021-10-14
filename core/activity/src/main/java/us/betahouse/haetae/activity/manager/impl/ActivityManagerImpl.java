@@ -253,4 +253,5 @@ public class ActivityManagerImpl implements ActivityManager {
             return new PageList(activityRepoService.convert(approvedActivities),totalEle,page,size);
         }
     }
+
 }

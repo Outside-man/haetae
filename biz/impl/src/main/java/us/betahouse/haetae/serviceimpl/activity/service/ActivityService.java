@@ -32,6 +32,15 @@ public interface ActivityService {
     ActivityBO create(ActivityManagerRequest request, OperateContext context);
 
     /**
+     * 修改活动申请
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    ActivityBO modify(ActivityManagerRequest request, OperateContext context);
+
+    /**
      * 查找活动
      *
      * @param request
@@ -39,6 +48,8 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context);
+
+
 
     /**
      * 更新活动
@@ -48,6 +59,22 @@ public interface ActivityService {
      * @return
      */
     ActivityBO update(ActivityManagerRequest request, OperateContext operateContext);
+    /**
+     * 审批通过
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext);
+    /**
+     * 驳回申请
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext);
 
     /**
      * 操作活动
@@ -113,6 +140,14 @@ public interface ActivityService {
     void  assignPastRecord(ActivityManagerRequest request,OperateContext context);
 
     /**
+     * 完善活动扫章时间起止日期
+     *
+     * @param activityBOS
+     * @return
+     */
+    List<ActivityBO> fillActivityStampedStartAndEndTime(List<ActivityBO> activityBOS);
+
+    /**
      * 完善活动的创建者的stuId，将其放置在(额外信息)extInfo中
      *
      * @param activityBOS
@@ -130,6 +165,16 @@ public interface ActivityService {
     PageList<ActivityBO> findByUserId(ActivityManagerRequest request, OperateContext context);
 
     /**
+     * 查找活动通过UserId
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    ActivityBO findByActivityId(ActivityManagerRequest request, OperateContext context);
+
+
+    /**
      * 查找已审批通过的活动
      *
      * @param request
@@ -139,17 +184,27 @@ public interface ActivityService {
     PageList<ActivityBO> findApproved(ActivityManagerRequest request, OperateContext context) throws ParseException;
 
     /**
-     * 修改活动的扫章时间
-     * @param request
-     * @param context
-     */
-    void updateActivityStampedTimeByActivityId(ActivityManagerRequest request,OperateContext context);
-
-    /**
-     * 分页获得所有通过的活动，可查询
+     * 查找本周创建的活动
      * @param request
      * @param context
      * @return
      */
-    PageList<ActivityBO> findApprovedActivity(ActivityManagerRequest request,OperateContext context);
+    PageList<ActivityBO> findCreatedByWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周通过审批的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周创建的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findNotQualifiedByWeek(ActivityManagerRequest request, OperateContext context);
+
 }

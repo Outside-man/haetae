@@ -7,10 +7,10 @@ package us.betahouse.haetae.activity.dal.repo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
+import us.betahouse.haetae.activity.dal.model.ActualStamperDO;
 
 import java.util.Date;
 import java.util.List;
@@ -126,9 +126,10 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      * @param stuId 学号
      * @param activityName 活动名
      * @param organizationMessage 组织单位
+
      * @return Page<ActivityDO>
      */
-    @Query(value = "SELECT * from activity where state != ?1 and state != 'CANCELED' and activity_name like ?3 " +
+    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 " +
             "and organization_message like ?4 and user_id in(select user_id from common_user_info where stu_id like ?2 ) "
             ,nativeQuery = true)
     Page<ActivityDO>  findApproved(Pageable pageable, String state,String stuId, String activityName ,String organizationMessage);
@@ -141,71 +142,56 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      * @param stuId 学号
      * @param activityName 活动名
      * @param organizationMessage 组织单位
-     * @param activityStampedStart 活动扫章开始时间
-     * @param activityStampedEnd 活动扫章结束时间
+     * @param start 活动开始时间
+     * @param end 活动结束时间
+
      * @return Page<ActivityDO>
      */
-    @Query(value = "SELECT * from activity where state != ?1 and state != 'CANCELED'and activity_name like ?3 and organization_message like ?4 " +
-            "and activity_stamped_start >= ?5 and activity_stamped_end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
-    Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date activityStampedStart, Date activityStampedEnd);
+    //nativeQuery = true:直接查表名，不查对象名
+    @Query(value = "SELECT * from activity where state = ?1 and activity_name like ?3 and organization_message like ?4 " +
+            "and start >= ?5 and end <= ?6 and user_id in( select user_id from common_user_info where stu_id like ?2 ) ",nativeQuery = true)
+    Page<ActivityDO> findApprovedAddTime(Pageable pageable, String state, String stuId, String activityName, String organizationMessage , Date start, Date end);
 
-    @Modifying
-    @Query(value = "update activity set activity_stamped_start=?,activity_stamped_end=? where activity_id=?",nativeQuery = true)
-    int updateActivityStampedTimeByActivityId(Date activityStampedStart,Date activityStampedEnd,String activityId);
 
-    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and user_id=(select user_id from common_user_info where stu_id=?) " +
-            "and activity_stamped_start>=? and activity_stamped_end<=? " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
-            "limit ?,?",nativeQuery = true)
-    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
-                                          String stuId,Date start,Date end,int formIndex,int size);
+    /**
+     * 本周创建的活动分页查询 倒序
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtCreateGreaterThanEqualAndActivityNameContainsOrderByActivityIdDesc(Date date, Pageable pageable,String activityName);
 
-    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and user_id=(select user_id from common_user_info where stu_id=?) " +
-            "and activity_stamped_start>=? and activity_stamped_end<=? " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
-    Long findApprovedActivityNum(String activityName,String OrganizationName,String stuId,Date start,Date end);
+    /**
+     * 本周创建的活动分页查询
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtCreateGreaterThanEqualAndActivityNameContains(Date date, Pageable pageable,String activityName);
+    /**
+     * 本周审批通过的活动分页查询 倒序
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContainsOrderByActivityIdDesc(Date date, Pageable pageable,String activityName,String state);
 
-    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and activity_stamped_start>=? and activity_stamped_end<=? " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
-            "limit ?,?",nativeQuery = true)
-    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
-                                                      Date start,Date end,int formIndex,int size);
+    /**
+     * 本周审批通过的活动分页查询
+     * @param date
+     * @param pageable
+     * @return
+     */
+    Page<ActivityDO> findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContains(Date date, Pageable pageable,String activityName,String state);
 
-    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and activity_stamped_start>=? and activity_stamped_end<=? " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
-    Long findApprovedActivityNum(String activityName,String OrganizationName,Date start,Date end);
+    //查询本周完整的活动信息（创建时间为本周 且 状态为finish）
 
-    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and user_id=(select user_id from common_user_info where stu_id=?) " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
-            "limit ?,?",nativeQuery = true)
-    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
-                                          String stuId,int formIndex,int size);
 
-    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and user_id=(select user_id from common_user_info where stu_id=?) " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
-    Long findApprovedActivityNum(String activityName,String OrganizationName,String stuId);
+    //查询活动id及实际扫章数（先查询本周创建的活动的id，根据id分组查询活动章）
+    @Query(value = "select new us.betahouse.haetae.activity.dal.model.ActualStamperDO(a.activity_id as activityId,count(a.user_id) as stamperNumber) from activity_record as a \n" +
+            "where a.activity_id in (select activity_id from activity where date(gmt_create) between '2021-7-1' and current_date)\n" +
+            "group by a.activity_id",nativeQuery = true)
+    Page<ActualStamperDO> findActualStamper(Pageable pageable);
 
-    @Query(value = "select * from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED') " +
-            "limit ?,?",nativeQuery = true)
-    List<ActivityDO> findApprovedActivity(String activityName,String OrganizationName,
-                                          int formIndex,int size);
 
-    @Query(value = "select count(id) from activity where activity_name like concat('%',?,'%') " +
-            "and organization_message like concat('%',?,'%') " +
-            "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
-    Long findApprovedActivityNum(String activityName,String OrganizationName);
 }

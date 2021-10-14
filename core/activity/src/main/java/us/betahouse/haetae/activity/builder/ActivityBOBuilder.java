@@ -54,6 +54,16 @@ public final class ActivityBOBuilder {
     private Date end;
 
     /**
+     * 扫章开始时间
+     */
+    private Date stampedStart;
+
+    /**
+     * 扫章结束时间
+     */
+    private Date stampedEnd;
+
+    /**
      * 活动分数
      */
     private Long score;
@@ -61,7 +71,7 @@ public final class ActivityBOBuilder {
     /**
      * 申请章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -89,14 +99,19 @@ public final class ActivityBOBuilder {
     private String userId;
 
     /**
-     * 活动盖章开始时间
+     * 审批通过的时间
      */
-    private Date activityStampedStart;
+    private Date approvedTime;
 
     /**
-     * 活动盖章结束时间
+     * 驳回原因
      */
-    private Date activityStampedEnd;
+    private String cancelReason;
+
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
 
     /**
      * 拓展信息
@@ -145,13 +160,22 @@ public final class ActivityBOBuilder {
         this.end = end;
         return this;
     }
+    public ActivityBOBuilder withStampedStart(Date stampedStart){
+        this.stampedStart=stampedStart;
+        return this;
+    }
+
+    public ActivityBOBuilder withStampedEnd(Date stampedEnd){
+        this.stampedEnd=stampedEnd;
+        return this;
+    }
 
     public ActivityBOBuilder withScore(Long score) {
         this.score = score;
         return this;
     }
 
-    public ActivityBOBuilder withApplicationStamper(String applicationStamper) {
+    public ActivityBOBuilder withApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
         return this;
     }
@@ -181,13 +205,12 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withActivityStampedStart(Date activityStampedStart) {
-        this.activityStampedStart=activityStampedStart;
+    public ActivityBOBuilder withApprovedTime(Date approvedTime){
+        this.approvedTime=approvedTime;
         return this;
     }
-
-    public ActivityBOBuilder withActivityStampedEnd(Date activityStampedEnd) {
-        this.activityStampedEnd=activityStampedEnd;
+    public ActivityBOBuilder withCancelReason(String cancelReason){
+        this.cancelReason=cancelReason;
         return this;
     }
 
@@ -195,6 +218,12 @@ public final class ActivityBOBuilder {
         this.extInfo = extInfo;
         return this;
     }
+
+    public ActivityBOBuilder withModified(Boolean modified){
+        this.modified=modified;
+        return this;
+    }
+
 
     public ActivityBO build() {
         ActivityBO activityBO = new ActivityBO();
@@ -205,6 +234,8 @@ public final class ActivityBOBuilder {
         activityBO.setLocation(location);
         activityBO.setStart(start);
         activityBO.setEnd(end);
+        activityBO.setStampedEnd(stampedEnd);
+        activityBO.setStampedStart(stampedStart);
         activityBO.setScore(score);
         activityBO.setApplicationStamper(applicationStamper);
         activityBO.setDescription(description);
@@ -212,9 +243,10 @@ public final class ActivityBOBuilder {
         activityBO.setState(state);
         activityBO.setTerm(term);
         activityBO.setUserId(userId);
-        activityBO.setActivityStampedStart(activityStampedStart);
-        activityBO.setActivityStampedEnd(activityStampedEnd);
+        activityBO.setApprovedTime(approvedTime);
+        activityBO.setCancelReason(cancelReason);
         activityBO.setExtInfo(extInfo);
+        activityBO.setModified(modified);
         return activityBO;
     }
 }
