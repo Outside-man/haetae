@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
+import us.betahouse.haetae.activity.dal.model.ActualStamperDO;
 
 import java.util.Date;
 import java.util.List;
@@ -182,5 +183,15 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
      * @return
      */
     Page<ActivityDO> findByGmtModifiedGreaterThanEqualAndActivityNameContainsAndStateContains(Date date, Pageable pageable,String activityName,String state);
+
+    //查询本周完整的活动信息（创建时间为本周 且 状态为finish）
+
+
+    //查询活动id及实际扫章数（先查询本周创建的活动的id，根据id分组查询活动章）
+    @Query(value = "select new us.betahouse.haetae.activity.dal.model.ActualStamperDO(a.activity_id as activityId,count(a.user_id) as stamperNumber) from activity_record as a \n" +
+            "where a.activity_id in (select activity_id from activity where date(gmt_create) between '2021-7-1' and current_date)\n" +
+            "group by a.activity_id",nativeQuery = true)
+    Page<ActualStamperDO> findActualStamper(Pageable pageable);
+
 
 }

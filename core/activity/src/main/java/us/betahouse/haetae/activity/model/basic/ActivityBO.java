@@ -62,6 +62,16 @@ public class ActivityBO extends ToString {
     private Date end;
 
     /**
+     * 扫章开始时间
+     */
+    private Date stampedStart;
+
+    /**
+     * 扫章结束时间
+     */
+    private Date stampedEnd;
+
+    /**
      * 活动分数
      */
     private Long score;
@@ -198,6 +208,22 @@ public class ActivityBO extends ToString {
             default:
                 return false;
         }
+    }
+
+    public Date getStampedStart() {
+        return stampedStart;
+    }
+
+    public void setStampedStart(Date stampedStart) {
+        this.stampedStart = stampedStart;
+    }
+
+    public Date getStampedEnd() {
+        return stampedEnd;
+    }
+
+    public void setStampedEnd(Date stampedEnd) {
+        this.stampedEnd = stampedEnd;
     }
 
     public Boolean getModified() {

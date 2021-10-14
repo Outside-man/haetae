@@ -130,11 +130,8 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
             LoggerUtil.error(LOGGER, "更新的活动不存在 ActivityBO={0}", activityBO);
             throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "更新的活动不存在");
         }
-        //DO为从数据库查询的内容，没有扫章数
         ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
-        //newDO为request的数据
         ActivityDO newActivityDO = convert(activityBO);
-        //如果request不为null，就将request的数据传入DO保存
         if (newActivityDO.getActivityName() != null) {
             activityDO.setActivityName(newActivityDO.getActivityName());
         }
@@ -171,8 +168,10 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getExtInfo() != null) {
             activityDO.setExtInfo(newActivityDO.getExtInfo());
         }
-        activityDO.setApplicationStamper(newActivityDO.getApplicationStamper());
-        activityDO.setModified(false);
+        if(newActivityDO.getApplicationStamper()!=0){
+            activityDO.setApplicationStamper(newActivityDO.getApplicationStamper());
+        }
+        activityDO.setModified(true);
         return convert(activityDORepo.save(activityDO));
     }
     /**
@@ -207,6 +206,7 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
         activityDO.setState("CANCELED");
         activityDO.setCancelReason(activityBO.getCancelReason());
+        activityDO.setModified(false);
         return convert(activityDORepo.save(activityDO));
     }
 

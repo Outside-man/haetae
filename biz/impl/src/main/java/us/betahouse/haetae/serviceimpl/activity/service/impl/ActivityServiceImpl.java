@@ -37,6 +37,7 @@ import us.betahouse.haetae.user.model.basic.perm.PermBO;
 import us.betahouse.haetae.user.request.PermManageRequest;
 import us.betahouse.haetae.user.request.UserManageRequest;
 import us.betahouse.haetae.user.user.builder.PermBOBuilder;
+import us.betahouse.util.enums.RestResultCode;
 import us.betahouse.util.utils.AssertUtil;
 import us.betahouse.util.utils.CollectionUtils;
 import us.betahouse.util.utils.NumberUtils;
@@ -125,6 +126,18 @@ public class ActivityServiceImpl implements ActivityService {
         request.putExtInfo(ActivityExtInfoKey.ACTIVITY_STAMP_PERM, permBO.getPermId());
         return activityManager.update(request);
     }
+
+    public ActivityBO modify(ActivityManagerRequest request, OperateContext context) {
+        ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
+        AssertUtil.assertNotNull(activityType, "该活动类型不存在");
+        AssertUtil.assertStringNotBlank(request.getOrganizationMessage(), "活动主办组织信息不能为空");
+        OrganizationBO organizationBO = organizationRepoService.queryByOrganizationName(request.getOrganizationMessage());
+        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在, {0}", request.getOrganizationMessage()));
+        //删除权限修改代码
+        return activityManager.update(request);
+    }
+
+
 
     @Override
     public PageList<ActivityBO> findAll(ActivityManagerRequest request, OperateContext context) {
@@ -489,12 +502,17 @@ public class ActivityServiceImpl implements ActivityService {
         re.setLimit(limit);
         re.setOrderRule(orderRule);
         re.setActivityName(activityName);
+        //查询所有活动
         activityBOPageList = activityManager.findCreatedByWeek(re);
-        activityBOPageList.getContent().forEach(activityBO -> {
-            String userId = activityBO.getUserId();
-            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
-            activityBO.setStuId(getstuId);
-        });
+        //当前页条数为0则说明没有数据
+        /*Integer number = activityBOPageList.getNumber();
+        if (number!=0){*/
+            activityBOPageList.getContent().forEach(activityBO -> {
+                String userId = activityBO.getCreatorId();
+                String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+                activityBO.setStuId(getstuId);
+            });
+        //}
         return activityBOPageList;
     }
 
@@ -532,6 +550,45 @@ public class ActivityServiceImpl implements ActivityService {
             String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
             activityBO.setStuId(getstuId);
         });
+        return activityBOPageList;
+    }
+
+    @Override
+    public PageList<ActivityBO> findNotQualifiedByWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        //返回查询结果无实际章数，需额外加实际章数与百分比
+        activityBOPageList = activityManager.findCreatedByWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getCreatorId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        //额外
         return activityBOPageList;
     }
 

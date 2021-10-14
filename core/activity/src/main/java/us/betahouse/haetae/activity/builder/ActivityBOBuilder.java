@@ -54,6 +54,16 @@ public final class ActivityBOBuilder {
     private Date end;
 
     /**
+     * 扫章开始时间
+     */
+    private Date stampedStart;
+
+    /**
+     * 扫章结束时间
+     */
+    private Date stampedEnd;
+
+    /**
      * 活动分数
      */
     private Long score;
@@ -150,6 +160,15 @@ public final class ActivityBOBuilder {
         this.end = end;
         return this;
     }
+    public ActivityBOBuilder withStampedStart(Date stampedStart){
+        this.stampedStart=stampedStart;
+        return this;
+    }
+
+    public ActivityBOBuilder withStampedEnd(Date stampedEnd){
+        this.stampedEnd=stampedEnd;
+        return this;
+    }
 
     public ActivityBOBuilder withScore(Long score) {
         this.score = score;
@@ -205,6 +224,7 @@ public final class ActivityBOBuilder {
         return this;
     }
 
+
     public ActivityBO build() {
         ActivityBO activityBO = new ActivityBO();
         activityBO.setActivityId(activityId);
@@ -214,6 +234,8 @@ public final class ActivityBOBuilder {
         activityBO.setLocation(location);
         activityBO.setStart(start);
         activityBO.setEnd(end);
+        activityBO.setStampedEnd(stampedEnd);
+        activityBO.setStampedStart(stampedStart);
         activityBO.setScore(score);
         activityBO.setApplicationStamper(applicationStamper);
         activityBO.setDescription(description);

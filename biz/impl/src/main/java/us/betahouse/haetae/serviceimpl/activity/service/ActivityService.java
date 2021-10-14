@@ -32,6 +32,15 @@ public interface ActivityService {
     ActivityBO create(ActivityManagerRequest request, OperateContext context);
 
     /**
+     * 修改活动申请
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    ActivityBO modify(ActivityManagerRequest request, OperateContext context);
+
+    /**
      * 查找活动
      *
      * @param request
@@ -189,5 +198,13 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findApprovedByWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周创建的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findNotQualifiedByWeek(ActivityManagerRequest request, OperateContext context);
 
 }

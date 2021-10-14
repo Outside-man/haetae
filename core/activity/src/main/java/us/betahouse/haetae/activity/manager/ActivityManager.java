@@ -155,4 +155,5 @@ public interface ActivityManager {
      * @return
      */
     PageList<ActivityBO> findApprovedByWeek(ActivityRequest request);
+
 }

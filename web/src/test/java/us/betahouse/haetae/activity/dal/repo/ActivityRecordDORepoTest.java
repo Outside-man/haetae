@@ -54,5 +54,12 @@ public class ActivityRecordDORepoTest {
         }
     }
 
+    //根据活动id查询扫章数
+    @Test
+    public void test(){
+        int i = activityRecordDORepo.countByActivityId("201812011402579133961510012018");
+        System.out.println(i);
+    }
+
 
 }

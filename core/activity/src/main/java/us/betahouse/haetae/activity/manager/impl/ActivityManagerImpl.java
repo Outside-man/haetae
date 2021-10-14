@@ -251,4 +251,5 @@ public class ActivityManagerImpl implements ActivityManager {
             return activityRepoService.queryApprovedByWeekPagerDESC(date,request.getPage(), request.getLimit(),request.getActivityName());
         }
     }
+
 }

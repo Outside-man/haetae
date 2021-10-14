@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.betahouse.HaetaeWebApplication;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
+import us.betahouse.haetae.activity.dal.model.ActualStamperDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
 import us.betahouse.haetae.activity.idfactory.BizIdFactory;
@@ -85,5 +86,16 @@ public class ActivityDORepoTest {
         System.out.println(activityDOPage.isEmpty());
         System.out.println(activityDOPage.isLast());
         System.out.println("-------------------------------------");
+    }
+    //测试扫章数
+    @Test
+    public void test(){
+        int page=0;
+        int limit=10;
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<ActualStamperDO> actualStamper = activityDORepo.findActualStamper(pageable);
+        for (ActualStamperDO actualStamperDO : actualStamper) {
+            System.out.println(actualStamperDO.getStamperNumber());
+        }
     }
 }
