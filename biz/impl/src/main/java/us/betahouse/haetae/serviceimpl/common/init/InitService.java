@@ -109,10 +109,10 @@ public class InitService {
         userManagerPerm.add(UserPermType.USER_PASSWORD_RESET);
         //总管理
         generalManagerPerm.add(GeneralPermType.PERM_OPERATOR);
-        generalManagerPerm.add(ActivityPermType.ACTIVITY_CREATE);
-        generalManagerPerm.add(ActivityPermType.ACTIVITY_PUBLISH);
-        generalManagerPerm.add(ActivityPermType.ACTIVITY_FINISH);
-        generalManagerPerm.add(ActivityPermType.ACTIVITY_RESTART);
+//        generalManagerPerm.add(ActivityPermType.ACTIVITY_CREATE);
+//        generalManagerPerm.add(ActivityPermType.ACTIVITY_PUBLISH);
+//        generalManagerPerm.add(ActivityPermType.ACTIVITY_FINISH);
+//        generalManagerPerm.add(ActivityPermType.ACTIVITY_RESTART);
         generalManagerPerm.add(ActivityPermType.STAMPER_MANAGE);
     }
 

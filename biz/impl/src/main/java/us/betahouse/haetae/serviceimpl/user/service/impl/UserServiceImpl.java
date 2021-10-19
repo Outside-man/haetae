@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-//    @VerifyPerm(permType = )
+    @VerifyPerm(permType = GeneralPermType.PERM_OPERATOR)
     public List<String> saveUserByExcel(UploadUserExcelRequest request, MultipartFile file, OperateContext context) {
         int index=file.getOriginalFilename().indexOf(".");
         String fileType=file.getOriginalFilename().substring(index+1);
@@ -280,51 +280,69 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<UserRoutingTable> getRoutingTable(String userId) {
+        //路由表
         List<UserRoutingTable> userRoutingTable=new ArrayList<>();
         Map<String, PermBO> permBOMap = userBasicService.fetchUserPerms(userId);
         List<String> permTypes = CollectionUtils.toStream(permBOMap.values()).filter(Objects::nonNull).map(PermBO::getPermType).collect(Collectors.toList());
 
-        //默认能登录的都是有Activity_Manage角色的人，都有活动的查询与创建权限，此方法未验证账户是否存在
-        List<UserRoutingTable> activityList=new ArrayList<>();
-        UserRoutingTable inquiry=new UserRoutingTable("/inquiry","活动查询与创建","inquiry",false,null);
-        activityList.add(inquiry);
+        //活动负责人的模块
+        List<UserRoutingTable> activityListA=new ArrayList<>();
 
-        List<UserRoutingTable> chapterList=new ArrayList<>();
-        if(permTypes.contains(ActivityPermType.STAMPER_MANAGE)){
-            UserRoutingTable importTable=new UserRoutingTable("/import","导入章","importChapter",false,null);
-            chapterList.add(importTable);
+        //活动负责人
+        if(userBasicService.verifyPermissionByRoleCode(userId,Collections.singletonList(UserRoleCode.ACTIVITY_MANAGER))){
+
+            UserRoutingTable inquiry=new UserRoutingTable("/inquiry","活动查询与创建","inquiry",false,null);
+            activityListA.add(inquiry);
+            //放入活动模块
+            UserRoutingTable activity=new UserRoutingTable("/activity","活动模块",null,true,activityListA);
+            userRoutingTable.add(activity);
+
+            if(permTypes.contains(ActivityPermType.STAMPER_MANAGE)){
+                List<UserRoutingTable> chapterList=new ArrayList<>();
+                UserRoutingTable importTable=new UserRoutingTable("/import","导入章","importChapter",false,null);
+                chapterList.add(importTable);
+                //放入活动章模块
+                UserRoutingTable chapter=new UserRoutingTable("/chapter","活动章模块",null,true,chapterList);
+                userRoutingTable.add(chapter);
+            }
         }
-        if(permTypes.contains(GeneralPermType.PERM_OPERATOR)){
-            //预警与总览
+
+        //管理员
+        if(userBasicService.verifyPermissionByRoleCode(userId,Collections.singletonList(UserRoleCode.GENERAL_MANAGER))){
+            //预警与总览模块
+            //haveChildren设置为true方便前端辨认是否为模块
             UserRoutingTable overview=new UserRoutingTable("/overview","预警与总览","overview",false,null);
             userRoutingTable.add(overview);
 
-            //管理员额外活动模块
+            List<UserRoutingTable> activityList=new ArrayList<>();
             UserRoutingTable approval=new UserRoutingTable("/approval","活动审批","approval",false,null);
             activityList.add(approval);
             UserRoutingTable approveDetail=new UserRoutingTable("/approvedetail","活动审批详情","approvedetail",false,null);
             activityList.add(approveDetail);
             UserRoutingTable authority=new UserRoutingTable("/authority","权限分配","authority",false,null);
             activityList.add(authority);
+            //判断是否两个权限都有
+            if(userBasicService.verifyPermissionByRoleCode(userId,Collections.singletonList(UserRoleCode.ACTIVITY_MANAGER))){
+                activityList.addAll(activityListA);
+            }
+            //放入活动模块
+            UserRoutingTable activity=new UserRoutingTable("/activity","活动模块",null,true,activityList);
+            userRoutingTable.add(activity);
 
-            //管理员额外活动章模块
+            List<UserRoutingTable> chapterList=new ArrayList<>();
             UserRoutingTable manage=new UserRoutingTable("/manage","导入/导出章","manageChapter",false,null);
             chapterList.add(manage);
-
-            //管理员教务模块
-            List<UserRoutingTable> officeList=new ArrayList<>();
-            UserRoutingTable infoEntry=new UserRoutingTable("/infoentry","新生信息录入","infoEntry",false,null);
-            officeList.add(infoEntry);
-            UserRoutingTable office=new UserRoutingTable("/office","教务模块",null,true,officeList);
-            userRoutingTable.add(office);
-        }
-        //放入活动模块
-        UserRoutingTable activity=new UserRoutingTable("/activity","活动模块",null,true,activityList);
-        userRoutingTable.add(activity);
-        if(!chapterList.isEmpty()){
             //放入活动章模块
             UserRoutingTable chapter=new UserRoutingTable("/chapter","活动章模块",null,true,chapterList);
             userRoutingTable.add(chapter);
+
+            //管理员 <- 教务模块
+            List<UserRoutingTable> officeList=new ArrayList<>();
+            UserRoutingTable infoEntry=new UserRoutingTable("/infoentry","新生信息录入","infoEntry",false,null);
+            officeList.add(infoEntry);
+            //放入教务模块
+            UserRoutingTable office=new UserRoutingTable("/office","教务模块",null,true,officeList);
+            userRoutingTable.add(office);
         }
         return userRoutingTable;
     }
@@ -341,7 +359,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    @VerifyPerm(permType = {GeneralPermType.PERM_OPERATOR})
+    @VerifyPerm(permType = {GeneralPermType.PERM_OPERATOR})
     public void giveStamperPerm(CommonUserRequest request, OperateContext context) {
         PermBO permBO = permRepoService.queryPermByPermType(ActivityPermType.STAMPER_MANAGE);
         AssertUtil.assertNotNull(permBO,CommonResultCode.SYSTEM_ERROR.getCode(),"查无此权限");

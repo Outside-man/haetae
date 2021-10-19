@@ -4,12 +4,15 @@
  */
 package us.betahouse.haetae.controller.user;
 
+import cn.hutool.core.io.resource.ClassPathResource;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import org.apache.commons.lang.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.common.log.LoggerName;
@@ -362,7 +365,7 @@ public class UserController {
      */
     @CrossOrigin
     @PutMapping(value = "/pwd")
-//    @CheckLogin
+    @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<UserVO> modifyPassword(UserRequest request, HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "修改密码", null, new RestOperateCallBack<UserVO>() {
@@ -504,11 +507,13 @@ public class UserController {
             }
             @Override
             public Result<String> execute() throws IOException {
-                String filePath = "web/src/main/resources/download";
+//                String filePath = "classpath:download";
                 String fileName = "xinshenmoban.xlsx";
-                File file = new File(filePath + File.separator + fileName);
-                FileInputStream fileInputStream = new FileInputStream(file);
-                InputStream fis = new BufferedInputStream(fileInputStream);
+//                File file = new File(filePath + File.separator + fileName);
+//                File file= ResourceUtils.getFile(filePath);
+//                FileInputStream fileInputStream = new FileInputStream(file);
+//                InputStream fis = new BufferedInputStream(fileInputStream);
+                InputStream fis=getClass().getClassLoader().getResourceAsStream("download/xinshenmoban.xlsx");
                 OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
                 try {
                     byte[] buffer = new byte[1024];
@@ -521,7 +526,7 @@ public class UserController {
 // filename表示文件的默认名称，因为网络传输只支持URL编码的相关支付，因此需要将文件名URL编码后进行传输,前端收到后需要反编码才能获取到真正的名称
                     response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 // 告知浏览器文件的大小
-                    response.addHeader("Content-Length", "" + file.length());
+//                    response.addHeader("Content-Length", "" + file.length());
                     response.setContentType("application/octet-stream");
                     while (fis.read(buffer)!=-1){
                         outputStream.write(buffer);
@@ -530,7 +535,7 @@ public class UserController {
                 } catch (Exception e) {
                     throw new BetahouseException(CommonResultCode.SYSTEM_ERROR.getCode(),"下载文件失败，资源不存在或未找到");
                 }finally {
-                    fileInputStream.close();
+//                    fileInputStream.close();
                     fis.close();
                     outputStream.close();
                 }
