@@ -733,6 +733,7 @@ public class ActivityController {
 //                builder.withActivityId(request.getActivityId());
 //                return RestResultUtil.buildSuccessResult(activityService.findByActivityId(builder.build(), context), "根据活动id查询活动");
 //            }
+
 //        });
 //    }
 

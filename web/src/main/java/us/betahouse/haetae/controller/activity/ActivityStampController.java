@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.importModel;
+import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.common.log.LoggerName;
 import us.betahouse.haetae.common.session.CheckLogin;
 import us.betahouse.haetae.common.template.RestOperateCallBack;
@@ -311,7 +312,7 @@ public class ActivityStampController {
             @Override
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
-                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
+//                AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "用户id不能为空");
             }
 
             @Override
@@ -320,6 +321,7 @@ public class ActivityStampController {
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
                 ActivityStampRequest activityStampRequest=new ActivityStampRequest();
                 activityStampRequest.setUserId(request.getUserId());
+                System.out.println(request.getUserId());
                 List<String> unbathRows=activityRecordService.batchStampJson(importModels,activityStampRequest,context);
                 return RestResultUtil.buildSuccessResult(unbathRows, "导入活动盖章成功");
             }
@@ -335,6 +337,7 @@ public class ActivityStampController {
      */
     @CrossOrigin
     @PostMapping(value = "exportExcel")
+        @CheckLogin
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<List<String>> exportExcel(StamperRequest request,HttpServletRequest httpServletRequest) {
         return RestOperateTemplate.operate(LOGGER, "（excel）批量导出活动章", request, new RestOperateCallBack<List<String>>() {
@@ -382,10 +385,11 @@ public class ActivityStampController {
                 //一个活动用户只能参与一次即只能获得一个章，则重复导入两条相同数据，用户也只能获得一个章。
                 OperateContext context = new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                ActivityStampRequest activityStampRequest=new ActivityStampRequest();
+                ActivityStampRequest activityStampRequest = new ActivityStampRequest();
                 activityStampRequest.setUserId(request.getUserId());//执行者id
                 activityStampRequest.setActivityId(request.getActivityId());//活动id
-                List<String> unbathRows=activityRecordService.importExcel(file,activityStampRequest,context);
+                activityStampRequest.setScannerUserId(request.getUserId());
+                List<String> unbathRows = activityRecordService.importExcel(file, activityStampRequest, context);
                 return RestResultUtil.buildSuccessResult(unbathRows, "批量导入活动章成功");
             }
         });
