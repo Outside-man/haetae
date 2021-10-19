@@ -384,7 +384,6 @@ public class ActivityController {
     @GetMapping("/approved")
     @Log(loggerName = LoggerName.WEB_DIGEST)
     public Result<PageList<ActivityBO>> getApprovedActivity(ActivityRestRequest request, HttpServletRequest httpServletRequest) {
-        //将请求的活动时间放入额外信息以传入操作模板进行操作
         return RestOperateTemplate.operate(LOGGER, "获取已通过的活动列表", request, new RestOperateCallBack<PageList<ActivityBO>>() {
 
             @Override

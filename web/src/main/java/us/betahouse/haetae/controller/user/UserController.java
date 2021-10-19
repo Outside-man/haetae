@@ -537,6 +537,7 @@ public class UserController {
                 }finally {
 //                    fileInputStream.close();
                     fis.close();
+                    outputStream.flush();
                     outputStream.close();
                 }
                 return RestResultUtil.buildSuccessResult("下载成功");

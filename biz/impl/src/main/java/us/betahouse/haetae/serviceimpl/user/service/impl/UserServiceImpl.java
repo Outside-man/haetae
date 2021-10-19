@@ -310,7 +310,6 @@ public class UserServiceImpl implements UserService {
         //管理员
         if(userBasicService.verifyPermissionByRoleCode(userId,Collections.singletonList(UserRoleCode.GENERAL_MANAGER))){
             //预警与总览模块
-            //haveChildren设置为true方便前端辨认是否为模块
             UserRoutingTable overview=new UserRoutingTable("/overview","预警与总览","overview",false,null);
             userRoutingTable.add(overview);
 
