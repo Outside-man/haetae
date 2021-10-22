@@ -100,6 +100,72 @@ public class AliyunOssUtil {
     public String uploadFile(String fileName, String filePath, InputStream inputStream) {
         return coreUpload(fileName, filePath, inputStream);
     }
+    public String uploadFileDing(String filePath, InputStream inputStream) {
+        return coreUploadDing(filePath, inputStream);
+    }
+    private String coreUploadDing(String filePath, InputStream inputStream) {
+        String fileName = UUID.randomUUID().toString()+".png";
+        if (StringUtils.isEmpty(filePath)) {
+            Calendar rightNow = Calendar.getInstance();
+            String dateCategory = rightNow.get(Calendar.YEAR) + "" + (rightNow.get(Calendar.MONTH) + 1) + "" + rightNow.get(Calendar.DATE) + "" + rightNow.get(Calendar.HOUR_OF_DAY);
+            filePath = FLAG_SLANTING_ROD.concat(dateCategory).concat(FLAG_SLANTING_ROD);
+        }
+        String fileUrl;
+        OSSClient ossClient = null;
+        try {
+            // Create OSS instance
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+
+            // Create bucket if not exists
+            if (!ossClient.doesBucketExist(bucketName)) {
+                ossClient.createBucket(bucketName);
+                CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName);
+                createBucketRequest.setCannedACL(CannedAccessControlList.PublicRead);
+                ossClient.createBucket(createBucketRequest);
+            }
+
+            /*********************************/
+            // List the bucket in my account
+            //listBuckets(ossClient);
+            /*********************************/
+
+            // File path format
+            if (!filePath.startsWith(FLAG_SLANTING_ROD)) {
+                filePath = FLAG_SLANTING_ROD.concat(filePath);
+            }
+            if (!filePath.endsWith(FLAG_SLANTING_ROD)) {
+                filePath = filePath.concat(FLAG_SLANTING_ROD);
+            }
+
+            // File url
+            StringBuilder buffer = new StringBuilder();
+            buffer.append(fileHost).append(filePath).append(fileName);
+            fileUrl = buffer.toString();
+
+
+            // Upload file and set ACL
+            PutObjectResult result = ossClient.putObject(new PutObjectRequest(bucketName, fileUrl, inputStream));
+            ossClient.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
+            fileUrl = getHostUrl().concat(fileUrl);
+            System.out.println(fileUrl);
+
+            /***********************************/
+            // List objects in your bucket
+            //listObjects(ossClient);
+            /***********************************/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileUrl = null;
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+        return fileUrl;
+    }
+
+
 
     /**
      * 核心上传功能

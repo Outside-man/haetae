@@ -167,7 +167,47 @@ public class ActivityRequest extends BaseRequest {
      */
     private Boolean modified;
 
+    /**
+     * 钉钉审批截图
+     */
+    private String pictureUrl;
+
+
+    /**
+     * 实际扫章数
+     */
+    private int actualStamper;
+
+    /**
+     * 扫章偏差百分比
+     */
+    private double stamperPercentageDeviation;
+
     private PastActivityBO pastActivityBO;
+
+    public int getActualStamper() {
+        return actualStamper;
+    }
+
+    public void setActualStamper(int actualStamper) {
+        this.actualStamper = actualStamper;
+    }
+
+    public double getStamperPercentageDeviation() {
+        return stamperPercentageDeviation;
+    }
+
+    public void setStamperPercentageDeviation(double stamperPercentageDeviation) {
+        this.stamperPercentageDeviation = stamperPercentageDeviation;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 
     public Boolean getModified() {
         return modified;

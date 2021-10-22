@@ -208,4 +208,107 @@ public interface ActivityDORepo extends JpaRepository<ActivityDO, Long> {
             "and organization_message like concat('%',?,'%') " +
             "and activity_id in (select activity_id from activity where state='FINISHED' or state='PUBLISHED' or state='RESTARTED')",nativeQuery = true)
     Long findApprovedActivityNum(String activityName,String OrganizationName);
+
+
+    /**
+     * 已审批通过的活动（添加时间）分页查询
+     *
+     * @param pageable 分页工具
+     * @param stuId 学号
+     * @param activityName 活动名
+     * @param organizationMessage 组织单位
+     * @param start 扫章开始时间
+     * @param end 扫章结束时间
+     * @return Page<ActivityDO>
+     */
+    @Query(value = "SELECT * from activity where state in ('PUBLISHED','RESTARTED','FINISHED') and activity_name like ?2 and organization_message like ?3 " +
+            "and activity_stamped_start >= ?4 and activity_stamped_end <= ?5 and user_id in( select user_id from common_user_info where stu_id like ?1 ) ",nativeQuery = true)
+    Page<ActivityDO> findApprovedBy(Pageable pageable,String stuId, String activityName, String organizationMessage , Date start, Date end);
+
+
+    /**
+     * 未审批通过的活动（添加时间）分页查询
+     *
+     * @param pageable 分页工具
+     * @param stuId 学号
+     * @param activityName 活动名
+     * @param organizationMessage 组织单位
+     * @param start 扫章开始时间
+     * @param end 扫章结束时间
+     * @return Page<ActivityDO>
+     */
+    @Query(value = "SELECT * from activity where state in ('CANCELED','APPROVED') and activity_name like ?2 and organization_message like ?3 " +
+            "and activity_stamped_start >= ?4 and activity_stamped_end <= ?5 and user_id in( select user_id from common_user_info where stu_id like ?1 ) ",nativeQuery = true)
+    Page<ActivityDO> findCanceledBy(Pageable pageable,String stuId, String activityName, String organizationMessage , Date start, Date end);
+
+
+
+    /**
+     * 本周创建的活动查询 不分页
+     * @param activityName
+     * @return
+     */
+    //
+    @Query(value = "select * from activity where gmt_create >=(select subdate(curdate(),date_format(curdate(),'%w')-1)) and activity_name like ?1"
+            ,nativeQuery = true)
+    List<ActivityDO> findCreatedThisWeekNotPage(String activityName);
+
+    /**
+     * 根据活动id列表查询活动
+     * @param pageable
+     * @param activityIdList
+     * @return
+     */
+    Page<ActivityDO> findByActivityIdIn(Pageable pageable,List<String> activityIdList);
+
+    /**
+     * 本周创建的活动分页查询
+     * @param pageable
+     * @param activityName
+     * @return
+     */
+    @Query(value = "select * from activity where gmt_create >=(select subdate(curdate(),date_format(curdate(),'%w')-1)) and activity_name like ?1"
+            ,nativeQuery = true)
+    Page<ActivityDO> findCreatedThisWeek(Pageable pageable,String activityName);
+
+    /**
+     * 本周审批通过的活动分页查询
+     * @param pageable
+     * @return
+     */
+    @Query(value = "select * from activity where state in ('PUBLISHED','RESTARTED','FINISHED') and approved_time >=(select subdate(curdate(),date_format(curdate(),'%w')-1)) and activity_name like ?1"
+            ,nativeQuery = true)
+    Page<ActivityDO> findApprovedThisWeek(Pageable pageable,String activityName);
+
+
+    /**
+     * 通过活动负责人Id分页查询已审批通过的活动
+     *
+     * @param pageable 分页工具
+     * @param userId
+
+     * @return Page<ActivityDO>
+     */
+    @Query(value = "select * from activity where user_id = ?1 and state in ('PUBLISHED','RESTARTED','FINISHED')"
+            ,nativeQuery = true)
+    Page<ActivityDO> findApprovedByUserId(Pageable pageable, String userId);
+
+    /**
+     * 通过活动负责人Id分页查询未审批通过的活动
+     *
+     * @param pageable 分页工具
+     * @param userId
+
+     * @return Page<ActivityDO>
+     */
+    @Query(value = "select * from activity where user_id = ?1 and state in ('APPROVED','CANCELED')"
+            ,nativeQuery = true)
+    Page<ActivityDO> findCanceledByUserId(Pageable pageable, String userId);
+
+
+
+
+
+
+
 }

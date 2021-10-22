@@ -84,6 +84,28 @@ public class CommonController {
             }
         });
     }
+
+    /**
+     * 上传钉钉审批截图到aliyun云存储
+     *
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("/aliyun/ding")
+    @ResponseBody
+    public Result<Map> uploadImgAliyunOSSDing(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return RestOperateTemplate.operate(LOGGER, "用户文件上传", null, new RestOperateCallBack<Map>() {
+            @Override
+            public Result<Map> execute() throws IOException {
+                FileInputStream inputStream = (FileInputStream) multipartFile.getInputStream();
+                String path = aliyunOssUtil.uploadFileDing("/haetae/ding", inputStream);
+                Map map = new HashMap(4);
+                map.put("path", path);
+                return RestResultUtil.buildSuccessResult(map, "上传成功");
+            }
+        });
+    }
     
     /**
      * 调用微信接口处理生成 Base64 形式二维码

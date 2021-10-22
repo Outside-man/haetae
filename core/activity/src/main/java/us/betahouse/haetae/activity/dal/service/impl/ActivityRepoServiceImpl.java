@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import us.betahouse.haetae.activity.builder.ActivityBOBuilder;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.model.PastActivityDO;
 import us.betahouse.haetae.activity.dal.repo.ActivityDORepo;
@@ -21,6 +22,7 @@ import us.betahouse.haetae.activity.idfactory.BizIdFactory;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
 import us.betahouse.haetae.activity.model.common.PageList;
+import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.util.enums.CommonResultCode;
 import us.betahouse.util.exceptions.BetahouseException;
 import us.betahouse.util.utils.CollectionUtils;
@@ -168,6 +170,13 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         if (newActivityDO.getExtInfo() != null) {
             activityDO.setExtInfo(newActivityDO.getExtInfo());
         }
+        if(newActivityDO.getApplicationStamper()!=0){
+            activityDO.setApplicationStamper(newActivityDO.getApplicationStamper());
+        }
+        if(newActivityDO.getPictureUrl()!=null){
+            activityDO.setPictureUrl(newActivityDO.getPictureUrl());
+        }
+        activityDO.setModified(true);
         return convert(activityDORepo.save(activityDO));
     }
 
@@ -292,6 +301,111 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
     }
 
     @Override
+    public PageList<ActivityBO> queryApprovedBy(String stuId, String activityName, String organizationMessage, Long start, Long end, Integer page, Integer limit) throws ParseException {
+        Pageable pageable = PageRequest.of(page, limit);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d1 = new Date(start);
+        Date sTime = SIMPLE_DATE_FORMAT.parse(sdf.format(d1));
+        Date d2 = new Date(end);
+        Date eTime = SIMPLE_DATE_FORMAT.parse(sdf.format(d2));
+        return new PageList<>(activityDORepo.findApprovedBy(pageable,stuId,activityName,organizationMessage,sTime,eTime), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> findCanceledBy(String stuId, String activityName, String organizationMessage, Long start, Long end, Integer page, Integer limit) throws ParseException {
+        Pageable pageable = PageRequest.of(page, limit);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d1 = new Date(start);
+        Date sTime = SIMPLE_DATE_FORMAT.parse(sdf.format(d1));
+        Date d2 = new Date(end);
+        Date eTime = SIMPLE_DATE_FORMAT.parse(sdf.format(d2));
+        return new PageList<>(activityDORepo.findCanceledBy(pageable,stuId,activityName,organizationMessage,sTime,eTime), this::convert);
+    }
+
+
+
+    @Override
+    public List<ActivityDO> findCreatedThisWeekNotPage(String activityName) {
+        List<ActivityDO> createdThisWeekNotPage = activityDORepo.findCreatedThisWeekNotPage(activityName);
+        return createdThisWeekNotPage;
+    }
+
+    @Override
+    public PageList<ActivityBO> findByActivityList(Integer page, Integer limit, List<String> activityIdList) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findByActivityIdIn(pageable,activityIdList), this::convert);
+    }
+
+
+    @Override
+    public PageList<ActivityBO> findCreatedThisWeek(Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findCreatedThisWeek(pageable,activityName), this::convert);
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedThisWeek(Integer page, Integer limit,String activityName) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findApprovedThisWeek(pageable,activityName), this::convert);
+    }
+
+    /**
+     * 活动审批通过
+     *
+     * @param activityBO
+     * @return
+     */
+    @Override
+    public ActivityBO publishActivity(ActivityBO activityBO) {
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
+            LoggerUtil.error(LOGGER, "审批通过的活动不存在", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "审批通过的活动不存在");
+        }
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        activityDO.setState("PUBLISHED");
+        activityDO.setApprovedTime(new Date());
+        return convert(activityDORepo.save(activityDO));
+    }
+    /**
+     * 活动驳回
+     *
+     * @param activityBO
+     * @return
+     */
+    @Override
+    public ActivityBO cancelActivity(ActivityBO activityBO) {
+        if (StringUtils.isBlank(activityBO.getActivityId()) && !activityDORepo.existsActivityDOByActivityId(activityBO.getActivityId())) {
+            LoggerUtil.error(LOGGER, "取消的活动不存在", activityBO);
+            throw new BetahouseException(CommonResultCode.ILLEGAL_PARAMETERS.getCode(), "取消的活动不存在");
+        }
+        ActivityDO activityDO = activityDORepo.findByActivityId(activityBO.getActivityId());
+        activityDO.setState("CANCELED");
+        activityDO.setCancelReason(activityBO.getCancelReason());
+        activityDO.setModified(false);
+        return convert(activityDORepo.save(activityDO));
+    }
+
+
+    @Override
+    public PageList<ActivityBO> queryApprovedActivityByUserId(String userId, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findApprovedByUserId(pageable,userId), this::convert);
+    }
+    @Override
+    public PageList<ActivityBO> queryCanceledActivityByUserId(String userId, Integer page, Integer limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return new PageList<>(activityDORepo.findCanceledByUserId(pageable,userId), this::convert);
+    }
+
+
+
+
+
+
+
+
+
+    @Override
     public List<ActivityBO> convert(List<ActivityDO> activityDOs) {
         return CollectionUtils.toStream(activityDOs).filter(Objects::nonNull).map(this::convert).collect(Collectors.toList());
     }
@@ -337,6 +451,10 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityBO.setTerm(activityDO.getTerm());
         activityBO.setActivityStampedStart(activityDO.getActivityStampedStart());
         activityBO.setActivityStampedEnd(activityDO.getActivityStampedEnd());
+        activityBO.setCancelReason(activityDO.getCancelReason());
+        activityBO.setApprovedTime(activityDO.getApprovedTime());
+        activityBO.setModified(activityDO.getModified());
+        activityBO.setPictureUrl(activityDO.getPictureUrl());
         activityBO.setExtInfo(JSON.parseObject(activityDO.getExtInfo(), Map.class));
         return activityBO;
     }
@@ -367,6 +485,10 @@ public class ActivityRepoServiceImpl implements ActivityRepoService {
         activityDO.setTerm(activityBO.getTerm());
         activityDO.setActivityStampedStart(activityBO.getActivityStampedStart());
         activityDO.setActivityStampedEnd(activityBO.getActivityStampedEnd());
+        activityDO.setCancelReason(activityBO.getCancelReason());
+        activityDO.setApprovedTime(activityBO.getApprovedTime());
+        activityBO.setModified(activityBO.getModified());
+        activityBO.setPictureUrl(activityBO.getPictureUrl());
         activityDO.setExtInfo(JSON.toJSONString(activityBO.getExtInfo()));
         return activityDO;
     }

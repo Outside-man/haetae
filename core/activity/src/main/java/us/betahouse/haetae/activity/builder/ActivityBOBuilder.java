@@ -61,7 +61,7 @@ public final class ActivityBOBuilder {
     /**
      * 申请章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -97,6 +97,37 @@ public final class ActivityBOBuilder {
      * 活动盖章结束时间
      */
     private Date activityStampedEnd;
+
+    /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
+
+
+    /**
+     * 实际扫章数
+     */
+    private int actualStamper;
+
+    /**
+     * 扫章偏差百分比
+     */
+    private double stamperPercentageDeviation;
+
+    /**
+     * 钉钉审批截图
+     */
+    private String pictureUrl;
 
     /**
      * 拓展信息
@@ -151,7 +182,7 @@ public final class ActivityBOBuilder {
         return this;
     }
 
-    public ActivityBOBuilder withApplicationStamper(String applicationStamper) {
+    public ActivityBOBuilder withApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
         return this;
     }
@@ -196,6 +227,35 @@ public final class ActivityBOBuilder {
         return this;
     }
 
+    public ActivityBOBuilder withApprovedTime(Date approvedTime){
+        this.approvedTime=approvedTime;
+        return this;
+    }
+    public ActivityBOBuilder withCancelReason(String cancelReason){
+        this.cancelReason=cancelReason;
+        return this;
+    }
+
+    public ActivityBOBuilder withModified(Boolean modified){
+        this.modified=modified;
+        return this;
+    }
+    public ActivityBOBuilder withPictureUrl(String pictureUrl){
+        this.pictureUrl=pictureUrl;
+        return this;
+    }
+
+    public ActivityBOBuilder withActualStamper(int actualStamper){
+        this.actualStamper=actualStamper;
+        return this;
+    }
+    public ActivityBOBuilder withStamperPercentageDeviation(double stamperPercentageDeviation){
+        this.stamperPercentageDeviation=stamperPercentageDeviation;
+        return this;
+    }
+
+
+
     public ActivityBO build() {
         ActivityBO activityBO = new ActivityBO();
         activityBO.setActivityId(activityId);
@@ -214,7 +274,13 @@ public final class ActivityBOBuilder {
         activityBO.setUserId(userId);
         activityBO.setActivityStampedStart(activityStampedStart);
         activityBO.setActivityStampedEnd(activityStampedEnd);
+        activityBO.setApprovedTime(approvedTime);
+        activityBO.setCancelReason(cancelReason);
         activityBO.setExtInfo(extInfo);
+        activityBO.setModified(modified);
+        activityBO.setPictureUrl(pictureUrl);
+        activityBO.setActualStamper(actualStamper);
+        activityBO.setStamperPercentageDeviation(stamperPercentageDeviation);
         return activityBO;
     }
 }

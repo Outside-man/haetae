@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import us.betahouse.haetae.activity.builder.PastActivityBOBuilder;
 import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.dal.service.ActivityBlacklistRepoService;
+import us.betahouse.haetae.activity.dal.service.ActivityRecordRepoService;
 import us.betahouse.haetae.activity.dal.service.ActivityRepoService;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.enums.ActivityTypeEnum;
@@ -95,6 +96,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private UserBasicService userBasicService;
+
+    @Autowired
+    private ActivityRecordRepoService activityRecordRepoService;
 
     @Override
     @VerifyPerm(permType = ActivityPermType.ACTIVITY_CREATE)
@@ -464,4 +468,338 @@ public class ActivityServiceImpl implements ActivityService {
         permManageRequest.setUserIds(userIds);
         return permManageRequest;
     }
+
+    @Override
+    public PageList<ActivityBO> findApprovedBy(ActivityManagerRequest request, OperateContext context) throws ParseException {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String stuId = "%" + "" + "%";
+        String activityName = "%" + "" + "%";
+        String organizationMessage = "%" + "" + "%";
+        //1970
+        Long startTime = 0L;
+        //现在
+        Long endTime = new Date().getTime();
+        if (request.getActivityStampedTimeStart()!=null){
+            startTime = request.getActivityStampedTimeStart();
+        }
+        if (request.getActivityStampedTimeEnd()!=null){
+            endTime = request.getActivityStampedTimeEnd();
+        }
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getUserId())){
+            stuId = "%" + request.getUserId() + "%";
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        if(StringUtils.isNotBlank(request.getOrganizationMessage())){
+            organizationMessage = "%" + request.getOrganizationMessage() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re = new ActivityRequest();
+        re.setState(request.getState());
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setStuId(stuId);
+        re.setActivityName(activityName);
+        re.setOrganizationMessage(organizationMessage);
+        re.setActivityStampedTimeStart(startTime);
+        re.setActivityStampedTimeEnd(endTime);
+        activityBOPageList = activityManager.findApprovedBy(re);
+        //如果有userId将输入的UserId转为学号输出
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getCreatorId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+
+    @Override
+    public PageList<ActivityBO> findCanceledBy(ActivityManagerRequest request, OperateContext context) throws ParseException {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String stuId = "%" + "" + "%";
+        String activityName = "%" + "" + "%";
+        String organizationMessage = "%" + "" + "%";
+        //1970
+        Long startTime = 0L;
+        //现在
+        Long endTime = new Date().getTime();
+        if (request.getActivityStampedTimeStart()!=null){
+            startTime = request.getActivityStampedTimeStart();
+        }
+        if (request.getActivityStampedTimeEnd()!=null){
+            endTime = request.getActivityStampedTimeEnd();
+        }
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getUserId())){
+            stuId = "%" + request.getUserId() + "%";
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        if(StringUtils.isNotBlank(request.getOrganizationMessage())){
+            organizationMessage = "%" + request.getOrganizationMessage() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re = new ActivityRequest();
+        re.setState(request.getState());
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setStuId(stuId);
+        re.setActivityName(activityName);
+        re.setOrganizationMessage(organizationMessage);
+        re.setActivityStampedTimeStart(startTime);
+        re.setActivityStampedTimeEnd(endTime);
+        activityBOPageList = activityManager.findCanceledBy(re);
+        //如果有userId将输入的UserId转为学号输出
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getCreatorId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+
+    @Override
+    public PageList<ActivityBO> findCreatedThisWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        //查询所有活动
+        activityBOPageList = activityManager.findCreatedThisWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getCreatorId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+    @Override
+    public PageList<ActivityBO> findApprovedThisWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        //查询所有活动
+        activityBOPageList = activityManager.findApprovedThisWeek(re);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String userId = activityBO.getCreatorId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(userId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+
+    @Override
+    public PageList<ActivityBO> findUnQualifiedThisWeek(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        String activityName = "%" + "" + "%";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        if(StringUtils.isNotBlank(request.getActivityName())){
+            activityName = "%" + request.getActivityName() + "%";
+        }
+        PageList<ActivityBO> activityBOPageList = null;
+        ActivityRequest re=new ActivityRequest();
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        re.setActivityName(activityName);
+        //用于收集所有未达标的活动的id
+        List<String> activityIdList=new ArrayList<>();
+        //先不分页的查询所有本周不合格的活动的id
+        List<ActivityDO> createdThisWeekNotPage = activityManager.findCreatedThisWeekNotPage(re);
+        for (ActivityDO activityDO : createdThisWeekNotPage) {
+            String activityId = activityDO.getActivityId();
+            int actualStamperNumber = activityRecordRepoService.queryActualStamperNumByActivityId(activityId);
+            int applicationStamper = activityDO.getApplicationStamper();
+            Double stamperPercentageDeviation = (Double.valueOf(actualStamperNumber)-applicationStamper)/applicationStamper;
+            if(stamperPercentageDeviation>1|stamperPercentageDeviation<-1){
+                activityIdList.add(activityId);
+            }
+        }
+        //根据idList查询活动
+        activityBOPageList = activityManager.findByActivityList(re,activityIdList);
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String activityId = activityBO.getActivityId();
+            int actualStamperNumber = activityRecordRepoService.queryActualStamperNumByActivityId(activityId);
+            activityBO.setActualStamper(actualStamperNumber);
+            int applicationStamper = activityBO.getApplicationStamper();
+            Double stamperPercentageDeviation = (Double.valueOf(actualStamperNumber)-applicationStamper)/applicationStamper;
+            activityBO.setStamperPercentageDeviation(stamperPercentageDeviation);
+        });
+        activityBOPageList.getContent().forEach(activityBO -> {
+            String creatorId = activityBO.getCreatorId();
+            String getstuId = userInfoRepoService.queryUserInfoByUserId(creatorId).getStuId();
+            activityBO.setStuId(getstuId);
+        });
+        return activityBOPageList;
+    }
+
+    @Override
+    public ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.publish(request);
+    }
+    @Override
+    public ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext) {
+        return activityManager.cancel(request);
+    }
+    @Override
+    public ActivityBO findByActivityId(ActivityManagerRequest request, OperateContext context) {
+        ActivityRequest re=new ActivityRequest();
+        re.setActivityId(request.getActivityId());
+        return activityManager.findByActivityId(re);
+    }
+
+    public ActivityBO modify(ActivityManagerRequest request, OperateContext context) {
+        ActivityTypeEnum activityType = ActivityTypeEnum.getByCode(request.getType());
+        AssertUtil.assertNotNull(activityType, "该活动类型不存在");
+        AssertUtil.assertStringNotBlank(request.getOrganizationMessage(), "活动主办组织信息不能为空");
+        OrganizationBO organizationBO = organizationRepoService.queryByOrganizationName(request.getOrganizationMessage());
+        AssertUtil.assertNotNull(organizationBO, MessageFormat.format("组织不存在, {0}", request.getOrganizationMessage()));
+        return activityManager.update(request);
+    }
+
+
+    @Override
+    public PageList<ActivityBO> findApprovedByUserId(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        ActivityRequest re=new ActivityRequest();
+        re.setUserId(request.getUserId());
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        return activityManager.findCanceledByUserId(re);
+    }
+
+    @Override
+    public PageList<ActivityBO> findCanceledByUserId(ActivityManagerRequest request, OperateContext context) {
+        Integer page=0;
+        Integer limit=10;
+        String orderRule="DESC";
+        if(NumberUtils.isNotBlank(request.getPage())){
+            page=request.getPage();
+        }
+        if(NumberUtils.isNotBlank(request.getLimit())){
+            limit=request.getLimit();
+        }
+        if(StringUtils.isNotBlank(request.getOrderRule())){
+            //顺序
+            String asc="ASC";
+            if(asc.equals(request.getOrderRule())){
+                orderRule=asc;
+            }
+        }
+        ActivityRequest re=new ActivityRequest();
+        re.setUserId(request.getUserId());
+        re.setPage(page);
+        re.setLimit(limit);
+        re.setOrderRule(orderRule);
+        return activityManager.findCanceledByUserId(re);
+    }
+
 }

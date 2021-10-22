@@ -161,6 +161,19 @@ public class ActivityRestRequest extends RestRequest {
      */
     private Boolean modified;
 
+    /**
+     * 钉钉审批截图
+     */
+    private String pictureUrl;
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     public Boolean getModified() {
         return modified;
     }

@@ -69,7 +69,7 @@ public class ActivityBO extends ToString {
     /**
      * 活动申请章数
      */
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -112,6 +112,37 @@ public class ActivityBO extends ToString {
      * 活动盖章结束时间
      */
     private Date activityStampedEnd;
+
+    /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
+    /**
+     * 审批修改记录
+     */
+    private Boolean modified;
+
+    /**
+     * 实际扫章数
+     */
+    private int actualStamper;
+
+    /**
+     * 扫章偏差百分比
+     */
+    private double stamperPercentageDeviation;
+
+
+    /**
+     * 钉钉审批截图
+     */
+    private String pictureUrl;
 
     /**
      * 拓展信息
@@ -194,6 +225,54 @@ public class ActivityBO extends ToString {
         }
     }
 
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
+
+    public int getActualStamper() {
+        return actualStamper;
+    }
+
+    public void setActualStamper(int actualStamper) {
+        this.actualStamper = actualStamper;
+    }
+
+    public double getStamperPercentageDeviation() {
+        return stamperPercentageDeviation;
+    }
+
+    public void setStamperPercentageDeviation(double stamperPercentageDeviation) {
+        this.stamperPercentageDeviation = stamperPercentageDeviation;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
     public Date getActivityStampedStart() {
         return activityStampedStart;
     }
@@ -274,11 +353,11 @@ public class ActivityBO extends ToString {
         this.score = score;
     }
 
-    public String getApplicationStamper() {
+    public int getApplicationStamper() {
         return applicationStamper;
     }
 
-    public void setApplicationStamper(String applicationStamper) {
+    public void setApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

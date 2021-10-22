@@ -72,7 +72,7 @@ public class ActivityDO extends BaseDO {
      * 活动申请章数
      */
     @Column(name = "application_stamper")
-    private String applicationStamper;
+    private int applicationStamper;
 
     /**
      * 活动描述
@@ -106,6 +106,61 @@ public class ActivityDO extends BaseDO {
      */
     @Column(name = "activity_stamped_end")
     private Date activityStampedEnd;
+
+    /**
+     * 审批通过的时间
+     */
+    private Date approvedTime;
+
+    /**
+     * 驳回原因
+     */
+    private String cancelReason;
+
+    /**
+     * 审批修改记录
+     * 未修改为false
+     * 修改为true
+     */
+    private Boolean modified;
+
+    /**
+     * 钉钉审批截图
+     */
+    @Column(name = "picture_url")
+    private String pictureUrl;
+
+    public Date getApprovedTime() {
+        return approvedTime;
+    }
+
+    public void setApprovedTime(Date approvedTime) {
+        this.approvedTime = approvedTime;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
+    public Boolean getModified() {
+        return modified;
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 
     public Date getActivityStampedStart() {
         return activityStampedStart;
@@ -187,10 +242,10 @@ public class ActivityDO extends BaseDO {
         this.score = score;
     }
 
-    public String getApplicationStamper() {
+    public int getApplicationStamper() {
         return applicationStamper;
     }
-    public void setApplicationStamper(String applicationStamper) {
+    public void setApplicationStamper(int applicationStamper) {
         this.applicationStamper = applicationStamper;
     }
 

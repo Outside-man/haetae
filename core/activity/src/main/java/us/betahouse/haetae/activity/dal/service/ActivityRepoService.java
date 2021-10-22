@@ -57,13 +57,7 @@ public interface ActivityRepoService {
      */
     ActivityBO createActivity(ActivityBO activityBO);
 
-    /**
-     * 更新活动
-     *
-     * @param activityBO
-     * @return
-     */
-    ActivityBO updateActivity(ActivityBO activityBO);
+
 
     /**
      * 通过活动id查询活动
@@ -199,4 +193,113 @@ public interface ActivityRepoService {
      * @return
      */
     List<ActivityBO> convert(List<ActivityDO> activityDOs);
+
+    /**
+     * 查询已通过审批的活动 分页
+     * @param stuId
+     * @param activityName
+     * @param organizationMessage
+     * @param start
+     * @param end
+     * @param page
+     * @param limit
+     * @return
+     * @throws ParseException
+     */
+    PageList<ActivityBO> queryApprovedBy(String stuId,String activityName,String organizationMessage
+            ,Long start,Long end,Integer page,Integer limit) throws ParseException;
+
+    /**
+     * 查询未通过审批的活动 分页
+     * @param stuId
+     * @param activityName
+     * @param organizationMessage
+     * @param start
+     * @param end
+     * @param page
+     * @param limit
+     * @return
+     * @throws ParseException
+     */
+    PageList<ActivityBO> findCanceledBy(String stuId,String activityName,String organizationMessage
+            ,Long start,Long end,Integer page,Integer limit) throws ParseException;
+
+
+
+    /**
+     * 查找本周创建的活动 不分页
+     * @param activityName
+     * @return
+     */
+    List<ActivityDO> findCreatedThisWeekNotPage(String activityName);
+
+
+    PageList<ActivityBO> findByActivityList(Integer page, Integer limit,List<String> activityIdList);
+
+    /**
+     * 查找本周创建的活动
+     * @param page
+     * @param limit
+     * @param activityName
+     * @return
+     */
+    PageList<ActivityBO> findCreatedThisWeek(Integer page, Integer limit,String activityName);
+
+
+    /**
+     * 查找本周审批通过的活动
+     * @param page
+     * @param limit
+     * @param activityName
+     * @return
+     */
+    PageList<ActivityBO> findApprovedThisWeek(Integer page, Integer limit,String activityName);
+
+
+    /**
+     * 活动审批通过
+     *
+     * @param activityBO
+     * @return
+     */
+    ActivityBO publishActivity(ActivityBO activityBO);
+    /**
+     * 活动申请驳回
+     *
+     * @param activityBO
+     * @return
+     */
+    ActivityBO cancelActivity(ActivityBO activityBO);
+
+    /**
+     * 更新活动
+     *
+     * @param activityBO
+     * @return
+     */
+    ActivityBO updateActivity(ActivityBO activityBO);
+
+    /**
+     * 通过活动负责人Id查询已审批通过的活动 分页
+     *
+     * @param userId
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryApprovedActivityByUserId(String userId,Integer page,Integer limit);
+
+    /**
+     * 通过活动负责人Id查询未审批通过的活动 分页
+     *
+     * @param userId
+     * @return PageList<ActivityBO>
+     */
+    PageList<ActivityBO> queryCanceledActivityByUserId(String userId,Integer page,Integer limit);
+
+
+
+
+
+
+
+
 }

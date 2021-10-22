@@ -152,4 +152,103 @@ public interface ActivityService {
      * @return
      */
     PageList<ActivityBO> findApprovedActivity(ActivityManagerRequest request,OperateContext context);
+
+    /**
+     * 查找已审批通过的活动
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedBy(ActivityManagerRequest request, OperateContext context) throws ParseException;
+
+    /**
+     * 查找未审批通过的活动
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findCanceledBy(ActivityManagerRequest request, OperateContext context) throws ParseException;
+
+    /**
+     * 查找本周创建的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findCreatedThisWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周审批通过的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedThisWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 查找本周不合格的活动
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findUnQualifiedThisWeek(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 审批通过
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO publish(ActivityManagerRequest request, OperateContext operateContext);
+    /**
+     * 驳回申请
+     *
+     * @param request
+     * @param operateContext
+     * @return
+     */
+    ActivityBO cancel(ActivityManagerRequest request, OperateContext operateContext);
+
+    /**
+     * 查找活动通过UserId
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    ActivityBO findByActivityId(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 修改活动申请
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    ActivityBO modify(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 根据UserId查找已审批通过的活动
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findApprovedByUserId(ActivityManagerRequest request, OperateContext context);
+
+    /**
+     * 根据UserId查找未审批通过的活动
+     *
+     * @param request
+     * @param context
+     * @return
+     */
+    PageList<ActivityBO> findCanceledByUserId(ActivityManagerRequest request, OperateContext context);
+
+
+
+
 }

@@ -4,6 +4,7 @@
  */
 package us.betahouse.haetae.activity.manager;
 
+import us.betahouse.haetae.activity.dal.model.ActivityDO;
 import us.betahouse.haetae.activity.enums.ActivityStateEnum;
 import us.betahouse.haetae.activity.model.basic.ActivityBO;
 import us.betahouse.haetae.activity.model.basic.PastActivityBO;
@@ -44,13 +45,6 @@ public interface ActivityManager {
      */
     List<ActivityBO> findByState(ActivityStateEnum state);
 
-    /**
-     * 更新活动
-     *
-     * @param request
-     * @return
-     */
-    ActivityBO update(ActivityRequest request);
 
     /**
      * 查找活动
@@ -126,4 +120,101 @@ public interface ActivityManager {
      * @return
      */
     PageList<ActivityBO> findApprovedActivity(ActivityRequest request);
+
+    /**
+     * 查找已审批通过的活动(添加time) 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApprovedBy(ActivityRequest request) throws ParseException;
+
+    /**
+     * 查找未审批通过的活动(添加time) 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findCanceledBy(ActivityRequest request) throws ParseException;
+
+    /**
+     * 查找本周创建的活动 不分页
+     * @param request
+     * @return
+     */
+    List<ActivityDO> findCreatedThisWeekNotPage(ActivityRequest request);
+
+    /**
+     * 查找本周创建的活动 分页
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findCreatedThisWeek(ActivityRequest request);
+
+
+    /**
+     * 查找本周审批通过的活动 分页
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApprovedThisWeek(ActivityRequest request);
+    //根据idList查找
+
+
+    PageList<ActivityBO> findByActivityList(ActivityRequest request,List<String> activityIdList);
+
+    /**
+     * 活动审批通过
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO publish(ActivityRequest request);
+
+    /**
+     * 活动审批驳回
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO cancel(ActivityRequest request);
+
+    /**
+     * 查找活动ByActivityId
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO findByActivityId(ActivityRequest request);
+
+    /**
+     * 更新活动
+     *
+     * @param request
+     * @return
+     */
+    ActivityBO update(ActivityRequest request);
+
+    /**
+     * 查找审批通过的活动By UserId 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findApprovedByUserId(ActivityRequest request);
+
+    /**
+     * 查找未审批通过的活动By UserId 分页
+     *
+     * @param request
+     * @return
+     */
+    PageList<ActivityBO> findCanceledByUserId(ActivityRequest request);
+
+
+
+
+
+
+
 }

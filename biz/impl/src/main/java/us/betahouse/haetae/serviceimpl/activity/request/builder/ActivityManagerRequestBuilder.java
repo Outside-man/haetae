@@ -37,9 +37,12 @@ public final class ActivityManagerRequestBuilder {
     private String orderRule;
     private Long activityStampedTimeStart;
     private Long activityStampedTimeEnd;
+    private int actualStamper;
+    private double stamperPercentageDeviation;
     private Date approvedTime;
     private String cancelReason;
     private Boolean modified;
+    private String pictureUrl;
 
     private ActivityManagerRequestBuilder() {
     }
@@ -162,6 +165,20 @@ public final class ActivityManagerRequestBuilder {
         return this;
     }
 
+    public ActivityManagerRequestBuilder withPictureUrl(String pictureUrl){
+        this.pictureUrl=pictureUrl;
+        return this;
+    }
+
+    public ActivityManagerRequestBuilder withActualStamper(int actualStamper){
+        this.actualStamper=actualStamper;
+        return this;
+    }
+    public ActivityManagerRequestBuilder withStamperPercentageDeviation(double stamperPercentageDeviation){
+        this.stamperPercentageDeviation=stamperPercentageDeviation;
+        return this;
+    }
+
     public ActivityManagerRequest build() {
         ActivityManagerRequest activityManagerRequest = new ActivityManagerRequest();
         activityManagerRequest.setActivityId(activityId);
@@ -188,6 +205,9 @@ public final class ActivityManagerRequestBuilder {
         activityManagerRequest.setApprovedTime(approvedTime);
         activityManagerRequest.setCancelReason(cancelReason);
         activityManagerRequest.setModified(modified);
+        activityManagerRequest.setPictureUrl(pictureUrl);
+        activityManagerRequest.setActualStamper(actualStamper);
+        activityManagerRequest.setStamperPercentageDeviation(stamperPercentageDeviation);
         return activityManagerRequest;
     }
 }

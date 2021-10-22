@@ -166,6 +166,13 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public int queryActualStamperNumByActivityId(String activityId) {
+        int i = activityRecordDORepo.queryActualStamperNumByActivityId(activityId);
+        return i;
+    }
+
+
 
     /**
      * 活动记录DO2BO
@@ -210,4 +217,5 @@ public class ActivityRecordRepoServiceImpl implements ActivityRecordRepoService 
         activityRecordDO.setExtInfo(JSON.toJSONString(activityRecordBO.getExtInfo()));
         return activityRecordDO;
     }
+
 }

@@ -102,4 +102,13 @@ public interface ActivityRecordDORepo extends JpaRepository<ActivityRecordDO, Lo
      * @return
      */
     List<ActivityRecordDO> queryByActivityId(String activityId);
+
+    /**
+     * 根据活动id查询该活动实际扫章数
+     * @param activityId
+     * @return
+     */
+    @Query(value = "select count(*) from activity_record where activity_id = ?1",
+            nativeQuery = true)
+    int queryActualStamperNumByActivityId(String activityId);
 }

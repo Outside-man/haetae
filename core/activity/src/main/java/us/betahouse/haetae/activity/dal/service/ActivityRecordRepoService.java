@@ -108,4 +108,11 @@ public interface ActivityRecordRepoService {
      */
     List<ActivityRecordBO> queryByActivityId(String activityId);
 
+    /**
+     * 根据活动id查询扫章总数
+     * @param activityId
+     * @return
+     */
+    int queryActualStamperNumByActivityId(String activityId);
+
 }

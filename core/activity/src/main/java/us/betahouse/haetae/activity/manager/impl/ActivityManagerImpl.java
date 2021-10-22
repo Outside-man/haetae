@@ -79,6 +79,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 .withTerm(request.getTerm())
                 .withActivityStampedStart(new Date(request.getActivityStampedTimeStart()))
                 .withActivityStampedEnd(new Date(request.getActivityStampedTimeEnd()))
+                .withPictureUrl(request.getPictureUrl())
                 .withExtInfo(request.getExtInfo());
 
         return activityRepoService.createActivity(builder.build());
@@ -100,30 +101,6 @@ public class ActivityManagerImpl implements ActivityManager {
         return activityRepoService.queryActivitiesByState(state.getCode());
     }
 
-    /**
-     * 更新活动
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public ActivityBO update(ActivityRequest request) {
-        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
-                .withActivityId(request.getActivityId())
-                .withActivityName(request.getActivityName())
-                .withType(request.getType())
-                .withOrganizationMessage(request.getOrganizationMessage())
-                .withLocation(request.getLocation())
-                .withStart(new Date(request.getStart()))
-                .withEnd(new Date(request.getEnd()))
-                .withScore(request.getScore())
-                .withDescription(request.getDescription())
-                .withCreatorId(request.getUserId())
-                .withState(request.getState())
-                .withTerm(request.getTerm())
-                .withExtInfo(request.getExtInfo());
-        return activityRepoService.updateActivity(builder.build());
-    }
 
     @Override
     public PageList<ActivityBO> find(ActivityRequest request) {
@@ -253,4 +230,108 @@ public class ActivityManagerImpl implements ActivityManager {
             return new PageList(activityRepoService.convert(approvedActivities),totalEle,page,size);
         }
     }
+
+
+    @Override
+    public PageList<ActivityBO> findApprovedBy(ActivityRequest request) throws ParseException {
+        return activityRepoService.queryApprovedBy(request.getStuId(),request.getActivityName(),
+                request.getOrganizationMessage(),request.getActivityStampedTimeStart(),request.getActivityStampedTimeEnd(),request.getPage(), request.getLimit());
+    }
+
+
+    @Override
+    public PageList<ActivityBO> findCanceledBy(ActivityRequest request) throws ParseException {
+        return activityRepoService.findCanceledBy(request.getStuId(),request.getActivityName(),
+                request.getOrganizationMessage(),request.getActivityStampedTimeStart(),request.getActivityStampedTimeEnd(),request.getPage(), request.getLimit());
+    }
+
+    @Override
+    public List<ActivityDO> findCreatedThisWeekNotPage(ActivityRequest request) {
+        List<ActivityDO> createdThisWeekNotPage = activityRepoService.findCreatedThisWeekNotPage(request.getActivityName());
+        return  createdThisWeekNotPage;
+    }
+
+    @Override
+    public PageList<ActivityBO> findCreatedThisWeek(ActivityRequest request) {
+        return  activityRepoService.findCreatedThisWeek(request.getPage(), request.getLimit(),request.getActivityName());
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedThisWeek(ActivityRequest request) {
+        return  activityRepoService.findApprovedThisWeek(request.getPage(), request.getLimit(),request.getActivityName());
+    }
+
+    @Override
+    public PageList<ActivityBO> findByActivityList(ActivityRequest request, List<String> activityIdList) {
+        return activityRepoService.findByActivityList(request.getPage(), request.getLimit(),activityIdList);
+    }
+
+    /**
+     * 活动审批通过
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityBO publish(ActivityRequest request) {
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
+                .withActivityId(request.getActivityId());
+        return activityRepoService.publishActivity(builder.build());
+    }
+    /**
+     * 活动申请驳回
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityBO cancel(ActivityRequest request) {
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
+                .withActivityId(request.getActivityId())
+                .withCancelReason(request.getCancelReason());
+        return activityRepoService.cancelActivity(builder.build());
+    }
+
+    @Override
+    public ActivityBO findByActivityId(ActivityRequest request) {
+        return activityRepoService.queryActivityByActivityId(request.getActivityId());
+    }
+
+    /**
+     * 更新活动
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public ActivityBO update(ActivityRequest request) {
+        ActivityBOBuilder builder = ActivityBOBuilder.getInstance()
+                .withActivityId(request.getActivityId())
+                .withActivityName(request.getActivityName())
+                .withType(request.getType())
+                .withOrganizationMessage(request.getOrganizationMessage())
+                .withLocation(request.getLocation())
+                .withStart(new Date(request.getStart()))
+                .withEnd(new Date(request.getEnd()))
+                .withActivityStampedEnd(new Date(request.getActivityStampedTimeEnd()))
+                .withActivityStampedStart(new Date(request.getActivityStampedTimeStart()))
+                .withDescription(request.getDescription())
+                .withCreatorId(request.getUserId())
+                .withState(request.getState())
+                .withTerm(request.getTerm())
+                .withApplicationStamper(request.getApplicationStamper())
+                .withPictureUrl(request.getPictureUrl())
+                .withExtInfo(request.getExtInfo());
+        return activityRepoService.updateActivity(builder.build());
+    }
+
+    @Override
+    public PageList<ActivityBO> findApprovedByUserId(ActivityRequest request) {
+        return activityRepoService.queryApprovedActivityByUserId(request.getUserId(),request.getPage(), request.getLimit());
+    }
+    @Override
+    public PageList<ActivityBO> findCanceledByUserId(ActivityRequest request) {
+        return activityRepoService.queryCanceledActivityByUserId(request.getUserId(),request.getPage(), request.getLimit());
+    }
+
 }
