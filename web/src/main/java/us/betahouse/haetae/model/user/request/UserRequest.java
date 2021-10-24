@@ -72,6 +72,16 @@ public class UserRequest extends RestRequest {
      */
     private String operatedId;
 
+    private boolean canStamp;
+
+    public boolean isCanStamp() {
+        return canStamp;
+    }
+
+    public void setCanStamp(boolean canStamp) {
+        this.canStamp = canStamp;
+    }
+
     public String getOperatedId() {
         return operatedId;
     }

@@ -602,6 +602,7 @@ public class UserController {
             public void before() {
                 AssertUtil.assertNotNull(request, RestResultCode.ILLEGAL_PARAMETERS.getCode(), "请求体不能为空");
                 AssertUtil.assertStringNotBlank(request.getUserId(), RestResultCode.ILLEGAL_PARAMETERS.getCode(), "操作员id不能为空");
+                AssertUtil.assertNotNull(request.isCanStamp(),RestResultCode.ILLEGAL_PARAMETERS.getCode(), "操作员id不能为空");
             }
 
             @Override
@@ -616,8 +617,13 @@ public class UserController {
                         .withUserId(request.getOperatedId());
                 OperateContext context=new OperateContext();
                 context.setOperateIP(IPUtil.getIpAddr(httpServletRequest));
-                userService.giveStamperPerm(builder.build(),context);
-                return RestResultUtil.buildFailResult("给予权限成功");
+                if(request.isCanStamp()){
+                    userService.giveStamperPerm(builder.build(),context);
+                    return RestResultUtil.buildFailResult("给予权限成功");
+                }else {
+                    userService.unBindStamperPerm(builder.build(),context);
+                    return RestResultUtil.buildFailResult("解绑权限成功");
+                }
             }
         });
     }

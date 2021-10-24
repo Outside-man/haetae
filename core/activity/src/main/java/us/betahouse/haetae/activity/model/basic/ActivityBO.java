@@ -145,6 +145,11 @@ public class ActivityBO extends ToString {
     private String pictureUrl;
 
     /**
+     * 该活动的负责人是否可以导章
+     */
+    private boolean canStamp;
+
+    /**
      * 拓展信息
      */
     private Map<String, String> extInfo = new HashMap<>();
@@ -411,6 +416,14 @@ public class ActivityBO extends ToString {
 
     public Map<String, String> getExtInfo() {
         return extInfo;
+    }
+
+    public boolean isCanStamp() {
+        return canStamp;
+    }
+
+    public void setCanStamp(boolean canStamp) {
+        this.canStamp = canStamp;
     }
 
     public void setExtInfo(Map<String, String> extInfo) {

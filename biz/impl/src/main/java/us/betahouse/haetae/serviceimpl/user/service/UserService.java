@@ -163,14 +163,14 @@ public interface UserService {
      * @param context
      * @return
      */
-    public CommonUser loginProxy(CommonUserRequest request, OperateContext context);
+    CommonUser loginProxy(CommonUserRequest request, OperateContext context);
 
     /**
      * 给予用户导章权限
      * @param request
      * @param context
      */
-    public void giveStamperPerm(CommonUserRequest request,OperateContext context);
+    void giveStamperPerm(CommonUserRequest request,OperateContext context);
 
     /**
      * 通过学号查找学生信息
@@ -179,6 +179,11 @@ public interface UserService {
      */
     CommonUser findByStuid(String stuid);
 
-
+    /**
+     * 解绑一位用户的导章权限
+     * @param request
+     * @param context
+     */
+    void unBindStamperPerm(CommonUserRequest request,OperateContext context);
 }
 

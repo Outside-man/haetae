@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import us.betahouse.haetae.serviceimpl.activity.constant.ActivityPermType;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.common.OperateContext;
 import us.betahouse.haetae.serviceimpl.common.constant.UserRequestExtInfoKey;
 import us.betahouse.haetae.serviceimpl.common.verify.VerifyPerm;
@@ -361,7 +362,7 @@ public class UserServiceImpl implements UserService {
     @VerifyPerm(permType = {GeneralPermType.PERM_OPERATOR})
     public void giveStamperPerm(CommonUserRequest request, OperateContext context) {
         PermBO permBO = permRepoService.queryPermByPermType(ActivityPermType.STAMPER_MANAGE);
-        AssertUtil.assertNotNull(permBO,CommonResultCode.SYSTEM_ERROR.getCode(),"查无此权限");
+        AssertUtil.assertNotNull(permBO,CommonResultCode.SYSTEM_ERROR.getCode(),"查无导章权限");
         UserManageRequest userManageRequest=new UserManageRequest();
         userManageRequest.setUserId(request.getUserId());
         userManageRequest.setPermIds(Collections.singletonList(permBO.getPermId()));
@@ -371,6 +372,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public CommonUser findByStuid(String stuid) {
         return userBasicService.getByStuId(stuid);
+    }
+
+    @Override
+    @VerifyPerm(permType = {GeneralPermType.PERM_OPERATOR})
+    public void unBindStamperPerm(CommonUserRequest request, OperateContext context) {
+        PermBO permBO = permRepoService.queryPermByPermType(ActivityPermTypeEnum.STAMPER_MANAGE.getCode());
+        AssertUtil.assertNotNull(permBO,CommonResultCode.SYSTEM_ERROR.getCode(),"查无导章权限");
+        permRepoService.userUnbindPerms(request.getUserId(),Collections.singletonList(permBO.getPermId()));
     }
 
 }

@@ -23,6 +23,7 @@ import us.betahouse.haetae.activity.request.ActivityRequest;
 import us.betahouse.haetae.organization.dal.service.OrganizationRepoService;
 import us.betahouse.haetae.organization.model.OrganizationBO;
 import us.betahouse.haetae.serviceimpl.activity.constant.*;
+import us.betahouse.haetae.serviceimpl.activity.enums.ActivityPermTypeEnum;
 import us.betahouse.haetae.serviceimpl.activity.manager.ActivityOperateManager;
 import us.betahouse.haetae.serviceimpl.activity.request.ActivityManagerRequest;
 import us.betahouse.haetae.serviceimpl.activity.service.ActivityService;
@@ -448,7 +449,12 @@ public class ActivityServiceImpl implements ActivityService {
         List<ActivityBO> content = pageList.getContent();
         List<ActivityBO> list=new ArrayList<>();
         for (ActivityBO activityBO : content) {
-            activityBO.setStuId(userInfoRepoService.queryUserInfoByUserId(activityBO.getUserId()).getStuId());
+            UserInfoBO userInfoBO = userInfoRepoService.queryUserInfoByUserId(activityBO.getCreatorId());
+            if(userInfoBO!=null){
+                activityBO.setStuId(userInfoBO.getStuId());
+                activityBO.setCanStamp(userBasicService.verifyPermissionByPermType(activityBO.getCreatorId(),Collections.singletonList(ActivityPermTypeEnum.STAMPER_MANAGE.getCode())));
+            }
+
             list.add(activityBO);
         }
         pageList.setContent(list);

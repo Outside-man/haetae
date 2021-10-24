@@ -147,6 +147,11 @@ public class ActivityRestRequest extends RestRequest {
     private String searchCreatorStuId;
 
     /**
+     * 活动负责人的id
+     */
+    private String creatorId;
+
+    /**
      * 审批通过的时间
      */
     private Date approvedTime;
@@ -394,5 +399,11 @@ public class ActivityRestRequest extends RestRequest {
         this.searchCreatorStuId = searchCreatorStuId;
     }
 
+    public String getCreatorId() {
+        return creatorId;
+    }
 
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
 }

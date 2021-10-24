@@ -412,7 +412,7 @@ public class ActivityController {
                     limit=request.getLimit();
                 }
                 ActivityManagerRequest activityManagerRequest=new ActivityManagerRequest();
-                activityManagerRequest.setUserId(request.getUserId());
+                activityManagerRequest.setUserId(request.getCreatorId());
                 activityManagerRequest.setPage(page);
                 activityManagerRequest.setLimit(limit);
                 if(request.getActivityName()!=null&&!request.getActivityName().equals("")){
