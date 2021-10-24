@@ -548,7 +548,7 @@ public class ActivityController {
                     builder.withOrderRule(request.getOrderRule());
                 }
                 //条件查询（可选）
-                if (StringUtils.isNotBlank(request.getUserId())) {//获取到的是StuId。通过StuId找UserId
+                if (StringUtils.isNotBlank(request.getSearchCreatorStuId())) {//获取到的是StuId。通过StuId找UserId
                     builder.withUserId(request.getSearchCreatorStuId());
                 }
                 // 添加活动名称选择条件
