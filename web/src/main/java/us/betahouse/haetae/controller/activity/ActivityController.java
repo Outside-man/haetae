@@ -412,7 +412,7 @@ public class ActivityController {
                     limit=request.getLimit();
                 }
                 ActivityManagerRequest activityManagerRequest=new ActivityManagerRequest();
-                activityManagerRequest.setUserId(request.getCreatorId());
+                activityManagerRequest.setUserId(request.getUserId());
                 activityManagerRequest.setPage(page);
                 activityManagerRequest.setLimit(limit);
                 if(request.getActivityName()!=null&&!request.getActivityName().equals("")){
@@ -549,7 +549,7 @@ public class ActivityController {
                 }
                 //条件查询（可选）
                 if (StringUtils.isNotBlank(request.getUserId())) {//获取到的是StuId。通过StuId找UserId
-                    builder.withUserId(request.getUserId());
+                    builder.withUserId(request.getSearchCreatorStuId());
                 }
                 // 添加活动名称选择条件
                 if (StringUtils.isNotBlank(request.getActivityName())) {
