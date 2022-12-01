@@ -15,6 +15,7 @@
 *.iws
 *.iml
 *.ipr
+*.yml
 
 ### NetBeans ###
 /nbproject/private/
@@ -26,4 +27,7 @@
 
 ### Other ###
 /**/target
-.logs/
+logs/
+/**/logs
+.DS_Store
+web/src/main/resources/config/application.yml

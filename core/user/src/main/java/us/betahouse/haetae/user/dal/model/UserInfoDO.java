@@ -1,50 +1,50 @@
-/**
- * betahouse.us
- * CopyRight (c) 2012 - 2018
+/*
+  betahouse.us
+  CopyRight (c) 2012 - 2018
  */
 package us.betahouse.haetae.user.dal.model;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户信息
+ * 用户实体
  *
  * @author dango.yxm
  * @version : UserInfoDO.java 2018/11/15 下午2:17 dango.yxm
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "common_user_info")
-public class UserInfoDO implements Serializable {
+@Table(name = "common_user_info",
+        indexes = {
+                @Index(name = "uk_major_id_class_id_user_info_id", columnList = "major_id, class_id, user_info_id", unique = true),
+                @Index(name = "uk_user_info_id_user_id", columnList = "user_info_id, user_id", unique = true),
+                @Index(name = "uk_user_id", columnList = "user_id", unique = true),
+                @Index(name = "uk_user_info_id", columnList = "user_info_id", unique = true),
+                @Index(name = "uk_stu_id", columnList = "stu_id", unique = true)
+        })
+public class UserInfoDO extends BaseDO {
 
     private static final long serialVersionUID = 4332447165010415804L;
-
-    @Id
-    @GeneratedValue
-    private Long id;
 
     /**
      * 用户信息id
      */
-    @Column(length = 32, updatable = false, unique = true)
+    @Column(name = "user_info_id", length = 32, updatable = false, nullable = false)
     private String userInfoId;
 
     /**
      * 用户id
      */
-    @Column(length = 32)
+    @Column(name = "user_id", length = 32, nullable = false)
     private String userId;
 
     /**
      * 学号
      */
-    @Column(length = 32)
+    @Column(name = "stu_id", length = 32)
     private String stuId;
 
     /**
@@ -62,34 +62,25 @@ public class UserInfoDO implements Serializable {
     /**
      * 专业号
      */
-    @Column(length = 32)
+    @Column(name = "major_id", length = 32)
     private String majorId;
 
     /**
      * 班级号
      */
-    @Column(length = 32)
+    @Column(name = "class_id", length = 32)
     private String classId;
 
     /**
-     * 入学年份
+     * 年级
      */
-    @Column(length = 8)
-    private Integer enrollDate;
+    @Column(name = "grade", length = 64)
+    private String grade;
 
     /**
-     * 创建时间
+     * 入学时间
      */
-    @CreatedDate
-    @Column(name = "gmt_create", nullable = false)
-    private Date gmtCreate;
-
-    /**
-     * 修改时间
-     */
-    @LastModifiedDate
-    @Column(name = "gmt_modified", nullable = false)
-    private Date gmtModified;
+    private Date enrollDate;
 
     /**
      * 拓展信息
@@ -97,16 +88,32 @@ public class UserInfoDO implements Serializable {
     @Column(length = 2000)
     private String extInfo;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    /**
+     * 辅导员姓名
+     */
+    @Column(name = "counsellor_name",length = 50)
+    private String counsellorName;
+
+    /**
+     * 联系方式
+     */
+    @Column(length = 50)
+    private String phoneNumber;
+
+    public String getCounsellorName() {
+        return counsellorName;
     }
 
-    public Long getId() {
-        return id;
+    public void setCounsellorName(String counsellorName) {
+        this.counsellorName = counsellorName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUserInfoId() {
@@ -165,28 +172,12 @@ public class UserInfoDO implements Serializable {
         this.classId = classId;
     }
 
-    public Integer getEnrollDate() {
+    public Date getEnrollDate() {
         return enrollDate;
     }
 
-    public void setEnrollDate(Integer enrollDate) {
+    public void setEnrollDate(Date enrollDate) {
         this.enrollDate = enrollDate;
-    }
-
-    public Date getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Date gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 
     public String getExtInfo() {
@@ -195,5 +186,13 @@ public class UserInfoDO implements Serializable {
 
     public void setExtInfo(String extInfo) {
         this.extInfo = extInfo;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }

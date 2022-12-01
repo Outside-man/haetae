@@ -22,6 +22,11 @@
         <module>util</module>
         <module>core/user</module>
         <module>core/activity</module>
+        <module>core/asset</module>
+        <module>core/finance</module>
+        <module>core/organization</module>
+        <module>core/certificate</module>
+        <module>core/locale</module>
         <module>biz/impl</module>
         <module>web</module>
     </modules>
@@ -29,20 +34,7 @@
     <dependencyManagement>
         <dependencies>
 
-            <!--Druid-->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>1.0.9</version>
-            </dependency>
-
             <!-- 子模块 start -->
-            <!--工具类-->
-            <dependency>
-                <groupId>us.betahouse</groupId>
-                <artifactId>util</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
             <!--core 层-->
             <dependency>
                 <groupId>us.betahouse</groupId>
@@ -52,6 +44,31 @@
             <dependency>
                 <groupId>us.betahouse</groupId>
                 <artifactId>haetae-activity</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-asset</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-finance</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-certificate</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-organization</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>us.betahouse</groupId>
+                <artifactId>haetae-locale</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <!--biz 层-->
@@ -66,7 +83,7 @@
                 <artifactId>haetae-web</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
-            <!-- 子模块 end -->
+            <!-- 子模块 activityTime -->
 
             <!--二方包 betahouse util-->
             <dependency>
@@ -74,6 +91,62 @@
                 <artifactId>util</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+
+            <!--三方包 start-->
+            <!--Druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.0.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>1.9.5</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.6</version>
+            </dependency>
+
+            <!--logback-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+
+            <!--jnuit-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+
+            <!--fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.7</version>
+            </dependency>
+
+            <!-- hibernate validator-->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>5.2.0.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.10</version>
+            </dependency>
+            <!--三方包 activityTime-->
 
         </dependencies>
     </dependencyManagement>

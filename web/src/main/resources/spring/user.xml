@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--用户名基础校验器-->
+    <bean id="userNameBasicValidator" class="us.betahouse.haetae.user.validate.UserNameBasicValidator"/>
+    <!--密码基础校验器-->
+    <bean id="passwordBasicValidator" class="us.betahouse.haetae.user.validate.PasswordBasicValidator"/>
+    <!--密码强度校验器-->
+    <bean id="passwordStrengthValidator" class="us.betahouse.haetae.user.validate.PasswordStrengthValidator"/>
+    <!--openId绑定校验器-->
+    <bean id="openIdBasicValidator" class="us.betahouse.haetae.user.validate.OpenIdBasicValidator"/>
+
+    <!--用户注册校验器-->
+    <bean id="userRegisterValidator" class="us.betahouse.util.validator.MultiValidator">
+        <property name="validatorList">
+            <list>
+                <ref bean="userNameBasicValidator"/>
+                <ref bean="passwordBasicValidator"/>
+                <ref bean="passwordStrengthValidator"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--密码规则校验器-->
+    <bean id="passwordValidator" class="us.betahouse.util.validator.MultiValidator">
+        <property name="validatorList">
+            <list>
+                <ref bean="passwordBasicValidator"/>
+                <ref bean="passwordStrengthValidator"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
